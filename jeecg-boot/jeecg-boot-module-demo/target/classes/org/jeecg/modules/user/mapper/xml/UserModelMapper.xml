@@ -1,0 +1,352 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.jeecg.modules.user.mapper.UserModelMapper">
+  <resultMap id="BaseResultMap" type="org.jeecg.modules.user.model.UserModel">
+    <!--@mbg.generated-->
+    <!--@Table tb_user-->
+    <id column="id" jdbcType="VARCHAR" property="Id" />
+    <result column="user_name" jdbcType="VARCHAR" property="userName" />
+    <result column="nike_name" jdbcType="VARCHAR" property="nikeName" />
+    <result column="head_image" jdbcType="VARCHAR" property="headImage" />
+    <result column="vip_id" jdbcType="BIGINT" property="vipId" />
+    <result column="address_id" jdbcType="BIGINT" property="addressId" />
+    <result column="bank_id" jdbcType="BIGINT" property="bankId" />
+    <result column="sign" jdbcType="VARCHAR" property="sign" />
+    <result column="money" jdbcType="BIGINT" property="money" />
+    <result column="del_flag" jdbcType="INTEGER" property="delFlag" />
+    <result column="is_disable" jdbcType="INTEGER" property="isDisable" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="last_login_time" jdbcType="TIMESTAMP" property="lastLoginTime" />
+    <result column="login_time" jdbcType="TIMESTAMP" property="loginTime" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="last_login_ip" jdbcType="VARCHAR" property="lastLoginIp" />
+    <result column="login_ip" jdbcType="VARCHAR" property="loginIp" />
+    <result column="wechat" jdbcType="VARCHAR" property="wechat" />
+    <result column="user_type" jdbcType="TINYINT" property="userType" />
+    <result column="agency_id" jdbcType="BIGINT" property="agencyId" />
+    <result column="login_times" jdbcType="INTEGER" property="loginTimes" />
+    <result column="gender" jdbcType="INTEGER" property="gender" />
+    <result column="birthday" jdbcType="DATE" property="birthday" />
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="upd_pwd_time" jdbcType="TIMESTAMP" property="updPwdTime" />
+    <result column="register_ip" jdbcType="VARCHAR" property="registerIp" />
+    <result column="disable_remark" jdbcType="VARCHAR" property="disableRemark" />
+    <result column="create_by" jdbcType="VARCHAR" property="createBy" />
+    <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
+    <result column="invite_code" jdbcType="VARCHAR" property="inviteCode" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    id, user_name, nike_name, head_image, vip_id, address_id, bank_id, sign, money,
+    del_flag, is_disable, `password`, last_login_time, login_time, create_time, update_time,
+    last_login_ip, login_ip, wechat, user_type, agency_id, login_times, gender, birthday,
+    phone, upd_pwd_time, register_ip, disable_remark,create_by,update_by,del_flag,invite_code
+  </sql>
+  <select id="loadUser" parameterType="java.lang.String" resultMap="BaseResultMap">
+    <!--@mbg.generated-->
+    select
+    <include refid="Base_Column_List" />
+    from tb_user
+    <where>
+      <if test="Id != null and Id != '' != null">
+        id = #{Id,jdbcType=VARCHAR}
+      </if>
+      <if test="phone != null and phone != ''">
+        phone = #{phone,jdbcType=VARCHAR}
+      </if>
+      <if test="nikename != null and nikename != ''">
+        nikename like '%${nikename}%'
+      </if>
+      <if test="inviteCode != null and inviteCode != ''">
+        invite_code = #{inviteCode,jdbcType=VARCHAR}
+      </if>
+    </where>
+
+  </select>
+
+
+  <insert id="insertSelective" parameterType="org.jeecg.modules.user.model.UserModel">
+    <!--@mbg.generated-->
+    insert into tb_user
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="Id != null">
+        id,
+      </if>
+      <if test="userName != null">
+        user_name,
+      </if>
+      <if test="nikeName != null">
+        nike_name,
+      </if>
+      <if test="headImage != null">
+        head_image,
+      </if>
+      <if test="vipId != null">
+        vip_id,
+      </if>
+      <if test="addressId != null">
+        address_id,
+      </if>
+      <if test="bankId != null">
+        bank_id,
+      </if>
+      <if test="sign != null">
+        sign,
+      </if>
+      <if test="money != null">
+        money,
+      </if>
+      <if test="delFlag != null">
+        del_flag,
+      </if>
+      <if test="isDisable != null">
+        is_disable,
+      </if>
+      <if test="password != null">
+        `password`,
+      </if>
+      <if test="lastLoginTime != null">
+        last_login_time,
+      </if>
+      <if test="loginTime != null">
+        login_time,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="lastLoginIp != null">
+        last_login_ip,
+      </if>
+      <if test="loginIp != null">
+        login_ip,
+      </if>
+      <if test="wechat != null">
+        wechat,
+      </if>
+      <if test="userType != null">
+        user_type,
+      </if>
+      <if test="agencyId != null">
+        agency_id,
+      </if>
+      <if test="loginTimes != null">
+        login_times,
+      </if>
+      <if test="gender != null">
+        gender,
+      </if>
+      <if test="birthday != null">
+        birthday,
+      </if>
+      <if test="phone != null">
+        phone,
+      </if>
+      <if test="updPwdTime != null">
+        upd_pwd_time,
+      </if>
+      <if test="registerIp != null">
+        register_ip,
+      </if>
+      <if test="disableRemark != null">
+        disable_remark,
+      </if>
+      <if test="createBy != null and createBy != ''">
+        create_by,
+      </if>
+      <if test="updateBy != null and updateBy != ''">
+        update_by,
+      </if>
+      <if test="inviteCode != null and inviteCode != ''">
+        invite_code,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="Id != null">
+        #{Id,jdbcType=BIGINT},
+      </if>
+      <if test="userName != null">
+        #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="nikeName != null">
+        #{nikeName,jdbcType=VARCHAR},
+      </if>
+      <if test="headImage != null">
+        #{headImage,jdbcType=VARCHAR},
+      </if>
+      <if test="vipId != null">
+        #{vipId,jdbcType=BIGINT},
+      </if>
+      <if test="addressId != null">
+        #{addressId,jdbcType=BIGINT},
+      </if>
+      <if test="bankId != null">
+        #{bankId,jdbcType=BIGINT},
+      </if>
+      <if test="sign != null">
+        #{sign,jdbcType=VARCHAR},
+      </if>
+      <if test="money != null">
+        #{money,jdbcType=BIGINT},
+      </if>
+      <if test="delFlag != null">
+        #{delFlag,jdbcType=INTEGER},
+      </if>
+      <if test="isDisable != null">
+        #{isDisable,jdbcType=INTEGER},
+      </if>
+      <if test="password != null">
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="lastLoginTime != null">
+        #{lastLoginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="loginTime != null">
+        #{loginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastLoginIp != null">
+        #{lastLoginIp,jdbcType=VARCHAR},
+      </if>
+      <if test="loginIp != null">
+        #{loginIp,jdbcType=VARCHAR},
+      </if>
+      <if test="wechat != null">
+        #{wechat,jdbcType=VARCHAR},
+      </if>
+      <if test="userType != null">
+        #{userType,jdbcType=TINYINT},
+      </if>
+      <if test="agencyId != null">
+        #{agencyId,jdbcType=BIGINT},
+      </if>
+      <if test="loginTimes != null">
+        #{loginTimes,jdbcType=INTEGER},
+      </if>
+      <if test="gender != null">
+        #{gender,jdbcType=INTEGER},
+      </if>
+      <if test="birthday != null">
+        #{birthday,jdbcType=DATE},
+      </if>
+      <if test="phone != null">
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="updPwdTime != null">
+        #{updPwdTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="registerIp != null">
+        #{registerIp,jdbcType=VARCHAR},
+      </if>
+      <if test="disableRemark != null">
+        #{disableRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="createBy != null and createBy != ''">
+        #{updateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateBy != null and updateBy != ''">
+        #{updateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="inviteCode != null and inviteCode != ''">
+        #{inviteCode,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="org.jeecg.modules.user.model.UserModel">
+    <!--@mbg.generated-->
+    update tb_user
+    <set>
+      <if test="userName != null">
+        user_name = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="nikeName != null">
+        nike_name = #{nikeName,jdbcType=VARCHAR},
+      </if>
+      <if test="headImage != null">
+        head_image = #{headImage,jdbcType=VARCHAR},
+      </if>
+      <if test="vipId != null">
+        vip_id = #{vipId,jdbcType=BIGINT},
+      </if>
+      <if test="addressId != null">
+        address_id = #{addressId,jdbcType=BIGINT},
+      </if>
+      <if test="bankId != null">
+        bank_id = #{bankId,jdbcType=BIGINT},
+      </if>
+      <if test="sign != null">
+        sign = #{sign,jdbcType=VARCHAR},
+      </if>
+      <if test="money != null">
+        money = #{money,jdbcType=BIGINT},
+      </if>
+      <if test="delFlag != null">
+        del_flag = #{delFlag,jdbcType=INTEGER},
+      </if>
+      <if test="isDisable != null">
+        is_disable = #{isDisable,jdbcType=INTEGER},
+      </if>
+      <if test="password != null">
+        `password` = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="lastLoginTime != null">
+        last_login_time = #{lastLoginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="loginTime != null">
+        login_time = #{loginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastLoginIp != null">
+        last_login_ip = #{lastLoginIp,jdbcType=VARCHAR},
+      </if>
+      <if test="loginIp != null">
+        login_ip = #{loginIp,jdbcType=VARCHAR},
+      </if>
+      <if test="wechat != null">
+        wechat = #{wechat,jdbcType=VARCHAR},
+      </if>
+      <if test="userType != null">
+        user_type = #{userType,jdbcType=TINYINT},
+      </if>
+      <if test="agencyId != null">
+        agency_id = #{agencyId,jdbcType=BIGINT},
+      </if>
+      <if test="loginTimes != null">
+        login_times = #{loginTimes,jdbcType=INTEGER},
+      </if>
+      <if test="gender != null">
+        gender = #{gender,jdbcType=INTEGER},
+      </if>
+      <if test="birthday != null">
+        birthday = #{birthday,jdbcType=DATE},
+      </if>
+      <if test="phone != null">
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="updPwdTime != null">
+        upd_pwd_time = #{updPwdTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="registerIp != null">
+        register_ip = #{registerIp,jdbcType=VARCHAR},
+      </if>
+      <if test="disableRemark != null">
+        disable_remark = #{disableRemark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{Id,jdbcType=BIGINT}
+  </update>
+
+</mapper>
