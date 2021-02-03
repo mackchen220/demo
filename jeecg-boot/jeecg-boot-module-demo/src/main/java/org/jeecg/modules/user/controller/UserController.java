@@ -12,12 +12,16 @@ import org.jeecg.common.util.MD5Util;
 import org.jeecg.common.util.PasswordUtil;
 import org.jeecg.common.util.RedisUtil;
 import org.jeecg.modules.commons.util.ValidateTool;
+import org.jeecg.modules.user.model.UserBankModel;
 import org.jeecg.modules.user.model.UserModel;
+import org.jeecg.modules.user.model.vo.UserBankVo;
+import org.jeecg.modules.user.service.UserBankModelService;
 import org.jeecg.modules.user.service.UserModelService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -30,7 +34,8 @@ public class UserController {
     private UserModelService userModelService;
     @Resource
     private RedisUtil redisUtil;
-
+    @Resource
+    private UserBankModelService userBankModelService;
 
     @ApiOperation("测试接口")
     @RequestMapping(value = "/test", method = RequestMethod.GET)
@@ -44,7 +49,7 @@ public class UserController {
 
     @ApiOperation("前台用户登录接口")
     @RequestMapping(value = "/userLogin", method = RequestMethod.POST)
-    public Result<JSONObject> login(String inviteCode,  String captcha, String phone,String s) {
+    public Result<JSONObject> login(String inviteCode, String captcha, String phone, String s) {
         Result<JSONObject> result = new Result<JSONObject>();
         if (captcha == null) {
             result.error500("请输入验证码");
@@ -63,4 +68,28 @@ public class UserController {
         result.setResult(object);
         return result;
     }
+
+
+    @ApiOperation("添加银行卡接口")
+    @RequestMapping(value = "/addUserBank", method = RequestMethod.POST)
+    public Result<JSONObject> loadIndexlist(UserBankModel userBankModel, String phone, String captchaCode, String token) {
+
+        Result result = userBankModelService.insertUserBank(userBankModel, captchaCode, phone, token);
+
+
+        return result;
+    }
+
+
+    @ApiOperation("用户银行卡列表接口")
+    @RequestMapping(value = "/loadUserCardList", method = RequestMethod.POST)
+    public Result<Object> loadUserCardList( String token) {
+        Result<Object> result = new Result<>();
+        String id = userModelService.getUserIdByToken(token);
+        List<UserBankVo> userBankModels = userBankModelService.loadUserCard(id);
+        result.setResult(userBankModels);
+        return result;
+    }
+
+
 }

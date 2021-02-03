@@ -10,7 +10,7 @@ public interface UserBankModelMapper {
 
     int insertSelective(UserBankModel record);
 
-    UserBankModel loadBankInfoByUserId(String id);
+    UserBankModel loadBankInfoByUserId(String cardNumber);
 
     int updateByPrimaryKeySelective(UserBankModel record);
 

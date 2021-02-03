@@ -14,5 +14,7 @@ public interface UserModelService {
 
     UserModel getUserModelByToken(String token);
 
+    String getUserIdByToken(String token);
+
 
 }

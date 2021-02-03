@@ -46,7 +46,21 @@ public class UserModelServiceImpl implements UserModelService {
 
     @Override
     public UserModel getUserModelByToken(String token) {
-        return null;
+        String userId = (String)redisUtil.get(RedisKey.USER_LOGIN_TOKEN + RedisKey.KEY_SPLIT + token);
+        UserModel userModel = userModelMapper.loadUser(userId, null, null, null);
+        if (!ValidateTool.checkIsNull(userModel)){
+            throw new JeecgBootException("登录信息过期，请重新登录");
+        }
+        return userModel;
+    }
+
+    @Override
+    public String getUserIdByToken(String token) {
+        String userId = (String)redisUtil.get(RedisKey.USER_LOGIN_TOKEN + RedisKey.KEY_SPLIT + token);
+        if (!ValidateTool.checkIsNull(userId)){
+            throw new JeecgBootException("登录信息过期，请重新登录");
+        }
+        return userId;
     }
 
     @Transactional(rollbackFor = Exception.class)

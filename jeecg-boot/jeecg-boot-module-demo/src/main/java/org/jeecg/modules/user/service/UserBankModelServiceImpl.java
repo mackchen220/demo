@@ -3,12 +3,18 @@ package org.jeecg.modules.user.service;
 import org.jeecg.common.api.vo.Result;
 import org.jeecg.common.util.MD5Util;
 import org.jeecg.common.util.RedisUtil;
+import org.jeecg.modules.commons.util.SeqUtils;
 import org.jeecg.modules.commons.util.ValidateTool;
+import org.jeecg.modules.index.model.TurnImageModel;
+import org.jeecg.modules.index.model.vo.TurnImageModelVo;
+import org.jeecg.modules.user.model.vo.UserBankVo;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import org.jeecg.modules.user.model.UserBankModel;
 import org.jeecg.modules.user.mapper.UserBankModelMapper;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -20,8 +26,12 @@ public class UserBankModelServiceImpl implements UserBankModelService{
     @Resource
     private RedisUtil redisUtil;
 
+    @Resource
+    private UserModelService userModelService;
+
+
     @Override
-    public Result insertUserBank(UserBankModel userBankModel,String captchaCode,String phone) {
+    public Result insertUserBank(UserBankModel userBankModel,String captchaCode,String phone,String token) {
         Result<String> result = new Result<>();
         if (!ValidateTool.checkIsNull(userBankModel) || !ValidateTool.checkIsNull(userBankModel.getRealName())){
                 result.error500("请输入姓名");
@@ -55,8 +65,13 @@ public class UserBankModelServiceImpl implements UserBankModelService{
             result.error500("验证码错误");
             return result;
         }
-        //todo
-        userBankModelMapper.loadBankInfoByUserId("testt");
+        String userId = userModelService.getUserIdByToken(token);
+        UserBankModel userBank = userBankModelMapper.loadBankInfoByUserId(userBankModel.getCardNumber());
+        if (ValidateTool.checkIsNull(userBank)){
+            result.error500("卡号已绑定");
+        }
+        userBankModel.setId(SeqUtils.nextIdStr());
+        userBankModel.setUserId(userId);
         userBankModelMapper.insertSelective(userBankModel);
         return result;
     }
@@ -73,8 +88,16 @@ public class UserBankModelServiceImpl implements UserBankModelService{
 
 
     @Override
-    public List<UserBankModel> loadUserCard(String userId) {
+    public List<UserBankVo> loadUserCard(String userId) {
         List<UserBankModel> userBankModels = userBankModelMapper.loadUserCard(userId);
-        return userBankModels;
+        //不返回多余字段
+        ArrayList<UserBankVo> list = new ArrayList<>();
+        for (UserBankModel model : userBankModels) {
+            UserBankVo modelVo = new UserBankVo();
+            BeanUtils.copyProperties(model, modelVo);
+            list.add(modelVo);
+        }
+
+        return list;
     }
 }
