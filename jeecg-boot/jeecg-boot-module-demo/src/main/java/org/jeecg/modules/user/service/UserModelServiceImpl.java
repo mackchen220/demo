@@ -8,6 +8,7 @@ import org.jeecg.common.system.util.JwtUtil;
 import org.jeecg.common.util.RedisUtil;
 
 import org.jeecg.common.util.encryption.AesEncryptUtil;
+import org.jeecg.modules.commons.RedisKey;
 import org.jeecg.modules.commons.util.RandomUtil;
 import org.jeecg.modules.commons.util.SeqUtils;
 import org.jeecg.modules.commons.util.ValidateTool;
@@ -87,16 +88,18 @@ public class UserModelServiceImpl implements UserModelService{
         String token;
         String encrypt;
         try {
-            encrypt = AesEncryptUtil.desEncrypt(userModel.getId());
+            encrypt = AesEncryptUtil.encrypt(userModel.getId());
         } catch (Exception e) {
             log.error("登录加密token错误", e, e.getMessage());
             throw new JeecgBootException("网络异常，请稍后重试");
         }
-        long timeMillis = System.currentTimeMillis();
-        token=encrypt+"."+String.valueOf(timeMillis);
+        String timeMillis = String.valueOf(System.currentTimeMillis());
+        token=encrypt+","+timeMillis;
         // 设置token缓存有效时间
-        redisUtil.set(CommonConstant.PREFIX_USER_TOKEN + token, token);
-        redisUtil.expire(CommonConstant.PREFIX_USER_TOKEN + token, JwtUtil.EXPIRE_TIME*2 / 1000);
+        redisUtil.set(RedisKey.USER_LOGIN_TOKEN+RedisKey.KEY_SPLIT+encrypt,timeMillis);
+        redisUtil.expire(RedisKey.USER_LOGIN_TOKEN+RedisKey.KEY_SPLIT+encrypt, JwtUtil.EXPIRE_TIME*2 / 1000);
+        //
+//        redisUtil.hset(RedisKey.USER_LOGIN_TOKEN +RedisKey.KEY_SPLIT+token, userModel.getId(), JSONObject.toJSONString(userModel));
         object.put("token",token);
         object.put("headImage",userModel.getHeadImage());
         object.put("nickname",userModel.getNikeName());
