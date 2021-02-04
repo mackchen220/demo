@@ -1,6 +1,5 @@
 package org.jeecg.common.exception;
 
-import io.lettuce.core.RedisConnectionException;
 import org.apache.shiro.authz.AuthorizationException;
 import org.apache.shiro.authz.UnauthorizedException;
 import org.jeecg.common.api.vo.Result;
@@ -30,8 +29,11 @@ public class JeecgBootExceptionHandler {
 	 */
 	@ExceptionHandler(JeecgBootException.class)
 	public Result<?> handleRRException(JeecgBootException e){
-		log.error(e.getMessage(), e);
-		return Result.error(e.getMessage());
+		log.error("业务异常 code={} message{}", e.getCode(), e.getMessage());
+		if (e.getCode() == 0) {
+			return Result.error(e.getMessage());
+		}
+		return Result.error(e.getCode(), e.getMessage());
 	}
 
 	@ExceptionHandler(NoHandlerFoundException.class)
