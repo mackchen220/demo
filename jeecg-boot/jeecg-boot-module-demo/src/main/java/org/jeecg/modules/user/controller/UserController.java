@@ -74,7 +74,10 @@ public class UserController {
     @RequestMapping(value = "/addUserBank", method = RequestMethod.POST)
     public Result<JSONObject> loadIndexlist(UserBankModel userBankModel, String phone, String captchaCode, String token) {
 
-        Result result = userBankModelService.insertUserBank(userBankModel, captchaCode, phone, token);
+        String id = userModelService.getUserIdByToken(token);
+
+
+        Result result = userBankModelService.insertUserBank(userBankModel, captchaCode, phone, id);
 
 
         return result;

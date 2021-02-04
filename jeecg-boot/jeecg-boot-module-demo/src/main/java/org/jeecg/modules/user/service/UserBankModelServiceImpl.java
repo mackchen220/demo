@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import org.jeecg.modules.user.model.UserBankModel;
 import org.jeecg.modules.user.mapper.UserBankModelMapper;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,8 +31,9 @@ public class UserBankModelServiceImpl implements UserBankModelService{
     private UserModelService userModelService;
 
 
+    @Transactional
     @Override
-    public Result insertUserBank(UserBankModel userBankModel,String captchaCode,String phone,String token) {
+    public Result insertUserBank(UserBankModel userBankModel,String captchaCode,String phone,String userId) {
         Result<String> result = new Result<>();
         if (!ValidateTool.checkIsNull(userBankModel) || !ValidateTool.checkIsNull(userBankModel.getRealName())){
                 result.error500("请输入姓名");
@@ -65,7 +67,6 @@ public class UserBankModelServiceImpl implements UserBankModelService{
             result.error500("验证码错误");
             return result;
         }
-        String userId = userModelService.getUserIdByToken(token);
         UserBankModel userBank = userBankModelMapper.loadBankInfoByUserId(userBankModel.getCardNumber());
         if (ValidateTool.checkIsNull(userBank)){
             result.error500("卡号已绑定");

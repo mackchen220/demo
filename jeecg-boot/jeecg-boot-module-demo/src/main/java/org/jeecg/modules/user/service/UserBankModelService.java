@@ -10,7 +10,7 @@ public interface UserBankModelService{
 
 
 
-    Result insertUserBank(UserBankModel record,String captchaCode,String phone,String token);
+    Result insertUserBank(UserBankModel record,String captchaCode,String phone,String userId);
 
     UserBankModel selectByPrimaryKey(String id);
 
