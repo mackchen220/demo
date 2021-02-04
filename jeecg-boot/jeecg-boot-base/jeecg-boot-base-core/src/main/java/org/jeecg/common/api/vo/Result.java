@@ -2,9 +2,11 @@ package org.jeecg.common.api.vo;
 
 import java.io.Serializable;
 
+import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.extern.log4j.Log4j2;
 import org.jeecg.common.constant.CommonConstant;
 import lombok.Data;
 
@@ -14,6 +16,7 @@ import lombok.Data;
  * @email jeecgos@163.com
  * @date  2019年1月19日
  */
+@Log4j2
 @Data
 @ApiModel(value="接口返回对象", description="接口返回对象")
 public class Result<T> implements Serializable {
@@ -37,13 +40,13 @@ public class Result<T> implements Serializable {
 	 */
 	@ApiModelProperty(value = "返回代码")
 	private Integer code = 0;
-	
+
 	/**
 	 * 返回数据对象 data
 	 */
 	@ApiModelProperty(value = "返回数据对象")
 	private T result;
-	
+
 	/**
 	 * 时间戳
 	 */
@@ -51,13 +54,14 @@ public class Result<T> implements Serializable {
 	private long timestamp = System.currentTimeMillis();
 
 	public Result() {
-		
+
 	}
-	
+
 	public Result<T> success(String message) {
 		this.message = message;
 		this.code = CommonConstant.SC_OK_200;
 		this.success = true;
+		log.info("请求返回{}", JSONObject.toJSONString(result));
 		return this;
 	}
 
@@ -67,6 +71,8 @@ public class Result<T> implements Serializable {
 		r.setSuccess(true);
 		r.setCode(CommonConstant.SC_OK_200);
 		r.setMessage("成功");
+		log.info("请求返回{}", JSONObject.toJSONString(r));
+
 		return r;
 	}
 
@@ -76,6 +82,7 @@ public class Result<T> implements Serializable {
 		r.setSuccess(true);
 		r.setCode(CommonConstant.SC_OK_200);
 		r.setMessage(msg);
+		log.info("请求返回{}", JSONObject.toJSONString(r));
 		return r;
 	}
 
@@ -85,6 +92,7 @@ public class Result<T> implements Serializable {
 		r.setSuccess(true);
 		r.setCode(CommonConstant.SC_OK_200);
 		r.setResult(data);
+		log.info("请求返回{}", JSONObject.toJSONString(r));
 		return r;
 	}
 
@@ -93,6 +101,7 @@ public class Result<T> implements Serializable {
 		r.setSuccess(true);
 		r.setCode(CommonConstant.SC_OK_200);
 		r.setMessage("成功");
+		log.info("请求返回{}", JSONObject.toJSONString(r));
 		return r;
 	}
 
@@ -101,6 +110,7 @@ public class Result<T> implements Serializable {
 		r.setSuccess(true);
 		r.setCode(CommonConstant.SC_OK_200);
 		r.setResult(data);
+		log.info("请求返回{}", JSONObject.toJSONString(r));
 		return r;
 	}
 
@@ -110,18 +120,20 @@ public class Result<T> implements Serializable {
 		r.setCode(CommonConstant.SC_OK_200);
 		r.setMessage(msg);
 		r.setResult(data);
+		log.info("请求返回{}", JSONObject.toJSONString(r));
 		return r;
 	}
-	
+
 	public static Result<Object> error(String msg) {
 		return error(CommonConstant.SC_INTERNAL_SERVER_ERROR_500, msg);
 	}
-	
+
 	public static Result<Object> error(int code, String msg) {
 		Result<Object> r = new Result<Object>();
 		r.setCode(code);
 		r.setMessage(msg);
 		r.setSuccess(false);
+		log.info("请求返回{}", JSONObject.toJSONString(r));
 		return r;
 	}
 
