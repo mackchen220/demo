@@ -166,3 +166,48 @@ CREATE TABLE `tb_user_focus`  (
   PRIMARY KEY (`id`) USING BTREE
 	) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '关注表';
 
+
+
+
+DROP TABLE IF EXISTS `tb_course`;
+CREATE TABLE `tb_course`  (
+  `id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `title` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `url` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '课程地址',
+	 `image` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '封面图片',
+	   `price` bigint(32)   DEFAULT 0 COMMENT '价格',
+	 `type` tinyint(1) NOT NULL DEFAULT '2' COMMENT '类型1 -收费,2 免费， 3限时免费',
+  `watch_num` bigint(32)   DEFAULT 0 COMMENT '观看数量',
+	  `goodNum` bigint(32)   DEFAULT 0 COMMENT '点赞数量',
+		`state` tinyint(1) NOT NULL DEFAULT '0' COMMENT '标识0-完结,1-正在更新',
+		  `sort` bigint(32)  NULL DEFAULT NULL COMMENT '排序字段',
+	`create_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '创建时间',
+  `update_time` timestamp(0) NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '更新日期',
+	`create_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
+  `update_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
+	 `del_flag` tinyint(1) NOT NULL DEFAULT '0' COMMENT '删除标识0-正常,1-已删除',
+  PRIMARY KEY (`id`) USING BTREE
+	) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '课程表';
+
+
+
+
+	DROP TABLE IF EXISTS `tb_user_course`;
+CREATE TABLE `tb_user_course`  (
+  `id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `user_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `course_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '课程id',
+		`begin_time` timestamp(0) NOT NULL  COMMENT '开始时间',
+	`end_time` timestamp(0) NOT NULL  COMMENT '结束时间',
+		`price` bigint(32)   DEFAULT 0 COMMENT 'f价格',
+	`create_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '创建时间',
+  `update_time` timestamp(0) NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '更新日期',
+	`create_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
+  `update_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
+	 `del_flag` tinyint(1) NOT NULL DEFAULT '0' COMMENT '删除标识0-正常,1-已删除',
+  PRIMARY KEY (`id`) USING BTREE
+	) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户课程表';
+
+
+
+

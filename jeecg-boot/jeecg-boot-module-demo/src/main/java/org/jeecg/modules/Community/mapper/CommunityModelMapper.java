@@ -2,6 +2,7 @@ package org.jeecg.modules.Community.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import org.apache.ibatis.annotations.Param;
 import org.jeecg.modules.Community.model.CommunityModel;
 import org.jeecg.modules.base.mapper.BaseCommonMapper;
 
@@ -20,5 +21,5 @@ public interface CommunityModelMapper{
 
     int updateByPrimaryKey(CommunityModel record);
 
-    List<CommunityModel> loadCommunityListBype(Page<CommunityModel> page, int type);
+    List<CommunityModel> loadCommunityListByType(Page<CommunityModel> page,@Param("type") int type);
 }

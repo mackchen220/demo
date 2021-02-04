@@ -1,9 +1,12 @@
 package org.jeecg.modules.index.service;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.extern.log4j.Log4j2;
 import org.jeecg.common.api.vo.Result;
 import org.jeecg.common.util.DateUtils;
+import org.jeecg.modules.index.mapper.CourseModelMapper;
 import org.jeecg.modules.index.mapper.TurnImageModelMapper;
+import org.jeecg.modules.index.model.CourseModel;
 import org.jeecg.modules.index.model.TurnImageModel;
 import org.jeecg.modules.index.model.vo.TurnImageModelVo;
 import org.springframework.beans.BeanUtils;
@@ -19,6 +22,8 @@ public class IndexServiceImpl implements IndexService{
 
     @Resource
     private TurnImageModelMapper turnImageModelMapper;
+    @Resource
+    private CourseModelMapper courseModelMapper;
 
     @Override
     public Result loadIndexlist() {
@@ -34,6 +39,9 @@ public class IndexServiceImpl implements IndexService{
             list.add(modelVo);
         }
         log.info("copy后的{}",list);
+        //加载首页推荐课程
+        List<CourseModel> courseModels = courseModelMapper.loadIndexCourseModelList();
+
         return null;
     }
 }

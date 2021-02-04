@@ -62,7 +62,7 @@ public class CommunityModelServiceImpl implements CommunityModelService{
 
     @Override
     public Page<CommunityModel> loadCommunityListByType(Page<CommunityModel> page,int type) {
-        return page.setRecords(communityModelMapper.loadCommunityListBype(page,type));
+        return page.setRecords(communityModelMapper.loadCommunityListByType(page,type));
     }
 
     @Override
