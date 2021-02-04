@@ -35,13 +35,14 @@
     <result column="create_by" jdbcType="VARCHAR" property="createBy" />
     <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
     <result column="invite_code" jdbcType="VARCHAR" property="inviteCode" />
+    <result column="is_talent" jdbcType="TINYINT" property="isTalent" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--@mbg.generated-->
     id, user_name, nike_name, head_image, vip_id, address_id, bank_id, sign, money,
     del_flag, is_disable, `password`, last_login_time, login_time, create_time, update_time,
     last_login_ip, login_ip, wechat, user_type, agency_id, login_times, gender, birthday,
-    phone, upd_pwd_time, register_ip, disable_remark,create_by,update_by,del_flag,invite_code
+    phone, upd_pwd_time, register_ip, disable_remark,create_by,update_by,del_flag,invite_code,is_talent
   </sql>
   <select id="loadUser" parameterType="java.lang.String" resultMap="BaseResultMap">
     <!--@mbg.generated-->

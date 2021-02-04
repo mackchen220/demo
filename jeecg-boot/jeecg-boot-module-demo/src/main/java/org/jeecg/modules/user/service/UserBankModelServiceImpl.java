@@ -56,7 +56,7 @@ public class UserBankModelServiceImpl implements UserBankModelService{
             return result;
         }
         //todo
-        userBankModelMapper.loadBankInfoByUserId("");
+        userBankModelMapper.loadBankInfoByUserId("testt");
         userBankModelMapper.insertSelective(userBankModel);
         return result;
     }

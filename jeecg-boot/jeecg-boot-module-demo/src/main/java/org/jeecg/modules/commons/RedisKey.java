@@ -1,6 +1,6 @@
 package org.jeecg.modules.commons;
 
-public class redisKey {
+public class RedisKey {
 
 
     //分割
@@ -9,7 +9,7 @@ public class redisKey {
     public final static String USER_LOGIN_CODE_KEY = "login_code";
 
 
-
+    public final static String USER_LOGIN_TOKEN = "login_token";
 
 
 }
