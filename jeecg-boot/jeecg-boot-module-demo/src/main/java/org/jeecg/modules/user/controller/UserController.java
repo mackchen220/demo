@@ -16,6 +16,7 @@ import org.jeecg.modules.user.model.UserBankModel;
 import org.jeecg.modules.user.model.UserModel;
 import org.jeecg.modules.user.model.vo.UserBankVo;
 import org.jeecg.modules.user.service.UserBankModelService;
+import org.jeecg.modules.user.service.UserFocusModelService;
 import org.jeecg.modules.user.service.UserModelService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
@@ -36,6 +37,8 @@ public class UserController {
     private RedisUtil redisUtil;
     @Resource
     private UserBankModelService userBankModelService;
+    @Resource
+    private UserFocusModelService userFocusModelService;
 
     @ApiOperation("测试接口")
     @RequestMapping(value = "/test", method = RequestMethod.GET)
@@ -93,6 +96,31 @@ public class UserController {
         result.setResult(userBankModels);
         return result;
     }
+
+
+    @ApiOperation("用户关注接口")
+    @RequestMapping(value = "/addUserFocus", method = RequestMethod.POST)
+    public Result addUserFocus( String token,String userId) {
+        String id = userModelService.getUserIdByToken(token);
+        Result result = userFocusModelService.addUserFocus(id, userId);
+        return result;
+    }
+
+
+    @ApiOperation("用户取消关注接口")
+    @RequestMapping(value = "/delUserFocus", method = RequestMethod.POST)
+    public Result delUserFocus( String token,String userId) {
+        String id = userModelService.getUserIdByToken(token);
+        Result result = userFocusModelService.delUserFocus(id, userId);
+        return result;
+    }
+
+
+
+
+
+
+
 
 
 }
