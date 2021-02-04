@@ -1,18 +1,13 @@
 package org.jeecg.modules.user.service;
 
-import cn.hutool.crypto.digest.MD5;
 import com.alibaba.fastjson.JSONObject;
 import lombok.extern.log4j.Log4j2;
-import org.jeecg.common.constant.CommonConstant;
 import org.jeecg.common.exception.JeecgBootException;
 import org.jeecg.common.system.util.JwtUtil;
 import org.jeecg.common.util.MD5Util;
 import org.jeecg.common.util.RedisUtil;
-
-import org.jeecg.common.util.encryption.AesEncryptUtil;
 import org.jeecg.modules.commons.RedisKey;
 import org.jeecg.modules.commons.util.RandomUtil;
-import org.jeecg.modules.commons.util.Security;
 import org.jeecg.modules.commons.util.SeqUtils;
 import org.jeecg.modules.commons.util.ValidateTool;
 import org.jeecg.modules.user.mapper.UserAgencyModelMapper;
@@ -39,8 +34,7 @@ public class UserModelServiceImpl implements UserModelService {
 
     @Override
     public UserModel getUserById(String id) {
-
-        UserModel userModel = userModelMapper.loadUser("12", null, null, null);
+        UserModel userModel = userModelMapper.loadUser(id, null, null, null);
         return userModel;
     }
 

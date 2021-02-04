@@ -9,6 +9,7 @@ import org.jeecg.common.util.RedisUtil;
 import org.jeecg.modules.Community.model.CommunityModel;
 import org.jeecg.modules.Community.service.CommunityModelService;
 import org.jeecg.modules.commons.util.ValidateTool;
+import org.jeecg.modules.user.model.UserModel;
 import org.jeecg.modules.user.service.UserModelService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.util.Map;
 
 @Slf4j
 @RestController
@@ -30,13 +32,13 @@ public class CommunityController {
     private UserModelService userModelService;
 
     @ApiOperation("社区朋友圈列表")
-    @RequestMapping(value = "/loadCommunityListBype", method = RequestMethod.POST)
-    public Result<Page<CommunityModel>> loadCommunityListBype(int type,int pageNo,int pageSize,String token) {
+    @RequestMapping(value = "/loadCommunityListByType", method = RequestMethod.POST)
+    public Result<Page<CommunityModel>> loadCommunityListByType(int type,int pageNo,int pageSize,String token) {
 
         Result<Page<CommunityModel>> result = new Result<Page<CommunityModel>>();
         Page<CommunityModel> pageList = new Page<CommunityModel>(pageNo,pageSize);
 
-        pageList = communityModelService.loadCommunityListBype(pageList, type);
+        pageList = communityModelService.loadCommunityListByType(pageList, type);
         result.setResult(pageList);
         log.info("查询当前页："+pageList.getCurrent());
         log.info("查询当前页数量："+pageList.getSize());
@@ -64,6 +66,18 @@ public class CommunityController {
 
         return result;
     }
+
+
+
+    @ApiOperation("朋友圈详情接口")
+    @RequestMapping(value = "/loadMomentsInfo", method = RequestMethod.POST)
+    public Result loadMomentsInfo(String id) {
+        Result result = new Result<>();
+        Map map = communityModelService.loadMomentsInfo(id);
+        result.setResult(map);
+        return result;
+    }
+
 
 
 

@@ -2,8 +2,10 @@ package org.jeecg.modules.Community.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.jeecg.modules.Community.model.CommunityModel;
+import org.jeecg.modules.user.model.UserModel;
 
 import java.util.List;
+import java.util.Map;
 
 public interface CommunityModelService{
 
@@ -20,5 +22,7 @@ public interface CommunityModelService{
 
     int updateByPrimaryKey(CommunityModel record);
 
-    Page<CommunityModel> loadCommunityListBype(Page<CommunityModel> page ,int type);
+    Page<CommunityModel> loadCommunityListByType(Page<CommunityModel> page ,int type);
+
+    Map loadMomentsInfo(String id);
 }
