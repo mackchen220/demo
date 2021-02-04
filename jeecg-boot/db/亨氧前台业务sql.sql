@@ -34,7 +34,7 @@ CREATE TABLE `tb_user` (
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-ALTER TABLE `db_0`.`tb_user`
+ALTER TABLE `tb_user`
 ADD COLUMN `is_talent` tinyint(1) NOT NULL DEFAULT 0 COMMENT '是否达人，0不是 1是' AFTER `invite_code`;
 
 
@@ -66,9 +66,9 @@ CREATE TABLE `tb_user_agency`  (
   `update_by` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
 	  `del_flag` int NOT NULL DEFAULT '0' COMMENT '删除标识0-正常,1-已删除',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户代理表'
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户代理表';
 
-INSERT INTO `db_0`.`tb_user_agency`(`id`, `user_id`, `p_user_id`, `num`, `create_time`, `update_time`, `create_by`, `update_by`, `del_flag`)
+INSERT INTO `tb_user_agency`(`id`, `user_id`, `p_user_id`, `num`, `create_time`, `update_time`, `create_by`, `update_by`, `del_flag`)
 VALUES ('806493672093777921', '806488232119238656', -1, 3, '2021-02-03 11:59:19', '2021-02-03 12:05:49', NULL, NULL, 0);
 
 
@@ -107,7 +107,7 @@ CREATE TABLE `tb_turn_image`  (
   `url` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '图片地址',
   `turn_url` varchar(512) NULL DEFAULT NULL COMMENT '跳转地址',
   `title` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '标题',
-  `sort` bigint(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '排序字段',
+  `sort` bigint(32)  NULL DEFAULT NULL COMMENT '排序字段',
 	`begin_time` timestamp(0) NOT NULL  COMMENT '开始时间',
 	`end_time` timestamp(0) NOT NULL  COMMENT '结束时间',
 	  `is_disable` tinyint(1) NOT NULL DEFAULT 1 COMMENT '是否禁用：0，禁用，1，有效',
@@ -119,13 +119,13 @@ CREATE TABLE `tb_turn_image`  (
   PRIMARY KEY (`id`) USING BTREE
 	) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '首页轮播图配置';
 
-		INSERT INTO `db_0`.`tb_turn_image`(`id`, `url`, `turn_url`, `title`, `sort`, `begin_time`, `end_time`, `is_disable`, `create_time`, `update_time`, `create_by`, `update_by`, `del_flag`)
+		INSERT INTO `tb_turn_image`(`id`, `url`, `turn_url`, `title`, `sort`, `begin_time`, `end_time`, `is_disable`, `create_time`, `update_time`, `create_by`, `update_by`, `del_flag`)
 		VALUES ('244324345424', 'www.baidu.com', 'www.baidu.com', 'dddd', 1, '2021-02-03 13:36:54', '2021-04-15 13:36:57', 1, '2021-02-03 13:37:02', NULL, NULL, NULL, 0);
 
-				INSERT INTO `db_0`.`tb_turn_image`(`id`, `url`, `turn_url`, `title`, `sort`, `begin_time`, `end_time`, `is_disable`, `create_time`, `update_time`, `create_by`, `update_by`, `del_flag`)
+				INSERT INTO `tb_turn_image`(`id`, `url`, `turn_url`, `title`, `sort`, `begin_time`, `end_time`, `is_disable`, `create_time`, `update_time`, `create_by`, `update_by`, `del_flag`)
 		VALUES ('2443245654', 'www.baidu.com', 'www.baidu.com', 'ddddfdfdfd', 2, '2021-02-03 13:36:54', '2021-04-18 13:36:57', 1, '2021-02-03 13:37:02', NULL, NULL, NULL, 0);
 
-				INSERT INTO `db_0`.`tb_turn_image`(`id`, `url`, `turn_url`, `title`, `sort`, `begin_time`, `end_time`, `is_disable`, `create_time`, `update_time`, `create_by`, `update_by`, `del_flag`)
+				INSERT INTO `tb_turn_image`(`id`, `url`, `turn_url`, `title`, `sort`, `begin_time`, `end_time`, `is_disable`, `create_time`, `update_time`, `create_by`, `update_by`, `del_flag`)
 		VALUES ('24432456343454', 'www.baidu.com', 'www.baidu.com', 'ddddfdftttttttdfd', 2, '2021-02-02 13:36:54', '2021-02-01 13:36:57', 1, '2021-02-03 13:37:02', NULL, NULL, NULL, 0);
 
 

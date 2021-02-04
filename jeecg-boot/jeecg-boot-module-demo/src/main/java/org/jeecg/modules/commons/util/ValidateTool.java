@@ -3,11 +3,65 @@ package org.jeecg.modules.commons.util;
 import org.jeecg.common.exception.JeecgBootException;
 
 import java.text.MessageFormat;
+import java.util.Collection;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 
 public class ValidateTool {
+
+    public static boolean isNull(Object obj) {
+        return obj == null;
+    }
+
+    public static boolean nonNull(Object obj) {
+        return obj != null;
+    }
+
+    public static boolean isEmpty(Collection coll) {
+        return coll == null || coll.isEmpty();
+    }
+
+    public static boolean isEmpty(CharSequence cs) {
+        return cs == null || cs.length() == 0;
+    }
+
+    public static boolean isNotEmpty(Collection coll) {
+        return !isEmpty(coll);
+    }
+
+    public static boolean isNotEmpty(CharSequence cs) {
+        return !isEmpty(cs);
+    }
+
+    /**
+     * 是否为空白字符串 字符串仅为空格、回车、换行、制表符、空字符串...时 返回false
+     * @param cs
+     * @return
+     */
+    public static boolean isBlank(CharSequence cs) {
+        int strLen = length(cs);
+        if (strLen == 0) {
+            return true;
+        } else {
+            for(int i = 0; i < strLen; ++i) {
+                if (!Character.isWhitespace(cs.charAt(i))) {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+    }
+
+    public static boolean isNotBlank(CharSequence cs) {
+        return !isBlank(cs);
+    }
+
+    public static int length(CharSequence cs) {
+        return cs == null ? 0 : cs.length();
+    }
+
     /**
      * 验证参数是否为空
      *
