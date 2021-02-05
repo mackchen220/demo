@@ -70,7 +70,7 @@ public class UserModelServiceImpl implements UserModelService {
             userModel.setInviteCode(RandomUtil.nextInviteCode(1, 6));
             userModel.setUserName(phone);
             userModel.setPassword(phone);
-            userModel.setNikeName(phone);
+            userModel.setNickName(phone);
             userModelMapper.insertSelective(userModel);
             //添加上下级关系
             UserAgencyModel userAgencyModel = new UserAgencyModel();
@@ -109,7 +109,7 @@ public class UserModelServiceImpl implements UserModelService {
         redisUtil.expire(RedisKey.USER_LOGIN_TOKEN + RedisKey.KEY_SPLIT + token, JwtUtil.EXPIRE_TIME * 2 / 1000);
         object.put("token", token);
         object.put("headImage", userModel.getHeadImage());
-        object.put("nickname", userModel.getNikeName());
+        object.put("nickname", userModel.getNickName());
         return object;
     }
 

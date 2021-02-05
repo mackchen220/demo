@@ -10,7 +10,7 @@ public interface UserModelMapper {
 
     int insertSelective(UserModel record);
 
-    UserModel loadUser(@Param("Id") String userId,@Param("phone") String phone,@Param("nikename") String nikename,@Param("inviteCode") String invite_code);
+    UserModel loadUser(@Param("Id") String userId,@Param("phone") String phone,@Param("nickName") String nickName,@Param("inviteCode") String invite_code);
 
     int updateByPrimaryKeySelective(UserModel record);
 

@@ -24,6 +24,6 @@ public interface CourseModelMapper {
     List<CourseModel> loadCourseModelList(Page<CourseModel> page, @Param("search")String search);
 
     //首页四个课程推荐
-    List<CourseModel> loadIndexCourseModelList();
+    List<CourseModel> loadIndexCourseModelList(@Param("limit") String limit);
 
 }

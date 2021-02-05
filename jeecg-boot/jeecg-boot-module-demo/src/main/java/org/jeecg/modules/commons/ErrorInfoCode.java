@@ -1,4 +1,4 @@
-package org.jeecg.common.api.vo;
+package org.jeecg.modules.commons;
 
 /**
  * 异常错误号
@@ -27,16 +27,16 @@ public enum ErrorInfoCode {
 	UN_KNOW_ERROR(99999, "网络异常，请稍后重试"),
 
 	;
-	
+
 	private int code;
-	
+
 	private String msg;
-	
+
 	ErrorInfoCode(int code, String msg) {
 		this.code = code;
 		this.msg = msg;
 	}
-	
+
 	public static ErrorInfoCode getErrorByCode(int code) {
 		for(ErrorInfoCode errorInfoCode : ErrorInfoCode.values()){
 			if(errorInfoCode.getCode() == code){

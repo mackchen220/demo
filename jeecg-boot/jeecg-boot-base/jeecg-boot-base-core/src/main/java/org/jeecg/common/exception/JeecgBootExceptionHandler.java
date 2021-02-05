@@ -1,5 +1,6 @@
 package org.jeecg.common.exception;
 
+import io.lettuce.core.RedisConnectionException;
 import org.apache.shiro.authz.AuthorizationException;
 import org.apache.shiro.authz.UnauthorizedException;
 import org.jeecg.common.api.vo.Result;
@@ -16,7 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 
 /**
  * 异常处理器
- * 
+ *
  * @Author scott
  * @Date 2019
  */
@@ -29,11 +30,11 @@ public class JeecgBootExceptionHandler {
 	 */
 	@ExceptionHandler(JeecgBootException.class)
 	public Result<?> handleRRException(JeecgBootException e){
-		log.error("业务异常 code={} message{}", e.getCode(), e.getMessage());
-		if (e.getCode() == 0) {
-			return Result.error(e.getMessage());
+		log.error("业务异常 code={} message{}",e.getCode() ,e.getMsg());
+		if (e.getCode()!=null){
+			return Result.error(e.getCode(),e.getMsg());
 		}
-		return Result.error(e.getCode(), e.getMessage());
+		return Result.error(e.getMessage());
 	}
 
 	@ExceptionHandler(NoHandlerFoundException.class)
@@ -59,7 +60,7 @@ public class JeecgBootExceptionHandler {
 		log.error(e.getMessage(), e);
 		return Result.error("操作失败，"+e.getMessage());
 	}
-	
+
 	/**
 	 * @Author 政辉
 	 * @param e
@@ -83,26 +84,26 @@ public class JeecgBootExceptionHandler {
 		//return Result.error("没有权限，请联系管理员授权");
 		return Result.error(405,sb.toString());
 	}
-	
-	 /** 
-	  * spring默认上传大小100MB 超出大小捕获异常MaxUploadSizeExceededException 
-	  */
-    @ExceptionHandler(MaxUploadSizeExceededException.class)
-    public Result<?> handleMaxUploadSizeExceededException(MaxUploadSizeExceededException e) {
-    	log.error(e.getMessage(), e);
-        return Result.error("文件大小超出10MB限制, 请压缩或降低文件质量! ");
-    }
 
-    @ExceptionHandler(DataIntegrityViolationException.class)
-    public Result<?> handleDataIntegrityViolationException(DataIntegrityViolationException e) {
-    	log.error(e.getMessage(), e);
-        return Result.error("字段太长,超出数据库字段的长度");
-    }
+	/**
+	 * spring默认上传大小100MB 超出大小捕获异常MaxUploadSizeExceededException
+	 */
+	@ExceptionHandler(MaxUploadSizeExceededException.class)
+	public Result<?> handleMaxUploadSizeExceededException(MaxUploadSizeExceededException e) {
+		log.error(e.getMessage(), e);
+		return Result.error("文件大小超出10MB限制, 请压缩或降低文件质量! ");
+	}
 
-    @ExceptionHandler(PoolException.class)
-    public Result<?> handlePoolException(PoolException e) {
-    	log.error(e.getMessage(), e);
-        return Result.error("Redis 连接异常!");
-    }
+	@ExceptionHandler(DataIntegrityViolationException.class)
+	public Result<?> handleDataIntegrityViolationException(DataIntegrityViolationException e) {
+		log.error(e.getMessage(), e);
+		return Result.error("字段太长,超出数据库字段的长度");
+	}
+
+	@ExceptionHandler(PoolException.class)
+	public Result<?> handlePoolException(PoolException e) {
+		log.error(e.getMessage(), e);
+		return Result.error("Redis 连接异常!");
+	}
 
 }

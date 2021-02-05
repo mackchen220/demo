@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.jeecg.modules.user.mapper.TalentInfoModelMapper">
+  <resultMap id="BaseResultMap" type="org.jeecg.modules.user.model.TalentInfoModel">
+    <!--@mbg.generated-->
+    <!--@Table tb_talent_info-->
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="user_id" jdbcType="VARCHAR" property="userId" />
+    <result column="effect" jdbcType="DECIMAL" property="effect" />
+    <result column="attitude" jdbcType="DECIMAL" property="attitude" />
+    <result column="price" jdbcType="DECIMAL" property="price" />
+    <result column="average_score" jdbcType="DECIMAL" property="averageScore" />
+    <result column="deposit" jdbcType="BIGINT" property="deposit" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="id_card" jdbcType="VARCHAR" property="idCard" />
+    <result column="city" jdbcType="VARCHAR" property="city" />
+    <result column="time" jdbcType="VARCHAR" property="time" />
+    <result column="id_status" jdbcType="TINYINT" property="idStatus" />
+    <result column="authenticated" jdbcType="TINYINT" property="authenticated" />
+    <result column="contract_status" jdbcType="TINYINT" property="contractStatus" />
+    <result column="create_time" jdbcType="VARCHAR" property="createTime" />
+    <result column="update_time" jdbcType="VARCHAR" property="updateTime" />
+    <result column="create_by" jdbcType="VARCHAR" property="createBy" />
+    <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
+    <result column="del_flag" jdbcType="TINYINT" property="delFlag" />
+  </resultMap>
+
+
+  <resultMap id="IndexTalentMap" type="org.jeecg.modules.user.model.UserModel">
+    <!--@mbg.generated-->
+    <!--@Table tb_talent_info-->
+    <result column="user_id" jdbcType="VARCHAR" property="id" />
+    <result column="head_image" jdbcType="VARCHAR" property="headImage" />
+    <result column="nick_name" jdbcType="VARCHAR" property="nickName" />
+  </resultMap>
+
+
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    id, user_id, effect, attitude, price, average_score, deposit, `name`, id_card, city,
+    `time`, id_status, authenticated, contract_status, create_time, update_time, create_by,
+    update_by, del_flag
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    <!--@mbg.generated-->
+    select
+    <include refid="Base_Column_List" />
+    from tb_talent_info
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    <!--@mbg.generated-->
+    delete from tb_talent_info
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="org.jeecg.modules.user.model.TalentInfoModel">
+    <!--@mbg.generated-->
+    insert into tb_talent_info (id, user_id, effect,
+      attitude, price, average_score,
+      deposit, `name`, id_card,
+      city, `time`, id_status,
+      authenticated, contract_status, create_time,
+      update_time, create_by, update_by,
+      del_flag)
+    values (#{id,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{effect,jdbcType=DECIMAL},
+      #{attitude,jdbcType=DECIMAL}, #{price,jdbcType=DECIMAL}, #{averageScore,jdbcType=DECIMAL},
+      #{deposit,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{idCard,jdbcType=VARCHAR},
+      #{city,jdbcType=VARCHAR}, #{time,jdbcType=VARCHAR}, #{idStatus,jdbcType=TINYINT},
+      #{authenticated,jdbcType=TINYINT}, #{contractStatus,jdbcType=TINYINT}, #{createTime,jdbcType=VARCHAR},
+      #{updateTime,jdbcType=VARCHAR}, #{createBy,jdbcType=VARCHAR}, #{updateBy,jdbcType=VARCHAR},
+      #{delFlag,jdbcType=TINYINT})
+  </insert>
+  <insert id="insertSelective" parameterType="org.jeecg.modules.user.model.TalentInfoModel">
+    <!--@mbg.generated-->
+    insert into tb_talent_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="effect != null">
+        effect,
+      </if>
+      <if test="attitude != null">
+        attitude,
+      </if>
+      <if test="price != null">
+        price,
+      </if>
+      <if test="averageScore != null">
+        average_score,
+      </if>
+      <if test="deposit != null">
+        deposit,
+      </if>
+      <if test="name != null">
+        `name`,
+      </if>
+      <if test="idCard != null">
+        id_card,
+      </if>
+      <if test="city != null">
+        city,
+      </if>
+      <if test="time != null">
+        `time`,
+      </if>
+      <if test="idStatus != null">
+        id_status,
+      </if>
+      <if test="authenticated != null">
+        authenticated,
+      </if>
+      <if test="contractStatus != null">
+        contract_status,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="createBy != null">
+        create_by,
+      </if>
+      <if test="updateBy != null">
+        update_by,
+      </if>
+      <if test="delFlag != null">
+        del_flag,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="effect != null">
+        #{effect,jdbcType=DECIMAL},
+      </if>
+      <if test="attitude != null">
+        #{attitude,jdbcType=DECIMAL},
+      </if>
+      <if test="price != null">
+        #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="averageScore != null">
+        #{averageScore,jdbcType=DECIMAL},
+      </if>
+      <if test="deposit != null">
+        #{deposit,jdbcType=BIGINT},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="idCard != null">
+        #{idCard,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null">
+        #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="time != null">
+        #{time,jdbcType=VARCHAR},
+      </if>
+      <if test="idStatus != null">
+        #{idStatus,jdbcType=TINYINT},
+      </if>
+      <if test="authenticated != null">
+        #{authenticated,jdbcType=TINYINT},
+      </if>
+      <if test="contractStatus != null">
+        #{contractStatus,jdbcType=TINYINT},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=VARCHAR},
+      </if>
+      <if test="createBy != null">
+        #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateBy != null">
+        #{updateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="delFlag != null">
+        #{delFlag,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="org.jeecg.modules.user.model.TalentInfoModel">
+    <!--@mbg.generated-->
+    update tb_talent_info
+    <set>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="effect != null">
+        effect = #{effect,jdbcType=DECIMAL},
+      </if>
+      <if test="attitude != null">
+        attitude = #{attitude,jdbcType=DECIMAL},
+      </if>
+      <if test="price != null">
+        price = #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="averageScore != null">
+        average_score = #{averageScore,jdbcType=DECIMAL},
+      </if>
+      <if test="deposit != null">
+        deposit = #{deposit,jdbcType=BIGINT},
+      </if>
+      <if test="name != null">
+        `name` = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="idCard != null">
+        id_card = #{idCard,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null">
+        city = #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="time != null">
+        `time` = #{time,jdbcType=VARCHAR},
+      </if>
+      <if test="idStatus != null">
+        id_status = #{idStatus,jdbcType=TINYINT},
+      </if>
+      <if test="authenticated != null">
+        authenticated = #{authenticated,jdbcType=TINYINT},
+      </if>
+      <if test="contractStatus != null">
+        contract_status = #{contractStatus,jdbcType=TINYINT},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=VARCHAR},
+      </if>
+      <if test="createBy != null">
+        create_by = #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateBy != null">
+        update_by = #{updateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="delFlag != null">
+        del_flag = #{delFlag,jdbcType=TINYINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="org.jeecg.modules.user.model.TalentInfoModel">
+    <!--@mbg.generated-->
+    update tb_talent_info
+    set user_id = #{userId,jdbcType=VARCHAR},
+      effect = #{effect,jdbcType=DECIMAL},
+      attitude = #{attitude,jdbcType=DECIMAL},
+      price = #{price,jdbcType=DECIMAL},
+      average_score = #{averageScore,jdbcType=DECIMAL},
+      deposit = #{deposit,jdbcType=BIGINT},
+      `name` = #{name,jdbcType=VARCHAR},
+      id_card = #{idCard,jdbcType=VARCHAR},
+      city = #{city,jdbcType=VARCHAR},
+      `time` = #{time,jdbcType=VARCHAR},
+      id_status = #{idStatus,jdbcType=TINYINT},
+      authenticated = #{authenticated,jdbcType=TINYINT},
+      contract_status = #{contractStatus,jdbcType=TINYINT},
+      create_time = #{createTime,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=VARCHAR},
+      create_by = #{createBy,jdbcType=VARCHAR},
+      update_by = #{updateBy,jdbcType=VARCHAR},
+      del_flag = #{delFlag,jdbcType=TINYINT}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+
+  <select id="loadIndexTalentList" resultMap="IndexTalentMap">
+    SELECT a.user_id,b.head_image,b.nick_name
+    from tb_talent_info as a
+    LEFT JOIN tb_user as b ON a.user_id =b.id
+    ORDER BY a.average_score desc
+    limit ${limit}
+  </select>
+
+</mapper>

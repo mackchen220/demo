@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.util.Map;
 
 @Slf4j
 @RestController
@@ -31,11 +32,11 @@ public class IndexController {
 
     @ApiOperation("刷新首页接口")
     @RequestMapping(value = "/loadIndexlist", method = RequestMethod.POST)
-    public Result<JSONObject> loadIndexlist() {
+    public Result<Map> loadIndexlist() {
 
-        Result result = indexService.loadIndexlist();
-
-
+        Result<Map> result =new Result();
+        Map map = indexService.loadIndexlist();
+        result.setResult(map);
         return result;
     }
 

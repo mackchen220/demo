@@ -208,6 +208,34 @@ CREATE TABLE `tb_user_course`  (
   PRIMARY KEY (`id`) USING BTREE
 	) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户课程表';
 
+ALTER TABLE `tb_user`
+CHANGE COLUMN `nike_name` `nick_name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '昵称' AFTER `user_name`;
+
+
+DROP TABLE IF EXISTS `tb_talent_info`;
+CREATE TABLE `tb_talent_info`  (
+`id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+`user_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+`effect` decimal(3, 2)  DEFAULT 0 COMMENT '效果评分',
+`attitude` decimal(3, 2)  DEFAULT 0 COMMENT '态度评分',
+`price` decimal(3, 2)  DEFAULT 0 COMMENT '价格评分',
+`average_score` decimal(3, 2)  DEFAULT 0 COMMENT '综合评分',
+`deposit` bigint(32)   DEFAULT 0 COMMENT '保证金',
+`name` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci ,
+`id_card` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL  COMMENT '身份证号码',
+`city` varchar(32) NULL DEFAULT NULL COMMENT '城市',
+`time` varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT 0  COMMENT '从业年限',
+`id_status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '是否身份验证0-已验证,1-未验证',
+`authenticated` tinyint(1) NOT NULL DEFAULT '1' COMMENT '是否完成验证0-已完成,1-未完成',
+`contract_status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '是否签署达人协议 0已签署,1-未签署',
+`create_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '创建时间',
+`update_time` timestamp(0) NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '更新日期',
+`create_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
+`update_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
+`del_flag` tinyint(1) NOT NULL DEFAULT '0' COMMENT '删除标识0-正常,1-已删除',
+PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '达人信息表';
+
 
 
 

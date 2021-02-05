@@ -17,7 +17,7 @@ public class UserModel {
     /**
     * 昵称
     */
-    private String nikeName;
+    private String nickName;
 
     /**
     * 头像

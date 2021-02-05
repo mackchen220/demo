@@ -6,7 +6,7 @@
     <!--@Table tb_user-->
     <id column="id" jdbcType="VARCHAR" property="Id" />
     <result column="user_name" jdbcType="VARCHAR" property="userName" />
-    <result column="nike_name" jdbcType="VARCHAR" property="nikeName" />
+    <result column="nick_name" jdbcType="VARCHAR" property="nickName" />
     <result column="head_image" jdbcType="VARCHAR" property="headImage" />
     <result column="vip_id" jdbcType="BIGINT" property="vipId" />
     <result column="address_id" jdbcType="BIGINT" property="addressId" />
@@ -39,7 +39,7 @@
   </resultMap>
   <sql id="Base_Column_List">
     <!--@mbg.generated-->
-    id, user_name, nike_name, head_image, vip_id, address_id, bank_id, sign, money,
+    id, user_name, nick_name, head_image, vip_id, address_id, bank_id, sign, money,
     del_flag, is_disable, `password`, last_login_time, login_time, create_time, update_time,
     last_login_ip, login_ip, wechat, user_type, agency_id, login_times, gender, birthday,
     phone, upd_pwd_time, register_ip, disable_remark,create_by,update_by,del_flag,invite_code,is_talent
@@ -56,8 +56,8 @@
       <if test="phone != null and phone != ''">
         phone = #{phone,jdbcType=VARCHAR}
       </if>
-      <if test="nikename != null and nikename != ''">
-        nikename like '%${nikename}%'
+      <if test="nickName != null and nickName != ''">
+        nickName like '%${nickName}%'
       </if>
       <if test="inviteCode != null and inviteCode != ''">
         invite_code = #{inviteCode,jdbcType=VARCHAR}
@@ -77,8 +77,8 @@
       <if test="userName != null">
         user_name,
       </if>
-      <if test="nikeName != null">
-        nike_name,
+      <if test="nickName != null">
+        nick_name,
       </if>
       <if test="headImage != null">
         head_image,
@@ -172,8 +172,8 @@
       <if test="userName != null">
         #{userName,jdbcType=VARCHAR},
       </if>
-      <if test="nikeName != null">
-        #{nikeName,jdbcType=VARCHAR},
+      <if test="nickName != null">
+        #{nickName,jdbcType=VARCHAR},
       </if>
       <if test="headImage != null">
         #{headImage,jdbcType=VARCHAR},
@@ -268,8 +268,8 @@
       <if test="userName != null">
         user_name = #{userName,jdbcType=VARCHAR},
       </if>
-      <if test="nikeName != null">
-        nike_name = #{nikeName,jdbcType=VARCHAR},
+      <if test="nickName != null">
+        nick_name = #{nickName,jdbcType=VARCHAR},
       </if>
       <if test="headImage != null">
         head_image = #{headImage,jdbcType=VARCHAR},

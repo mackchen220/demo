@@ -70,7 +70,7 @@ public class CommunityModelServiceImpl implements CommunityModelService{
         CommunityModel model = communityModelMapper.selectByPrimaryKey(id);
         UserModel user = userModelService.getUserById(model.getUserId());
         Map<String, Object> map = BeanUtil.beanToMap(model);
-        map.put("nikeName",user.getNikeName());
+        map.put("nikeName",user.getNickName());
         map.put("headImage",user.getHeadImage());
         map.remove("createTime");
         map.remove("updateTime");
