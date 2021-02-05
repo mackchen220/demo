@@ -239,3 +239,5 @@ PRIMARY KEY (`id`) USING BTREE
 
 
 
+	ALTER TABLE `tb_talent_info`
+ADD COLUMN `num` bigint(32) NULL DEFAULT 0 COMMENT '签约机构数量' AFTER `del_flag`;
