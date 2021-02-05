@@ -30,7 +30,7 @@ public class JeecgBootExceptionHandler {
 	 */
 	@ExceptionHandler(JeecgBootException.class)
 	public Result<?> handleRRException(JeecgBootException e){
-		log.error("业务异常 code={} message{}",e.getCode() ,e.getMsg());
+		log.error("业务异常 code={} message={}",e.getCode() ,e.getMsg());
 		if (e.getCode()!=null){
 			return Result.error(e.getCode(),e.getMsg());
 		}
