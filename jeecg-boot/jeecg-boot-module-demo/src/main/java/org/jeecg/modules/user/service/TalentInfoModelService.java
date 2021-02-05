@@ -1,6 +1,9 @@
 package org.jeecg.modules.user.service;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import org.jeecg.modules.Community.model.CommunityModel;
 import org.jeecg.modules.user.model.TalentInfoModel;
+import org.jeecg.modules.user.model.vo.TalentInfoVo;
 
 import java.util.List;
 
@@ -19,7 +22,7 @@ public interface TalentInfoModelService{
 
     int updateByPrimaryKey(TalentInfoModel record);
 
-//    //首页达人推荐
-//    List loadIndexTalentList(String limit);
+//    //达人严选
+    Page<TalentInfoVo> loadTalentList(Page<TalentInfoVo> pageList, String search);
 
 }
