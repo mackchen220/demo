@@ -48,8 +48,8 @@ public class TalentInfoModelServiceImpl implements TalentInfoModelService{
     }
 
     @Override
-    public Page<TalentInfoVo> loadTalentList(Page<TalentInfoVo> pageList, String search) {
-        List<TalentInfoVo> talentInfoVos = talentInfoModelMapper.loadTalentList(pageList, search);
+    public Page<TalentInfoVo> loadTalentList(Page<TalentInfoVo> pageList, String search, String city) {
+        List<TalentInfoVo> talentInfoVos = talentInfoModelMapper.loadTalentList(pageList, search, city);
         return pageList.setRecords(talentInfoVos);
     }
 

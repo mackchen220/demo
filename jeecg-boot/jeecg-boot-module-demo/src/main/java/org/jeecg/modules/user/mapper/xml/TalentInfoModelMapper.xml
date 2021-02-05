@@ -308,6 +308,10 @@
          b.nick_name
         LIKE '%${search}%'
       </if>
+      <if test="city != null and city != ''">
+        a.city
+        LIKE '%${city}%'
+      </if>
     </where>
     ORDER BY a.average_score desc
   </select>

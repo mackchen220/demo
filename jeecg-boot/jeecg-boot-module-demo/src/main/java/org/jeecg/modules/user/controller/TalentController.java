@@ -30,12 +30,12 @@ public class TalentController {
 
     @ApiOperation("达人严选列表接口")
     @RequestMapping(value = "/loadTalentList", method = RequestMethod.POST)
-    public Result<Page<TalentInfoVo>> loadTalentList(@RequestParam(name="pageNo", defaultValue="1") Integer pageNo,
-                                                     @RequestParam(name="pageSize", defaultValue="10") Integer pageSize,
-                                                     String seach) {
+    public Result<Page<TalentInfoVo>> loadTalentList(@RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo,
+                                                     @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize,
+                                                     String seach, String city) {
         Result<Page<TalentInfoVo>> result = new Result<Page<TalentInfoVo>>();
         Page<TalentInfoVo> pageList = new Page<TalentInfoVo>(pageNo, pageSize);
-        Page<TalentInfoVo> talentInfoVoPage = talentInfoModelService.loadTalentList(pageList, seach);
+        Page<TalentInfoVo> talentInfoVoPage = talentInfoModelService.loadTalentList(pageList, seach, city);
         result.setResult(talentInfoVoPage);
         return result;
     }

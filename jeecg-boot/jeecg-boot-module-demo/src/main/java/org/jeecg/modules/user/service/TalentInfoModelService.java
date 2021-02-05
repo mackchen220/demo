@@ -23,6 +23,6 @@ public interface TalentInfoModelService{
     int updateByPrimaryKey(TalentInfoModel record);
 
 //    //达人严选
-    Page<TalentInfoVo> loadTalentList(Page<TalentInfoVo> pageList, String search);
+    Page<TalentInfoVo> loadTalentList(Page<TalentInfoVo> pageList, String search,String city);
 
 }
