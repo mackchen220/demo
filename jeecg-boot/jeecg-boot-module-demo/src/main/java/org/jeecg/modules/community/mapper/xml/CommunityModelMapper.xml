@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="org.jeecg.modules.Community.mapper.CommunityModelMapper">
-  <resultMap id="BaseResultMap" type="org.jeecg.modules.Community.model.CommunityModel">
+<mapper namespace="org.jeecg.modules.community.mapper.CommunityModelMapper">
+  <resultMap id="BaseResultMap" type="org.jeecg.modules.community.model.CommunityModel">
     <!--@mbg.generated-->
     <!--@Table tb_community-->
     <id column="id" jdbcType="VARCHAR" property="id" />
@@ -39,7 +39,7 @@
     delete from tb_community
     where id = #{id,jdbcType=VARCHAR}
   </delete>
-  <insert id="insert" parameterType="org.jeecg.modules.Community.model.CommunityModel">
+  <insert id="insert" parameterType="org.jeecg.modules.community.model.CommunityModel">
     <!--@mbg.generated-->
     insert into tb_community (id, user_id, title,
       content, url, imageUrl,
@@ -54,7 +54,7 @@
       #{createTime,jdbcType=VARCHAR}, #{updateTime,jdbcType=VARCHAR}, #{createBy,jdbcType=VARCHAR},
       #{updateBy,jdbcType=VARCHAR}, #{delFlag,jdbcType=TINYINT})
   </insert>
-  <insert id="insertSelective" parameterType="org.jeecg.modules.Community.model.CommunityModel">
+  <insert id="insertSelective" parameterType="org.jeecg.modules.community.model.CommunityModel">
     <!--@mbg.generated-->
     insert into tb_community
     <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -164,7 +164,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="org.jeecg.modules.Community.model.CommunityModel">
+  <update id="updateByPrimaryKeySelective" parameterType="org.jeecg.modules.community.model.CommunityModel">
     <!--@mbg.generated-->
     update tb_community
     <set>
@@ -219,7 +219,7 @@
     </set>
     where id = #{id,jdbcType=VARCHAR}
   </update>
-  <update id="updateByPrimaryKey" parameterType="org.jeecg.modules.Community.model.CommunityModel">
+  <update id="updateByPrimaryKey" parameterType="org.jeecg.modules.community.model.CommunityModel">
     <!--@mbg.generated-->
     update tb_community
     set user_id = #{userId,jdbcType=VARCHAR},

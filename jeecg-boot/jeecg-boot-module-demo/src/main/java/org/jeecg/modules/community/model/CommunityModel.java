@@ -1,4 +1,4 @@
-package org.jeecg.modules.Community.model;
+package org.jeecg.modules.community.model;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
