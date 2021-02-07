@@ -3,11 +3,11 @@ package org.jeecg.modules.user.mapper;
 import org.apache.ibatis.annotations.Mapper;
 import org.jeecg.modules.user.model.HospitalModel;
 
+import java.util.List;
+
 @Mapper
 public interface HospitalModelMapper {
-    int deleteByPrimaryKey(String id);
 
-    int insert(HospitalModel record);
 
     int insertSelective(HospitalModel record);
 
@@ -15,6 +15,7 @@ public interface HospitalModelMapper {
 
     int updateByPrimaryKeySelective(HospitalModel record);
 
-    int updateByPrimaryKey(HospitalModel record);
+
+    List<HospitalModel> loadHospitallist();
 
 }

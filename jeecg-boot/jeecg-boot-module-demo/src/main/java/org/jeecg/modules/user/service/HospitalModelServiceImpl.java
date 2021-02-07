@@ -11,6 +11,7 @@ import org.jeecg.modules.user.model.HospitalModel;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class HospitalModelServiceImpl implements HospitalModelService{
@@ -21,15 +22,6 @@ public class HospitalModelServiceImpl implements HospitalModelService{
     private TalentHospitalMapper talentHospitalMapper;
 
 
-    @Override
-    public int deleteByPrimaryKey(String id) {
-        return hospitalModelMapper.deleteByPrimaryKey(id);
-    }
-
-    @Override
-    public int insert(HospitalModel record) {
-        return hospitalModelMapper.insert(record);
-    }
 
     @Override
     public int insertSelective(HospitalModel record) {
@@ -46,9 +38,13 @@ public class HospitalModelServiceImpl implements HospitalModelService{
         return hospitalModelMapper.updateByPrimaryKeySelective(record);
     }
 
-    @Override
-    public int updateByPrimaryKey(HospitalModel record) {
-        return hospitalModelMapper.updateByPrimaryKey(record);
-    }
 
+    @Override
+    public Map loadHospitallist() {
+        List<HospitalModel> hospitalModels = hospitalModelMapper.loadHospitallist();
+        for (HospitalModel hospitalModel : hospitalModels) {
+//            talentHospitalMapper.()
+        }
+        return null;
+    }
 }

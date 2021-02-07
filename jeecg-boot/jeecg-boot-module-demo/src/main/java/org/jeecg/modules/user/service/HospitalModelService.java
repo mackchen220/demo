@@ -3,13 +3,9 @@ package org.jeecg.modules.user.service;
 import org.jeecg.modules.user.model.HospitalModel;
 
 import java.util.List;
+import java.util.Map;
 
 public interface HospitalModelService{
-
-
-    int deleteByPrimaryKey(String id);
-
-    int insert(HospitalModel record);
 
     int insertSelective(HospitalModel record);
 
@@ -17,7 +13,9 @@ public interface HospitalModelService{
 
     int updateByPrimaryKeySelective(HospitalModel record);
 
-    int updateByPrimaryKey(HospitalModel record);
+
+
+    Map loadHospitallist();
 
 
 }

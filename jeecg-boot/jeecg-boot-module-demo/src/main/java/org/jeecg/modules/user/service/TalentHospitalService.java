@@ -17,8 +17,6 @@ public interface TalentHospitalService {
     int updateByPrimaryKeySelective(TalentHospital record);
 
 
-    List loadHospitalistByUserId(String id);
-
 
     Map  loadProjectList(String id,String projectId,String hospitalId);
 

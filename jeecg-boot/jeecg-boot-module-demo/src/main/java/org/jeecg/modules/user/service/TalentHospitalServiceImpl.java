@@ -52,13 +52,6 @@ public class TalentHospitalServiceImpl implements TalentHospitalService {
     }
 
 
-    @Override
-    public List loadHospitalistByUserId(String id) {
-        List<HospitalVo> hospitalModels = talentHospitalMapper.loadTalentHospitalLst(id);
-
-        return hospitalModels;
-    }
-
 
     @Override
     public Map loadProjectList(String id, String projectId, String hospitalId) {
