@@ -3,56 +3,60 @@ package org.jeecg.modules.user.model;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.io.Serializable;
-import java.util.Date;
 import lombok.Data;
 
 /**
-    * 达人机构案例表
+    * 子类项目，材料，杂项详细表
     */
-@ApiModel(value="org-jeecg-modules-user-model-CaseModel")
+@ApiModel(value="org-jeecg-modules-user-model-ProjectInfo")
 @Data
-public class CaseModel implements Serializable {
+public class ProjectInfo implements Serializable {
     @ApiModelProperty(value="")
     private String id;
 
-    @ApiModelProperty(value="")
-    private String userId;
+    /**
+    * 项目id
+    */
+    @ApiModelProperty(value="项目id")
+    private String projectId;
 
     /**
-    * 项目描述内容
+    * 项目名称
     */
-    @ApiModelProperty(value="项目描述内容",required = true)
-    private String content;
+    @ApiModelProperty(value="项目名称")
+    private String projectName;
+
+
 
     /**
-    * 案例类别，标题
+    * 子项目类型 ，1具体小项目 2 假体材料 3 杂项
     */
-    @ApiModelProperty(value="案例类别标题")
+    @ApiModelProperty(value="子项目类型 ，1具体小项目 2 假体材料 3 杂项")
     private Integer type;
 
     /**
-    * 案例时间
+    * 最低价格
     */
-    @ApiModelProperty(value="案例时间")
-    private String time;
+    @ApiModelProperty(value="最低价格")
+    private Long priceLow;
 
     /**
-    * 项目描述内容
+    * 最高价格
     */
-    @ApiModelProperty(value="项目描述内容")
-    private String source;
+    @ApiModelProperty(value="最高价格")
+    private Long priceHigh;
 
     /**
     * 创建时间
     */
     @ApiModelProperty(value="创建时间")
-    private Date createTime;
+    private String createTime;
 
     /**
     * 更新日期
     */
     @ApiModelProperty(value="更新日期")
-    private Date updateTime;
+    private String updateTime;
 
     /**
     * 创建人
@@ -70,7 +74,7 @@ public class CaseModel implements Serializable {
     * 删除标识0-正常,1-已删除
     */
     @ApiModelProperty(value="删除标识0-正常,1-已删除")
-    private Boolean delFlag;
+    private Integer delFlag;
 
     private static final long serialVersionUID = 1L;
 }
