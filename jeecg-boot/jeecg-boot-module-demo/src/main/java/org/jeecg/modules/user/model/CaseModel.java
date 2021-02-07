@@ -28,7 +28,7 @@ public class CaseModel implements Serializable {
     * 案例类别，标题
     */
     @ApiModelProperty(value="案例类别标题")
-    private Integer type;
+    private String type;
 
     /**
     * 案例时间
@@ -37,9 +37,9 @@ public class CaseModel implements Serializable {
     private String time;
 
     /**
-    * 项目描述内容
+    * 项目来源
     */
-    @ApiModelProperty(value="项目描述内容")
+    @ApiModelProperty(value="来源")
     private String source;
 
     /**

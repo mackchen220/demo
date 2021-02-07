@@ -143,11 +143,15 @@ public class TalentHospitalServiceImpl implements TalentHospitalService {
                 othrer = othrer + projectInfoVo.getPriceLow();
             }
         }
+        //其他杂项价格
+        map.put("othrer", othrer);
         collect.remove(3);
+        //项目预计价格最低与最高
         map.put("yuPiceLow", priceLow + othrer);
         map.put("yuPriceHigh", priceHigh + othrer);
-        map.put("othrer", othrer);
         map.put("project", collect);
+
+        //TODO 会员价
 
         return map;
     }

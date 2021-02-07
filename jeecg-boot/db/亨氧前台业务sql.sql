@@ -308,3 +308,8 @@ CREATE TABLE `tb_hospital_project`(
 `del_flag` tinyint(1) NOT NULL DEFAULT '0' COMMENT '删除标识0-正常,1-已删除',
 PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '机构材料项目表';
+
+###案例类型自定义的
+ALTER TABLE `tb_case`
+MODIFY COLUMN `type` varchar(32) NULL DEFAULT NULL COMMENT '项目分类' AFTER `content`,
+MODIFY COLUMN `source` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '案例来源 ' AFTER `time`;
