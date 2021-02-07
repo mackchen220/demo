@@ -22,7 +22,7 @@ import java.util.Map;
 @Slf4j
 @RestController
 @RequestMapping("/hy/Community")
-@Api(tags = "社区模块")
+@Api(tags = "朋友圈模块")
 public class CommunityController {
 
 
