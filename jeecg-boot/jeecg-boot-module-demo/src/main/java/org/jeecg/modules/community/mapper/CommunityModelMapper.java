@@ -1,15 +1,12 @@
-package org.jeecg.modules.Community.service;
+package org.jeecg.modules.community.mapper;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import org.jeecg.modules.Community.model.CommunityModel;
-import org.jeecg.modules.user.model.UserModel;
+import org.apache.ibatis.annotations.Param;
+import org.jeecg.modules.community.model.CommunityModel;
 
 import java.util.List;
-import java.util.Map;
 
-public interface CommunityModelService{
-
-
+public interface CommunityModelMapper{
     int deleteByPrimaryKey(String id);
 
     int insert(CommunityModel record);
@@ -22,7 +19,5 @@ public interface CommunityModelService{
 
     int updateByPrimaryKey(CommunityModel record);
 
-    Page<CommunityModel> loadCommunityListByType(Page<CommunityModel> page ,int type);
-
-    Map loadMomentsInfo(String id);
+    List<CommunityModel> loadCommunityListByType(Page<CommunityModel> page,@Param("type") int type);
 }

@@ -2,7 +2,6 @@ package org.jeecg.modules.index.mapper;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.ibatis.annotations.Param;
-import org.jeecg.modules.Community.model.CommunityModel;
 import org.jeecg.modules.index.model.CourseModel;
 
 import java.util.List;

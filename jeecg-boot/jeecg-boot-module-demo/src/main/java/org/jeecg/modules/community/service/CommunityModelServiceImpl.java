@@ -1,21 +1,16 @@
-package org.jeecg.modules.Community.service;
+package org.jeecg.modules.community.service;
 
 import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import io.swagger.annotations.ApiModelProperty;
-import org.jeecg.modules.commons.util.MapUtil;
 import org.jeecg.modules.commons.util.SeqUtils;
-import org.jeecg.modules.commons.util.ValidateTool;
 import org.jeecg.modules.user.model.UserModel;
 import org.jeecg.modules.user.service.UserModelService;
 import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
-import org.jeecg.modules.Community.model.CommunityModel;
-import org.jeecg.modules.Community.mapper.CommunityModelMapper;
+import org.jeecg.modules.community.model.CommunityModel;
+import org.jeecg.modules.community.mapper.CommunityModelMapper;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @Service

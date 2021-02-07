@@ -1,15 +1,13 @@
-package org.jeecg.modules.Community.controller;
+package org.jeecg.modules.community.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.jeecg.common.api.vo.Result;
-import org.jeecg.common.util.RedisUtil;
-import org.jeecg.modules.Community.model.CommunityModel;
-import org.jeecg.modules.Community.service.CommunityModelService;
+import org.jeecg.modules.community.model.CommunityModel;
+import org.jeecg.modules.community.service.CommunityModelService;
 import org.jeecg.modules.commons.util.ValidateTool;
-import org.jeecg.modules.user.model.UserModel;
 import org.jeecg.modules.user.service.UserModelService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;

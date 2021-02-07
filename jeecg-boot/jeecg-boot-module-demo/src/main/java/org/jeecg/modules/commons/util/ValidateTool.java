@@ -10,13 +10,7 @@ import java.util.regex.Pattern;
 
 public class ValidateTool {
 
-    public static boolean isNull(Object obj) {
-        return obj == null;
-    }
 
-    public static boolean nonNull(Object obj) {
-        return obj != null;
-    }
 
     public static boolean isEmpty(Collection coll) {
         return coll == null || coll.isEmpty();
@@ -80,6 +74,36 @@ public class ValidateTool {
         }
         return true;
     }
+
+    public static boolean isNull(Object obj) {
+        if (obj == null) {
+            return true;
+        }
+        if (obj instanceof String) {
+            if (((String) obj).trim().equals("")) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+    public static boolean isNotNull(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (obj instanceof String) {
+            if (((String) obj).trim().equals("")) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+
+
+
+
 
 //    String regName = "^[A-Za-z0-9]{6,40}$";
 //        if (!userCustomerModel.getUsername().matches(regName)) {

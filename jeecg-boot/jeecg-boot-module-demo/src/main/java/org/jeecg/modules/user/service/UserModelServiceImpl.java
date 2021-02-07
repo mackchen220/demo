@@ -99,14 +99,14 @@ public class UserModelServiceImpl implements UserModelService {
         String token;
         String encrypt = MD5Util.MD5Encode(userModel.getId(), "utf-8");
 
-        String timeMillis = String.valueOf(System.currentTimeMillis());
+        String timeMillis =MD5Util.MD5Encode(String.valueOf(System.currentTimeMillis()), "utf-8");
         // 设置token缓存有效时间
         redisUtil.set(RedisKey.USER_LOGIN_TOKEN + RedisKey.KEY_SPLIT + encrypt, timeMillis);
-        redisUtil.expire(RedisKey.USER_LOGIN_TOKEN + RedisKey.KEY_SPLIT + encrypt, JwtUtil.EXPIRE_TIME * 2 / 1000);
+        redisUtil.expire(RedisKey.USER_LOGIN_TOKEN + RedisKey.KEY_SPLIT + encrypt, JwtUtil.EXPIRE_TIME * 336 );
 //        redisUtil.hset(RedisKey.USER_LOGIN_TOKEN +RedisKey.KEY_SPLIT+token, userModel.getId(), JSONObject.toJSONString(userModel));
         token = encrypt + "," + timeMillis;
         redisUtil.set(RedisKey.USER_LOGIN_TOKEN + RedisKey.KEY_SPLIT + token, userModel.getId());
-        redisUtil.expire(RedisKey.USER_LOGIN_TOKEN + RedisKey.KEY_SPLIT + token, JwtUtil.EXPIRE_TIME * 2 / 1000);
+        redisUtil.expire(RedisKey.USER_LOGIN_TOKEN + RedisKey.KEY_SPLIT + token, JwtUtil.EXPIRE_TIME * 336);
         object.put("token", token);
         object.put("headImage", userModel.getHeadImage());
         object.put("nickname", userModel.getNickName());

@@ -2,10 +2,12 @@ package org.jeecg.modules.user.model;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
 
 /**
     * 达人信息表
     */
+@Data
 @ApiModel(value="org-jeecg-modules-user-model-TalentInfoModel")
 public class TalentInfoModel {
     @ApiModelProperty(value="")
@@ -113,155 +115,13 @@ public class TalentInfoModel {
     @ApiModelProperty(value="删除标识0-正常,1-已删除")
     private Boolean delFlag;
 
-    public String getId() {
-        return id;
-    }
+    /**
+     * 签约机构数量
+     */
+    @ApiModelProperty(value="签约机构数量")
+    private String num;
 
-    public void setId(String id) {
-        this.id = id;
-    }
 
-    public String getUserId() {
-        return userId;
-    }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
 
-    public String getEffect() {
-        return effect;
-    }
-
-    public void setEffect(String effect) {
-        this.effect = effect;
-    }
-
-    public String getAttitude() {
-        return attitude;
-    }
-
-    public void setAttitude(String attitude) {
-        this.attitude = attitude;
-    }
-
-    public String getPrice() {
-        return price;
-    }
-
-    public void setPrice(String price) {
-        this.price = price;
-    }
-
-    public String getAverageScore() {
-        return averageScore;
-    }
-
-    public void setAverageScore(String averageScore) {
-        this.averageScore = averageScore;
-    }
-
-    public Long getDeposit() {
-        return deposit;
-    }
-
-    public void setDeposit(Long deposit) {
-        this.deposit = deposit;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getIdCard() {
-        return idCard;
-    }
-
-    public void setIdCard(String idCard) {
-        this.idCard = idCard;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public String getTime() {
-        return time;
-    }
-
-    public void setTime(String time) {
-        this.time = time;
-    }
-
-    public Integer getIdStatus() {
-        return idStatus;
-    }
-
-    public void setIdStatus(Integer idStatus) {
-        this.idStatus = idStatus;
-    }
-
-    public Integer getAuthenticated() {
-        return authenticated;
-    }
-
-    public void setAuthenticated(Integer authenticated) {
-        this.authenticated = authenticated;
-    }
-
-    public Integer getContractStatus() {
-        return contractStatus;
-    }
-
-    public void setContractStatus(Integer contractStatus) {
-        this.contractStatus = contractStatus;
-    }
-
-    public String getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(String createTime) {
-        this.createTime = createTime;
-    }
-
-    public String getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(String updateTime) {
-        this.updateTime = updateTime;
-    }
-
-    public String getCreateBy() {
-        return createBy;
-    }
-
-    public void setCreateBy(String createBy) {
-        this.createBy = createBy;
-    }
-
-    public String getUpdateBy() {
-        return updateBy;
-    }
-
-    public void setUpdateBy(String updateBy) {
-        this.updateBy = updateBy;
-    }
-
-    public Boolean getDelFlag() {
-        return delFlag;
-    }
-
-    public void setDelFlag(Boolean delFlag) {
-        this.delFlag = delFlag;
-    }
 }

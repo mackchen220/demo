@@ -1,11 +1,15 @@
 package org.jeecg.modules.user.service;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+
+import org.jeecg.modules.user.model.vo.TalentInfoVo;
 import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import org.jeecg.modules.user.mapper.TalentInfoModelMapper;
 import org.jeecg.modules.user.model.TalentInfoModel;
 
 import java.util.List;
+
 
 @Service
 public class TalentInfoModelServiceImpl implements TalentInfoModelService{
@@ -43,8 +47,17 @@ public class TalentInfoModelServiceImpl implements TalentInfoModelService{
         return talentInfoModelMapper.updateByPrimaryKey(record);
     }
 
+    @Override
+    public Page<TalentInfoVo> loadTalentList(Page<TalentInfoVo> pageList, String search, String city) {
+        List<TalentInfoVo> talentInfoVos = talentInfoModelMapper.loadTalentList(pageList, search, city);
+        return pageList.setRecords(talentInfoVos);
+    }
+
+
 //    @Override
-//    public List loadIndexTalentList(String limit) {
-//        return talentInfoModelMapper.loadIndexTalentList(limit);
+//    public Page<CommunityModel> loadCommunityListByType(Page<CommunityModel> page, int type) {
+//        return page.setRecords(communityModelMapper.loadCommunityListByType(page,type));
 //    }
+
+
 }
