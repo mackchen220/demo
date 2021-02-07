@@ -3,10 +3,18 @@ package org.jeecg.modules.user.service;
 import org.jeecg.common.exception.JeecgBootException;
 import org.jeecg.modules.commons.util.SeqUtils;
 import org.jeecg.modules.commons.util.ValidateTool;
+import org.jeecg.modules.user.model.vo.CaseModelVo;
+import org.jeecg.modules.user.model.vo.ProjectInfoVo;
 import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import org.jeecg.modules.user.model.CaseModel;
 import org.jeecg.modules.user.mapper.CaseModelMapper;
+
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class CaseModelServiceImpl implements CaseModelService{
@@ -55,4 +63,17 @@ public class CaseModelServiceImpl implements CaseModelService{
         return caseModelMapper.updateByPrimaryKey(record);
     }
 
+
+    @Override
+    public Map loadCaseList(String userId, String type) {
+        List<String> types = caseModelMapper.loadCaseTypeList(userId);
+
+        List<CaseModelVo> caseModelVos = caseModelMapper.loadCaseList(userId, type);
+
+        Map<Object, Object> map = new HashMap<>();
+        map.put("types",types);
+        map.put("caseList",caseModelVos);
+
+        return map;
+    }
 }

@@ -20,7 +20,7 @@ import java.util.Map;
 @Slf4j
 @RestController
 @RequestMapping("/hy/Hospital")
-@Api(tags = "机构模块")
+@Api(tags = "前台机构模块")
 public class HospitalController {
 
     @Resource
