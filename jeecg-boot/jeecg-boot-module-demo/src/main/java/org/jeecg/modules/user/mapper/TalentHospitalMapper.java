@@ -5,6 +5,7 @@ import org.apache.ibatis.annotations.Param;
 import org.jeecg.modules.user.model.HospitalModel;
 import org.jeecg.modules.user.model.TalentHospital;
 import org.jeecg.modules.user.model.vo.HospitalVo;
+import org.jeecg.modules.user.model.vo.UserModelVo;
 
 import java.util.List;
 
@@ -20,4 +21,6 @@ public interface TalentHospitalMapper {
 
 
     List<HospitalVo> loadTalentHospitalLst(@Param("id") String userId);
+
+    List<UserModelVo> loadAllTalent(@Param("hospitalId") String hospitalId);
 }

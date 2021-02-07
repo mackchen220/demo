@@ -1,14 +1,15 @@
 package org.jeecg.modules.user.service;
 
 import com.alibaba.fastjson.JSONObject;
-import org.apache.poi.sl.draw.geom.TanExpression;
-import org.jeecg.modules.user.mapper.TalentHospitalMapper;
-import org.jeecg.modules.user.mapper.TalentInfoModelMapper;
-import org.springframework.stereotype.Service;
-import javax.annotation.Resource;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.jeecg.modules.user.mapper.HospitalModelMapper;
+import org.jeecg.modules.user.mapper.TalentHospitalMapper;
 import org.jeecg.modules.user.model.HospitalModel;
+import org.jeecg.modules.user.model.vo.TalentInfoVo;
+import org.jeecg.modules.user.model.vo.UserModelVo;
+import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -40,11 +41,20 @@ public class HospitalModelServiceImpl implements HospitalModelService{
 
 
     @Override
-    public Map loadHospitallist() {
-        List<HospitalModel> hospitalModels = hospitalModelMapper.loadHospitallist();
+    public Page<HospitalModel> loadAllHospitlist(Page<HospitalModel> page)  {
+        List<HospitalModel> hospitalModels = hospitalModelMapper.loadHospitallist(page);
+
+        List list = new ArrayList<>();
         for (HospitalModel hospitalModel : hospitalModels) {
-//            talentHospitalMapper.()
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("hospitalId",hospitalModel.getId());
+            jsonObject.put("hospitalImage",hospitalModel.getImageUrl());
+            jsonObject.put("name",hospitalModel.getName());
+            jsonObject.put("content",hospitalModel.getContent());
+            List<UserModelVo> userModelVos = talentHospitalMapper.loadAllTalent(hospitalModel.getId());
+            jsonObject.put("talents",userModelVos);
+            list.add(jsonObject);
         }
-        return null;
+        return page.setRecords(list);
     }
 }

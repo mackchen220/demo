@@ -22,7 +22,13 @@
     <result column="image_url" jdbcType="VARCHAR" property="imageUrl" />
   </resultMap>
 
-
+  <resultMap id="userVoResultMap" type="org.jeecg.modules.user.model.vo.UserModelVo">
+    <!--@mbg.generated-->
+    <!--@Table tb_hospital-->
+    <result column="id" jdbcType="VARCHAR" property="id" />
+    <result column="head_name" jdbcType="VARCHAR" property="headImage" />
+    <result column="nick_name" jdbcType="VARCHAR" property="nickName" />
+  </resultMap>
 
   <sql id="Base_Column_List">
     <!--@mbg.generated-->
@@ -122,6 +128,12 @@
   <select id="loadTalentHospitalLst" parameterType="string" resultMap="HospitalResultMap">
     SELECT name,image_url,id from tb_hospital where id in
      (SELECT hospital_id from tb_talent_hospital where talent_id = #{id,jdbcType=VARCHAR})
+  </select>
+
+  <select id="loadAllTalent" parameterType="string" resultMap="userVoResultMap">
+    SELECT a.talent_id as id,b.head_image,b.nick_name from  tb_talent_hospital  as a
+    LEFT JOIN tb_user as b on b.id=a.talent_id
+    where hospital_id =#{hospitalId,jdbcType=VARCHAR}
   </select>
 
 </mapper>
