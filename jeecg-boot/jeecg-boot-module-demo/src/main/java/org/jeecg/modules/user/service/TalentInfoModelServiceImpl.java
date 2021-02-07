@@ -54,10 +54,9 @@ public class TalentInfoModelServiceImpl implements TalentInfoModelService{
     }
 
 
-//    @Override
-//    public Page<CommunityModel> loadCommunityListByType(Page<CommunityModel> page, int type) {
-//        return page.setRecords(communityModelMapper.loadCommunityListByType(page,type));
-//    }
-
-
+    @Override
+    public List loadOtherTalentList(String search) {
+        List<TalentInfoVo> talentInfoVos = talentInfoModelMapper.loadOtherTalentList(search,"4");
+        return talentInfoVos;
+    }
 }

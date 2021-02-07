@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -44,6 +45,15 @@ public class TalentController {
         result.setResult(talentInfoVoPage);
         return result;
     }
+
+    @ApiOperation("搜索达人下面的可能感兴趣的人")
+    @RequestMapping(value = "/loadOtherTalentList", method = RequestMethod.POST)
+    public Result loadOtherTalentList(String seach) {
+        List list = talentInfoModelService.loadOtherTalentList(seach);
+        return Result.OK(list);
+    }
+
+
 
 
     @ApiOperation("上传案例接口")
