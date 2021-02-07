@@ -1,6 +1,9 @@
 package org.jeecg.modules.user.service;
 
 import org.jeecg.modules.user.model.CaseModel;
+
+import java.util.Map;
+
 public interface CaseModelService{
 
 
@@ -15,4 +18,5 @@ public interface CaseModelService{
 
     int updateByPrimaryKey(CaseModel record);
 
+    Map loadCaseList(String userId,String type);
 }

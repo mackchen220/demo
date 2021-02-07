@@ -17,11 +17,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.util.Map;
 
 @Slf4j
 @RestController
 @RequestMapping("/hy/talent")
-@Api(tags = "前台用户模块")
+@Api(tags = "前台达人模块")
 public class TalentController {
 
     @Resource
@@ -53,7 +54,13 @@ public class TalentController {
         return Result.OK();
     }
 
-
+    @ApiOperation("查看案例接口")
+    @RequestMapping(value = "/loadCaselist", method = RequestMethod.POST)
+    public Result addCase(String token,String type) {
+        String id = userModelService.getUserIdByToken(token);
+        Map map = caseModelService.loadCaseList(id, type);
+        return Result.OK(map);
+    }
 
 
 }

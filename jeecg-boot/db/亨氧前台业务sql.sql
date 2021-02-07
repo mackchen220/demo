@@ -247,20 +247,22 @@ ALTER TABLE `tb_community`
 MODIFY COLUMN `city` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '定位城市' AFTER `imageUrl`;
 
 DROP TABLE IF EXISTS `tb_case`;
-CREATE TABLE `tb_case`  (
+CREATE TABLE `tb_case` (
 `id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
 `user_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-`content` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '项目描述内容',
-`type` tinyint(2) NULL DEFAULT NULL COMMENT '案例来源',
-`time` timestamp(0) NOT NULL  COMMENT '案例时间',
-`source` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '项目描述内容',
-`create_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '创建时间',
-`update_time` timestamp(0) NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '更新日期',
-`create_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
-`update_by` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
+`content` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '项目描述内容',
+`type` varchar(32) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '项目分类',
+`time` timestamp NOT NULL COMMENT '案例时间',
+`source` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '案例来源 ',
+`create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+`update_time` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '更新日期',
+`create_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '创建人',
+`update_by` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '更新人',
 `del_flag` tinyint(1) NOT NULL DEFAULT '0' COMMENT '删除标识0-正常,1-已删除',
-PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '达人机构案例表';
+`image_url` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '图片地址',
+PRIMARY KEY (`id`) USING BTREE,
+KEY `ind_userid_type` (`user_id`,`type`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='达人机构案例表';
 
 
 DROP TABLE IF EXISTS `tb_project`;
@@ -309,7 +311,4 @@ CREATE TABLE `tb_hospital_project`(
 PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '机构材料项目表';
 
-###案例类型自定义的
-ALTER TABLE `tb_case`
-MODIFY COLUMN `type` varchar(32) NULL DEFAULT NULL COMMENT '项目分类' AFTER `content`,
-MODIFY COLUMN `source` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '案例来源 ' AFTER `time`;
+

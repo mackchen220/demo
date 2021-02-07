@@ -40,14 +40,14 @@ public class UserController {
     @Resource
     private UserFocusModelService userFocusModelService;
 
-    @ApiOperation("测试接口")
-    @RequestMapping(value = "/test", method = RequestMethod.GET)
-    public Result<JSONObject> login(String str) {
-        UserModel user = userModelService.getUserById("12");
-        Result<JSONObject> result = new Result<JSONObject>();
-        log.info("这是测试接口{},user{}", str, JSONObject.toJSONString(user));
-        return result;
-    }
+//    @ApiOperation("测试接口")
+//    @RequestMapping(value = "/test", method = RequestMethod.GET)
+//    public Result<JSONObject> login(String str) {
+//        UserModel user = userModelService.getUserById("12");
+//        Result<JSONObject> result = new Result<JSONObject>();
+//        log.info("这是测试接口{},user{}", str, JSONObject.toJSONString(user));
+//        return result;
+//    }
 
 
     @ApiOperation("前台用户登录接口")
