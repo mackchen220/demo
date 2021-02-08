@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="org.jeecg.modules.user.mapper.UserFocusModelMapper">
-  <resultMap id="BaseResultMap" type="org.jeecg.modules.user.model.UserFocusModel">
+<mapper namespace="org.jeecg.modules.course.mapper.TopSearchMapper">
+  <resultMap id="BaseResultMap" type="org.jeecg.modules.course.model.TopSearch">
     <!--@mbg.generated-->
-    <!--@Table tb_user_focus-->
+    <!--@Table tb_top_search-->
     <id column="id" jdbcType="VARCHAR" property="id" />
-    <result column="user_id" jdbcType="VARCHAR" property="userId" />
-    <result column="focus_user_id" jdbcType="VARCHAR" property="focusUserId" />
+    <result column="top_search" jdbcType="VARCHAR" property="topSearch" />
     <result column="create_time" jdbcType="VARCHAR" property="createTime" />
     <result column="update_time" jdbcType="VARCHAR" property="updateTime" />
     <result column="create_by" jdbcType="VARCHAR" property="createBy" />
@@ -15,42 +14,38 @@
   </resultMap>
   <sql id="Base_Column_List">
     <!--@mbg.generated-->
-    id, user_id, focus_user_id, create_time, update_time, create_by, update_by, del_flag
+    id, top_search, create_time, update_time, create_by, update_by, del_flag
   </sql>
-  <select id="selectById" parameterType="java.lang.String" resultMap="BaseResultMap">
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     <!--@mbg.generated-->
-    select
+    select 
     <include refid="Base_Column_List" />
-    from tb_user_focus
-    where user_id = #{userId,jdbcType=VARCHAR} and focus_user_id= #{focusUserId,jdbcType=VARCHAR}
+    from tb_top_search
+    where id = #{id,jdbcType=VARCHAR}
   </select>
-
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     <!--@mbg.generated-->
-    delete from tb_user_focus
+    delete from tb_top_search
     where id = #{id,jdbcType=VARCHAR}
   </delete>
-  <insert id="insert" parameterType="org.jeecg.modules.user.model.UserFocusModel">
+  <insert id="insert" parameterType="org.jeecg.modules.course.model.TopSearch">
     <!--@mbg.generated-->
-    insert into tb_user_focus (id, user_id, focus_user_id,
-      create_time, update_time, create_by,
-      update_by, del_flag)
-    values (#{id,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{focusUserId,jdbcType=VARCHAR},
-      #{createTime,jdbcType=VARCHAR}, #{updateTime,jdbcType=VARCHAR}, #{createBy,jdbcType=VARCHAR},
-      #{updateBy,jdbcType=VARCHAR}, #{delFlag,jdbcType=TINYINT})
+    insert into tb_top_search (id, top_search, create_time, 
+      update_time, create_by, update_by, 
+      del_flag)
+    values (#{id,jdbcType=VARCHAR}, #{topSearch,jdbcType=VARCHAR}, #{createTime,jdbcType=VARCHAR}, 
+      #{updateTime,jdbcType=VARCHAR}, #{createBy,jdbcType=VARCHAR}, #{updateBy,jdbcType=VARCHAR}, 
+      #{delFlag,jdbcType=TINYINT})
   </insert>
-  <insert id="insertSelective" parameterType="org.jeecg.modules.user.model.UserFocusModel">
+  <insert id="insertSelective" parameterType="org.jeecg.modules.course.model.TopSearch">
     <!--@mbg.generated-->
-    insert into tb_user_focus
+    insert into tb_top_search
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
         id,
       </if>
-      <if test="userId != null">
-        user_id,
-      </if>
-      <if test="focusUserId != null">
-        focus_user_id,
+      <if test="topSearch != null">
+        top_search,
       </if>
       <if test="createTime != null">
         create_time,
@@ -72,11 +67,8 @@
       <if test="id != null">
         #{id,jdbcType=VARCHAR},
       </if>
-      <if test="userId != null">
-        #{userId,jdbcType=VARCHAR},
-      </if>
-      <if test="focusUserId != null">
-        #{focusUserId,jdbcType=VARCHAR},
+      <if test="topSearch != null">
+        #{topSearch,jdbcType=VARCHAR},
       </if>
       <if test="createTime != null">
         #{createTime,jdbcType=VARCHAR},
@@ -95,15 +87,12 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="org.jeecg.modules.user.model.UserFocusModel">
+  <update id="updateByPrimaryKeySelective" parameterType="org.jeecg.modules.course.model.TopSearch">
     <!--@mbg.generated-->
-    update tb_user_focus
+    update tb_top_search
     <set>
-      <if test="userId != null">
-        user_id = #{userId,jdbcType=VARCHAR},
-      </if>
-      <if test="focusUserId != null">
-        focus_user_id = #{focusUserId,jdbcType=VARCHAR},
+      <if test="topSearch != null">
+        top_search = #{topSearch,jdbcType=VARCHAR},
       </if>
       <if test="createTime != null">
         create_time = #{createTime,jdbcType=VARCHAR},
@@ -123,11 +112,10 @@
     </set>
     where id = #{id,jdbcType=VARCHAR}
   </update>
-  <update id="updateByPrimaryKey" parameterType="org.jeecg.modules.user.model.UserFocusModel">
+  <update id="updateByPrimaryKey" parameterType="org.jeecg.modules.course.model.TopSearch">
     <!--@mbg.generated-->
-    update tb_user_focus
-    set user_id = #{userId,jdbcType=VARCHAR},
-      focus_user_id = #{focusUserId,jdbcType=VARCHAR},
+    update tb_top_search
+    set top_search = #{topSearch,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=VARCHAR},
       update_time = #{updateTime,jdbcType=VARCHAR},
       create_by = #{createBy,jdbcType=VARCHAR},
@@ -135,24 +123,9 @@
       del_flag = #{delFlag,jdbcType=TINYINT}
     where id = #{id,jdbcType=VARCHAR}
   </update>
-
-  <update id="updatedDelFlag" parameterType="string">
-    <!--@mbg.generated-->
-    update tb_user_focus
-    set del_flag=#{flag,jdbcType=VARCHAR}
-    where user_id = #{userId,jdbcType=VARCHAR} and
-    focus_user_id = #{focusUserId,jdbcType=VARCHAR}
-  </update>
-    <select id="selectCountByFocusId" resultType="int">
-      select count(0)
-      from tb_user_focus
-      where focus_user_id = #{userId} and del_flag = 0
-    </select>
-  <select id="selectUserFocus" resultType="int">
-    select count(0)
-    from tb_user_focus
-    where user_id = #{fansId} and focus_user_id = #{userId} and del_flag = 0
+  <select id="selectAll" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List"/>
+    from tb_top_search
+    where del_flag = 0
   </select>
-
-
 </mapper>

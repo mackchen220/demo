@@ -6,6 +6,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.jeecg.common.api.vo.Result;
+import org.jeecg.modules.community.model.CommunityModel;
 import org.jeecg.modules.course.model.Course;
 import org.jeecg.modules.course.service.CourseService;
 import org.jeecg.modules.user.service.UserModelService;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @className: CourseController
@@ -42,17 +44,20 @@ public class CourseController {
                                 @RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo,
                                 @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize) {
         String userId = userModelService.getUserIdByToken(token);
-        IPage<Course> page = courseService.followList(new Page<>(pageNo, pageSize), userId);
+        IPage<CommunityModel> page = courseService.followList(new Page<>(pageNo, pageSize), userId);
         return Result.OK(page);
     }
 
     @ApiOperation("社区发现动态列表")
     @PostMapping("/findList")
-    public Result<?> findList(@ApiParam(name = "查询类型", value = "1-推荐 2-视频 3-照片 4-Vlog 5-活动 6-课程 不传默认1") Integer type,
+    public Result<?> findList(@ApiParam(name = "查询类型", value = "1-推荐 2-视频 3-照片 4-知识 5-Vlog 6-活动 7-课程 不传默认1") Integer type,
                               @ApiParam(name = "城市", value = "不传默认全国") String city,
                               @RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo,
                               @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize) {
-        IPage<Course> page = courseService.findList(new Page<>(pageNo, pageSize), type, city);
+        if (Objects.isNull(type)) {
+            type = 1;
+        }
+        IPage<?> page = courseService.findList(pageNo, pageSize, type, city);
         return Result.OK(page);
     }
 

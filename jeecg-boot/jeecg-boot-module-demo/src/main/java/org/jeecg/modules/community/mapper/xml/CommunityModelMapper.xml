@@ -260,5 +260,22 @@
     </where>
     order by create_time desc
   </select>
+  <select id="selectByFocusUserId" resultMap="BaseResultMap">
+    SELECT c.* from tb_community c
+    RIGHT JOIN tb_user_focus uf ON c.user_id = uf.focus_user_id
+    where uf.user_id = #{userId}
+  </select>
+  <select id="getListOrderByLikeNum" resultMap="BaseResultMap">
+    SELECT <include refid="Base_Column_List"/>
+    from tb_community
+    where del_flag = 0
+      <if test="type != null">
+        and type = #{type}
+      </if>
+      <if test="city != null and city != ''">
+        and city = #{city}
+      </if>
+    order by goodNum desc
+  </select>
 
 </mapper>

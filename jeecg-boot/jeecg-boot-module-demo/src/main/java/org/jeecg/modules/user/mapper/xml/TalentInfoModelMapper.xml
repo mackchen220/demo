@@ -348,7 +348,7 @@
     <select id="selectByUserId" resultMap="BaseResultMap">
       select <include refid="Base_Column_List"/>
       from tb_talent_info
-      where user_id = #{userId}
+      where user_id = #{userId} and del_flag = 0
     </select>
   <update id="increase">
     update tb_talent_info

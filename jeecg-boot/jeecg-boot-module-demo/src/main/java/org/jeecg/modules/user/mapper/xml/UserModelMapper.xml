@@ -51,20 +51,20 @@
     select
     <include refid="Base_Column_List" />
     from tb_user
-    <where>
+    where
+      and del_flag = 0
       <if test="Id != null and Id != '' != null">
-        id = #{Id,jdbcType=VARCHAR}
+        and id = #{Id,jdbcType=VARCHAR}
       </if>
       <if test="phone != null and phone != ''">
-        phone = #{phone,jdbcType=VARCHAR}
+        and phone = #{phone,jdbcType=VARCHAR}
       </if>
       <if test="nickName != null and nickName != ''">
-        nickName like '%${nickName}%'
+        and nickName like '%${nickName}%'
       </if>
       <if test="inviteCode != null and inviteCode != ''">
-        invite_code = #{inviteCode,jdbcType=VARCHAR}
+        and invite_code = #{inviteCode,jdbcType=VARCHAR}
       </if>
-    </where>
 
   </select>
 
