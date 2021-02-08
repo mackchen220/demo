@@ -313,3 +313,12 @@ PRIMARY KEY (`id`) USING BTREE
 ALTER TABLE `tb_case`
 MODIFY COLUMN `type` varchar(32) NULL DEFAULT NULL COMMENT '项目分类' AFTER `content`,
 MODIFY COLUMN `source` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '案例来源 ' AFTER `time`;
+
+
+ALTER TABLE `tb_talent_info` ADD COLUMN `order_num` bigint(32) NULL DEFAULT 0 COMMENT '接单量';
+ALTER TABLE `tb_talent_info` ADD COLUMN `advisory_num` bigint(32) NULL DEFAULT 0 COMMENT '咨询量';
+ALTER TABLE `tb_talent_info` ADD COLUMN `like_num` bigint(32) NULL DEFAULT 0 COMMENT '点赞量';
+
+ALTER TABLE `tb_user` ADD COLUMN `province` varchar(50) DEFAULT NULL COMMENT '省份';
+ALTER TABLE `tb_user` ADD COLUMN `city` varchar(50) DEFAULT NULL COMMENT '城市';
+

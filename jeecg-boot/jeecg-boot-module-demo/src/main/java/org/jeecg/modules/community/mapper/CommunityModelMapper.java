@@ -20,4 +20,7 @@ public interface CommunityModelMapper{
     int updateByPrimaryKey(CommunityModel record);
 
     List<CommunityModel> loadCommunityListByType(Page<CommunityModel> page,@Param("type") int type);
+
+    List<CommunityModel> getListByUserId(Page<CommunityModel> page, @Param("userId") String userId);
+
 }

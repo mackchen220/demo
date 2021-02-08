@@ -73,4 +73,14 @@ public class UserFocusModelServiceImpl implements UserFocusModelService{
         return userFocusModelMapper.updateByPrimaryKey(record);
     }
 
+    @Override
+    public int getFansNum(String userId) {
+        return userFocusModelMapper.selectCountByFocusId(userId);
+    }
+
+    @Override
+    public boolean isFans(String userId, String fansId) {
+        return userFocusModelMapper.selectUserFocus(userId, fansId) == 1;
+    }
+
 }

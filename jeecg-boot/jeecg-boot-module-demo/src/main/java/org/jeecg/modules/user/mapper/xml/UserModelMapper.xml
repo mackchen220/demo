@@ -36,13 +36,15 @@
     <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
     <result column="invite_code" jdbcType="VARCHAR" property="inviteCode" />
     <result column="is_talent" jdbcType="TINYINT" property="isTalent" />
+    <result column="province" jdbcType="VARCHAR" property="province" />
+    <result column="city" jdbcType="VARCHAR" property="city" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--@mbg.generated-->
     id, user_name, nick_name, head_image, vip_id, address_id, bank_id, sign, money,
     del_flag, is_disable, `password`, last_login_time, login_time, create_time, update_time,
     last_login_ip, login_ip, wechat, user_type, agency_id, login_times, gender, birthday,
-    phone, upd_pwd_time, register_ip, disable_remark,create_by,update_by,del_flag,invite_code,is_talent
+    phone, upd_pwd_time, register_ip, disable_remark,create_by,update_by,del_flag,invite_code,is_talent, province, city
   </sql>
   <select id="loadUser" parameterType="java.lang.String" resultMap="BaseResultMap">
     <!--@mbg.generated-->
@@ -164,6 +166,12 @@
       <if test="inviteCode != null and inviteCode != ''">
         invite_code,
       </if>
+      <if test="province != null and province != ''">
+        province,
+      </if>
+      <if test="city != null and city != ''">
+        city,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="Id != null">
@@ -259,6 +267,12 @@
       <if test="inviteCode != null and inviteCode != ''">
         #{inviteCode,jdbcType=VARCHAR},
       </if>
+      <if test="province != null and province != ''">
+        #{province},
+      </if>
+      <if test="city != null and city != ''">
+        #{city},
+      </if>
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="org.jeecg.modules.user.model.UserModel">
@@ -345,6 +359,12 @@
       </if>
       <if test="disableRemark != null">
         disable_remark = #{disableRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="province != null and province != ''">
+        province = #{province},
+      </if>
+      <if test="city != null and city != ''">
+        city = #{city},
       </if>
     </set>
     where id = #{Id,jdbcType=BIGINT}

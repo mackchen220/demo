@@ -27,4 +27,9 @@ public interface TalentInfoModelMapper {
 
 
     List<TalentInfoVo> loadTalentList(Page<TalentInfoVo> page, @Param("search") String search, @Param("city") String city);
+
+    TalentInfoModel selectByUserId(String userId);
+
+    int increase(@Param("userId") String userId, @Param("incNum") int incNum);
+
 }

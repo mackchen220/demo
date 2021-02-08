@@ -22,4 +22,8 @@ public interface TalentInfoModelService{
 //    //达人严选
     Page<TalentInfoVo> loadTalentList(Page<TalentInfoVo> pageList, String search,String city);
 
+    TalentInfoModel getTalentByUserId(String userId);
+
+    int addAdvisoryNum(String userId);
+
 }

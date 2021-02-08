@@ -8,7 +8,7 @@ import lombok.Data;
     * 社区朋友圈表
     */
 @Data
-@ApiModel(value="org-jeecg-modules-Community-model-CommunityModel")
+@ApiModel(value="org-jeecg-modules-community-model-CommunityModel")
 public class CommunityModel {
     @ApiModelProperty(value="")
     private String id;

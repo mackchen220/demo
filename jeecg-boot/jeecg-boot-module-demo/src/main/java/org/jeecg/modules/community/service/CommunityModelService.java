@@ -1,5 +1,6 @@
 package org.jeecg.modules.community.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.jeecg.modules.community.model.CommunityModel;
 
@@ -23,4 +24,7 @@ public interface CommunityModelService{
     Page<CommunityModel> loadCommunityListByType(Page<CommunityModel> page ,int type);
 
     Map loadMomentsInfo(String id);
+
+    IPage<CommunityModel> getListByUserId(Page<CommunityModel> objectPage, String userId);
+
 }

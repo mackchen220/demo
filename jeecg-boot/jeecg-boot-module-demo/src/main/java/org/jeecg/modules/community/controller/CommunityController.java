@@ -1,21 +1,30 @@
 package org.jeecg.modules.community.controller;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.jeecg.common.api.vo.Result;
+import org.jeecg.common.exception.JeecgBootException;
+import org.jeecg.modules.commons.ErrorInfoCode;
 import org.jeecg.modules.community.model.CommunityModel;
 import org.jeecg.modules.community.service.CommunityModelService;
 import org.jeecg.modules.commons.util.ValidateTool;
+import org.jeecg.modules.user.model.TalentInfoModel;
+import org.jeecg.modules.user.model.UserModel;
+import org.jeecg.modules.user.service.TalentInfoModelService;
+import org.jeecg.modules.user.service.UserFocusModelService;
 import org.jeecg.modules.user.service.UserModelService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
+import java.util.jar.JarException;
 
 @Slf4j
 @RestController
@@ -26,8 +35,12 @@ public class CommunityController {
 
     @Resource
     private CommunityModelService communityModelService;
-    @Autowired
+    @Resource
     private UserModelService userModelService;
+    @Resource
+    private TalentInfoModelService talentInfoModelService;
+    @Resource
+    private UserFocusModelService userFocusModelService;
 
     @ApiOperation("社区朋友圈列表")
     @RequestMapping(value = "/loadCommunityListByType", method = RequestMethod.POST)
@@ -79,6 +92,17 @@ public class CommunityController {
 
 
 
+    @ApiOperation("达人动态列表")
+    @PostMapping("/talentMiniInfo")
+    public Result talentMoments(@ApiParam(name = "达人ID", required = true) String userId,
+                                @RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo,
+                                @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize) {
+        if (StringUtils.isBlank(userId)) {
+            throw new JeecgBootException(ErrorInfoCode.PARAMS_ERROR.getMsg());
+        }
+        IPage<CommunityModel> page = communityModelService.getListByUserId(new Page<>(pageNo, pageSize), userId);
+        return Result.OK(page);
+    }
 
 
 

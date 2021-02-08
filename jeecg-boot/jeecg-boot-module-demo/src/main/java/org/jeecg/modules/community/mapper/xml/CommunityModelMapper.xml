@@ -248,4 +248,17 @@
     where type = #{type,jdbcType=VARCHAR}
     order by create_time desc
   </select>
+  <select id="getListByUserId" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List" />
+    from tb_community
+    <where>
+      <trim prefixOverrides="and">
+        <if test="userId != null and userId != ''">
+          and user_id = #{userId}
+        </if>
+      </trim>
+    </where>
+    order by create_time desc
+  </select>
+
 </mapper>
