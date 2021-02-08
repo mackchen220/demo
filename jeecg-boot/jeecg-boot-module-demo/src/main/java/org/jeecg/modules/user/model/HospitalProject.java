@@ -22,6 +22,12 @@ public class HospitalProject implements Serializable {
     private String projectId;
 
     /**
+     * 医院id
+     */
+    @ApiModelProperty(value="医院id")
+    private String hospitalId;
+
+    /**
     * 最低价格
     */
     @ApiModelProperty(value="最低价格")

@@ -3,6 +3,7 @@ package org.jeecg.modules.user.service;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.jeecg.modules.user.model.TalentInfoModel;
 import org.jeecg.modules.user.model.vo.TalentInfoVo;
+import org.jeecg.modules.user.model.vo.UserProjectVo;
 
 import java.util.List;
 
@@ -28,5 +29,6 @@ public interface TalentInfoModelService{
     List loadOtherTalentList(String search);
 
 
+    Page<UserProjectVo> loadProjectlist(String search,Page<UserProjectVo> pageList);
 
 }

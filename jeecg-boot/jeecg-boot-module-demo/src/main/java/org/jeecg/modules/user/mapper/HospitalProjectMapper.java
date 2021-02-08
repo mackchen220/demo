@@ -1,7 +1,11 @@
 package org.jeecg.modules.user.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.jeecg.modules.user.model.HospitalProject;
+import org.jeecg.modules.user.model.vo.ProjectInfoVo;
+
+import java.util.List;
 
 @Mapper
 public interface HospitalProjectMapper {
@@ -16,4 +20,6 @@ public interface HospitalProjectMapper {
     int updateByPrimaryKeySelective(HospitalProject record);
 
     int updateByPrimaryKey(HospitalProject record);
+
+    List<ProjectInfoVo> loadProjectByHospitalId(@Param("hospitalId") String hospitalId);
 }

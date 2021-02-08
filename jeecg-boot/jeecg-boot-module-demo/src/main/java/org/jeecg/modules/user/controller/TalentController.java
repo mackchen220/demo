@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.jeecg.common.api.vo.Result;
 import org.jeecg.modules.user.model.CaseModel;
 import org.jeecg.modules.user.model.vo.TalentInfoVo;
+import org.jeecg.modules.user.model.vo.UserProjectVo;
 import org.jeecg.modules.user.service.CaseModelService;
 import org.jeecg.modules.user.service.TalentInfoModelService;
 import org.jeecg.modules.user.service.UserModelService;
@@ -72,5 +73,18 @@ public class TalentController {
         return Result.OK(map);
     }
 
+
+
+    @ApiOperation("搜机构接口")
+    @RequestMapping(value = "/getProjectlist", method = RequestMethod.POST)
+    public Result<Page<UserProjectVo>> loadProjectlist(@RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo,
+                                                       @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize,
+                                                       String seach) {
+        Result<Page<UserProjectVo>> result = new Result<Page<UserProjectVo>>();
+        Page<UserProjectVo> pageList = new Page<UserProjectVo>(pageNo, pageSize);
+        Page<UserProjectVo> userProjectVoPage = talentInfoModelService.loadProjectlist(seach, pageList);
+        result.setResult(userProjectVoPage);
+        return result;
+    }
 
 }

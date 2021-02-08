@@ -6,6 +6,7 @@
     <!--@Table tb_hospital_project-->
     <id column="id" jdbcType="VARCHAR" property="id" />
     <result column="project_id" jdbcType="VARCHAR" property="projectId" />
+    <result column="hospital_id" jdbcType="VARCHAR" property="hospitalId"/>
     <result column="price_low" jdbcType="BIGINT" property="priceLow" />
     <result column="price_high" jdbcType="BIGINT" property="priceHigh" />
     <result column="create_time" jdbcType="VARCHAR" property="createTime" />
@@ -14,14 +15,28 @@
     <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
     <result column="del_flag" jdbcType="INTEGER" property="delFlag" />
   </resultMap>
+
+
+  <resultMap id="ProjectInfoVoResultMap" type="org.jeecg.modules.user.model.vo.ProjectInfoVo">
+    <!--@mbg.generated-->
+    <!--@Table tb_project_info-->
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="project_id" jdbcType="VARCHAR" property="projectId" />
+    <result column="project_name" jdbcType="VARCHAR" property="projectName" />
+    <result column="type" jdbcType="INTEGER" property="type" />
+    <result column="price_low" jdbcType="BIGINT" property="priceLow" />
+    <result column="price_high" jdbcType="BIGINT" property="priceHigh" />
+
+  </resultMap>
+
   <sql id="Base_Column_List">
     <!--@mbg.generated-->
-    id, project_id, price_low, price_high, create_time, update_time, create_by, update_by, 
+    id, project_id, hospital_id, price_low, price_high, create_time, update_time, create_by, update_by,
     del_flag
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     <!--@mbg.generated-->
-    select 
+    select
     <include refid="Base_Column_List" />
     from tb_hospital_project
     where id = #{id,jdbcType=VARCHAR}
@@ -33,12 +48,12 @@
   </delete>
   <insert id="insert" parameterType="org.jeecg.modules.user.model.HospitalProject">
     <!--@mbg.generated-->
-    insert into tb_hospital_project (id, project_id, price_low, 
-      price_high, create_time, update_time, 
+    insert into tb_hospital_project (id, project_id, price_low,
+      price_high, create_time, update_time,
       create_by, update_by, del_flag
       )
-    values (#{id,jdbcType=VARCHAR}, #{projectId,jdbcType=VARCHAR}, #{priceLow,jdbcType=BIGINT}, 
-      #{priceHigh,jdbcType=BIGINT}, #{createTime,jdbcType=VARCHAR}, #{updateTime,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=VARCHAR}, #{projectId,jdbcType=VARCHAR}, #{priceLow,jdbcType=BIGINT},
+      #{priceHigh,jdbcType=BIGINT}, #{createTime,jdbcType=VARCHAR}, #{updateTime,jdbcType=VARCHAR},
       #{createBy,jdbcType=VARCHAR}, #{updateBy,jdbcType=VARCHAR}, #{delFlag,jdbcType=INTEGER}
       )
   </insert>
@@ -148,4 +163,12 @@
       del_flag = #{delFlag,jdbcType=INTEGER}
     where id = #{id,jdbcType=VARCHAR}
   </update>
+
+  <select id="loadProjectByHospitalId" parameterType="string" resultMap="ProjectInfoVoResultMap">
+      select  a.hospital_id,a.price_low,a.price_high,b.project_name,b.type
+      from tb_hospital_project as a
+      LEFT JOIN tb_project_info as b on b.id =a.project_id
+        where hospital_id=#{hospitalId,jdbcType=VARCHAR} and type=1
+  </select>
+
 </mapper>
