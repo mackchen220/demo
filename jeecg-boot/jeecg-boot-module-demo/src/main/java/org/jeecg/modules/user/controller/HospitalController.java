@@ -3,6 +3,8 @@ package org.jeecg.modules.user.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.github.xiaoymin.knife4j.annotations.DynamicParameter;
+import com.github.xiaoymin.knife4j.annotations.DynamicResponseParameters;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -60,18 +62,42 @@ public class HospitalController {
         return Result.OK(map);
     }
 
-
-
-
-    @ApiOperation("达人严选列表接口")
+    @DynamicResponseParameters(name = "Result",properties = {
+            @DynamicParameter(name = "hospitalId",value = "机构id"),
+            @DynamicParameter(name = "name",value = "机构名称" ,example = "天马山医院"),
+            @DynamicParameter(name = "hospitalImage",value = "机构封面图" ),
+            @DynamicParameter(name = "content",value = "机构简介",example = "专门坑钱的医院"),
+            @DynamicParameter(name = "talents",value = "达人列表",example = "[{ \"nickName\": \"乌龟大师7\", \"headImage\": null, \"id\": \"806488232119238656\"}]\n"),
+    })
+    @ApiOperation("搜机构，机构列表接口")
     @RequestMapping(value = "/loadAllHospitlist", method = RequestMethod.POST)
     public Result<Page<HospitalModel>> loadAllHospitlist(@RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo,
-                                                     @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize) {
+                                                     @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize,
+                                                        String search) {
         Result<Page<HospitalModel>> result = new Result<Page<HospitalModel>>();
         Page<HospitalModel> pageList = new Page<HospitalModel>(pageNo, pageSize);
-        Page<HospitalModel> talentInfoVoPage = hospitalModelService.loadAllHospitlist(pageList);
+        Page<HospitalModel> talentInfoVoPage = hospitalModelService.loadAllHospitlist(pageList,search);
         result.setResult(talentInfoVoPage);
         return result;
     }
+
+    @DynamicResponseParameters(name = "Result",properties = {
+            @DynamicParameter(name = "hospitalId",value = "机构id"),
+            @DynamicParameter(name = "name",value = "机构名称" ,example = "天马山医院"),
+            @DynamicParameter(name = "hospitalImage",value = "机构封面图" ),
+            @DynamicParameter(name = "content",value = "机构简介",example = "专门坑钱的医院"),
+            @DynamicParameter(name = "talents",value = "达人列表",example = "[{ \"nickName\": \"乌龟大师7\", \"headImage\": null, \"id\": \"806488232119238656\"}]\n"),
+    })
+    @ApiOperation("搜机构推荐列表")
+    @RequestMapping(value = "/loadOtherHospitlist", method = RequestMethod.POST)
+    public Result<Page<HospitalModel>> loadOtherHospitlist(@RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo,
+                                                         @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize) {
+        Result<Page<HospitalModel>> result = new Result<Page<HospitalModel>>();
+        Page<HospitalModel> pageList = new Page<HospitalModel>(pageNo, pageSize);
+        Page<HospitalModel> talentInfoVoPage = hospitalModelService.loadAllHospitlist(pageList,null);
+        result.setResult(talentInfoVoPage);
+        return result;
+    }
+
 
 }

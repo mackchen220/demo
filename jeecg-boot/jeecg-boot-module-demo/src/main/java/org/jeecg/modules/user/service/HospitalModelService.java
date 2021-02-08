@@ -18,7 +18,10 @@ public interface HospitalModelService{
 
 
 
-    Page<HospitalModel> loadAllHospitlist(Page<HospitalModel> page);
+    Page<HospitalModel> loadAllHospitlist(Page<HospitalModel> page,String search);
+
+//    Page<HospitalModel> loadOtherHospitlist(Page<HospitalModel> page);
+
 
 
 }

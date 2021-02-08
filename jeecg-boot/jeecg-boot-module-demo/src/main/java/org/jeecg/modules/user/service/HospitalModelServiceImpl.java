@@ -41,9 +41,8 @@ public class HospitalModelServiceImpl implements HospitalModelService{
 
 
     @Override
-    public Page<HospitalModel> loadAllHospitlist(Page<HospitalModel> page)  {
-        List<HospitalModel> hospitalModels = hospitalModelMapper.loadHospitallist(page);
-
+    public Page<HospitalModel> loadAllHospitlist(Page<HospitalModel> page,String search)  {
+        List<HospitalModel> hospitalModels = hospitalModelMapper.loadHospitallist(page,search);
         List list = new ArrayList<>();
         for (HospitalModel hospitalModel : hospitalModels) {
             JSONObject jsonObject = new JSONObject();
@@ -57,4 +56,21 @@ public class HospitalModelServiceImpl implements HospitalModelService{
         }
         return page.setRecords(list);
     }
+
+//    @Override
+//    public Page<HospitalModel> loadOtherHospitlist(Page<HospitalModel> page) {
+//        List<HospitalModel> hospitalModels = hospitalModelMapper.l(page,"4");
+//        List list = new ArrayList<>();
+//        for (HospitalModel hospitalModel : hospitalModels) {
+//            JSONObject jsonObject = new JSONObject();
+//            jsonObject.put("hospitalId",hospitalModel.getId());
+//            jsonObject.put("hospitalImage",hospitalModel.getImageUrl());
+//            jsonObject.put("name",hospitalModel.getName());
+//            jsonObject.put("content",hospitalModel.getContent());
+//            List<UserModelVo> userModelVos = talentHospitalMapper.loadAllTalent(hospitalModel.getId());
+//            jsonObject.put("talents",userModelVos);
+//            list.add(jsonObject);
+//        }
+//        return page.setRecords(list);
+//    }
 }

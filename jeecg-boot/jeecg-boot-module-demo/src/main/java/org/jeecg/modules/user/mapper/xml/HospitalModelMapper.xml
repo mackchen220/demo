@@ -179,7 +179,18 @@
   </update>
 
   <select id="loadHospitallist" resultMap="BaseResultMap">
-    SELECT id,name,content,image_url from  tb_hospital where del_flag =0
+    SELECT id,name,content,image_url from  tb_hospital
+    where del_flag =0
+    <if test="search != null and search != ''">
+      and name LIKE '%${search}%'
+    </if>
   </select>
+
+
+<!--  <select id="loadOtherHospitlist" resultMap="BaseResultMap">-->
+<!--    SELECT id,name,content,image_url from  tb_hospital-->
+<!--    where del_flag =0-->
+<!--    limit ${limit}-->
+<!--  </select>-->
 
 </mapper>
