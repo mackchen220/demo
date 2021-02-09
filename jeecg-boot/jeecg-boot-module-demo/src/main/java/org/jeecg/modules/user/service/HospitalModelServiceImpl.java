@@ -2,6 +2,8 @@ package org.jeecg.modules.user.service;
 
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import org.jeecg.common.exception.JeecgBootException;
+import org.jeecg.modules.commons.util.ValidateTool;
 import org.jeecg.modules.user.mapper.HospitalModelMapper;
 import org.jeecg.modules.user.mapper.TalentHospitalMapper;
 import org.jeecg.modules.user.model.HospitalModel;
@@ -11,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -73,4 +76,21 @@ public class HospitalModelServiceImpl implements HospitalModelService{
 //        }
 //        return page.setRecords(list);
 //    }
+
+
+    @Override
+    public Map getHospitalInfo(String hospitalId) {
+        Map<Object, Object> map = new HashMap<>();
+        HospitalModel hospitalModel = hospitalModelMapper.selectByPrimaryKey(hospitalId);
+       if (ValidateTool.isNull(hospitalModel)){
+           throw new JeecgBootException("机构不存在，请重新选择");
+       }
+        map.put("content",hospitalModel.getContent());
+        map.put("imageUrl",hospitalModel.getImageUrl());
+        map.put("name",hospitalModel.getName());
+
+        List<UserModelVo> userModelVos = talentHospitalMapper.loadAllTalent(hospitalModel.getId());
+        map.put("talents",userModelVos);
+        return map;
+    }
 }

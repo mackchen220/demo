@@ -100,4 +100,17 @@ public class HospitalController {
     }
 
 
+    @ApiOperation("搜机构，机构详情")
+    @RequestMapping(value = "/getHospitalInfo", method = RequestMethod.POST)
+    public Result<Map> getHospitalInfo(@RequestParam(name = "hospitalId", defaultValue = "1") String hospitalId) {
+        Map map = hospitalModelService.getHospitalInfo(hospitalId);
+        return Result.OK(map);
+    }
+
+
+
+
+
+
+
 }

@@ -24,4 +24,5 @@ public interface HospitalModelService{
 
 
 
+    Map getHospitalInfo(String HospitalId);
 }
