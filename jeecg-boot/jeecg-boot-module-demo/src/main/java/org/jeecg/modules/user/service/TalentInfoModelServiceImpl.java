@@ -2,6 +2,7 @@ package org.jeecg.modules.user.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
+import org.jeecg.modules.commons.util.ValidateTool;
 import org.jeecg.modules.user.mapper.HospitalProjectMapper;
 import org.jeecg.modules.user.mapper.TalentHospitalMapper;
 import org.jeecg.modules.user.model.TalentHospital;
@@ -78,30 +79,42 @@ public class TalentInfoModelServiceImpl implements TalentInfoModelService {
 
     @Override
     public Page<UserProjectVo> loadProjectlist(String search, Page<UserProjectVo> pageList) {
-
-        //取出达人和机构id
-        List<UserProjectVo> talentHospitals = talentHospitalMapper.loadAllTalentId(pageList);
-        for (UserProjectVo model : talentHospitals) {
-            List<String> list = talentHospitalMapper.getHospitalIdByTalentId(model.getTalentId());
-            model.setHospitalId(list.get(new Random().nextInt(list.size())));
-            //获取达人的机构下任意一个项目
-            List<ProjectInfoVo> projectInfoVos = hospitalProjectMapper.loadProjectByHospitalId(model.getHospitalId());
-            //随机一个项目
-            if (projectInfoVos.size() > 0) {
-                ProjectInfoVo projectInfoVo = projectInfoVos.get(new Random().nextInt(projectInfoVos.size()));
-                model.setPriceHigh(projectInfoVo.getPriceHigh());
-                model.setPriceLow(projectInfoVo.getPriceLow());
-                model.setProjectName(projectInfoVo.getProjectName());
+        List<UserProjectVo> talentHospitals=null;
+        if (ValidateTool.isNull(search)){
+            //取出达人和机构id
+            talentHospitals= talentHospitalMapper.loadAllTalentId(pageList);
+            for (UserProjectVo model : talentHospitals) {
+                List<String> list = talentHospitalMapper.getHospitalIdByTalentId(model.getTalentId());
+                model.setHospitalId(list.get(new Random().nextInt(list.size())));
+                //获取达人的机构下任意一个项目
+                List<ProjectInfoVo> projectInfoVos = hospitalProjectMapper.loadProjectByHospitalId(model.getHospitalId());
+                //随机一个项目
+                if (projectInfoVos.size() > 0) {
+                    ProjectInfoVo projectInfoVo = projectInfoVos.get(new Random().nextInt(projectInfoVos.size()));
+                    model.setPriceHigh(projectInfoVo.getPriceHigh());
+                    model.setPriceLow(projectInfoVo.getPriceLow());
+                    model.setProjectName(projectInfoVo.getProjectName());
+                }
+            }
+        }else {
+            //按条件搜索包含此项目的机构
+             talentHospitals = talentHospitalMapper.getHospitalIdByProjectName(pageList, search);
+            for (UserProjectVo talentHospital : talentHospitals) {
+                //根据机构随机取出一个达人信息
+                UserProjectVo userProjectVo = talentHospitalMapper.loadAllTalentByHospitalId(talentHospital.getHospitalId());
+                if (ValidateTool.isNotNull(userProjectVo)){
+                    talentHospital.setHeadImage(userProjectVo.getHeadImage());
+                    talentHospital.setNickName(userProjectVo.getNickName());
+                    talentHospital.setUserName(userProjectVo.getUserName());
+                    talentHospital.setNum(userProjectVo.getNum());
+                    talentHospital.setAverageScore(userProjectVo.getAverageScore());
+                    talentHospital.setTalentId(userProjectVo.getTalentId());
+                }
             }
         }
+
         return pageList.setRecords(talentHospitals);
+
     }
 
-//
-//    public static void main(String[] args) {
-//        for (int i = 0; i < 100; i++) {
-//            System.out.println(new Random().nextInt(3));;
-//
-//        }
-//    }
 }

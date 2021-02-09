@@ -79,12 +79,25 @@ public class TalentController {
     @RequestMapping(value = "/getProjectlist", method = RequestMethod.POST)
     public Result<Page<UserProjectVo>> loadProjectlist(@RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo,
                                                        @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize,
-                                                       String seach) {
+                                                       String search) {
         Result<Page<UserProjectVo>> result = new Result<Page<UserProjectVo>>();
         Page<UserProjectVo> pageList = new Page<UserProjectVo>(pageNo, pageSize);
-        Page<UserProjectVo> userProjectVoPage = talentInfoModelService.loadProjectlist(seach, pageList);
+        Page<UserProjectVo> userProjectVoPage = talentInfoModelService.loadProjectlist(search, pageList);
         result.setResult(userProjectVoPage);
         return result;
     }
+
+
+    @ApiOperation("搜机构接口")
+    @RequestMapping(value = "/getOtherProjectlist", method = RequestMethod.POST)
+    public Result<Page<UserProjectVo>> getOtherProjectlist() {
+        Result<Page<UserProjectVo>> result = new Result<Page<UserProjectVo>>();
+        Page<UserProjectVo> pageList = new Page<UserProjectVo>(1, 4);
+        Page<UserProjectVo> userProjectVoPage = talentInfoModelService.loadProjectlist(null, pageList);
+        result.setResult(userProjectVoPage);
+        return result;
+    }
+
+
 
 }

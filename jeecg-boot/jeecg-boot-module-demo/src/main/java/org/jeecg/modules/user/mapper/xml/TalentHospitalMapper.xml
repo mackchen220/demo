@@ -161,10 +161,39 @@
       SELECT  DISTINCT talent_id from  tb_talent_hospital where del_flag= 0) as a
       LEFT JOIN tb_talent_info as b on b.user_id =a.talent_id
       LEFT JOIN tb_user as c on a.talent_id =c.id
+<!--      <where>-->
+<!--        <if test="search != null and search != ''">-->
+<!--          nick_name LIKE '%${search}%'-->
+<!--        </if>-->
+<!--      </where>-->
       ORDER BY b.average_score DESC
   </select>
+
+
+  <select id="loadAllTalentByHospitalId" resultMap="UserProjectVoMap" parameterType="string">
+  select c.nick_name,c.head_image,c.user_name,a.talent_id ,b.average_score,b.num  from (
+  SELECT  DISTINCT talent_id from  tb_talent_hospital where hospital_id =#{hospitalId,jdbcType=VARCHAR} ) as a
+  LEFT JOIN tb_talent_info as b on b.user_id =a.talent_id
+  LEFT JOIN tb_user as c on a.talent_id =c.id
+  ORDER BY b.average_score DESC limit 1
+  </select>
+
+
+
+
 
   <select id="getHospitalIdByTalentId" parameterType="string" resultType="string">
     select hospital_id from tb_talent_hospital where talent_id =#{talentId,jdbcType=VARCHAR}
   </select>
+
+  <select id="getHospitalIdByProjectName" parameterType="string" resultMap="UserProjectVoMap">
+        SELECT a.hospital_id ,a.project_id,b.price_low ,b.price_high,c.project_name from (
+            SELECT hospital_id,project_id from  tb_hospital_project where project_id in(
+            SELECT id from tb_project_info where project_name LIKE '%${search}%'  )
+    ) as a LEFT JOIN tb_hospital_project as b
+    on a.	project_id =b.project_id and a.hospital_id =b.hospital_id
+    LEFT JOIN tb_project_info c on c.id =a.project_id
+  </select>
+
+
 </mapper>

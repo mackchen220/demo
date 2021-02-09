@@ -28,6 +28,15 @@ public interface TalentHospitalMapper {
 
     List<UserProjectVo> loadAllTalentId(Page<UserProjectVo> pageList);
 
+    UserProjectVo loadAllTalentByHospitalId(@Param("hospitalId") String hospitalId);
+
+
     List<String> getHospitalIdByTalentId(@Param("talentId")String talentId);
+
+
+    List<UserProjectVo> getHospitalIdByProjectName(Page<UserProjectVo> pageList,@Param("search")String search);
+
+
+
 
 }
