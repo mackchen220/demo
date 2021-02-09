@@ -16,5 +16,8 @@ public interface UserModelService {
 
     String getUserIdByToken(String token);
 
+    void updateUserInfo(UserModel userModel, String nickName, String headImage, String content);
+
+    Map loadUserInfo(String token);
 
 }

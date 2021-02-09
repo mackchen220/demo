@@ -75,7 +75,7 @@ public class TalentController {
 
 
 
-    @ApiOperation("搜机构接口")
+    @ApiOperation("搜项目接口，和首页搜索，达人一栏共用接口")
     @RequestMapping(value = "/getProjectlist", method = RequestMethod.POST)
     public Result<Page<UserProjectVo>> loadProjectlist(@RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo,
                                                        @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize,
@@ -88,7 +88,7 @@ public class TalentController {
     }
 
 
-    @ApiOperation("搜机构接口")
+    @ApiOperation("搜项目可能感兴趣的接口")
     @RequestMapping(value = "/getOtherProjectlist", method = RequestMethod.POST)
     public Result<Page<UserProjectVo>> getOtherProjectlist() {
         Result<Page<UserProjectVo>> result = new Result<Page<UserProjectVo>>();

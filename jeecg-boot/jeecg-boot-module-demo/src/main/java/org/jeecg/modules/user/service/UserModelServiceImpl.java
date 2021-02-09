@@ -19,6 +19,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
+import java.util.Map;
 
 @Log4j2
 @Service
@@ -111,6 +113,43 @@ public class UserModelServiceImpl implements UserModelService {
         object.put("headImage", userModel.getHeadImage());
         object.put("nickname", userModel.getNickName());
         return object;
+    }
+
+    @Override
+    public Map loadUserInfo(String token) {
+        UserModel model = getUserModelByToken(token);
+        Map<Object, Object> map = new HashMap<>();
+        map.put("headImage",model.getHeadImage());
+        map.put("nickName",model.getNickName());
+        map.put("sige",model.getSign());
+
+        String phone="";
+        if (ValidateTool.isNotNull(model.getPhone())){
+            phone=model.getPhone().replace(model.getPhone().substring(3,7),"****");
+        }
+        map.put("phone",phone);
+        map.put("id",model.getId());
+        return map;
+    }
+
+
+    @Override
+    public void updateUserInfo(UserModel userModel, String nickName, String headImage, String content) {
+        UserModel userModel1 = new UserModel();
+        userModel1.setId(userModel.getId());
+        if (ValidateTool.isNotNull(headImage)){
+            userModel1.setHeadImage(headImage);
+        }
+        if (ValidateTool.isNotNull(nickName)){
+            userModel1.setHeadImage(headImage);
+        }
+        if (ValidateTool.isNotNull(content)){
+            userModel1.setSign(content);
+        }
+        if (ValidateTool.isNull(content)&&ValidateTool.isNull(content)&&ValidateTool.isNull(content)){
+            throw new JeecgBootException("修改失败");
+        }
+        userModelMapper.updateByPrimaryKeySelective(userModel1);
     }
 
 

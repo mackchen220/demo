@@ -116,5 +116,4 @@ public class TalentInfoModelServiceImpl implements TalentInfoModelService {
         return pageList.setRecords(talentHospitals);
 
     }
-
 }

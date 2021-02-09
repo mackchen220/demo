@@ -5,6 +5,7 @@ import org.jeecg.common.api.vo.Result;
 import org.jeecg.common.exception.JeecgBootException;
 import org.jeecg.modules.commons.Constant;
 import org.jeecg.modules.commons.util.SeqUtils;
+import org.jeecg.modules.commons.util.ValidateTool;
 import org.jeecg.modules.user.mapper.UserModelMapper;
 import org.jeecg.modules.user.model.UserModel;
 import org.springframework.stereotype.Service;
@@ -72,5 +73,6 @@ public class UserFocusModelServiceImpl implements UserFocusModelService{
     public int updateByPrimaryKey(UserFocusModel record) {
         return userFocusModelMapper.updateByPrimaryKey(record);
     }
+
 
 }

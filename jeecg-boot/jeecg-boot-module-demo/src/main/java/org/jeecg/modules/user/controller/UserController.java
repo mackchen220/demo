@@ -22,6 +22,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -119,7 +120,21 @@ public class UserController {
 
 
 
+    @ApiOperation("修改用户信息")
+    @RequestMapping(value = "/updateUserInfo", method = RequestMethod.POST)
+    public Result updateUserInfo(String nickName,String headImage,String sign,String token) {
+        UserModel userModel = userModelService.getUserModelByToken(token);
+        userModelService.updateUserInfo(userModel, nickName, headImage, sign);
+        return Result.OK("修改成功",null);
+    }
 
+
+    @ApiOperation("我的页面点击头像加载用户信息")
+    @RequestMapping(value = "/loadUserInfo", method = RequestMethod.POST)
+    public Result<Map> loadUserInfo(String token) {
+        Map map = userModelService.loadUserInfo(token);
+        return Result.OK(map);
+    }
 
 
 
