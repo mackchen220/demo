@@ -13,4 +13,8 @@ public interface UserFocusModelService{
 
     int updateByPrimaryKey(UserFocusModel record);
 
+    int getFansNum(String userId);
+
+    boolean isFans(String userId, String mineId);
+
 }

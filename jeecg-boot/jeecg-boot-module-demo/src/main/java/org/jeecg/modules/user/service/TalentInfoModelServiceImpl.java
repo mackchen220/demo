@@ -70,6 +70,16 @@ public class TalentInfoModelServiceImpl implements TalentInfoModelService {
         return pageList.setRecords(talentInfoVos);
     }
 
+    @Override
+    public TalentInfoModel getTalentByUserId(String userId) {
+        return talentInfoModelMapper.selectByUserId(userId);
+    }
+
+    @Override
+    public int addAdvisoryNum(String userId) {
+        return talentInfoModelMapper.increase(userId, 1);
+    }
+
 
     @Override
     public List loadOtherTalentList(String search) {

@@ -15,9 +15,16 @@ public interface CommunityModelMapper{
 
     CommunityModel selectByPrimaryKey(String id);
 
-    int updateByPrimaryKeySelective(CommunityModel record);
+    int updateSelective(CommunityModel record);
 
     int updateByPrimaryKey(CommunityModel record);
 
     List<CommunityModel> loadCommunityListByType(Page<CommunityModel> page,@Param("type") int type);
+
+    List<CommunityModel> getListByUserId(Page<CommunityModel> page, @Param("userId") String userId);
+
+    List<CommunityModel> selectByFocusUserId(Page<CommunityModel> page, @Param("userId") String userId);
+
+    List<CommunityModel> getListOrderByLikeNum(Page<CommunityModel> page, @Param("type") Integer type, @Param("city") String city);
+
 }

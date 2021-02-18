@@ -24,6 +24,9 @@
     <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
     <result column="del_flag" jdbcType="TINYINT" property="delFlag" />
     <result column="num" jdbcType="INTEGER" property="num" />
+    <result column="order_num" jdbcType="BIGINT" property="orderNum" />
+    <result column="advisory_num" jdbcType="BIGINT" property="advisoryNum" />
+    <result column="like_num" jdbcType="BIGINT" property="likeNum" />
   </resultMap>
 
 
@@ -53,7 +56,7 @@
     <!--@mbg.generated-->
     id, user_id, effect, attitude, price, average_score, deposit, `name`, id_card, city,
     `time`, id_status, authenticated, contract_status, create_time, update_time, create_by,
-    update_by, del_flag
+    update_by, del_flag, order_num, advisory_num, like_num
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     <!--@mbg.generated-->
@@ -145,6 +148,15 @@
       <if test="delFlag != null">
         del_flag,
       </if>
+      <if test="orderNum != null">
+        order_num,
+      </if>
+      <if test="advisoryNum != null">
+        advisory_num,
+      </if>
+      <if test="likeNum != null">
+        like_num,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -203,6 +215,15 @@
       </if>
       <if test="delFlag != null">
         #{delFlag,jdbcType=TINYINT},
+      </if>
+      <if test="orderNum != null">
+        #{orderNum},
+      </if>
+      <if test="advisoryNum != null">
+        #{advisoryNum},
+      </if>
+      <if test="likeNum != null">
+        #{likeNum},
       </if>
     </trim>
   </insert>
@@ -264,6 +285,15 @@
       <if test="delFlag != null">
         del_flag = #{delFlag,jdbcType=TINYINT},
       </if>
+      <if test="orderNum != null">
+        order_num = #{orderNum},
+      </if>
+      <if test="advisoryNum != null">
+        advisory_num = #{advisoryNum},
+      </if>
+      <if test="likeNum != null">
+        like_num = #{likeNum},
+      </if>
     </set>
     where id = #{id,jdbcType=VARCHAR}
   </update>
@@ -315,6 +345,16 @@
     </where>
     ORDER BY a.average_score desc
   </select>
+    <select id="selectByUserId" resultMap="BaseResultMap">
+      select <include refid="Base_Column_List"/>
+      from tb_talent_info
+      where user_id = #{userId} and del_flag = 0
+    </select>
+  <update id="increase">
+    update tb_talent_info
+    set advisory_num = advisory_num + #{incNum}
+    where user_id = #{userId}
+  </update>
 
 
   <select id="loadOtherTalentList" resultMap="listTalentMap" parameterType="string">

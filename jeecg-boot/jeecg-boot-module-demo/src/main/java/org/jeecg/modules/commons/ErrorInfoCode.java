@@ -16,16 +16,17 @@ public enum ErrorInfoCode {
 	/** 请求超时 */
 	TIME_OUT (1003, "请求处理超时"),
 	/** 签名校验失败 */
-	SIGN_ERROR(26000, "签名校验失败"),
+	SIGN_ERROR(1004, "签名校验失败"),
 	/** http调用失败 */
 	HTTP_EXECUTE_ERROR (1005,"http调用错误，execute error"),
 	/** http调用异常 */
-	HTTP_EC_ERROR (1007, "http调用成功，但返回错误数据,错误号为{1}"),
+	HTTP_EC_ERROR (1006, "http调用成功，但返回错误数据,错误号为{1}"),
 	/** 权限异常 */
-	NO_LOGIN_ERROR(40002, "未登录"),
+	NO_LOGIN_ERROR(1007, "未登录"),
 	/** 服务器内部异常 */
-	UN_KNOW_ERROR(99999, "网络异常，请稍后重试"),
-
+	UN_KNOW_ERROR(1999, "网络异常，请稍后重试"),
+	/** 查询类型不存在 */
+	SEARCH_TYPE_ERROR(2001, "查询类型不存在"),
 	;
 
 	private int code;

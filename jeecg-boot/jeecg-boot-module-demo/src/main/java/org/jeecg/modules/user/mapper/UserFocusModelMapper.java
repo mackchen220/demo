@@ -21,5 +21,8 @@ public interface UserFocusModelMapper {
     int updatedDelFlag(@Param("userId") String userId,@Param("focusUserId") String focusUserId,@Param("flag") String flag);
 
 
+    int selectCountByFocusId(String userId);
+
+    int selectUserFocus(@Param("userId") String userId, @Param("fansId") String fansId);
 
 }

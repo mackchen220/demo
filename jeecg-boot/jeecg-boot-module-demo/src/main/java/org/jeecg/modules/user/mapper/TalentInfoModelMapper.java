@@ -7,7 +7,6 @@ import org.jeecg.modules.user.model.UserModel;
 import org.jeecg.modules.user.model.vo.TalentInfoVo;
 
 import java.util.List;
-import java.util.Map;
 
 public interface TalentInfoModelMapper {
 
@@ -30,6 +29,8 @@ public interface TalentInfoModelMapper {
 
     List<TalentInfoVo> loadOtherTalentList(@Param("search") String search,@Param("limit") String limit);
 
+    TalentInfoModel selectByUserId(String userId);
 
+    int increase(@Param("userId") String userId, @Param("incNum") int incNum);
 
 }

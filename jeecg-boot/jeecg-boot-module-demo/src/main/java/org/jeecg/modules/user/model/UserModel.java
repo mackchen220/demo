@@ -161,4 +161,7 @@ public class UserModel {
      * 是否达人 1是 0不是
      */
     private String isTalent;
+
+    private String province;
+    private String city;
 }

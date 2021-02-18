@@ -121,7 +121,22 @@ public class TalentInfoModel {
     @ApiModelProperty(value="签约机构数量")
     private String num;
 
+    /**
+     * 接单数量
+     */
+    @ApiModelProperty(value="接单数量")
+    private Integer orderNum;
 
+    /**
+     * 咨询数量
+     */
+    @ApiModelProperty(value="咨询数量")
+    private String advisoryNum;
 
+    /**
+     * 点赞数量
+     */
+    @ApiModelProperty(value="点赞数量")
+    private String likeNum;
 
 }

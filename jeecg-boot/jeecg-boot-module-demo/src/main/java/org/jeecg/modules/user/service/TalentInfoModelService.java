@@ -31,4 +31,8 @@ public interface TalentInfoModelService{
 
     Page<UserProjectVo> loadProjectlist(String search,Page<UserProjectVo> pageList);
 
+    TalentInfoModel getTalentByUserId(String userId);
+
+    int addAdvisoryNum(String userId);
+
 }

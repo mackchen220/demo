@@ -1,6 +1,7 @@
 package org.jeecg.modules.community.service;
 
 import cn.hutool.core.bean.BeanUtil;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.jeecg.modules.commons.util.SeqUtils;
 import org.jeecg.modules.user.model.UserModel;
@@ -11,6 +12,7 @@ import org.jeecg.modules.community.model.CommunityModel;
 import org.jeecg.modules.community.mapper.CommunityModelMapper;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -47,7 +49,7 @@ public class CommunityModelServiceImpl implements CommunityModelService{
 
     @Override
     public int updateByPrimaryKeySelective(CommunityModel record) {
-        return communityModelMapper.updateByPrimaryKeySelective(record);
+        return communityModelMapper.updateSelective(record);
     }
 
     @Override
@@ -74,4 +76,11 @@ public class CommunityModelServiceImpl implements CommunityModelService{
         map.remove("delFlag");
         return map;
     }
+
+    @Override
+    public IPage<CommunityModel> getListByUserId(Page<CommunityModel> page, String userId) {
+        List<CommunityModel> list = communityModelMapper.getListByUserId(page, userId);
+        return page.setRecords(list);
+    }
+
 }
