@@ -21,4 +21,5 @@ public interface ProjectMapper {
 
     String getId();
 
+    String getProjectName(@Param("projectId") String projectId);
 }

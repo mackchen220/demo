@@ -124,5 +124,10 @@
   </select>
 
 
-
+<select id="getProjectName" parameterType="string" resultType="string">
+  	SELECT name from tb_project where
+  	id =(
+  	SELECT project_id from tb_project_info
+  	 where id =#{projectId,jdbcType=VARCHAR})
+</select>
 </mapper>

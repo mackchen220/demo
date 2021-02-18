@@ -15,6 +15,8 @@ import org.springframework.web.servlet.NoHandlerFoundException;
 
 import lombok.extern.slf4j.Slf4j;
 
+import java.sql.SQLException;
+
 /**
  * 异常处理器
  *
@@ -37,6 +39,14 @@ public class JeecgBootExceptionHandler {
 		return Result.error(e.getMessage());
 	}
 
+
+
+
+
+
+
+
+
 	@ExceptionHandler(NoHandlerFoundException.class)
 	public Result<?> handlerNoFoundException(Exception e) {
 		log.error(e.getMessage(), e);
@@ -57,8 +67,10 @@ public class JeecgBootExceptionHandler {
 
 	@ExceptionHandler(Exception.class)
 	public Result<?> handleException(Exception e){
-		log.error(e.getMessage(), e);
-		return Result.error("操作失败，"+e.getMessage());
+
+		log.error("业务异常 " ,e.getMessage(),e);
+
+		return Result.error("网络异常，请稍后重试");
 	}
 
 	/**

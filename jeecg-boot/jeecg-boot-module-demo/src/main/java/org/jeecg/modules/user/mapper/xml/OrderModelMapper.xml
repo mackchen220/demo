@@ -1,0 +1,315 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.jeecg.modules.user.mapper.OrderModelMapper">
+  <resultMap id="BaseResultMap" type="org.jeecg.modules.user.model.OrderModel">
+    <!--@mbg.generated-->
+    <!--@Table tb_order-->
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="user_id" jdbcType="VARCHAR" property="userId" />
+    <result column="operation_type" jdbcType="INTEGER" property="operationType" />
+    <result column="amount" jdbcType="BIGINT" property="amount" />
+    <result column="inside_card_num" jdbcType="VARCHAR" property="insideCardNum" />
+    <result column="checker" jdbcType="VARCHAR" property="checker" />
+    <result column="check_dt" jdbcType="VARCHAR" property="checkDt" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="pay_money" jdbcType="BIGINT" property="payMoney" />
+    <result column="outside_card_num" jdbcType="VARCHAR" property="outsideCardNum" />
+    <result column="opt_status" jdbcType="TINYINT" property="optStatus" />
+    <result column="sys_ins_name" jdbcType="VARCHAR" property="sysInsName" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="VARCHAR" property="updateTime" />
+    <result column="create_by" jdbcType="VARCHAR" property="createBy" />
+    <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
+    <result column="del_flag" jdbcType="INTEGER" property="delFlag" />
+    <result column="num" jdbcType="INTEGER" property="num" />
+    <result column="hospital_id" jdbcType="VARCHAR" property="hospitalId" />
+    <result column="talent_id" jdbcType="VARCHAR" property="talentId" />
+  </resultMap>
+
+
+
+  <resultMap id="voResultMap" type="org.jeecg.modules.user.model.vo.OrderModelVo">
+    <!--@mbg.generated-->
+    <!--@Table tb_order-->
+    <id column="id" jdbcType="VARCHAR" property="id" />
+<!--    <result column="user_id" jdbcType="VARCHAR" property="userId" />-->
+    <result column="operation_type" jdbcType="INTEGER" property="operationType" />
+<!--    <result column="amount" jdbcType="BIGINT" property="amount" />-->
+<!--    <result column="inside_card_num" jdbcType="VARCHAR" property="insideCardNum" />-->
+<!--    <result column="checker" jdbcType="VARCHAR" property="checker" />-->
+<!--    <result column="check_dt" jdbcType="VARCHAR" property="checkDt" />-->
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+<!--    <result column="status" jdbcType="INTEGER" property="status" />-->
+    <result column="pay_money" jdbcType="BIGINT" property="payMoney" />
+<!--    <result column="outside_card_num" jdbcType="VARCHAR" property="outsideCardNum" />-->
+<!--    <result column="opt_status" jdbcType="TINYINT" property="optStatus" />-->
+<!--    <result column="sys_ins_name" jdbcType="VARCHAR" property="sysInsName" />-->
+    <result column="content" jdbcType="VARCHAR" property="content" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="num" jdbcType="INTEGER" property="num" />
+    <result column="hospital_id" jdbcType="VARCHAR" property="hospitalId" />
+    <result column="course_image" jdbcType="VARCHAR" property="courseImage" />
+    <result column="project_image" jdbcType="VARCHAR" property="projectImage" />
+
+  </resultMap>
+
+
+
+
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    id, user_id, operation_type, amount, inside_card_num, checker, check_dt, remark,
+    `status`, pay_money, outside_card_num, opt_status, sys_ins_name, content, create_time,
+    update_time, create_by, update_by, del_flag, num, hospital_id, talent_id, project_id ,course_id
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    <!--@mbg.generated-->
+    select
+    <include refid="Base_Column_List" />
+    from tb_order
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+
+  <insert id="insertSelective" parameterType="org.jeecg.modules.user.model.OrderModel">
+    <!--@mbg.generated-->
+    insert into tb_order
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="operationType != null">
+        operation_type,
+      </if>
+      <if test="amount != null">
+        amount,
+      </if>
+      <if test="insideCardNum != null">
+        inside_card_num,
+      </if>
+      <if test="checker != null">
+        checker,
+      </if>
+      <if test="checkDt != null">
+        check_dt,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+      <if test="status != null">
+        `status`,
+      </if>
+      <if test="payMoney != null">
+        pay_money,
+      </if>
+      <if test="outsideCardNum != null">
+        outside_card_num,
+      </if>
+      <if test="optStatus != null">
+        opt_status,
+      </if>
+      <if test="sysInsName != null">
+        sys_ins_name,
+      </if>
+      <if test="content != null">
+        content,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="createBy != null">
+        create_by,
+      </if>
+      <if test="updateBy != null">
+        update_by,
+      </if>
+      <if test="delFlag != null">
+        del_flag,
+      </if>
+      <if test="num != null">
+        num,
+      </if>
+      <if test="hospitalId != null">
+        hospital_id,
+      </if>
+      <if test="talentId != null">
+        talent_id,
+      </if>
+      <if test="courseId != null">
+        course_id,
+      </if>
+      <if test="projectId != null">
+        project_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="operationType != null">
+        #{operationType,jdbcType=INTEGER},
+      </if>
+      <if test="amount != null">
+        #{amount,jdbcType=BIGINT},
+      </if>
+      <if test="insideCardNum != null">
+        #{insideCardNum,jdbcType=VARCHAR},
+      </if>
+      <if test="checker != null">
+        #{checker,jdbcType=VARCHAR},
+      </if>
+      <if test="checkDt != null">
+        #{checkDt,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="payMoney != null">
+        #{payMoney,jdbcType=BIGINT},
+      </if>
+      <if test="outsideCardNum != null">
+        #{outsideCardNum,jdbcType=VARCHAR},
+      </if>
+      <if test="optStatus != null">
+        #{optStatus,jdbcType=TINYINT},
+      </if>
+      <if test="sysInsName != null">
+        #{sysInsName,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null">
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=VARCHAR},
+      </if>
+      <if test="createBy != null">
+        #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateBy != null">
+        #{updateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="delFlag != null">
+        #{delFlag,jdbcType=INTEGER},
+      </if>
+      <if test="num != null">
+        #{num,jdbcType=INTEGER},
+      </if>
+      <if test="hospitalId != null">
+        #{hospitalId,jdbcType=VARCHAR},
+      </if>
+      <if test="talentId != null">
+        #{talentId,jdbcType=VARCHAR},
+      </if>
+      <if test="projectId != null">
+        #{projectId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="org.jeecg.modules.user.model.OrderModel">
+    <!--@mbg.generated-->
+    update tb_order
+    <set>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="operationType != null">
+        operation_type = #{operationType,jdbcType=INTEGER},
+      </if>
+      <if test="amount != null">
+        amount = #{amount,jdbcType=BIGINT},
+      </if>
+      <if test="insideCardNum != null">
+        inside_card_num = #{insideCardNum,jdbcType=VARCHAR},
+      </if>
+      <if test="checker != null">
+        checker = #{checker,jdbcType=VARCHAR},
+      </if>
+      <if test="checkDt != null">
+        check_dt = #{checkDt,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        `status` = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="payMoney != null">
+        pay_money = #{payMoney,jdbcType=BIGINT},
+      </if>
+      <if test="outsideCardNum != null">
+        outside_card_num = #{outsideCardNum,jdbcType=VARCHAR},
+      </if>
+      <if test="optStatus != null">
+        opt_status = #{optStatus,jdbcType=TINYINT},
+      </if>
+      <if test="sysInsName != null">
+        sys_ins_name = #{sysInsName,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null">
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=VARCHAR},
+      </if>
+      <if test="createBy != null">
+        create_by = #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateBy != null">
+        update_by = #{updateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="delFlag != null">
+        del_flag = #{delFlag,jdbcType=INTEGER},
+      </if>
+      <if test="num != null">
+        num = #{num,jdbcType=INTEGER},
+      </if>
+      <if test="hospitalId != null">
+        hospital_id = #{hospitalId,jdbcType=VARCHAR},
+      </if>
+      <if test="talentId != null">
+        talent_id = #{talentId,jdbcType=VARCHAR},
+      </if>
+      <if test="courseId != null">
+        course_id = #{courseId,jdbcType=VARCHAR},
+      </if>
+      <if test="projectId != null">
+        project_id= #{projectId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+
+  <select id="loadOrderList" parameterType="string" resultMap="voResultMap">
+    SELECT  a.id, a.user_id ,a.operation_type, a.amount, a.remark,
+    a.`status`, a.pay_money, a.opt_status, a.content, a.create_time,  a.num, a.hospital_id, a.project_id ,a.course_id,b.image as course_image
+    from tb_order as a LEFT JOIN tb_course b on a.course_id = b.id
+    where user_id = #{userId,jdbcType=VARCHAR}
+    <if test="type != null and type != ''">
+      and opt_status= #{type,jdbcType=VARCHAR}
+    </if>
+
+  </select>
+
+
+
+
+</mapper>

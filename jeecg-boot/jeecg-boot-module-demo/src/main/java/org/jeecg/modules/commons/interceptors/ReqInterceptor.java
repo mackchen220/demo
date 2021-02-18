@@ -96,7 +96,7 @@ public class ReqInterceptor implements HandlerInterceptor {
 
     private boolean checkSign(HttpServletRequest request) {
 
-        //接口验签暂时不做
+        //TODO 接口验签暂时不做
 
         String[] unAuthList = {"/sys","/online","/mock","/jmreport"
                 ,"/bigscreen","/test/bigScreen","/swagger","/webjars","/druid","/generic","/doc.html"};

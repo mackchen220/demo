@@ -332,3 +332,34 @@ CREATE TABLE `tb_hospital` (
 `del_flag` tinyint(1) NOT NULL DEFAULT '0' COMMENT '删除标识0-正常,1-已删除',
 PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='机构(医院)表';
+
+
+
+DROP TABLE IF EXISTS `tb_order`;
+CREATE TABLE `tb_order` (
+  `id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `user_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '账号',
+  `operation_type` int NOT NULL COMMENT '1-医美项目,2课程 ,3提现',
+  `amount` bigint DEFAULT NULL COMMENT '用户请求金额，单位：分',
+  `inside_card_num` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '充值卡号',
+  `checker` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '提现审核人',
+  `check_dt` datetime DEFAULT NULL COMMENT '审核时间',
+  `remark` varchar(121) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '备注',
+  `status` int DEFAULT '1' COMMENT '订单状态1：未审核 2：成功 3：失败',
+  `pay_money` bigint DEFAULT '0' COMMENT '系统根据用户请求金额生成实际支付金额，单位：分',
+  `outside_card_num` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '提现银行卡号',
+  `opt_status` tinyint NOT NULL DEFAULT '0' COMMENT '操作状态0-未确认 1-已确认 2-成功 3-已取消 4-锁定 5-恢复 6-拒绝 ',
+  `sys_ins_name` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '系统收款银行-收款人',
+  `content` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '订单简介',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '更新日期',
+  `create_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '创建人',
+  `update_by` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '更新人',
+  `del_flag` int NOT NULL DEFAULT '0' COMMENT '删除标识0-正常,1-已删除',
+  `num` int DEFAULT '1' COMMENT '商品数量',
+  `hospital_id` varchar(32) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '机构id',
+  `talent_id` varchar(32) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '达人id',
+  `course_id` varchar(32) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '课程id',
+  `project_id` varchar(256) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '项目id',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='订单表';
