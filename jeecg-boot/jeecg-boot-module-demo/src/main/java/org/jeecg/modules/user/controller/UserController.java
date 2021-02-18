@@ -2,6 +2,8 @@ package org.jeecg.modules.user.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.github.xiaoymin.knife4j.annotations.DynamicParameter;
+import com.github.xiaoymin.knife4j.annotations.DynamicResponseParameters;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -56,6 +58,13 @@ public class UserController {
 //    }
 
 
+
+    @DynamicResponseParameters(name = "login",properties = {
+            @DynamicParameter(name = "headImage",value = "头像"),
+            @DynamicParameter(name = "nickname",value = "昵称" ),
+            @DynamicParameter(name = "token",value = "token 登录以后每个`接口都需要token参数"
+                    ,example = "88291a6fbf21a186165037f866aedc63,3c1138239ddca40a8f49d8a89d78c6f3"),
+    })
     @ApiOperation("前台用户登录接口")
     @RequestMapping(value = "/userLogin", method = RequestMethod.POST)
     public Result<JSONObject> login(String inviteCode, String captcha, String phone, String s) {

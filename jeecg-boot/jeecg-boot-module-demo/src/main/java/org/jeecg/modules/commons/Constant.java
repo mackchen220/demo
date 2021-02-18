@@ -3,7 +3,7 @@ package org.jeecg.modules.commons;
 public class Constant {
 
 
-    public final static String SIGN_KEY = "!@#$%^";
+    public final static String SIGN_KEY = "hengyang!@#$%^";
 
     //是否有效 1.有效 0.无效
     public static final Integer IS_VALID_TRUE = 1;

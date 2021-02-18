@@ -1,6 +1,8 @@
 package org.jeecg.modules.index.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.github.xiaoymin.knife4j.annotations.DynamicParameter;
+import com.github.xiaoymin.knife4j.annotations.DynamicResponseParameters;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -28,6 +30,8 @@ public class CaptchaController {
     @Autowired
     private RedisUtil redisUtil;
 
+
+    @DynamicParameter(name = "code",value = "验证码" ,example = "121112")
     @ApiOperation("获取验证码接口")
     @RequestMapping(value = "/getCaptchaCode", method = RequestMethod.POST)
     public Result<JSONObject> getCaptchaCode(String phone) {

@@ -1,5 +1,7 @@
 package org.jeecg.modules.index.controller;
 
+import com.github.xiaoymin.knife4j.annotations.DynamicParameter;
+import com.github.xiaoymin.knife4j.annotations.DynamicResponseParameters;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -26,6 +29,11 @@ public class IndexController {
     @Autowired
     private RedisUtil redisUtil;
 
+    @DynamicResponseParameters(name = "indexResult",properties = {
+            @DynamicParameter(name = "turnImage",value = "轮播图集合"),
+            @DynamicParameter(name = "courses",value = "课程推荐" ),
+            @DynamicParameter(name = "talents",value = "达人推荐" ,example = "121"),
+    })
     @ApiOperation("刷新首页接口")
     @RequestMapping(value = "/loadIndexlist", method = RequestMethod.POST)
     public Result<Map> loadIndexlist() {

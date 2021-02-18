@@ -62,6 +62,8 @@ public class IndexServiceImpl implements IndexService{
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("image",courseModel.getImage());
             jsonObject.put("title",courseModel.getTitle());
+            jsonObject.put("price",courseModel.getPrice());
+            jsonObject.put("num",courseModel.getWatchNum());
             list2.add(jsonObject);
         }
         map.put("courses",list2);
