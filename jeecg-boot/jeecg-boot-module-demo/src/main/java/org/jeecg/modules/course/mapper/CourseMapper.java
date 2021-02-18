@@ -23,4 +23,8 @@ public interface CourseMapper extends BaseMapper<Course> {
 
     List<Course> findListByUserId(Page page, @Param("userId") String userId);
 
+    List<Course> getListOrderByLikeNum(Page<Course> page, @Param("courseType") Integer courseType, @Param("city") String city);
+
+    List<Course> searchListOrderByType(Page<Course> page, @Param("type") Integer type, @Param("search") String search);
+
 }

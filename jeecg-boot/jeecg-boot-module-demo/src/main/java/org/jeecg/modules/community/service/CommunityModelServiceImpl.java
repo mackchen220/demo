@@ -49,7 +49,7 @@ public class CommunityModelServiceImpl implements CommunityModelService{
 
     @Override
     public int updateByPrimaryKeySelective(CommunityModel record) {
-        return communityModelMapper.updateByPrimaryKeySelective(record);
+        return communityModelMapper.updateSelective(record);
     }
 
     @Override

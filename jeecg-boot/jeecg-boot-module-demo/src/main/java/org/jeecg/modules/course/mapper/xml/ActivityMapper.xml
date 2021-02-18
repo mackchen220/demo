@@ -1,16 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="org.jeecg.modules.course.mapper.CourseMapper">
-  <resultMap id="BaseResultMap" type="org.jeecg.modules.course.model.Course">
+<mapper namespace="org.jeecg.modules.course.mapper.ActivityMapper">
+  <resultMap id="BaseResultMap" type="org.jeecg.modules.course.model.Activity">
     <!--@mbg.generated-->
-    <!--@Table tb_course-->
+    <!--@Table tb_activity-->
     <id column="id" jdbcType="VARCHAR" property="id" />
     <result column="title" jdbcType="VARCHAR" property="title" />
     <result column="url" jdbcType="VARCHAR" property="url" />
     <result column="image" jdbcType="VARCHAR" property="image" />
-    <result column="price" jdbcType="BIGINT" property="price" />
-    <result column="type" jdbcType="TINYINT" property="type" />
-    <result column="watch_num" jdbcType="BIGINT" property="watchNum" />
+    <result column="join_num" jdbcType="BIGINT" property="joinNum" />
     <result column="good_num" jdbcType="BIGINT" property="goodNum" />
     <result column="state" jdbcType="TINYINT" property="state" />
     <result column="sort" jdbcType="BIGINT" property="sort" />
@@ -19,46 +17,31 @@
     <result column="create_by" jdbcType="VARCHAR" property="createBy" />
     <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
     <result column="del_flag" jdbcType="TINYINT" property="delFlag" />
-    <result column="course_type" jdbcType="TINYINT" property="courseType" />
     <result column="city" jdbcType="VARCHAR" property="city" />
     <result column="star_num" jdbcType="BIGINT" property="starNum" />
+    <result column="watch_num" jdbcType="BIGINT" property="watchNum" />
     <result column="forward_num" jdbcType="BIGINT" property="forwardNum" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--@mbg.generated-->
-    id, title, url, image, price, `type`, watch_num, good_num, `state`, sort, create_time,
-    update_time, create_by, update_by, del_flag, course_type, city, star_num, forward_num
+    id, title, url, image, join_num, good_num, `state`, sort, create_time, update_time, 
+    create_by, update_by, del_flag, city, star_num, watch_num, forward_num
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     <!--@mbg.generated-->
     select 
     <include refid="Base_Column_List" />
-    from tb_course
+    from tb_activity
     where id = #{id,jdbcType=VARCHAR}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     <!--@mbg.generated-->
-    delete from tb_course
+    delete from tb_activity
     where id = #{id,jdbcType=VARCHAR}
   </delete>
-  <insert id="insert" parameterType="org.jeecg.modules.course.model.Course">
+  <insert id="insertSelective" parameterType="org.jeecg.modules.course.model.Activity">
     <!--@mbg.generated-->
-    insert into tb_course (id, title, url, 
-      image, price, `type`, 
-      watch_num, good_num, `state`,
-      sort, create_time, update_time, 
-      create_by, update_by, del_flag
-      )
-    values (#{id,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR}, 
-      #{image,jdbcType=VARCHAR}, #{price,jdbcType=BIGINT}, #{type,jdbcType=TINYINT}, 
-      #{watchNum,jdbcType=BIGINT}, #{goodNum,jdbcType=BIGINT}, #{state,jdbcType=TINYINT},
-      #{sort,jdbcType=BIGINT}, #{createTime,jdbcType=VARCHAR}, #{updateTime,jdbcType=VARCHAR}, 
-      #{createBy,jdbcType=VARCHAR}, #{updateBy,jdbcType=VARCHAR}, #{delFlag,jdbcType=TINYINT}
-      )
-  </insert>
-  <insert id="insertSelective" parameterType="org.jeecg.modules.course.model.Course">
-    <!--@mbg.generated-->
-    insert into tb_course
+    insert into tb_activity
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
         id,
@@ -72,14 +55,8 @@
       <if test="image != null">
         image,
       </if>
-      <if test="price != null">
-        price,
-      </if>
-      <if test="type != null">
-        `type`,
-      </if>
-      <if test="watchNum != null">
-        watch_num,
+      <if test="joinNum != null">
+        join_num,
       </if>
       <if test="goodNum != null">
         good_num,
@@ -105,14 +82,14 @@
       <if test="delFlag != null">
         del_flag,
       </if>
-      <if test="courseType != null">
-        course_type,
-      </if>
       <if test="city != null">
         city,
       </if>
       <if test="starNum != null">
         star_num,
+      </if>
+      <if test="watchNum != null">
+        watch_num,
       </if>
       <if test="forwardNum != null">
         forward_num,
@@ -131,14 +108,8 @@
       <if test="image != null">
         #{image,jdbcType=VARCHAR},
       </if>
-      <if test="price != null">
-        #{price,jdbcType=BIGINT},
-      </if>
-      <if test="type != null">
-        #{type,jdbcType=TINYINT},
-      </if>
-      <if test="watchNum != null">
-        #{watchNum,jdbcType=BIGINT},
+      <if test="joinNum != null">
+        #{joinNum,jdbcType=BIGINT},
       </if>
       <if test="goodNum != null">
         #{goodNum,jdbcType=BIGINT},
@@ -164,23 +135,23 @@
       <if test="delFlag != null">
         #{delFlag,jdbcType=TINYINT},
       </if>
-      <if test="courseType != null">
-        #{courseType},
-      </if>
       <if test="city != null">
         #{city},
       </if>
       <if test="starNum != null">
         #{starNum},
       </if>
+      <if test="watchNum != null">
+        #{watchNum},
+      </if>
       <if test="forwardNum != null">
         #{forwardNum},
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="org.jeecg.modules.course.model.Course">
+  <update id="updateSelective" parameterType="org.jeecg.modules.course.model.Activity">
     <!--@mbg.generated-->
-    update tb_course
+    update tb_activity
     <set>
       <if test="title != null">
         title = #{title,jdbcType=VARCHAR},
@@ -191,14 +162,8 @@
       <if test="image != null">
         image = #{image,jdbcType=VARCHAR},
       </if>
-      <if test="price != null">
-        price = #{price,jdbcType=BIGINT},
-      </if>
-      <if test="type != null">
-        `type` = #{type,jdbcType=TINYINT},
-      </if>
-      <if test="watchNum != null">
-        watch_num = #{watchNum,jdbcType=BIGINT},
+      <if test="joinNum != null">
+        join_num = #{joinNum,jdbcType=BIGINT},
       </if>
       <if test="goodNum != null">
         good_num = #{goodNum,jdbcType=BIGINT},
@@ -224,14 +189,14 @@
       <if test="delFlag != null">
         del_flag = #{delFlag,jdbcType=TINYINT},
       </if>
-      <if test="courseType != null">
-        course_type = #{courseType},
-      </if>
       <if test="city != null">
         city = #{city},
       </if>
       <if test="starNum != null">
         star_num = #{starNum},
+      </if>
+      <if test="watchNum != null">
+        watch_num = #{watchNum},
       </if>
       <if test="forwardNum != null">
         forward_num = #{forwardNum},
@@ -239,61 +204,13 @@
     </set>
     where id = #{id,jdbcType=VARCHAR}
   </update>
-  <update id="updateByPrimaryKey" parameterType="org.jeecg.modules.course.model.Course">
-    <!--@mbg.generated-->
-    update tb_course
-    set title = #{title,jdbcType=VARCHAR},
-      url = #{url,jdbcType=VARCHAR},
-      image = #{image,jdbcType=VARCHAR},
-      price = #{price,jdbcType=BIGINT},
-      `type` = #{type,jdbcType=TINYINT},
-      watch_num = #{watchNum,jdbcType=BIGINT},
-      good_num = #{goodNum,jdbcType=BIGINT},
-      `state` = #{state,jdbcType=TINYINT},
-      sort = #{sort,jdbcType=BIGINT},
-      create_time = #{createTime,jdbcType=VARCHAR},
-      update_time = #{updateTime,jdbcType=VARCHAR},
-      create_by = #{createBy,jdbcType=VARCHAR},
-      update_by = #{updateBy,jdbcType=VARCHAR},
-      del_flag = #{delFlag,jdbcType=TINYINT}
-    where id = #{id,jdbcType=VARCHAR}
-  </update>
-  <select id="findListByUserId" resultMap="BaseResultMap">
-    select <include refid="Base_Column_List"/>
-    from tb_course
-    where
-      del_flag = 1
-      <if test="userId != null and userId != ''">
-        and create_by = #{userId}
-      </if>
-  </select>
   <select id="getListOrderByLikeNum" resultMap="BaseResultMap">
-    select <include refid="Base_Column_List"/>
-    from tb_course
+    SELECT <include refid="Base_Column_List"/>
+    from tb_activity
     where del_flag = 0
-    <if test="courseType != null">
-      and course_type = #{courseType}
-    </if>
     <if test="city != null and city != ''">
       and city = #{city}
     </if>
     order by good_num desc
-  </select>
-  <select id="searchListOrderByType" resultMap="BaseResultMap">
-    select <include refid="Base_Column_List"/>
-    from tb_course
-    where del_flag = 0
-    <if test="search != null and search != ''">
-      and title like concat('%', #{search}, '%')
-    </if>
-    <if test="type == 1">
-      order by good_num desc
-    </if>
-    <if test="type == 2">
-      order by watch_num desc
-    </if>
-    <if test="type == 3">
-      order by create_time desc
-    </if>
   </select>
 </mapper>

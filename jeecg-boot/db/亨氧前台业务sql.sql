@@ -137,13 +137,13 @@ CREATE TABLE `tb_community`  (
 `title` varchar(32) NULL DEFAULT NULL COMMENT '标题',
 `content` varchar(512)  NULL DEFAULT NULL COMMENT '内容',
 `url` varchar(128)  NULL DEFAULT NULL COMMENT '链接',
-`imageUrl` varchar(128)  NULL DEFAULT NULL COMMENT '图片或者视频地址',
+`image_url` varchar(128)  NULL DEFAULT NULL COMMENT '图片或者视频地址',
 `city` varchar(64)  NULL DEFAULT NULL COMMENT '图片地址',
 `type` tinyint(2) NULL DEFAULT 1 COMMENT '朋友圈类型:1 照片 2视频 3课程  4其他  ',
 `user_type` tinyint(2)  DEFAULT 1 COMMENT '1-用户，2-达人，3-机构，4-平台',
-`starNum` bigint(32)   DEFAULT 0 COMMENT '收藏数量',
-`goodNum` bigint(32)   DEFAULT 0 COMMENT '点赞数量',
-`forwardNum` bigint(32)   DEFAULT 0 COMMENT '转发数量',
+`star_num` bigint(32)   DEFAULT 0 COMMENT '收藏数量',
+`good_num` bigint(32)   DEFAULT 0 COMMENT '点赞数量',
+`forward_num` bigint(32)   DEFAULT 0 COMMENT '转发数量',
 `create_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '创建时间',
 `update_time` timestamp(0) NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '更新日期',
 `create_by` varchar(32)  NULL DEFAULT NULL COMMENT '创建人',
@@ -244,7 +244,7 @@ ADD COLUMN `num` bigint(32) NULL DEFAULT 0 COMMENT '签约机构数量' AFTER `d
 
 
 ALTER TABLE `tb_community`
-MODIFY COLUMN `city` varchar(64)  NULL DEFAULT NULL COMMENT '定位城市' AFTER `imageUrl`;
+MODIFY COLUMN `city` varchar(64)  NULL DEFAULT NULL COMMENT '定位城市';
 
 DROP TABLE IF EXISTS `tb_case`;
 CREATE TABLE `tb_case`  (
@@ -335,11 +335,39 @@ PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB COMMENT = '热搜关键字表';
 
 ALTER TABLE `tb_course`
-ADD COLUMN `course_type` tinyint(1) NOT NULL DEFAULT '0' COMMENT '课程类型';
+ADD COLUMN `course_type` tinyint(1) NOT NULL DEFAULT '1' COMMENT '课程类型 1-文章 2-视频';
 
 
 ALTER TABLE `tb_course`
 ADD COLUMN `city` varchar(32) DEFAULT NULL COMMENT '城市';
 
+DROP TABLE IF EXISTS `tb_activity`;
+CREATE TABLE `tb_activity`  (
+`id` varchar(32)  NOT NULL,
+`title` varchar(32)  NOT NULL COMMENT '活动标题',
+`url` varchar(128)  NOT NULL COMMENT '活动地址',
+`image` varchar(128)  NOT NULL COMMENT '封面图片',
+`join_num` bigint(32)   DEFAULT 0 COMMENT '参与数量',
+`good_num` bigint(32)   DEFAULT 0 COMMENT '点赞数量',
+`star_num` bigint(32) DEFAULT 0 COMMENT '收藏数量',
+`watch_num` bigint(32)   DEFAULT 0 COMMENT '观看数量',
+`forward_num` bigint(32) DEFAULT 0 COMMENT '转发数量',
+`state` tinyint(1) NOT NULL DEFAULT '0' COMMENT '标识0-完结,1-正在更新',
+`sort` bigint(32)  NULL DEFAULT NULL COMMENT '排序字段',
+`create_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '创建时间',
+`update_time` timestamp(0) NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '更新日期',
+`create_by` varchar(32)  NULL DEFAULT NULL COMMENT '创建人',
+`update_by` varchar(32)  NULL DEFAULT NULL COMMENT '更新人',
+`del_flag` tinyint(1) NOT NULL DEFAULT '0' COMMENT '删除标识0-正常,1-已删除',
+`city` varchar(32) DEFAULT NULL COMMENT '城市',
+PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB COMMENT = '活动表';
 
+ALTER TABLE `tb_course`
+ADD COLUMN `star_num` bigint(32) DEFAULT 0 COMMENT '收藏数量';
+ALTER TABLE `tb_course`
+ADD COLUMN `forward_num` bigint(32) DEFAULT 0 COMMENT '转发数量';
+
+ALTER TABLE `tb_community`
+ADD COLUMN `watch_num` bigint(32)   DEFAULT 0 COMMENT '观看数量';
 

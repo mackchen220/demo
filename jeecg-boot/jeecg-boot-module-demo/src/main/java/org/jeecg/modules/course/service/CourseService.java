@@ -3,7 +3,8 @@ package org.jeecg.modules.course.service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.jeecg.modules.community.model.CommunityModel;
-import org.jeecg.modules.course.model.Course;
+import org.jeecg.modules.course.model.vo.UserCourseDetailVo;
+import org.jeecg.modules.course.model.vo.UserCourseVo;
 
 import java.util.List;
 
@@ -20,6 +21,10 @@ public interface CourseService {
 
     List<String> topSearch();
 
-    IPage<?> findList(int pageNo, int pageSize, int type, String city);
+    IPage<UserCourseVo> findList(int pageNo, int pageSize, int type, String city);
+
+    IPage<UserCourseVo> searchList(int pageNo, int pageSize, int type, String search);
+
+    UserCourseDetailVo searchInfoDetail(String id, int courseType, String userId);
 
 }

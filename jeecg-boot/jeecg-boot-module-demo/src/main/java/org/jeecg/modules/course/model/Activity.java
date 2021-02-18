@@ -1,17 +1,20 @@
 package org.jeecg.modules.course.model;
 
+import java.io.Serializable;
+import java.util.Date;
 import lombok.Data;
 
-import java.io.Serializable;
-
 @Data
-public class Course implements Serializable {
+public class Activity implements Serializable {
     private String id;
 
+    /**
+    * 活动标题
+    */
     private String title;
 
     /**
-    * 课程地址
+    * 活动地址
     */
     private String url;
 
@@ -21,19 +24,9 @@ public class Course implements Serializable {
     private String image;
 
     /**
-    * 价格
+    * 参与数量
     */
-    private Long price;
-
-    /**
-    * 类型1 -收费,2 免费， 3限时免费
-    */
-    private Integer type;
-
-    /**
-    * 观看数量
-    */
-    private Long watchNum;
+    private Long joinNum;
 
     /**
     * 点赞数量
@@ -76,11 +69,6 @@ public class Course implements Serializable {
     private Integer delFlag;
 
     /**
-     * 课程类型 1-文章 2-视频
-     */
-    private Integer courseType;
-
-    /**
      * 城市
      */
     private String city;
@@ -89,6 +77,12 @@ public class Course implements Serializable {
      * 收藏数量
      */
     private Long starNum;
+
+    /**
+     * 观看数量
+     */
+    private Long watchNum;
+
     /**
      * 转发数量
      */

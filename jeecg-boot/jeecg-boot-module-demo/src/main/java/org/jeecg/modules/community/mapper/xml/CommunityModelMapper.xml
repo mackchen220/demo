@@ -9,23 +9,24 @@
     <result column="title" jdbcType="VARCHAR" property="title" />
     <result column="content" jdbcType="VARCHAR" property="content" />
     <result column="url" jdbcType="VARCHAR" property="url" />
-    <result column="imageUrl" jdbcType="VARCHAR" property="imageurl" />
+    <result column="image_url" jdbcType="VARCHAR" property="imageUrl" />
     <result column="city" jdbcType="VARCHAR" property="city" />
     <result column="type" jdbcType="TINYINT" property="type" />
     <result column="user_type" jdbcType="TINYINT" property="userType" />
-    <result column="starNum" jdbcType="BIGINT" property="starnum" />
-    <result column="goodNum" jdbcType="BIGINT" property="goodnum" />
-    <result column="forwardNum" jdbcType="BIGINT" property="forwardnum" />
+    <result column="star_num" jdbcType="BIGINT" property="starNum" />
+    <result column="good_num" jdbcType="BIGINT" property="goodNum" />
+    <result column="forward_num" jdbcType="BIGINT" property="forwardNum" />
     <result column="create_time" jdbcType="VARCHAR" property="createTime" />
     <result column="update_time" jdbcType="VARCHAR" property="updateTime" />
     <result column="create_by" jdbcType="VARCHAR" property="createBy" />
     <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
     <result column="del_flag" jdbcType="TINYINT" property="delFlag" />
+    <result column="watch_num" jdbcType="TINYINT" property="watchNum" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--@mbg.generated-->
-    id, user_id, title, content, url, imageUrl, city, `type`, user_type, starNum, goodNum,
-    forwardNum, create_time, update_time, create_by, update_by, del_flag
+    id, user_id, title, content, url, image_url, city, `type`, user_type, star_num, good_num,
+    forward_num, create_time, update_time, create_by, update_by, del_flag, watch_num
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     <!--@mbg.generated-->
@@ -48,9 +49,9 @@
       create_time, update_time, create_by,
       update_by, del_flag)
     values (#{id,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR},
-      #{content,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR}, #{imageurl,jdbcType=VARCHAR},
+      #{content,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR}, #{imageUrl,jdbcType=VARCHAR},
       #{city,jdbcType=VARCHAR}, #{type,jdbcType=TINYINT}, #{userType,jdbcType=TINYINT},
-      #{starnum,jdbcType=BIGINT}, #{goodnum,jdbcType=BIGINT}, #{forwardnum,jdbcType=BIGINT},
+      #{starNum,jdbcType=BIGINT}, #{goodNum,jdbcType=BIGINT}, #{forwardNum,jdbcType=BIGINT},
       #{createTime,jdbcType=VARCHAR}, #{updateTime,jdbcType=VARCHAR}, #{createBy,jdbcType=VARCHAR},
       #{updateBy,jdbcType=VARCHAR}, #{delFlag,jdbcType=TINYINT})
   </insert>
@@ -73,8 +74,8 @@
       <if test="url != null">
         url,
       </if>
-      <if test="imageurl != null">
-        imageUrl,
+      <if test="imageUrl != null">
+        image_url,
       </if>
       <if test="city != null">
         city,
@@ -85,14 +86,14 @@
       <if test="userType != null">
         user_type,
       </if>
-      <if test="starnum != null">
-        starNum,
+      <if test="starNum != null">
+        star_num,
       </if>
-      <if test="goodnum != null">
-        goodNum,
+      <if test="goodNum != null">
+        good_num,
       </if>
-      <if test="forwardnum != null">
-        forwardNum,
+      <if test="forwardNum != null">
+        forward_num,
       </if>
       <if test="createTime != null">
         create_time,
@@ -108,6 +109,9 @@
       </if>
       <if test="delFlag != null">
         del_flag,
+      </if>
+      <if test="watchNum != null">
+        watch_num,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -126,8 +130,8 @@
       <if test="url != null">
         #{url,jdbcType=VARCHAR},
       </if>
-      <if test="imageurl != null">
-        #{imageurl,jdbcType=VARCHAR},
+      <if test="imageUrl != null">
+        #{imageUrl,jdbcType=VARCHAR},
       </if>
       <if test="city != null">
         #{city,jdbcType=VARCHAR},
@@ -138,14 +142,14 @@
       <if test="userType != null">
         #{userType,jdbcType=TINYINT},
       </if>
-      <if test="starnum != null">
-        #{starnum,jdbcType=BIGINT},
+      <if test="starNum != null">
+        #{starNum,jdbcType=BIGINT},
       </if>
-      <if test="goodnum != null">
-        #{goodnum,jdbcType=BIGINT},
+      <if test="goodNum != null">
+        #{goodNum,jdbcType=BIGINT},
       </if>
-      <if test="forwardnum != null">
-        #{forwardnum,jdbcType=BIGINT},
+      <if test="forwardNum != null">
+        #{forwardNum,jdbcType=BIGINT},
       </if>
       <if test="createTime != null">
         #{createTime,jdbcType=VARCHAR},
@@ -162,9 +166,12 @@
       <if test="delFlag != null">
         #{delFlag,jdbcType=TINYINT},
       </if>
+      <if test="watchNum != null">
+        #{watchNum},
+      </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="org.jeecg.modules.community.model.CommunityModel">
+  <update id="updateSelective" parameterType="org.jeecg.modules.community.model.CommunityModel">
     <!--@mbg.generated-->
     update tb_community
     <set>
@@ -180,8 +187,8 @@
       <if test="url != null">
         url = #{url,jdbcType=VARCHAR},
       </if>
-      <if test="imageurl != null">
-        imageUrl = #{imageurl,jdbcType=VARCHAR},
+      <if test="imageUrl != null">
+        image_url = #{imageUrl,jdbcType=VARCHAR},
       </if>
       <if test="city != null">
         city = #{city,jdbcType=VARCHAR},
@@ -192,14 +199,14 @@
       <if test="userType != null">
         user_type = #{userType,jdbcType=TINYINT},
       </if>
-      <if test="starnum != null">
-        starNum = #{starnum,jdbcType=BIGINT},
+      <if test="starNum != null">
+        star_num = #{starNum,jdbcType=BIGINT},
       </if>
-      <if test="goodnum != null">
-        goodNum = #{goodnum,jdbcType=BIGINT},
+      <if test="goodNum != null">
+        good_num = #{goodNum,jdbcType=BIGINT},
       </if>
-      <if test="forwardnum != null">
-        forwardNum = #{forwardnum,jdbcType=BIGINT},
+      <if test="forwardNum != null">
+        forward_num = #{forwardNum,jdbcType=BIGINT},
       </if>
       <if test="createTime != null">
         create_time = #{createTime,jdbcType=VARCHAR},
@@ -216,6 +223,9 @@
       <if test="delFlag != null">
         del_flag = #{delFlag,jdbcType=TINYINT},
       </if>
+      <if test="watchNum != null">
+        watch_num = #{watchNum},
+      </if>
     </set>
     where id = #{id,jdbcType=VARCHAR}
   </update>
@@ -226,13 +236,13 @@
       title = #{title,jdbcType=VARCHAR},
       content = #{content,jdbcType=VARCHAR},
       url = #{url,jdbcType=VARCHAR},
-      imageUrl = #{imageurl,jdbcType=VARCHAR},
+      image_url = #{imageUrl,jdbcType=VARCHAR},
       city = #{city,jdbcType=VARCHAR},
       `type` = #{type,jdbcType=TINYINT},
       user_type = #{userType,jdbcType=TINYINT},
-      starNum = #{starnum,jdbcType=BIGINT},
-      goodNum = #{goodnum,jdbcType=BIGINT},
-      forwardNum = #{forwardnum,jdbcType=BIGINT},
+      star_num = #{starNum,jdbcType=BIGINT},
+      good_num = #{goodNum,jdbcType=BIGINT},
+      forward_num = #{forwardNum,jdbcType=BIGINT},
       create_time = #{createTime,jdbcType=VARCHAR},
       update_time = #{updateTime,jdbcType=VARCHAR},
       create_by = #{createBy,jdbcType=VARCHAR},
@@ -275,7 +285,7 @@
       <if test="city != null and city != ''">
         and city = #{city}
       </if>
-    order by goodNum desc
+    order by good_num desc
   </select>
 
 </mapper>

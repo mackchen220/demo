@@ -52,7 +52,7 @@
     <include refid="Base_Column_List" />
     from tb_user
     where
-      and del_flag = 0
+      del_flag = 0
       <if test="Id != null and Id != '' != null">
         and id = #{Id,jdbcType=VARCHAR}
       </if>

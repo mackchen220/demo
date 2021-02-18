@@ -38,7 +38,7 @@ public class CommunityModel {
     * 图片或者视频地址
     */
     @ApiModelProperty(value="图片或者视频地址")
-    private String imageurl;
+    private String imageUrl;
 
     /**
     * 图片地址
@@ -62,19 +62,19 @@ public class CommunityModel {
     * 收藏数量
     */
     @ApiModelProperty(value="收藏数量")
-    private Long starnum;
+    private Long starNum;
 
     /**
     * 点赞数量
     */
     @ApiModelProperty(value="点赞数量")
-    private Long goodnum;
+    private Long goodNum;
 
     /**
     * 转发数量
     */
     @ApiModelProperty(value="转发数量")
-    private Long forwardnum;
+    private Long forwardNum;
 
     /**
     * 创建时间
@@ -104,7 +104,12 @@ public class CommunityModel {
     * 删除标识0-正常,1-已删除
     */
     @ApiModelProperty(value="删除标识0-正常,1-已删除")
-    private Boolean delFlag;
+    private Integer delFlag;
 
+    /**
+     * 观看人数
+     */
+    @ApiModelProperty(value="观看人数")
+    private Long watchNum;
 
 }

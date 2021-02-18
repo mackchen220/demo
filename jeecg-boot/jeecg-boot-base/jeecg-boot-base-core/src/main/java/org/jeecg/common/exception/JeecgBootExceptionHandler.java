@@ -58,7 +58,7 @@ public class JeecgBootExceptionHandler {
 	@ExceptionHandler(Exception.class)
 	public Result<?> handleException(Exception e){
 		log.error(e.getMessage(), e);
-		return Result.error("操作失败，"+e.getMessage());
+		return Result.error("操作失败，服务器内部异常");
 	}
 
 	/**

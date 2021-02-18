@@ -15,7 +15,7 @@ public interface CommunityModelMapper{
 
     CommunityModel selectByPrimaryKey(String id);
 
-    int updateByPrimaryKeySelective(CommunityModel record);
+    int updateSelective(CommunityModel record);
 
     int updateByPrimaryKey(CommunityModel record);
 
