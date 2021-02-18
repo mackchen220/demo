@@ -41,20 +41,16 @@ ADD COLUMN `is_talent` tinyint(1) NOT NULL DEFAULT 0 COMMENT '是否达人，0�
 
 DROP TABLE IF EXISTS `tb_address`;
 CREATE TABLE `tb_address` (
-  `id` varchar(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `address` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '收获详细地址',
-  `is_disable` int NOT NULL DEFAULT '1' COMMENT '禁用 1不禁用 0禁用',
-  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `update_time` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '更新日期',
-  `create_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '创建人',
-  `update_by` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '更新人',
-  `del_flag` int NOT NULL DEFAULT '0' COMMENT '删除标识0-正常,1-已删除',
-  `user_id` varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '用户id',
-  `phone` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '收货手机号',
-  `city` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '城市',
-  `default` int NOT NULL DEFAULT '0' COMMENT '是否默认地址 0非默认 1默认',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='用户地址表';
+`id` varchar(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+`address` varchar(255) DEFAULT NULL COMMENT '收获地址表id',
+`is_disable` int NOT NULL DEFAULT '1' COMMENT '禁用 1不禁用 0禁用',
+`create_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '创建时间',
+`update_time` timestamp(0) NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '更新日期',
+`create_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
+`update_by` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
+`del_flag` int NOT NULL DEFAULT '0' COMMENT '删除标识0-正常,1-已删除',
+PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT '用户地址表';
 
 
 
