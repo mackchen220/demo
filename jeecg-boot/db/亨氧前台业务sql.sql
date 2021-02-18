@@ -52,7 +52,7 @@ CREATE TABLE `tb_address` (
   `user_id` varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '用户id',
   `phone` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '收货手机号',
   `city` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '城市',
-  `default` int NOT NULL DEFAULT '0' COMMENT '是否默认地址 0非默认 1默认',
+  `default_flag` int NOT NULL DEFAULT '0' COMMENT '是否默认地址 0非默认 1默认',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='用户地址表';
 

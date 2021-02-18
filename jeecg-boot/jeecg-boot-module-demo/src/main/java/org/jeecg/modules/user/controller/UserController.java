@@ -14,7 +14,9 @@ import org.jeecg.common.util.RedisUtil;
 import org.jeecg.modules.commons.util.ValidateTool;
 import org.jeecg.modules.user.model.UserBankModel;
 import org.jeecg.modules.user.model.UserModel;
+import org.jeecg.modules.user.model.vo.AddressModelVo;
 import org.jeecg.modules.user.model.vo.UserBankVo;
+import org.jeecg.modules.user.service.AddressModelService;
 import org.jeecg.modules.user.service.UserBankModelService;
 import org.jeecg.modules.user.service.UserFocusModelService;
 import org.jeecg.modules.user.service.UserModelService;
@@ -40,6 +42,9 @@ public class UserController {
     private UserBankModelService userBankModelService;
     @Resource
     private UserFocusModelService userFocusModelService;
+
+    @Resource
+    private AddressModelService addressModelService;
 
 //    @ApiOperation("测试接口")
 //    @RequestMapping(value = "/test", method = RequestMethod.GET)
@@ -118,8 +123,6 @@ public class UserController {
 
 
 
-
-
     @ApiOperation("修改用户信息")
     @RequestMapping(value = "/updateUserInfo", method = RequestMethod.POST)
     public Result updateUserInfo(String nickName,String headImage,String sign,String token) {
@@ -134,6 +137,25 @@ public class UserController {
     public Result<Map> loadUserInfo(String token) {
         Map map = userModelService.loadUserInfo(token);
         return Result.OK(map);
+    }
+
+
+    @ApiOperation("我的收货地址")
+    @RequestMapping(value = "/loadUserAddressList", method = RequestMethod.POST)
+    public Result<List> loadUserAddressList(String token) {
+        String id = userModelService.getUserIdByToken(token);
+        List list = addressModelService.loadUserAddressList(id);
+        return Result.OK(list);
+    }
+
+
+    @ApiOperation("添加收货地址")
+    @RequestMapping(value = "/addUserAddress", method = RequestMethod.POST)
+    public Result addUserAddress(AddressModelVo model,String token) {
+        String id = userModelService.getUserIdByToken(token);
+        model.setUserId(id);
+        addressModelService.insertSelective(model);
+        return Result.OK();
     }
 
 

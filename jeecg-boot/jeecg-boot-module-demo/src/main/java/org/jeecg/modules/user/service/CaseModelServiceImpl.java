@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import org.jeecg.modules.user.model.CaseModel;
 import org.jeecg.modules.user.mapper.CaseModelMapper;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -27,6 +28,7 @@ public class CaseModelServiceImpl implements CaseModelService{
         return caseModelMapper.deleteByPrimaryKey(id);
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public int insert(CaseModel record,String id) {
         if (ValidateTool.isNull(record) || ValidateTool.isNull(record.getType())){

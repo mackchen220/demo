@@ -132,7 +132,7 @@ public class UserModelServiceImpl implements UserModelService {
         return map;
     }
 
-
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public void updateUserInfo(UserModel userModel, String nickName, String headImage, String content) {
         UserModel userModel1 = new UserModel();

@@ -31,7 +31,7 @@ public class UserBankModelServiceImpl implements UserBankModelService{
     private UserModelService userModelService;
 
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public Result insertUserBank(UserBankModel userBankModel,String captchaCode,String phone,String userId) {
         Result<String> result = new Result<>();

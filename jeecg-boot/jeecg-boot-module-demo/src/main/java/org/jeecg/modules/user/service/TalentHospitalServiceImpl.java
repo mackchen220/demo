@@ -107,6 +107,7 @@ public class TalentHospitalServiceImpl implements TalentHospitalService {
         if (ValidateTool.isNull(hospitalId)) {
             throw new JeecgBootException("请选择机构");
         }
+        //项目id查询
         String[] split = projectIds.split(",");
 
         String[] strs=new String[3];
