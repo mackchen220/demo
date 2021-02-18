@@ -363,3 +363,27 @@ CREATE TABLE `tb_order` (
   `project_id` varchar(256) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '项目id',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='订单表';
+
+DROP TABLE IF EXISTS `tb_party`;
+CREATE TABLE tb_party  (
+  `id` varchar(32) NOT NULL,
+  `title` varchar(128) NOT NULL COMMENT '派对标题',
+  `image` varchar(255) NULL COMMENT '封面图',
+  `profiles` varchar(255) NULL COMMENT '简介',
+  `watch` varchar(32) NULL DEFAULT 0 COMMENT '观看数量',
+  `star` varchar(32) NULL DEFAULT 0 COMMENT '点赞数量',
+  `price` varchar(32) NULL DEFAULT 0 COMMENT '价格',
+  `num` int(32) NULL DEFAULT 0 COMMENT '名额',
+  `user_id` varchar(32) NULL COMMENT '发起人id、',
+  `qr_code` varchar(255) NULL COMMENT '微信群二维码',
+  `start_time` timestamp NOT NULL COMMENT '开始时间',
+  `end_time` timestamp NULL COMMENT '结束时间',
+  `address` varchar(128) NULL COMMENT '活动地址',
+  `detail_imgae` varchar(255) NULL COMMENT '活动详情图片',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '更新日期',
+  `create_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '创建人',
+  `update_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '更新人',
+  `del_flag` tinyint(1) NOT NULL DEFAULT '0' COMMENT '删除标识0-正常,1-已删除',
+  PRIMARY KEY (`id`)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='社群派对表';

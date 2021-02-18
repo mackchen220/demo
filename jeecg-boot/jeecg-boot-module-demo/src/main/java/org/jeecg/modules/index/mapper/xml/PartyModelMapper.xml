@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.jeecg.modules.index.mapper.PartyModelMapper">
+  <resultMap id="BaseResultMap" type="org.jeecg.modules.index.model.PartyModel">
+    <!--@mbg.generated-->
+    <!--@Table tb_party-->
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="image" jdbcType="VARCHAR" property="image" />
+    <result column="profiles" jdbcType="VARCHAR" property="profiles" />
+    <result column="watch" jdbcType="VARCHAR" property="watch" />
+    <result column="star" jdbcType="VARCHAR" property="star" />
+    <result column="price" jdbcType="VARCHAR" property="price" />
+    <result column="num" jdbcType="INTEGER" property="num" />
+    <result column="user_id" jdbcType="VARCHAR" property="userId" />
+    <result column="qr_code" jdbcType="VARCHAR" property="qrCode" />
+    <result column="start_time" jdbcType="TIMESTAMP" property="startTime" />
+    <result column="end_time" jdbcType="VARCHAR" property="endTime" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
+    <result column="detail_imgae" jdbcType="VARCHAR" property="detailImgae" />
+    <result column="create_time" jdbcType="VARCHAR" property="createTime" />
+    <result column="update_time" jdbcType="VARCHAR" property="updateTime" />
+    <result column="create_by" jdbcType="VARCHAR" property="createBy" />
+    <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
+    <result column="del_flag" jdbcType="INTEGER" property="delFlag" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    id, title, image, profiles, watch, star, price, num, user_id, qr_code, start_time,
+    end_time, address, detail_imgae, create_time, update_time, create_by, update_by,
+    del_flag
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    <!--@mbg.generated-->
+    select
+    <include refid="Base_Column_List" />
+    from tb_party
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    <!--@mbg.generated-->
+    delete from tb_party
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="org.jeecg.modules.index.model.PartyModel">
+    <!--@mbg.generated-->
+    insert into tb_party (id, title, image,
+      profiles, watch, star,
+      price, num, user_id,
+      qr_code, start_time, end_time,
+      address, detail_imgae, create_time,
+      update_time, create_by, update_by,
+      del_flag)
+    values (#{id,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}, #{image,jdbcType=VARCHAR},
+      #{profiles,jdbcType=VARCHAR}, #{watch,jdbcType=VARCHAR}, #{star,jdbcType=VARCHAR},
+      #{price,jdbcType=VARCHAR}, #{num,jdbcType=INTEGER}, #{userId,jdbcType=VARCHAR},
+      #{qrCode,jdbcType=VARCHAR}, #{startTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=VARCHAR},
+      #{address,jdbcType=VARCHAR}, #{detailImgae,jdbcType=VARCHAR}, #{createTime,jdbcType=VARCHAR},
+      #{updateTime,jdbcType=VARCHAR}, #{createBy,jdbcType=VARCHAR}, #{updateBy,jdbcType=VARCHAR},
+      #{delFlag,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="org.jeecg.modules.index.model.PartyModel">
+    <!--@mbg.generated-->
+    insert into tb_party
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="title != null">
+        title,
+      </if>
+      <if test="image != null">
+        image,
+      </if>
+      <if test="profiles != null">
+        profiles,
+      </if>
+      <if test="watch != null">
+        watch,
+      </if>
+      <if test="star != null">
+        star,
+      </if>
+      <if test="price != null">
+        price,
+      </if>
+      <if test="num != null">
+        num,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="qrCode != null">
+        qr_code,
+      </if>
+      <if test="startTime != null">
+        start_time,
+      </if>
+      <if test="endTime != null">
+        end_time,
+      </if>
+      <if test="address != null">
+        address,
+      </if>
+      <if test="detailImgae != null">
+        detail_imgae,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="createBy != null">
+        create_by,
+      </if>
+      <if test="updateBy != null">
+        update_by,
+      </if>
+      <if test="delFlag != null">
+        del_flag,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="title != null">
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="image != null">
+        #{image,jdbcType=VARCHAR},
+      </if>
+      <if test="profiles != null">
+        #{profiles,jdbcType=VARCHAR},
+      </if>
+      <if test="watch != null">
+        #{watch,jdbcType=VARCHAR},
+      </if>
+      <if test="star != null">
+        #{star,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null">
+        #{price,jdbcType=VARCHAR},
+      </if>
+      <if test="num != null">
+        #{num,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="qrCode != null">
+        #{qrCode,jdbcType=VARCHAR},
+      </if>
+      <if test="startTime != null">
+        #{startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null">
+        #{endTime,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null">
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="detailImgae != null">
+        #{detailImgae,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=VARCHAR},
+      </if>
+      <if test="createBy != null">
+        #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateBy != null">
+        #{updateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="delFlag != null">
+        #{delFlag,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="org.jeecg.modules.index.model.PartyModel">
+    <!--@mbg.generated-->
+    update tb_party
+    <set>
+      <if test="title != null">
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="image != null">
+        image = #{image,jdbcType=VARCHAR},
+      </if>
+      <if test="profiles != null">
+        profiles = #{profiles,jdbcType=VARCHAR},
+      </if>
+      <if test="watch != null">
+        watch = #{watch,jdbcType=VARCHAR},
+      </if>
+      <if test="star != null">
+        star = #{star,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null">
+        price = #{price,jdbcType=VARCHAR},
+      </if>
+      <if test="num != null">
+        num = #{num,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="qrCode != null">
+        qr_code = #{qrCode,jdbcType=VARCHAR},
+      </if>
+      <if test="startTime != null">
+        start_time = #{startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null">
+        end_time = #{endTime,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null">
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="detailImgae != null">
+        detail_imgae = #{detailImgae,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=VARCHAR},
+      </if>
+      <if test="createBy != null">
+        create_by = #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateBy != null">
+        update_by = #{updateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="delFlag != null">
+        del_flag = #{delFlag,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="org.jeecg.modules.index.model.PartyModel">
+    <!--@mbg.generated-->
+    update tb_party
+    set title = #{title,jdbcType=VARCHAR},
+      image = #{image,jdbcType=VARCHAR},
+      profiles = #{profiles,jdbcType=VARCHAR},
+      watch = #{watch,jdbcType=VARCHAR},
+      star = #{star,jdbcType=VARCHAR},
+      price = #{price,jdbcType=VARCHAR},
+      num = #{num,jdbcType=INTEGER},
+      user_id = #{userId,jdbcType=VARCHAR},
+      qr_code = #{qrCode,jdbcType=VARCHAR},
+      start_time = #{startTime,jdbcType=TIMESTAMP},
+      end_time = #{endTime,jdbcType=VARCHAR},
+      address = #{address,jdbcType=VARCHAR},
+      detail_imgae = #{detailImgae,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=VARCHAR},
+      create_by = #{createBy,jdbcType=VARCHAR},
+      update_by = #{updateBy,jdbcType=VARCHAR},
+      del_flag = #{delFlag,jdbcType=INTEGER}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+
+  <select id="loadPartyList" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from tb_party
+    where del_flag = 0
+  </select>
+
+</mapper>
