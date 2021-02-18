@@ -8,8 +8,11 @@
     <result column="title" jdbcType="VARCHAR" property="title" />
     <result column="image" jdbcType="VARCHAR" property="image" />
     <result column="profiles" jdbcType="VARCHAR" property="profiles" />
-    <result column="watch" jdbcType="VARCHAR" property="watch" />
-    <result column="star" jdbcType="VARCHAR" property="star" />
+    <result column="watch_num" jdbcType="BIGINT" property="watchNum" />
+    <result column="star_num" jdbcType="BIGINT" property="starNum" />
+    <result column="good_num" jdbcType="BIGINT" property="goodNum" />
+    <result column="forward_num" jdbcType="BIGINT" property="forwardNum" />
+    <result column="city" jdbcType="VARCHAR" property="city" />
     <result column="price" jdbcType="VARCHAR" property="price" />
     <result column="num" jdbcType="INTEGER" property="num" />
     <result column="user_id" jdbcType="VARCHAR" property="userId" />
@@ -26,7 +29,7 @@
   </resultMap>
   <sql id="Base_Column_List">
     <!--@mbg.generated-->
-    id, title, image, profiles, watch, star, price, num, user_id, qr_code, start_time,
+    id, title, image, profiles, watch_num, star_num, good_num, forward_num, city, price, num, user_id, qr_code, start_time,
     end_time, address, detail_imgae, create_time, update_time, create_by, update_by,
     del_flag
   </sql>
@@ -45,14 +48,14 @@
   <insert id="insert" parameterType="org.jeecg.modules.index.model.PartyModel">
     <!--@mbg.generated-->
     insert into tb_party (id, title, image,
-      profiles, watch, star,
+      profiles, watch_num, star_num,
       price, num, user_id,
       qr_code, start_time, end_time,
       address, detail_imgae, create_time,
       update_time, create_by, update_by,
       del_flag)
     values (#{id,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}, #{image,jdbcType=VARCHAR},
-      #{profiles,jdbcType=VARCHAR}, #{watch,jdbcType=VARCHAR}, #{star,jdbcType=VARCHAR},
+      #{profiles,jdbcType=VARCHAR}, #{watchNum,jdbcType=VARCHAR}, #{starNum,jdbcType=VARCHAR},
       #{price,jdbcType=VARCHAR}, #{num,jdbcType=INTEGER}, #{userId,jdbcType=VARCHAR},
       #{qrCode,jdbcType=VARCHAR}, #{startTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=VARCHAR},
       #{address,jdbcType=VARCHAR}, #{detailImgae,jdbcType=VARCHAR}, #{createTime,jdbcType=VARCHAR},
@@ -75,11 +78,20 @@
       <if test="profiles != null">
         profiles,
       </if>
-      <if test="watch != null">
-        watch,
+      <if test="watchNum != null">
+        watch_num,
       </if>
-      <if test="star != null">
-        star,
+      <if test="starNum != null">
+        star_num,
+      </if>
+      <if test="goodNum != null">
+        good_num,
+      </if>
+      <if test="forwardNum != null">
+        forward_num,
+      </if>
+      <if test="city != null">
+        city,
       </if>
       <if test="price != null">
         price,
@@ -134,11 +146,20 @@
       <if test="profiles != null">
         #{profiles,jdbcType=VARCHAR},
       </if>
-      <if test="watch != null">
-        #{watch,jdbcType=VARCHAR},
+      <if test="watchNum != null">
+        #{watchNum,jdbcType=BIGINT},
       </if>
-      <if test="star != null">
-        #{star,jdbcType=VARCHAR},
+      <if test="starNum != null">
+        #{starNum,jdbcType=BIGINT},
+      </if>
+      <if test="goodNum != null">
+        #{goodNum,jdbcType=BIGINT},
+      </if>
+      <if test="forwardNum != null">
+        #{forwardNum,jdbcType=BIGINT},
+      </if>
+      <if test="city != null">
+        #{city,jdbcType=VARCHAR},
       </if>
       <if test="price != null">
         #{price,jdbcType=VARCHAR},
@@ -194,11 +215,20 @@
       <if test="profiles != null">
         profiles = #{profiles,jdbcType=VARCHAR},
       </if>
-      <if test="watch != null">
-        watch = #{watch,jdbcType=VARCHAR},
+      <if test="watchNum != null">
+        watch = #{watchNum,jdbcType=BIGINT},
       </if>
-      <if test="star != null">
-        star = #{star,jdbcType=VARCHAR},
+      <if test="starNum != null">
+        star = #{starNum,jdbcType=BIGINT},
+      </if>
+      <if test="goodNum != null">
+        good_num = #{goodNum,jdbcType=BIGINT},
+      </if>
+      <if test="forwardNum != null">
+        forward_num = #{forwardNum,jdbcType=BIGINT},
+      </if>
+      <if test="city != null">
+        city = #{city,jdbcType=VARCHAR},
       </if>
       <if test="price != null">
         price = #{price,jdbcType=VARCHAR},
@@ -248,8 +278,11 @@
     set title = #{title,jdbcType=VARCHAR},
       image = #{image,jdbcType=VARCHAR},
       profiles = #{profiles,jdbcType=VARCHAR},
-      watch = #{watch,jdbcType=VARCHAR},
-      star = #{star,jdbcType=VARCHAR},
+      watch_num = #{watchNum,jdbcType=BIGINT},
+      star_num = #{starNum,jdbcType=BIGINT},
+      good_num = #{goodNum,jdbcType=BIGINT},
+      forward_num = #{forwardNum,jdbcType=BIGINT},
+      city = #{city,jdbcType=VARCHAR},
       price = #{price,jdbcType=VARCHAR},
       num = #{num,jdbcType=INTEGER},
       user_id = #{userId,jdbcType=VARCHAR},
@@ -271,6 +304,15 @@
     <include refid="Base_Column_List" />
     from tb_party
     where del_flag = 0
+  </select>
+  <select id="getListOrderByLikeNum" resultMap="BaseResultMap">
+    SELECT <include refid="Base_Column_List"/>
+    from tb_party
+    where del_flag = 0
+    <if test="city != null and city != ''">
+      and city = #{city}
+    </if>
+    order by good_num desc
   </select>
 
 </mapper>

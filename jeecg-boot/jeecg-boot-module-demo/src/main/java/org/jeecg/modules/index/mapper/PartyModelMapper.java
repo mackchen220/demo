@@ -2,6 +2,7 @@ package org.jeecg.modules.index.mapper;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.jeecg.modules.index.model.PartyModel;
 
 import java.util.List;
@@ -21,4 +22,7 @@ public interface PartyModelMapper {
     int updateByPrimaryKey(PartyModel record);
 
     List<PartyModel> loadPartyList(Page<PartyModel> page);
+
+    List<PartyModel> getListOrderByLikeNum(Page<PartyModel> page, @Param("city") String city);
+
 }

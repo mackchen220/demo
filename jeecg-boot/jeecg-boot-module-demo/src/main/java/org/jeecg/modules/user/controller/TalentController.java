@@ -1,6 +1,7 @@
 package org.jeecg.modules.user.controller;
 
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -10,6 +11,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.jeecg.common.api.vo.Result;
 import org.jeecg.common.exception.JeecgBootException;
 import org.jeecg.modules.commons.ErrorInfoCode;
+import org.jeecg.modules.community.model.CommunityModel;
+import org.jeecg.modules.community.service.CommunityModelService;
 import org.jeecg.modules.user.model.CaseModel;
 import org.jeecg.modules.user.model.TalentInfoModel;
 import org.jeecg.modules.user.model.UserModel;
@@ -41,7 +44,8 @@ public class TalentController {
     private CaseModelService caseModelService;
     @Resource
     private UserFocusModelService userFocusModelService;
-
+    @Resource
+    private CommunityModelService communityModelService;
 
     @ApiOperation("达人严选列表接口")
     @RequestMapping(value = "/loadTalentList", method = RequestMethod.POST)
@@ -116,7 +120,7 @@ public class TalentController {
         return Result.OK(num);
     }
 
-    @ApiOperation("达人动态迷你资料卡")
+    @ApiOperation("达人动态上方迷你资料卡")
     @PostMapping("/talentMiniInfo")
     public Result talentMiniInfo(String token, @ApiParam(name = "达人ID", required = true) String userId) {
         if (StringUtils.isBlank(userId)) {
@@ -154,6 +158,18 @@ public class TalentController {
         boolean isFans = userFocusModelService.isFans(userId, mineId);
         rtn.put("isFans", isFans);
         return Result.OK(rtn);
+    }
+
+    @ApiOperation("达人动态列表")
+    @PostMapping("/talentMoments")
+    public Result talentMoments(@ApiParam(name = "达人ID", required = true) String userId,
+                                @RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo,
+                                @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize) {
+        if (StringUtils.isBlank(userId)) {
+            throw new JeecgBootException(ErrorInfoCode.PARAMS_ERROR.getMsg());
+        }
+        IPage<CommunityModel> page = communityModelService.getListByUserId(new Page<>(pageNo, pageSize), userId);
+        return Result.OK(page);
     }
 
     @ApiOperation("达人档案")

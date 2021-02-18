@@ -331,7 +331,7 @@ CREATE TABLE `tb_hospital` (
 `update_by` varchar(50) DEFAULT NULL COMMENT '更新人',
 `del_flag` tinyint(1) NOT NULL DEFAULT '0' COMMENT '删除标识0-正常,1-已删除',
 PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB DEFAULT COMMENT='机构(医院)表';
+) ENGINE=InnoDB COMMENT='机构(医院)表';
 
 
 
@@ -362,7 +362,7 @@ CREATE TABLE `tb_order` (
   `course_id` varchar(32) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '课程id',
   `project_id` varchar(256) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '项目id',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB DEFAULT COMMENT='订单表';
+) ENGINE=InnoDB COMMENT='订单表';
 
 DROP TABLE IF EXISTS `tb_party`;
 CREATE TABLE tb_party  (
@@ -386,7 +386,7 @@ CREATE TABLE tb_party  (
   `update_by` varchar(32) DEFAULT NULL COMMENT '更新人',
   `del_flag` tinyint(1) NOT NULL DEFAULT '0' COMMENT '删除标识0-正常,1-已删除',
   PRIMARY KEY (`id`)
-)ENGINE=InnoDB DEFAULT COMMENT='社群派对表';
+)ENGINE=InnoDB COMMENT='社群派对表';
 
 ###案例类型自定义的
 ALTER TABLE `tb_case`
@@ -449,4 +449,15 @@ ADD COLUMN `forward_num` bigint(32) DEFAULT 0 COMMENT '转发数量';
 
 ALTER TABLE `tb_community`
 ADD COLUMN `watch_num` bigint(32)   DEFAULT 0 COMMENT '观看数量';
+
+ALTER TABLE `tb_party`
+ADD COLUMN  `watch_num` varchar(32) NULL DEFAULT 0 COMMENT '观看数量',
+ADD COLUMN `good_num` varchar(32) NULL DEFAULT 0 COMMENT '点赞数量',
+ADD COLUMN `star_num` bigint(32) DEFAULT 0 COMMENT '收藏数量',
+ADD COLUMN `forward_num` bigint(32) DEFAULT 0 COMMENT '转发数量',
+ADD COLUMN `city` varchar(32) DEFAULT NULL COMMENT '城市';
+
+ALTER TABLE `tb_party`
+DROP COLUMN `watch`,
+DROP COLUMN `star`;
 

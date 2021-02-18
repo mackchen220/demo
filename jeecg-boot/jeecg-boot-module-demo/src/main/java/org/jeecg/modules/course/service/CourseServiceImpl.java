@@ -7,7 +7,6 @@ import org.jeecg.modules.commons.ErrorInfoCode;
 import org.jeecg.modules.commons.util.ValidateTool;
 import org.jeecg.modules.community.mapper.CommunityModelMapper;
 import org.jeecg.modules.community.model.CommunityModel;
-import org.jeecg.modules.course.mapper.ActivityMapper;
 import org.jeecg.modules.course.mapper.CourseMapper;
 import org.jeecg.modules.course.mapper.TopSearchMapper;
 import org.jeecg.modules.course.model.Activity;
@@ -15,6 +14,8 @@ import org.jeecg.modules.course.model.Course;
 import org.jeecg.modules.course.model.TopSearch;
 import org.jeecg.modules.course.model.vo.UserCourseDetailVo;
 import org.jeecg.modules.course.model.vo.UserCourseVo;
+import org.jeecg.modules.index.mapper.PartyModelMapper;
+import org.jeecg.modules.index.model.PartyModel;
 import org.jeecg.modules.user.model.UserModel;
 import org.jeecg.modules.user.service.UserFocusModelService;
 import org.jeecg.modules.user.service.UserModelService;
@@ -45,7 +46,7 @@ public class CourseServiceImpl implements CourseService {
     @Resource
     private CourseMapper courseMapper;
     @Resource
-    private ActivityMapper activityMapper;
+    private PartyModelMapper partyModelMapper;
 
     @Override
     public IPage<CommunityModel> followList(Page<CommunityModel> page, String userId) {
@@ -84,7 +85,7 @@ public class CourseServiceImpl implements CourseService {
                 list = courseMapper.getListOrderByLikeNum(page, 2, city);
                 break;
             case 6:
-                list = activityMapper.getListOrderByLikeNum(page, city);
+                list = partyModelMapper.getListOrderByLikeNum(page, city);
                 break;
             case 7:
                 list = courseMapper.getListOrderByLikeNum(page, null, city);
@@ -170,12 +171,12 @@ public class CourseServiceImpl implements CourseService {
                 }
                 break;
             case 3:
-                Activity activity = activityMapper.selectByPrimaryKey(id);
-                if (ValidateTool.isNotNull(activity)) {
-                    boolean isFans = userFocusModelService.isFans(activity.getCreateBy(), userId);
-                    detailVo = UserCourseDetailVo.valueOf(courseType, id, activity.getTitle(), activity.getImage(), activity.getWatchNum(), activity.getGoodNum(),
-                            activity.getStarNum(), activity.getForwardNum(), activity.getCity(), activity.getCreateTime(), isFans);
-                    this.packUserByCourse(detailVo, activity.getCreateBy());
+                PartyModel party = partyModelMapper.selectByPrimaryKey(id);
+                if (ValidateTool.isNotNull(party)) {
+                    boolean isFans = userFocusModelService.isFans(party.getCreateBy(), userId);
+                    detailVo = UserCourseDetailVo.valueOf(courseType, id, party.getTitle(), party.getImage(), party.getWatchNum(), party.getGoodNum(),
+                            party.getStarNum(), party.getForwardNum(), party.getCity(), party.getCreateTime(), isFans);
+                    this.packUserByCourse(detailVo, party.getCreateBy());
                 }
                 break;
             default:

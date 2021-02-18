@@ -33,13 +33,31 @@ public class PartyModel implements Serializable {
     * 观看数量
     */
     @ApiModelProperty(value="观看数量")
-    private String watch;
+    private Long watchNum;
 
     /**
-    * 点赞数量
+    * 收藏数量
     */
+    @ApiModelProperty(value="收藏数量")
+    private Long starNum;
+
+    /**
+     * 点赞数量
+     */
     @ApiModelProperty(value="点赞数量")
-    private String star;
+    private Long goodNum;
+
+    /**
+     * 转发数量
+     */
+    @ApiModelProperty(value="转发数量")
+    private Long forwardNum;
+
+    /**
+     * 城市
+     */
+    @ApiModelProperty(value="城市")
+    private String city;
 
     /**
     * 价格
