@@ -1,11 +1,15 @@
 package org.jeecg.modules.commons.interceptors;
 
 
+import cn.hutool.crypto.SecureUtil;
 import com.alibaba.fastjson.JSON;
+import com.google.common.collect.Maps;
 import lombok.extern.log4j.Log4j2;
 import org.jeecg.common.exception.JeecgBootException;
 import org.jeecg.common.util.RedisUtil;
+import org.jeecg.modules.commons.Constant;
 import org.jeecg.modules.commons.RedisKey;
+import org.jeecg.modules.commons.util.MapUtil;
 import org.jeecg.modules.commons.util.ValidateTool;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
@@ -13,6 +17,8 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Enumeration;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -35,7 +41,7 @@ public class ReqInterceptor implements HandlerInterceptor {
                 .append(JSON.toJSONString(request.getParameterMap())));
 
         checkSession(request);
-        checkSession(request);
+//        checkSign(request);
         return true;
     }
 
@@ -91,6 +97,47 @@ public class ReqInterceptor implements HandlerInterceptor {
     private boolean checkSign(HttpServletRequest request) {
 
         //接口验签暂时不做
+
+        String[] unAuthList = {"/sys","/online","/mock","/jmreport"
+                ,"/bigscreen","/test/bigScreen","/swagger","/webjars","/druid","/generic","/doc.html"};
+        for (String tem : unAuthList){
+            if (request.getRequestURI().contains(tem)){
+                return true;
+            }
+        }
+        String regex="/images/";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(request.getRequestURI());
+        if (matcher.find()){
+            return true;
+        }
+
+        //取出请求的所有参数（除了sign）并封装成一个map
+        String sign = request.getParameter("sign");
+        if(!ValidateTool.checkIsNull(sign)){
+            throw new JeecgBootException("验签失败");
+        }
+        Enumeration enu=request.getParameterNames();
+        Map paramMap = Maps.newHashMap();
+        while(enu.hasMoreElements()){
+            String paraName=(String)enu.nextElement();
+            if(!"sign".equals(paraName)){
+                paramMap.put(paraName,request.getParameter(paraName));
+            }
+        }
+        Map sendMap = MapUtil.sortAscLowerCase(paramMap);
+        //遍历map中的值
+        StringBuffer mapValue = new StringBuffer();
+        for (Object value : sendMap.values()) {
+            mapValue.append(value);
+        }
+        log.info("==拼接参数值===="+mapValue.toString());
+        String mySign = SecureUtil.md5(SecureUtil.md5(mapValue.toString())+ Constant.SIGN_KEY);
+        log.info("==mySign===="+mySign);
+        log.info("==sign===="+sign);
+        if(!sign.equals(mySign)){
+            throw new JeecgBootException("验签失败");
+        }
         return true;
     }
 
