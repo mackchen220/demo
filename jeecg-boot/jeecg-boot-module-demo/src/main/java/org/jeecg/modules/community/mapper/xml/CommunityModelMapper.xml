@@ -1,47 +1,47 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.jeecg.modules.community.mapper.CommunityModelMapper">
-  <resultMap id="BaseResultMap" type="org.jeecg.modules.community.model.CommunityModel">
-    <!--@mbg.generated-->
-    <!--@Table tb_community-->
-    <id column="id" jdbcType="VARCHAR" property="id" />
-    <result column="user_id" jdbcType="VARCHAR" property="userId" />
-    <result column="title" jdbcType="VARCHAR" property="title" />
-    <result column="content" jdbcType="VARCHAR" property="content" />
-    <result column="url" jdbcType="VARCHAR" property="url" />
-    <result column="image_url" jdbcType="VARCHAR" property="imageUrl" />
-    <result column="city" jdbcType="VARCHAR" property="city" />
-    <result column="type" jdbcType="TINYINT" property="type" />
-    <result column="user_type" jdbcType="TINYINT" property="userType" />
-    <result column="star_num" jdbcType="BIGINT" property="starNum" />
-    <result column="good_num" jdbcType="BIGINT" property="goodNum" />
-    <result column="forward_num" jdbcType="BIGINT" property="forwardNum" />
-    <result column="create_time" jdbcType="VARCHAR" property="createTime" />
-    <result column="update_time" jdbcType="VARCHAR" property="updateTime" />
-    <result column="create_by" jdbcType="VARCHAR" property="createBy" />
-    <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
-    <result column="del_flag" jdbcType="TINYINT" property="delFlag" />
-    <result column="watch_num" jdbcType="TINYINT" property="watchNum" />
-  </resultMap>
-  <sql id="Base_Column_List">
-    <!--@mbg.generated-->
-    id, user_id, title, content, url, image_url, city, `type`, user_type, star_num, good_num,
-    forward_num, create_time, update_time, create_by, update_by, del_flag, watch_num
-  </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
-    <!--@mbg.generated-->
-    select
-    <include refid="Base_Column_List" />
-    from tb_community
-    where id = #{id,jdbcType=VARCHAR}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
-    <!--@mbg.generated-->
+    <resultMap id="BaseResultMap" type="org.jeecg.modules.community.model.CommunityModel">
+        <!--@mbg.generated-->
+        <!--@Table tb_community-->
+        <id column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="user_id" jdbcType="VARCHAR" property="userId"/>
+        <result column="title" jdbcType="VARCHAR" property="title"/>
+        <result column="content" jdbcType="VARCHAR" property="content"/>
+        <result column="url" jdbcType="VARCHAR" property="url"/>
+        <result column="image_url" jdbcType="VARCHAR" property="imageUrl"/>
+        <result column="city" jdbcType="VARCHAR" property="city"/>
+        <result column="type" jdbcType="TINYINT" property="type"/>
+        <result column="user_type" jdbcType="TINYINT" property="userType"/>
+        <result column="star_num" jdbcType="BIGINT" property="starNum"/>
+        <result column="good_num" jdbcType="BIGINT" property="goodNum"/>
+        <result column="forward_num" jdbcType="BIGINT" property="forwardNum"/>
+        <result column="create_time" jdbcType="VARCHAR" property="createTime"/>
+        <result column="update_time" jdbcType="VARCHAR" property="updateTime"/>
+        <result column="create_by" jdbcType="VARCHAR" property="createBy"/>
+        <result column="update_by" jdbcType="VARCHAR" property="updateBy"/>
+        <result column="del_flag" jdbcType="TINYINT" property="delFlag"/>
+        <result column="watch_num" jdbcType="TINYINT" property="watchNum"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        <!--@mbg.generated-->
+        id, user_id, title, content, url, image_url, city, `type`, user_type, star_num, good_num,
+        forward_num, create_time, update_time, create_by, update_by, del_flag, watch_num
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        <!--@mbg.generated-->
+        select
+        <include refid="Base_Column_List"/>
+        from tb_community
+        where id = #{id,jdbcType=VARCHAR}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        <!--@mbg.generated-->
     delete from tb_community
     where id = #{id,jdbcType=VARCHAR}
   </delete>
-  <insert id="insert" parameterType="org.jeecg.modules.community.model.CommunityModel">
-    <!--@mbg.generated-->
+    <insert id="insert" parameterType="org.jeecg.modules.community.model.CommunityModel">
+        <!--@mbg.generated-->
     insert into tb_community (id, user_id, title,
       content, url, imageUrl,
       city, `type`, user_type,
@@ -55,182 +55,182 @@
       #{createTime,jdbcType=VARCHAR}, #{updateTime,jdbcType=VARCHAR}, #{createBy,jdbcType=VARCHAR},
       #{updateBy,jdbcType=VARCHAR}, #{delFlag,jdbcType=TINYINT})
   </insert>
-  <insert id="insertSelective" parameterType="org.jeecg.modules.community.model.CommunityModel">
-    <!--@mbg.generated-->
-    insert into tb_community
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="id != null">
+    <insert id="insertSelective" parameterType="org.jeecg.modules.community.model.CommunityModel">
+        <!--@mbg.generated-->
+        insert into tb_community
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
         id,
       </if>
-      <if test="userId != null">
+            <if test="userId != null">
         user_id,
       </if>
-      <if test="title != null">
+            <if test="title != null">
         title,
       </if>
-      <if test="content != null">
+            <if test="content != null">
         content,
       </if>
-      <if test="url != null">
+            <if test="url != null">
         url,
       </if>
-      <if test="imageUrl != null">
+            <if test="imageUrl != null">
         image_url,
       </if>
-      <if test="city != null">
+            <if test="city != null">
         city,
       </if>
-      <if test="type != null">
+            <if test="type != null">
         `type`,
       </if>
-      <if test="userType != null">
+            <if test="userType != null">
         user_type,
       </if>
-      <if test="starNum != null">
+            <if test="starNum != null">
         star_num,
       </if>
-      <if test="goodNum != null">
+            <if test="goodNum != null">
         good_num,
       </if>
-      <if test="forwardNum != null">
+            <if test="forwardNum != null">
         forward_num,
       </if>
-      <if test="createTime != null">
+            <if test="createTime != null">
         create_time,
       </if>
-      <if test="updateTime != null">
+            <if test="updateTime != null">
         update_time,
       </if>
-      <if test="createBy != null">
+            <if test="createBy != null">
         create_by,
       </if>
-      <if test="updateBy != null">
+            <if test="updateBy != null">
         update_by,
       </if>
-      <if test="delFlag != null">
+            <if test="delFlag != null">
         del_flag,
       </if>
-      <if test="watchNum != null">
-        watch_num,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="id != null">
+            <if test="watchNum != null">
+                watch_num,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
         #{id,jdbcType=VARCHAR},
       </if>
-      <if test="userId != null">
+            <if test="userId != null">
         #{userId,jdbcType=VARCHAR},
       </if>
-      <if test="title != null">
+            <if test="title != null">
         #{title,jdbcType=VARCHAR},
       </if>
-      <if test="content != null">
+            <if test="content != null">
         #{content,jdbcType=VARCHAR},
       </if>
-      <if test="url != null">
+            <if test="url != null">
         #{url,jdbcType=VARCHAR},
       </if>
-      <if test="imageUrl != null">
+            <if test="imageUrl != null">
         #{imageUrl,jdbcType=VARCHAR},
       </if>
-      <if test="city != null">
+            <if test="city != null">
         #{city,jdbcType=VARCHAR},
       </if>
-      <if test="type != null">
+            <if test="type != null">
         #{type,jdbcType=TINYINT},
       </if>
-      <if test="userType != null">
+            <if test="userType != null">
         #{userType,jdbcType=TINYINT},
       </if>
-      <if test="starNum != null">
+            <if test="starNum != null">
         #{starNum,jdbcType=BIGINT},
       </if>
-      <if test="goodNum != null">
+            <if test="goodNum != null">
         #{goodNum,jdbcType=BIGINT},
       </if>
-      <if test="forwardNum != null">
+            <if test="forwardNum != null">
         #{forwardNum,jdbcType=BIGINT},
       </if>
-      <if test="createTime != null">
+            <if test="createTime != null">
         #{createTime,jdbcType=VARCHAR},
       </if>
-      <if test="updateTime != null">
+            <if test="updateTime != null">
         #{updateTime,jdbcType=VARCHAR},
       </if>
-      <if test="createBy != null">
+            <if test="createBy != null">
         #{createBy,jdbcType=VARCHAR},
       </if>
-      <if test="updateBy != null">
+            <if test="updateBy != null">
         #{updateBy,jdbcType=VARCHAR},
       </if>
-      <if test="delFlag != null">
+            <if test="delFlag != null">
         #{delFlag,jdbcType=TINYINT},
       </if>
-      <if test="watchNum != null">
-        #{watchNum},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateSelective" parameterType="org.jeecg.modules.community.model.CommunityModel">
-    <!--@mbg.generated-->
-    update tb_community
-    <set>
-      <if test="userId != null">
+            <if test="watchNum != null">
+                #{watchNum},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateSelective" parameterType="org.jeecg.modules.community.model.CommunityModel">
+        <!--@mbg.generated-->
+        update tb_community
+        <set>
+            <if test="userId != null">
         user_id = #{userId,jdbcType=VARCHAR},
       </if>
-      <if test="title != null">
+            <if test="title != null">
         title = #{title,jdbcType=VARCHAR},
       </if>
-      <if test="content != null">
+            <if test="content != null">
         content = #{content,jdbcType=VARCHAR},
       </if>
-      <if test="url != null">
+            <if test="url != null">
         url = #{url,jdbcType=VARCHAR},
       </if>
-      <if test="imageUrl != null">
+            <if test="imageUrl != null">
         image_url = #{imageUrl,jdbcType=VARCHAR},
       </if>
-      <if test="city != null">
+            <if test="city != null">
         city = #{city,jdbcType=VARCHAR},
       </if>
-      <if test="type != null">
+            <if test="type != null">
         `type` = #{type,jdbcType=TINYINT},
       </if>
-      <if test="userType != null">
+            <if test="userType != null">
         user_type = #{userType,jdbcType=TINYINT},
       </if>
-      <if test="starNum != null">
+            <if test="starNum != null">
         star_num = #{starNum,jdbcType=BIGINT},
       </if>
-      <if test="goodNum != null">
+            <if test="goodNum != null">
         good_num = #{goodNum,jdbcType=BIGINT},
       </if>
-      <if test="forwardNum != null">
+            <if test="forwardNum != null">
         forward_num = #{forwardNum,jdbcType=BIGINT},
       </if>
-      <if test="createTime != null">
+            <if test="createTime != null">
         create_time = #{createTime,jdbcType=VARCHAR},
       </if>
-      <if test="updateTime != null">
+            <if test="updateTime != null">
         update_time = #{updateTime,jdbcType=VARCHAR},
       </if>
-      <if test="createBy != null">
+            <if test="createBy != null">
         create_by = #{createBy,jdbcType=VARCHAR},
       </if>
-      <if test="updateBy != null">
+            <if test="updateBy != null">
         update_by = #{updateBy,jdbcType=VARCHAR},
       </if>
-      <if test="delFlag != null">
+            <if test="delFlag != null">
         del_flag = #{delFlag,jdbcType=TINYINT},
       </if>
-      <if test="watchNum != null">
-        watch_num = #{watchNum},
-      </if>
-    </set>
-    where id = #{id,jdbcType=VARCHAR}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="org.jeecg.modules.community.model.CommunityModel">
-    <!--@mbg.generated-->
+            <if test="watchNum != null">
+                watch_num = #{watchNum},
+            </if>
+        </set>
+        where id = #{id,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="org.jeecg.modules.community.model.CommunityModel">
+        <!--@mbg.generated-->
     update tb_community
     set user_id = #{userId,jdbcType=VARCHAR},
       title = #{title,jdbcType=VARCHAR},
@@ -251,41 +251,61 @@
     where id = #{id,jdbcType=VARCHAR}
   </update>
 
-  <select id="loadCommunityListByType" parameterType="integer" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List" />
-    from tb_community
-    where type = #{type,jdbcType=VARCHAR}
-    order by create_time desc
-  </select>
-  <select id="getListByUserId" resultMap="BaseResultMap">
-    select <include refid="Base_Column_List" />
-    from tb_community
-    <where>
-      <trim prefixOverrides="and">
-        <if test="userId != null and userId != ''">
-          and user_id = #{userId}
-        </if>
-      </trim>
-    </where>
-    order by create_time desc
-  </select>
-  <select id="selectByFocusUserId" resultMap="BaseResultMap">
+    <select id="loadCommunityListByType" parameterType="integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_community
+        where type = #{type,jdbcType=VARCHAR}
+        order by create_time desc
+    </select>
+    <select id="getListByUserId" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_community
+        <where>
+            <trim prefixOverrides="and">
+                <if test="userId != null and userId != ''">
+                    and user_id = #{userId}
+                </if>
+            </trim>
+        </where>
+        order by create_time desc
+    </select>
+    <select id="selectByFocusUserId" resultMap="BaseResultMap">
     SELECT c.* from tb_community c
     RIGHT JOIN tb_user_focus uf ON c.user_id = uf.focus_user_id
     where uf.user_id = #{userId}
   </select>
-  <select id="getListOrderByLikeNum" resultMap="BaseResultMap">
-    SELECT <include refid="Base_Column_List"/>
-    from tb_community
-    where del_flag = 0
-      <if test="type != null">
+    <select id="getListOrderByLikeNum" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        from tb_community
+        where del_flag = 0
+        <if test="type != null">
         and type = #{type}
       </if>
-      <if test="city != null and city != ''">
+        <if test="city != null and city != ''">
         and city = #{city}
       </if>
-    order by good_num desc
-  </select>
+        order by good_num desc
+    </select>
 
+    <update id="updateCommunityNum">
+        update tb_community
+        <set>
+            <if test="starNum != null">
+        star_num =star_num+ #{starNum,jdbcType=BIGINT},
+      </if>
+            <if test="goodNum != null">
+        good_num =good_num+ #{goodNum,jdbcType=BIGINT},
+      </if>
+            <if test="forwardNum != null">
+        forward_num = forward_num+#{forwardNum,jdbcType=BIGINT},
+      </if>
+            <if test="watchNum != null">
+                watch_num = watch_num+#{watchNum},
+            </if>
+        </set>
+        where user_id = #{userId,jdbcType=VARCHAR} and id = #{communityId,jdbcType=VARCHAR}
+    </update>
 </mapper>

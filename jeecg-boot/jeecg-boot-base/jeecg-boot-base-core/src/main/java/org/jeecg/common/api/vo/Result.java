@@ -47,6 +47,14 @@ public class Result<T> implements Serializable {
 	@ApiModelProperty(value = "返回数据对象")
 	private T result;
 
+
+	/**
+	 * 前台token
+	 */
+	@ApiModelProperty(value = "前台token")
+	private String token;
+
+
 	/**
 	 * 时间戳
 	 */
@@ -85,6 +93,20 @@ public class Result<T> implements Serializable {
 		log.info("请求返回{}", JSONObject.toJSONString(r));
 		return r;
 	}
+
+
+	public static <T> Result<T> OK(String msg, String token, T data) {
+		Result<T> r = new Result<T>();
+		r.setSuccess(true);
+		r.setCode(CommonConstant.SC_OK_200);
+		r.setMessage(msg);
+		r.setResult(data);
+		r.setToken(token);
+		log.info("请求返回{}", JSONObject.toJSONString(r));
+		return r;
+	}
+
+
 
 	@Deprecated
 	public static Result<Object> ok(Object data) {

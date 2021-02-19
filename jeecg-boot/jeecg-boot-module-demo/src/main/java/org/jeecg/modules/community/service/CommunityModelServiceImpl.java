@@ -110,9 +110,11 @@ public class CommunityModelServiceImpl implements CommunityModelService{
             if (ValidateTool.isNotNull(userStar) &&Constant.CHECKTYPE1.equals(userStar.getGood())){
                 //点过赞,取消点赞
                 userStarMapper.updateStar(id,userId,null,Constant.CHECKTYPE0);
+                communityModelMapper.updateCommunityNum(id,userId,null,null,Constant.TYPE_INT_fuyi,null);
             } else if (ValidateTool.isNotNull(userStar)){
                 ////点过赞,取消过点赞，恢复点赞
                 userStarMapper.updateStar(id,userId,null,Constant.CHECKTYPE1);
+                communityModelMapper.updateCommunityNum(id,userId,null,null,Constant.TYPE_INT_1,null);
             }else {
                 UserStar model = new UserStar();
                 model.setId(SeqUtils.nextIdStr());
@@ -120,6 +122,7 @@ public class CommunityModelServiceImpl implements CommunityModelService{
                 model.setCommunityId(id);
                 model.setGood(Constant.CHECKTYPE1);
                 userStarMapper.insertSelective(model);
+                communityModelMapper.updateCommunityNum(id,userId,null,null,Constant.TYPE_INT_1,null);
             }
         }else {
             //收藏
@@ -127,8 +130,10 @@ public class CommunityModelServiceImpl implements CommunityModelService{
             if (ValidateTool.isNotNull(userStar) &&Constant.CHECKTYPE1.equals(userStar.getStar())){
                 //点过收藏,取消收藏
                 userStarMapper.updateStar(id,userId,Constant.CHECKTYPE0,null);
+                communityModelMapper.updateCommunityNum(id,userId,null,Constant.TYPE_INT_fuyi,null,null);
             }else if (ValidateTool.isNotNull(userStar)){
                 userStarMapper.updateStar(id,userId,Constant.CHECKTYPE1,null);
+                communityModelMapper.updateCommunityNum(id,userId,null,Constant.TYPE_INT_1,null,null);
             }else {
                 UserStar model = new UserStar();
                 model.setId(SeqUtils.nextIdStr());
@@ -136,6 +141,7 @@ public class CommunityModelServiceImpl implements CommunityModelService{
                 model.setCommunityId(id);
                 model.setStar(Constant.CHECKTYPE1);
                 userStarMapper.insertSelective(model);
+                communityModelMapper.updateCommunityNum(id,userId,null,Constant.TYPE_INT_1,null,null);
             }
         }
 
