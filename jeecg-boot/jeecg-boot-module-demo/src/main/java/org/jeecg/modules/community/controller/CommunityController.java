@@ -8,6 +8,7 @@ import org.jeecg.common.api.vo.Result;
 import org.jeecg.modules.commons.util.ValidateTool;
 import org.jeecg.modules.community.model.CommunityModel;
 import org.jeecg.modules.community.service.CommunityModelService;
+import org.jeecg.modules.user.model.UserModel;
 import org.jeecg.modules.user.service.UserModelService;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -18,7 +19,7 @@ import java.util.Map;
 
 @Slf4j
 @RestController
-@RequestMapping("/hy/Community")
+@RequestMapping("/hy/community")
 @Api(tags = "前台朋友圈模块")
 public class CommunityController {
 
@@ -74,5 +75,14 @@ public class CommunityController {
         return result;
     }
 
+
+    @ApiOperation("朋友圈点赞接口")
+    @RequestMapping(value = "/addCommunityStar", method = RequestMethod.POST)
+    public Result addCommunityStar(String id,String token,String type) {
+        String userId = userModelService.getUserIdByToken(token);
+        Result result = new Result<>();
+       communityModelService.addCommunityStar(id,userId,type);
+        return Result.OK();
+    }
 
 }

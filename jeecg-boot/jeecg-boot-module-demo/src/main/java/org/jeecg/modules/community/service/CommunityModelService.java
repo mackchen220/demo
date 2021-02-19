@@ -27,4 +27,6 @@ public interface CommunityModelService{
 
     IPage<CommunityModel> getListByUserId(Page<CommunityModel> objectPage, String userId);
 
+    void addCommunityStar(String id,String userId,String type);
+
 }

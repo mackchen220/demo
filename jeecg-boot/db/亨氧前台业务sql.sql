@@ -400,6 +400,8 @@ ALTER TABLE `tb_talent_info` ADD COLUMN `like_num` bigint(32) NULL DEFAULT 0 COM
 
 ALTER TABLE `tb_user` ADD COLUMN `province` varchar(50) DEFAULT NULL COMMENT '省份';
 ALTER TABLE `tb_user` ADD COLUMN `city` varchar(50) DEFAULT NULL COMMENT '城市';
+ALTER TABLE `tb_user`
+DROP COLUMN `address_id`;
 
 DROP TABLE IF EXISTS `tb_top_search`;
 CREATE TABLE `tb_top_search`(
@@ -461,3 +463,18 @@ ALTER TABLE `tb_party`
 DROP COLUMN `watch`,
 DROP COLUMN `star`;
 
+DROP TABLE IF EXISTS `tb_user_star`;
+
+CREATE TABLE `tb_user_star` (
+  `id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `user_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `community_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `star` int NOT NULL DEFAULT '0' COMMENT '是否收藏',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '更新日期',
+  `create_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '创建人',
+  `update_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '更新人',
+  `del_flag` int NOT NULL DEFAULT '0' COMMENT '删除标识0-正常,1-已删除',
+  `good` int NOT NULL DEFAULT '0' COMMENT '是否点赞',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='用户点赞收藏朋友圈表';
