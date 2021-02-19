@@ -20,4 +20,6 @@ public interface UserAgencyModelMapper {
 
     int updateNum(@Param("id") String id);
 
+    UserAgencyModel loadUserAgency(@Param("userId") String userId,@Param("puserId") String puserId);
+
 }

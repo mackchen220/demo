@@ -74,7 +74,7 @@ public class UserModelServiceImpl implements UserModelService {
             userModel.setPhone(phone);
             //五位数邀请码
             //todo
-            userModel.setInviteCode(RandomUtil.nextInviteCode(5, 5));
+            userModel.setInviteCode(nextInviteCode());
             userModel.setUserName(phone);
             userModel.setPassword(phone);
             userModel.setNickName(phone);
@@ -121,30 +121,56 @@ public class UserModelServiceImpl implements UserModelService {
         return object;
     }
 
+    public String nextInviteCode(){
+        //生成一个不重复的邀请码
+        String code = RandomUtil.nextInviteCode(5, 5);
+        log.info("生成邀请码1{}",code);
+        do {
+            UserModel userModel = userModelMapper.loadUser(null, null, null, code);
+            if (ValidateTool.isNull(userModel)){
+                log.warn("生成邀请码未重复{}",code);
+                break;
+            }else {
+                log.warn("生成邀请码重复{}",code);
+                code = RandomUtil.nextInviteCode(5, 5);
+                log.warn("再次生成邀请码{}",code);
+            }
+        }while (true);
+        log.info("最终生成邀请码{}",code);
+        return code;
+    }
     //添加上下级关系
     @Transactional(rollbackFor = Exception.class)
     @Override
     public void addUserAgencyModel(String inviteCode, String userId) {
-
+        if (ValidateTool.isNull(inviteCode)){
+            throw  new JeecgBootException("请填写邀请码");
+        }
+        UserModel userModel2 = userModelMapper.loadUser(null, null, null, inviteCode.toUpperCase());
+        if (!ValidateTool.checkIsNull(userModel2)) {
+            throw new JeecgBootException("邀请码不存在");
+        }
+        UserAgencyModel agency = userAgencyModelMapper.loadUserAgency(userId, userModel2.getId());
+        if (ValidateTool.isNotNull(agency)){
+            log.warn("邀请码重复填写");
+            return;
+        }
         //添加上下级关系
         UserAgencyModel userAgencyModel = new UserAgencyModel();
         userAgencyModel.setNum(0);
         //邀请码不为空，建立上下级关系
-        if (ValidateTool.checkIsNull(inviteCode)) {
-            UserModel userModel2 = userModelMapper.loadUser(null, null, null, inviteCode.toUpperCase());
-            if (!ValidateTool.checkIsNull(userModel2)) {
-                throw new JeecgBootException("邀请码不存在");
-            }
+//        if (ValidateTool.checkIsNull(inviteCode)) {
+
             userAgencyModel.setId(SeqUtils.nextIdStr());
             userAgencyModel.setpUserId(userModel2.getId());
             userAgencyModel.setUserId(userId);
             userAgencyModel.setNum(0);
             userAgencyModelMapper.updateNum(userModel2.getId());
-        } else {
-            userAgencyModel.setId(SeqUtils.nextIdStr());
-            userAgencyModel.setpUserId("-1");
-            userAgencyModel.setUserId(userId);
-        }
+//        } else {
+//            userAgencyModel.setId(SeqUtils.nextIdStr());
+//            userAgencyModel.setpUserId("-1");
+//            userAgencyModel.setUserId(userId);
+//        }
         userAgencyModelMapper.insertSelective(userAgencyModel);
     }
 
