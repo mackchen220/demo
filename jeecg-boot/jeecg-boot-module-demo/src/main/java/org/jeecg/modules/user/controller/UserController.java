@@ -62,6 +62,7 @@ public class UserController {
     @DynamicResponseParameters(name = "login",properties = {
             @DynamicParameter(name = "headImage",value = "头像"),
             @DynamicParameter(name = "nickname",value = "昵称" ),
+            @DynamicParameter(name = "first",value = "是否第一次注册 1是 0不是" ),
             @DynamicParameter(name = "token",value = "token 登录以后每个`接口都需要token参数"
                     ,example = "88291a6fbf21a186165037f866aedc63,3c1138239ddca40a8f49d8a89d78c6f3"),
     })
@@ -85,6 +86,14 @@ public class UserController {
         JSONObject object = userModelService.userLogin(inviteCode, captcha, phone);
         result.setResult(object);
         return result;
+    }
+
+    @ApiOperation("填写邀请码")
+    @RequestMapping(value = "/addUserAgency", method = RequestMethod.POST)
+    public Result addUserAgency( String token,String inviteCode) {
+        String id = userModelService.getUserIdByToken(token);
+        userModelService.addUserAgencyModel(inviteCode,id);
+        return Result.OK();
     }
 
 

@@ -20,4 +20,5 @@ public interface UserModelService {
 
     Map loadUserInfo(String token);
 
+    void addUserAgencyModel(String inviteCode,String userId);
 }

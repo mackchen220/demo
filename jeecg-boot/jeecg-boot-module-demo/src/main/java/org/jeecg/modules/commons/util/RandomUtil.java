@@ -65,6 +65,10 @@ public final class RandomUtil {
         return stringBuilder.toString();
     }
 
+    public static void main(String[] args) {
+        System.out.println(nextInviteCode(6,6));
+    }
+
     /**
      * 生成一个指定范围（包括该范围）内的随机数。
      *

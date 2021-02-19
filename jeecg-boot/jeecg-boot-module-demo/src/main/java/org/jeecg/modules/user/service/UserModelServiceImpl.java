@@ -64,36 +64,41 @@ public class UserModelServiceImpl implements UserModelService {
     public JSONObject userLogin(String inviteCode, String captcha, String phone) {
         UserModel userModel = userModelMapper.loadUser(null, phone, null, null);
 
+         // 第一次
+        int first =0;
         if (!ValidateTool.checkIsNull(userModel)) {
+            first=1;
             userModel = new UserModel();
             //手机号未注册的新用户自动注册
             userModel.setId(SeqUtils.nextIdStr());
             userModel.setPhone(phone);
-            userModel.setInviteCode(RandomUtil.nextInviteCode(1, 6));
+            //五位数邀请码
+            //todo
+            userModel.setInviteCode(RandomUtil.nextInviteCode(5, 5));
             userModel.setUserName(phone);
             userModel.setPassword(phone);
             userModel.setNickName(phone);
             userModelMapper.insertSelective(userModel);
-            //添加上下级关系
-            UserAgencyModel userAgencyModel = new UserAgencyModel();
-            userAgencyModel.setNum(0);
-            //邀请码不为空，建立上下级关系
-            if (ValidateTool.checkIsNull(inviteCode)) {
-                UserModel userModel2 = userModelMapper.loadUser(null, null, null, inviteCode.toUpperCase());
-                if (!ValidateTool.checkIsNull(userModel2)) {
-                    throw new JeecgBootException("邀请码不存在");
-                }
-                userAgencyModel.setId(SeqUtils.nextIdStr());
-                userAgencyModel.setpUserId(userModel2.getId());
-                userAgencyModel.setUserId(userModel.getId());
-                userAgencyModel.setNum(0);
-                userAgencyModelMapper.updateNum(userModel2.getId());
-            } else {
-                userAgencyModel.setId(SeqUtils.nextIdStr());
-                userAgencyModel.setpUserId("-1");
-                userAgencyModel.setUserId(userModel.getId());
-            }
-            userAgencyModelMapper.insertSelective(userAgencyModel);
+//            //添加上下级关系
+//            UserAgencyModel userAgencyModel = new UserAgencyModel();
+//            userAgencyModel.setNum(0);
+//            //邀请码不为空，建立上下级关系
+//            if (ValidateTool.checkIsNull(inviteCode)) {
+//                UserModel userModel2 = userModelMapper.loadUser(null, null, null, inviteCode.toUpperCase());
+//                if (!ValidateTool.checkIsNull(userModel2)) {
+//                    throw new JeecgBootException("邀请码不存在");
+//                }
+//                userAgencyModel.setId(SeqUtils.nextIdStr());
+//                userAgencyModel.setpUserId(userModel2.getId());
+//                userAgencyModel.setUserId(userModel.getId());
+//                userAgencyModel.setNum(0);
+//                userAgencyModelMapper.updateNum(userModel2.getId());
+//            } else {
+//                userAgencyModel.setId(SeqUtils.nextIdStr());
+//                userAgencyModel.setpUserId("-1");
+//                userAgencyModel.setUserId(userModel.getId());
+//            }
+//            userAgencyModelMapper.insertSelective(userAgencyModel);
         }
 
         JSONObject object = new JSONObject();
@@ -112,7 +117,35 @@ public class UserModelServiceImpl implements UserModelService {
         object.put("token", token);
         object.put("headImage", userModel.getHeadImage());
         object.put("nickname", userModel.getNickName());
+        object.put("first", first);
         return object;
+    }
+
+    //添加上下级关系
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public void addUserAgencyModel(String inviteCode, String userId) {
+
+        //添加上下级关系
+        UserAgencyModel userAgencyModel = new UserAgencyModel();
+        userAgencyModel.setNum(0);
+        //邀请码不为空，建立上下级关系
+        if (ValidateTool.checkIsNull(inviteCode)) {
+            UserModel userModel2 = userModelMapper.loadUser(null, null, null, inviteCode.toUpperCase());
+            if (!ValidateTool.checkIsNull(userModel2)) {
+                throw new JeecgBootException("邀请码不存在");
+            }
+            userAgencyModel.setId(SeqUtils.nextIdStr());
+            userAgencyModel.setpUserId(userModel2.getId());
+            userAgencyModel.setUserId(userId);
+            userAgencyModel.setNum(0);
+            userAgencyModelMapper.updateNum(userModel2.getId());
+        } else {
+            userAgencyModel.setId(SeqUtils.nextIdStr());
+            userAgencyModel.setpUserId("-1");
+            userAgencyModel.setUserId(userId);
+        }
+        userAgencyModelMapper.insertSelective(userAgencyModel);
     }
 
     @Override
