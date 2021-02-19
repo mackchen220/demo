@@ -27,6 +27,7 @@ public enum ErrorInfoCode {
 	UN_KNOW_ERROR(1999, "网络异常，请稍后重试"),
 	/** 查询类型不存在 */
 	SEARCH_TYPE_ERROR(2001, "查询类型不存在"),
+	UPLOAD_FILE_ERROR(2002, "文件上传失败"),
 	;
 
 	private int code;

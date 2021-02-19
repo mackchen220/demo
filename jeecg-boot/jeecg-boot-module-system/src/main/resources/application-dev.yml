@@ -284,3 +284,11 @@ justauth:
     type: default
     prefix: 'demo::'
     timeout: 1h
+
+project:
+  oss:
+    aliyun:
+      endpoint: oss-cn-chengdu.aliyuncs.com
+      accessKeyId: LTAI4GKjZn3MA5a9r4YBPjJk
+      accessKeySecret: iQTlsXq2DIAogKZYBOgRalf3kwMeOZ
+      bucketName: longbuvket1
