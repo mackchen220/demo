@@ -67,7 +67,7 @@ public class UserController {
     })
     @ApiOperation("前台用户登录接口")
     @RequestMapping(value = "/userLogin", method = RequestMethod.POST)
-    public Result<JSONObject> login(String inviteCode, String captcha, String phone, String s) {
+    public Result<JSONObject> login(String inviteCode, String captcha, String phone) {
         Result<JSONObject> result = new Result<JSONObject>();
         if (captcha == null) {
             result.error500("请输入验证码");
@@ -82,7 +82,7 @@ public class UserController {
             result.error500("验证码错误");
             return result;
         }
-        JSONObject object = userModelService.userLogin(inviteCode, captcha, phone, "");
+        JSONObject object = userModelService.userLogin(inviteCode, captcha, phone);
         result.setResult(object);
         return result;
     }

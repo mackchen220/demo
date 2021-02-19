@@ -61,7 +61,7 @@ public class UserModelServiceImpl implements UserModelService {
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public JSONObject userLogin(String inviteCode, String captcha, String phone, String s) {
+    public JSONObject userLogin(String inviteCode, String captcha, String phone) {
         UserModel userModel = userModelMapper.loadUser(null, phone, null, null);
 
         if (!ValidateTool.checkIsNull(userModel)) {

@@ -10,7 +10,7 @@ public interface UserModelService {
 
     UserModel getUserById(String id);
 
-    JSONObject userLogin(String inviteCode, String captcha, String phone, String s);
+    JSONObject userLogin(String inviteCode, String captcha, String phone);
 
     UserModel getUserModelByToken(String token);
 
