@@ -29,10 +29,7 @@ public class UserModel {
     */
     private String vipId;
 
-    /**
-    * 收获地址表id
-    */
-    private String addressId;
+
 
     /**
     * 银行卡id
