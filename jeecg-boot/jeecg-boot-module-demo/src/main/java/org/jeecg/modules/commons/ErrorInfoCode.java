@@ -28,6 +28,8 @@ public enum ErrorInfoCode {
 	/** 查询类型不存在 */
 	SEARCH_TYPE_ERROR(2001, "查询类型不存在"),
 	UPLOAD_FILE_ERROR(2002, "文件上传失败"),
+	UPLOAD_FILE_NOT_EXIST_ERROR(2003, "上传文件为空"),
+	UPLOAD_FILE_OVER_LIMIT_ERROR(2004, "上次文件不能超过2MB"),
 	;
 
 	private int code;
