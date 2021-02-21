@@ -7,6 +7,7 @@ import org.jeecg.common.exception.JeecgBootException;
 import org.jeecg.modules.commons.Constant;
 import org.jeecg.modules.commons.util.SeqUtils;
 import org.jeecg.modules.commons.util.ValidateTool;
+import org.jeecg.modules.community.model.vo.CommunityModelVo;
 import org.jeecg.modules.user.mapper.UserModelMapper;
 import org.jeecg.modules.user.mapper.UserStarMapper;
 import org.jeecg.modules.user.model.UserModel;
@@ -36,15 +37,6 @@ public class CommunityModelServiceImpl implements CommunityModelService{
     @Resource
     private UserModelMapper userModelMapper;
 
-    @Override
-    public int deleteByPrimaryKey(String id) {
-        return communityModelMapper.deleteByPrimaryKey(id);
-    }
-
-    @Override
-    public int insert(CommunityModel record) {
-        return communityModelMapper.insert(record);
-    }
 
     @Transactional
     @Override
@@ -59,20 +51,29 @@ public class CommunityModelServiceImpl implements CommunityModelService{
         return communityModelMapper.selectByPrimaryKey(id);
     }
 
-    @Override
-    public int updateByPrimaryKeySelective(CommunityModel record) {
-        return communityModelMapper.updateSelective(record);
-    }
 
     @Override
-    public int updateByPrimaryKey(CommunityModel record) {
-        return communityModelMapper.updateByPrimaryKey(record);
+    public Page<CommunityModelVo> loadCommunityListByType(Page<CommunityModelVo> page, int type, String userId) {
+
+        if (ValidateTool.isNotNull(type)&&Constant.TYPE_INT_2==type){
+            // 达人动态
+            return page.setRecords(communityModelMapper.loadTalentCommunity(page,userId));
+        }else {
+            //官方精选//视频动态
+            return page.setRecords(communityModelMapper.loadCommunityListByType(page,type,userId));
+        }
     }
 
+
+    //我的点赞
     @Override
-    public Page<CommunityModel> loadCommunityListByType(Page<CommunityModel> page,int type) {
-        return page.setRecords(communityModelMapper.loadCommunityListByType(page,type));
+    public Page<CommunityModelVo> loadGoodCommunityList(Page<CommunityModelVo> page,String userId,int type) {
+
+        List<CommunityModelVo> communityModelVos = communityModelMapper.loadStarAndGoodCommunityList(page, type, userId);
+
+        return page.setRecords(communityModelVos);
     }
+
 
     @Override
     public Map loadMomentsInfo(String id) {
@@ -146,4 +147,7 @@ public class CommunityModelServiceImpl implements CommunityModelService{
         }
 
     }
+
+
+
 }

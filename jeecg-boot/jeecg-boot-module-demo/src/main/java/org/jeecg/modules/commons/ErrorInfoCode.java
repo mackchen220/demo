@@ -27,6 +27,8 @@ public enum ErrorInfoCode {
 	UN_KNOW_ERROR(1999, "网络异常，请稍后重试"),
 	/** 查询类型不存在 */
 	SEARCH_TYPE_ERROR(2001, "查询类型不存在"),
+	/** 不满足接口条件 */
+	NO_INVITE_CODE_ERROR(3001, "请填写邀请码"),
 	;
 
 	private int code;

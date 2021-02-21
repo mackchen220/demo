@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.jeecg.common.api.vo.Result;
 import org.jeecg.modules.commons.util.ValidateTool;
 import org.jeecg.modules.community.model.CommunityModel;
+import org.jeecg.modules.community.model.vo.CommunityModelVo;
 import org.jeecg.modules.community.service.CommunityModelService;
 import org.jeecg.modules.user.model.UserModel;
 import org.jeecg.modules.user.service.UserModelService;
@@ -29,14 +30,15 @@ public class CommunityController {
     @Resource
     private UserModelService userModelService;
 
-    @ApiOperation("社区朋友圈列表")
+    @ApiOperation("朋友圈列表")
     @RequestMapping(value = "/loadCommunityListByType", method = RequestMethod.POST)
-    public Result<Page<CommunityModel>> loadCommunityListByType(int type, int pageNo, int pageSize, String token) {
+    public Result<Page<CommunityModelVo>> loadCommunityListByType(int type, int pageNo, int pageSize, String token) {
 
-        Result<Page<CommunityModel>> result = new Result<Page<CommunityModel>>();
-        Page<CommunityModel> pageList = new Page<CommunityModel>(pageNo, pageSize);
+        String userId = userModelService.getUserIdByToken(token);
+        Result<Page<CommunityModelVo>> result = new Result<Page<CommunityModelVo>>();
+        Page<CommunityModelVo> pageList = new Page<CommunityModelVo>(pageNo, pageSize);
 
-        pageList = communityModelService.loadCommunityListByType(pageList, type);
+        pageList = communityModelService.loadCommunityListByType(pageList, type , userId);
         result.setResult(pageList);
         log.info("查询当前页：" + pageList.getCurrent());
         log.info("查询当前页数量：" + pageList.getSize());
@@ -46,9 +48,17 @@ public class CommunityController {
     }
 
 
+
+
+
+
+
+
+
+
     @ApiOperation("发朋友圈")
     @RequestMapping(value = "/addMoments", method = RequestMethod.POST)
-    public Result loadCommunityListBype(CommunityModel communityModel, String token) {
+    public Result addMoments(CommunityModel communityModel, String token) {
         Result result = new Result<>();
         if (!ValidateTool.checkIsNull(communityModel.getTitle())) {
             result.error500("请输入标题");
@@ -84,5 +94,25 @@ public class CommunityController {
        communityModelService.addCommunityStar(id,userId,type);
         return Result.OK();
     }
+
+
+    @ApiOperation("我的点赞我的收藏朋友圈列表")
+    @RequestMapping(value = "/loadGoodCommunityList", method = RequestMethod.POST)
+    public Result<Page<CommunityModelVo>> loadGoodCommunityList(int type, int pageNo, int pageSize, String token) {
+
+        String userId = userModelService.getUserIdByToken(token);
+        Result<Page<CommunityModelVo>> result = new Result<Page<CommunityModelVo>>();
+        Page<CommunityModelVo> pageList = new Page<CommunityModelVo>(pageNo, pageSize);
+
+        pageList = communityModelService.loadGoodCommunityList(pageList, userId , type);
+        result.setResult(pageList);
+        log.info("查询当前页：" + pageList.getCurrent());
+        log.info("查询当前页数量：" + pageList.getSize());
+        log.info("查询结果数量：" + pageList.getRecords().size());
+        log.info("数据总数：" + pageList.getTotal());
+        return result;
+    }
+
+
 
 }

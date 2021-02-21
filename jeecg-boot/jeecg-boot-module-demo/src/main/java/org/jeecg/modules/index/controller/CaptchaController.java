@@ -11,6 +11,8 @@ import org.jeecg.common.util.MD5Util;
 import org.jeecg.common.util.RedisUtil;
 import org.jeecg.modules.commons.util.ValidateTool;
 import org.jeecg.modules.index.service.CaptchaCodeService;
+import org.jeecg.modules.user.mapper.UserModelMapper;
+import org.jeecg.modules.user.service.UserModelService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -30,6 +32,9 @@ public class CaptchaController {
     @Autowired
     private RedisUtil redisUtil;
 
+    @Resource
+    private UserModelService userModelService;
+
 
     @DynamicParameter(name = "code",value = "验证码" ,example = "121112")
     @ApiOperation("获取验证码接口")
@@ -38,11 +43,14 @@ public class CaptchaController {
         ValidateTool.checkParamIsMobile(phone);
         //随机验证码六位数，短信验证码暂时不做
         String captchaCode = captchaCodeService.getCaptchaCode(6);
+        int checkfirst = userModelService.checkfirst(phone);
         String realKey = MD5Util.MD5Encode(captchaCode + phone, "utf-8");
         redisUtil.set(realKey, captchaCode, 60);
         Result<JSONObject> result = new Result<JSONObject>();
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("code", captchaCode);
+        jsonObject.put("first", checkfirst);
+
         result.setResult(jsonObject);
         log.info("checkKey{},,,,验证码{},,,,,phone{}",phone,captchaCode,realKey);
         return result;
