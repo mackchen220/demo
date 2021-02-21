@@ -6,6 +6,7 @@ import org.jeecg.common.exception.JeecgBootException;
 import org.jeecg.common.system.util.JwtUtil;
 import org.jeecg.common.util.MD5Util;
 import org.jeecg.common.util.RedisUtil;
+import org.jeecg.modules.commons.ErrorInfoCode;
 import org.jeecg.modules.commons.RedisKey;
 import org.jeecg.modules.commons.util.RandomUtil;
 import org.jeecg.modules.commons.util.SeqUtils;
@@ -63,7 +64,6 @@ public class UserModelServiceImpl implements UserModelService {
     @Override
     public JSONObject userLogin(String inviteCode, String captcha, String phone) {
         UserModel userModel = userModelMapper.loadUser(null, phone, null, null);
-
          // 第一次
         int first =0;
         if (!ValidateTool.checkIsNull(userModel)) {
@@ -79,28 +79,12 @@ public class UserModelServiceImpl implements UserModelService {
             userModel.setPassword(phone);
             userModel.setNickName(phone);
             userModelMapper.insertSelective(userModel);
-//            //添加上下级关系
-//            UserAgencyModel userAgencyModel = new UserAgencyModel();
-//            userAgencyModel.setNum(0);
-//            //邀请码不为空，建立上下级关系
-//            if (ValidateTool.checkIsNull(inviteCode)) {
-//                UserModel userModel2 = userModelMapper.loadUser(null, null, null, inviteCode.toUpperCase());
-//                if (!ValidateTool.checkIsNull(userModel2)) {
-//                    throw new JeecgBootException("邀请码不存在");
-//                }
-//                userAgencyModel.setId(SeqUtils.nextIdStr());
-//                userAgencyModel.setpUserId(userModel2.getId());
-//                userAgencyModel.setUserId(userModel.getId());
-//                userAgencyModel.setNum(0);
-//                userAgencyModelMapper.updateNum(userModel2.getId());
-//            } else {
-//                userAgencyModel.setId(SeqUtils.nextIdStr());
-//                userAgencyModel.setpUserId("-1");
-//                userAgencyModel.setUserId(userModel.getId());
-//            }
-//            userAgencyModelMapper.insertSelective(userAgencyModel);
+        }else {
+            UserAgencyModel userAgencyModel = userAgencyModelMapper.loadUserAgency(userModel.getId(), null);
+            if (ValidateTool.isNull(userAgencyModel)){
+                throw new JeecgBootException(ErrorInfoCode.NO_INVITE_CODE_ERROR.getCode(),"请填写邀请码");
+            }
         }
-
         JSONObject object = new JSONObject();
         // 生成前台token
         String token;
@@ -139,6 +123,18 @@ public class UserModelServiceImpl implements UserModelService {
         log.info("最终生成邀请码{}",code);
         return code;
     }
+
+    @Override
+    public int checkfirst(String phone) {
+        UserModel userModel = userModelMapper.loadUser(null, phone, null, null);
+        // 第一次
+        int first =0;
+        if (ValidateTool.isNull(userModel)) {
+            first=1;
+        }
+        return first;
+    }
+
     //添加上下级关系
     @Transactional(rollbackFor = Exception.class)
     @Override
