@@ -183,11 +183,11 @@ jeecg :
     excludeUrls: /test/jeecgDemo/demo3,/test/jeecgDemo/redisDemo/**,/category/**,/visual/**,/map/**,/jmreport/bigscreen2/**
   #阿里云oss存储配置
   oss:
-    endpoint: oss-cn-beijing.aliyuncs.com
-    accessKey: ??
-    secretKey: ??
-    bucketName: jeecgos
-    staticDomain: ??
+    endpoint: oss-cn-chengdu.aliyuncs.com
+    accessKey: LTAI4GKjZn3MA5a9r4YBPjJk
+    secretKey: iQTlsXq2DIAogKZYBOgRalf3kwMeOZ
+    bucketName: longbuvket1
+    staticDomain: http://oss-cn-chengdu.aliyuncs.com
   # ElasticSearch 6设置
   elasticsearch:
     cluster-name: jeecg-ES
@@ -285,10 +285,3 @@ justauth:
     prefix: 'demo::'
     timeout: 1h
 
-project:
-  oss:
-    aliyun:
-      endpoint: oss-cn-chengdu.aliyuncs.com
-      accessKeyId: LTAI4GKjZn3MA5a9r4YBPjJk
-      accessKeySecret: iQTlsXq2DIAogKZYBOgRalf3kwMeOZ
-      bucketName: longbuvket1

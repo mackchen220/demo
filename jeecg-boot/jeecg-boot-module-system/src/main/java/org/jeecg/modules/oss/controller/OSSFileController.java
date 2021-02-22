@@ -5,8 +5,9 @@ import javax.servlet.http.HttpServletRequest;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.jeecg.common.api.vo.Result;
 import org.jeecg.common.system.query.QueryGenerator;
 import org.jeecg.modules.oss.entity.OSSFile;
@@ -21,8 +22,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Slf4j
 @Controller
+@Api(tags = "文件上传模块")
 @RequestMapping("/sys/oss/file")
 public class OSSFileController {
 
@@ -45,12 +50,16 @@ public class OSSFileController {
 
 	@ResponseBody
 	@PostMapping("/upload")
+	@ApiOperation("文件上传接口")
 	//@RequiresRoles("admin")
 	public Result upload(@RequestParam("file") MultipartFile multipartFile) {
-		Result result = new Result();
+		Result<Map<String, String>> result = new Result<>();
 		try {
-			ossFileService.upload(multipartFile);
+			String url = ossFileService.upload(multipartFile);
 			result.success("上传成功！");
+			Map<String, String> data = new HashMap<>(1);
+			data.put("url", url);
+			result.setResult(data);
 		}
 		catch (Exception ex) {
 			log.info(ex.getMessage(), ex);
