@@ -107,7 +107,7 @@ public class OssBootUtil {
             }
             // 获取文件名
             String orgName = file.getOriginalFilename();
-            if("" == orgName){
+            if("".equals(orgName)){
               orgName=file.getName();
             }
             orgName = CommonUtils.getFileName(orgName);
