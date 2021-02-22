@@ -2,6 +2,9 @@ package org.jeecg.modules.commons.util;
 
 import lombok.extern.log4j.Log4j2;
 
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Random;
 
 
@@ -12,6 +15,10 @@ import java.util.Random;
  */
 @Log4j2
 public final class RandomUtil {
+
+    private static final String[] NUMS = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9"};
+    private static final String[] LOWER = {"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"};
+    private static final String[] UPPER = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"};
 
     /**
      * 生成一组指定长度的，由数字及大写英文字母组成的随机字符串。
@@ -34,12 +41,56 @@ public final class RandomUtil {
                 case 1:
                     stringBuilder.append((char) nextNumber(65, 90));
                     break;
+                default:
             }
         }
         return stringBuilder.toString();
     }
 
+    /**
+     * 生成一组指定长度的，由数字及英文字母组成的随机字符串
+     *
+     * @param length 生成的随机字符串的长度
+     * @param letterType 字母类型 0-大小写混合 1-大写 2-小写
+     * @param isRepeat 允许重复字符
+     * @return 生成的随机字符串 参数错误返回空字符串
+     */
+    public static String nextNumberLetter(int length, int letterType, boolean isRepeat) {
+        StringBuilder stringBuilder = new StringBuilder();
+        if (length <= 0) {
+            return "";
+        }
+        List<String> arr = new LinkedList<>(Arrays.asList(NUMS));
+        switch (letterType) {
+            case 0:
+                arr.addAll(Arrays.asList(UPPER));
+                arr.addAll(Arrays.asList(LOWER));
+                break;
+            case 1:
+                arr.addAll(Arrays.asList(UPPER));
+                break;
+            case 2:
+                arr.addAll(Arrays.asList(LOWER));
+                break;
+            default:
+        }
 
+        for (int i = 0; i < length; i++) {
+            int index = nextNumber(0, arr.size() - 1);
+            if (!isRepeat) {
+                if (arr.size() < length) {
+                    return "";
+                }
+                if (stringBuilder.indexOf(arr.get(index)) > -1) {
+                    i -= 1;
+                    continue;
+                }
+            }
+            stringBuilder.append(arr.get(index));
+
+        }
+        return stringBuilder.toString();
+    }
 
     public static String nextInviteCode(int start, int end) {
         int length = nextNumber(start, end);
@@ -60,6 +111,7 @@ public final class RandomUtil {
                 case 1 :
                     stringBuilder.append(charArray2[random.nextInt(charArray2.length)]);
                     break;
+                default:
             }
         }
         return stringBuilder.toString();
