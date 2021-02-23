@@ -26,10 +26,10 @@ public interface HospitalModelService{
     Page<HospitalModel> loadMyHospitList(Page<HospitalModel> page,String talentId);
 
 
-    Map getHospitalInfo(String HospitalId);
+    Map getHospitalInfo(String hospitalId);
 
 
-
+    void updateTalentHospit(String hospitalId,String talentId);
 
 
 }

@@ -113,16 +113,24 @@ public class HospitalController {
     @RequestMapping(value = "/loadMyHospitList", method = RequestMethod.POST)
     public Result<Page<HospitalModel>> loadMyHospitList(@RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo,
                                                            @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize,
-                                                        String talentId) {
+                                                        String talentId,String token) {
         Result<Page<HospitalModel>> result = new Result<Page<HospitalModel>>();
         Page<HospitalModel> pageList = new Page<HospitalModel>(pageNo, pageSize);
         Page<HospitalModel> talentInfoVoPage = hospitalModelService.loadMyHospitList(pageList,talentId);
         result.setResult(talentInfoVoPage);
+        result.setToken(token);
         return result;
     }
 
 
 
+    @ApiOperation("和机构解约")
+    @RequestMapping(value = "/updateTalentHospit", method = RequestMethod.POST)
+    public Result updateTalentHospit(String hospitalId,String token) {
+        String id = userModelService.getUserIdByToken(token);
+        hospitalModelService.updateTalentHospit(hospitalId,id);
+        return Result.oKWithToken(token,null);
+    }
 
 
 

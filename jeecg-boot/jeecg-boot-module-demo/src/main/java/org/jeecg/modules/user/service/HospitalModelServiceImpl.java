@@ -92,4 +92,13 @@ public class HospitalModelServiceImpl implements HospitalModelService{
         map.put("talents",userModelVos);
         return map;
     }
+
+    @Override
+    public void updateTalentHospit(String hospitalId, String talentId) {
+        HospitalModel hospitalModel = hospitalModelMapper.selectByPrimaryKey(hospitalId);
+        if (ValidateTool.isNull(hospitalModel)){
+            throw new JeecgBootException("机构不存在");
+        }
+        talentHospitalMapper.updateTalentHospital(hospitalId,talentId);
+    }
 }
