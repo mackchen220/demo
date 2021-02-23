@@ -23,6 +23,13 @@ public interface HospitalModelService{
 //    Page<HospitalModel> loadOtherHospitlist(Page<HospitalModel> page);
 
 
+    Page<HospitalModel> loadMyHospitList(Page<HospitalModel> page,String talentId);
+
 
     Map getHospitalInfo(String HospitalId);
+
+
+
+
+
 }

@@ -60,23 +60,22 @@ public class HospitalModelServiceImpl implements HospitalModelService{
         return page.setRecords(list);
     }
 
-//    @Override
-//    public Page<HospitalModel> loadOtherHospitlist(Page<HospitalModel> page) {
-//        List<HospitalModel> hospitalModels = hospitalModelMapper.l(page,"4");
-//        List list = new ArrayList<>();
-//        for (HospitalModel hospitalModel : hospitalModels) {
-//            JSONObject jsonObject = new JSONObject();
-//            jsonObject.put("hospitalId",hospitalModel.getId());
-//            jsonObject.put("hospitalImage",hospitalModel.getImageUrl());
-//            jsonObject.put("name",hospitalModel.getName());
-//            jsonObject.put("content",hospitalModel.getContent());
-//            List<UserModelVo> userModelVos = talentHospitalMapper.loadAllTalent(hospitalModel.getId());
-//            jsonObject.put("talents",userModelVos);
-//            list.add(jsonObject);
-//        }
-//        return page.setRecords(list);
-//    }
-
+    @Override
+    public Page<HospitalModel> loadMyHospitList(Page<HospitalModel> page, String talentId) {
+        List<HospitalModel> hospitalModels = hospitalModelMapper.loadMyHospitlist(page, talentId);
+        List list = new ArrayList<>();
+        for (HospitalModel hospitalModel : hospitalModels) {
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("hospitalId",hospitalModel.getId());
+            jsonObject.put("hospitalImage",hospitalModel.getImageUrl());
+            jsonObject.put("name",hospitalModel.getName());
+            jsonObject.put("content",hospitalModel.getContent());
+            List<UserModelVo> userModelVos = talentHospitalMapper.loadAllTalent(hospitalModel.getId());
+            jsonObject.put("talents",userModelVos);
+            list.add(jsonObject);
+        }
+        return page.setRecords(list);
+    }
 
     @Override
     public Map getHospitalInfo(String hospitalId) {

@@ -187,6 +187,13 @@
   </select>
 
 
+  <select id="loadMyHospitlist" resultMap="BaseResultMap" parameterType="string">
+    SELECT id,name,content,image_url from  tb_hospital
+    where del_flag =0 and id in(
+		SELECT hospital_id from tb_talent_hospital where talent_id =#{talentId,jdbcType=VARCHAR}
+		)
+  </select>
+
 <!--  <select id="loadOtherHospitlist" resultMap="BaseResultMap">-->
 <!--    SELECT id,name,content,image_url from  tb_hospital-->
 <!--    where del_flag =0-->

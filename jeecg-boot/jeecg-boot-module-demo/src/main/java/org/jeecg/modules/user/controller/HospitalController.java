@@ -109,6 +109,22 @@ public class HospitalController {
 
 
 
+    @ApiOperation("达人的机构列表")
+    @RequestMapping(value = "/loadMyHospitList", method = RequestMethod.POST)
+    public Result<Page<HospitalModel>> loadMyHospitList(@RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo,
+                                                           @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize,
+                                                        String talentId) {
+        Result<Page<HospitalModel>> result = new Result<Page<HospitalModel>>();
+        Page<HospitalModel> pageList = new Page<HospitalModel>(pageNo, pageSize);
+        Page<HospitalModel> talentInfoVoPage = hospitalModelService.loadMyHospitList(pageList,talentId);
+        result.setResult(talentInfoVoPage);
+        return result;
+    }
+
+
+
+
+
 
 
 

@@ -23,6 +23,8 @@ public interface HospitalModelMapper {
 
 //    List<HospitalModel> loadOtherHospitlist(Page<HospitalModel> page,@Param("limit") String limit);
 
+    //我的机构列表
+    List<HospitalModel> loadMyHospitlist(Page<HospitalModel> page,@Param("talentId") String talentId);
 
 
 
