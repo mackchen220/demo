@@ -112,4 +112,10 @@ public class CommunityModel {
     @ApiModelProperty(value="观看人数")
     private Long watchNum;
 
+    /**
+     * 审核状态 0待审核 1 审核未通过2审核通过
+     */
+    @ApiModelProperty(value="审核状态 0待审核 1 审核未通过2审核通过")
+    private Integer checkStatus;
+
 }
