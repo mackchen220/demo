@@ -25,4 +25,6 @@ public interface PartyModelMapper {
 
     List<PartyModel> getListOrderByLikeNum(Page<PartyModel> page, @Param("city") String city);
 
+    List<PartyModel> loadHengYangPartyList(@Param("limit")String limit);
+
 }

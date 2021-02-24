@@ -1,20 +1,15 @@
 package org.jeecg.modules.index.service;
 
 import com.alibaba.fastjson.JSONObject;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.extern.log4j.Log4j2;
-import org.jeecg.common.api.vo.Result;
 import org.jeecg.common.util.DateUtils;
-import org.jeecg.modules.index.mapper.CourseModelMapper;
+import org.jeecg.modules.course.mapper.CourseMapper;
+import org.jeecg.modules.course.model.Course;
 import org.jeecg.modules.index.mapper.TurnImageModelMapper;
 import org.jeecg.modules.index.model.CourseModel;
 import org.jeecg.modules.index.model.TurnImageModel;
-import org.jeecg.modules.index.model.vo.TurnImageModelVo;
 import org.jeecg.modules.user.mapper.TalentInfoModelMapper;
 import org.jeecg.modules.user.model.UserModel;
-import org.jeecg.modules.user.service.TalentInfoModelService;
-import org.jeecg.modules.user.service.UserModelService;
-import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -30,7 +25,7 @@ public class IndexServiceImpl implements IndexService{
     @Resource
     private TurnImageModelMapper turnImageModelMapper;
     @Resource
-    private CourseModelMapper courseModelMapper;
+    private CourseMapper courseModelMapper;
     @Resource
     private TalentInfoModelMapper talentInfoModelMapper;
 
@@ -56,9 +51,9 @@ public class IndexServiceImpl implements IndexService{
         }
         map.put("turnImage",list1);
         //加载首页推荐课程
-        List<CourseModel> courseModels = courseModelMapper.loadIndexCourseModelList("4");
+        List<Course> courseModels = courseModelMapper.loadIndexCourseModelList("4");
         List<JSONObject> list2 = new ArrayList<>();
-        for (CourseModel courseModel : courseModels) {
+        for (Course courseModel : courseModels) {
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("image",courseModel.getImage());
             jsonObject.put("title",courseModel.getTitle());

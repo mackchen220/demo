@@ -3,15 +3,15 @@ package org.jeecg.modules.course.service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.jeecg.common.exception.JeecgBootException;
+import org.jeecg.modules.commons.Constant;
 import org.jeecg.modules.commons.ErrorInfoCode;
 import org.jeecg.modules.commons.util.ValidateTool;
 import org.jeecg.modules.community.mapper.CommunityModelMapper;
 import org.jeecg.modules.community.model.CommunityModel;
 import org.jeecg.modules.course.mapper.CourseMapper;
-import org.jeecg.modules.course.mapper.TopSearchMapper;
 import org.jeecg.modules.course.model.Activity;
 import org.jeecg.modules.course.model.Course;
-import org.jeecg.modules.course.model.TopSearch;
+import org.jeecg.modules.course.model.vo.CourseVo;
 import org.jeecg.modules.course.model.vo.UserCourseDetailVo;
 import org.jeecg.modules.course.model.vo.UserCourseVo;
 import org.jeecg.modules.index.mapper.PartyModelMapper;
@@ -22,8 +22,10 @@ import org.jeecg.modules.user.service.UserModelService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @className: CourseServiceImpl
@@ -39,8 +41,7 @@ public class CourseServiceImpl implements CourseService {
     private UserFocusModelService userFocusModelService;
     @Resource
     private UserModelService userModelService;
-    @Resource
-    private TopSearchMapper topSearchMapper;
+
     @Resource
     private CommunityModelMapper communityModelMapper;
     @Resource
@@ -48,21 +49,13 @@ public class CourseServiceImpl implements CourseService {
     @Resource
     private PartyModelMapper partyModelMapper;
 
+
     @Override
     public IPage<CommunityModel> followList(Page<CommunityModel> page, String userId) {
         List<CommunityModel> list = communityModelMapper.selectByFocusUserId(page, userId);
         return page.setRecords(list);
     }
 
-    @Override
-    public List<String> topSearch() {
-        List<TopSearch> list = topSearchMapper.selectAll();
-        List<String> rtn = new LinkedList<>();
-        if (ValidateTool.isNotEmpty(list)) {
-            list.forEach(v -> rtn.add(v.getTopSearch()));
-        }
-        return rtn;
-    }
 
     @Override
     public IPage<UserCourseVo> findList(int pageNo, int pageSize, int type, String city) {
@@ -100,6 +93,7 @@ public class CourseServiceImpl implements CourseService {
 
     /**
      * 封装社区动态数据
+     *
      * @param list
      * @param result
      */
@@ -108,7 +102,7 @@ public class CourseServiceImpl implements CourseService {
             if (v instanceof Course) {
                 Course info = (Course) v;
                 UserCourseVo vo = UserCourseVo.valueOf(2, info.getId(), info.getTitle(), info.getImage(), info.getWatchNum(),
-                                                        info.getGoodNum(), info.getStarNum(), info.getForwardNum());
+                        info.getGoodNum(), info.getStarNum(), info.getForwardNum());
                 this.packUserByCourse(vo, info.getCreateBy());
                 result.add(vo);
             } else if (v instanceof CommunityModel) {
@@ -157,7 +151,7 @@ public class CourseServiceImpl implements CourseService {
                 if (ValidateTool.isNotNull(info)) {
                     boolean isFans = userFocusModelService.isFans(info.getUserId(), userId);
                     detailVo = UserCourseDetailVo.valueOf(courseType, id, info.getTitle(), info.getImageUrl(), info.getWatchNum(), info.getGoodNum(),
-                                                            info.getStarNum(), info.getForwardNum(), info.getCity(), info.getCreateTime(), isFans);
+                            info.getStarNum(), info.getForwardNum(), info.getCity(), info.getCreateTime(), isFans);
                     this.packUserByCourse(detailVo, info.getUserId());
                 }
                 break;
@@ -185,4 +179,30 @@ public class CourseServiceImpl implements CourseService {
         return detailVo;
     }
 
+    @Override
+    public Map loadHengYangCourse(String type) {
+
+        //亨氧学院推荐
+        CourseVo course1 = courseMapper.getCourse(Constant.CHECKTYPE1, null);
+        //亨氧学院banner
+        CourseVo course2 = courseMapper.getCourse(null, Constant.CHECKTYPE1);
+
+        List<CourseVo> courses1 = courseMapper.loadCourseListByType(Constant.CHECKTYPE1,null);
+
+        List<CourseVo> courses2 = courseMapper.loadCourseListByType(null,Constant.CHECKTYPE1);
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("banner",course1);
+        map.put("recommed",course2);
+        map.put("courses",courses1);
+        map.put("others",courses2);
+
+        return map;
+    }
+
+    @Override
+    public  List<PartyModel> loadHengYangActivity() {
+        List<PartyModel> partyModels = partyModelMapper.loadHengYangPartyList("2");
+        return partyModels;
+    }
 }

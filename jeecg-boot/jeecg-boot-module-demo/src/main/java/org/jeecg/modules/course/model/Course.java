@@ -1,5 +1,6 @@
 package org.jeecg.modules.course.model;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -93,6 +94,29 @@ public class Course implements Serializable {
      * 转发数量
      */
     private Long forwardNum;
+
+
+    /**
+     * 内容分类 1亨氧APP项目 2医美创业项目 3引流爆破项目
+     */
+    @ApiModelProperty(value="内容分类 1亨氧APP项目 2医美创业项目 3引流爆破项目")
+    private Integer contentType;
+
+    /**
+     * 设为封面课程 0 不推荐 1推荐
+     */
+    @ApiModelProperty(value="设为封面课程 0 不推荐 1推荐")
+    private Integer banner;
+
+    /**
+     * 设为推荐 0 不推荐 1推荐
+     */
+    @ApiModelProperty(value="设为推荐 0 不推荐 1推荐")
+    private Integer recommend;
+
+
+
+
 
     private static final long serialVersionUID = 1L;
 }

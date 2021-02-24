@@ -3,10 +3,13 @@ package org.jeecg.modules.course.service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.jeecg.modules.community.model.CommunityModel;
+import org.jeecg.modules.course.model.Activity;
 import org.jeecg.modules.course.model.vo.UserCourseDetailVo;
 import org.jeecg.modules.course.model.vo.UserCourseVo;
+import org.jeecg.modules.index.model.PartyModel;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @className: CourseService
@@ -19,12 +22,14 @@ public interface CourseService {
 
     IPage<CommunityModel> followList(Page<CommunityModel> page, String userId);
 
-    List<String> topSearch();
-
     IPage<UserCourseVo> findList(int pageNo, int pageSize, int type, String city);
 
     IPage<UserCourseVo> searchList(int pageNo, int pageSize, int type, String search);
 
     UserCourseDetailVo searchInfoDetail(String id, int courseType, String userId);
+
+    Map loadHengYangCourse(String type);
+
+    List<PartyModel> loadHengYangActivity();
 
 }

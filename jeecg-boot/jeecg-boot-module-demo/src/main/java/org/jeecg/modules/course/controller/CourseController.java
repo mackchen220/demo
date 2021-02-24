@@ -13,6 +13,7 @@ import org.jeecg.modules.community.model.CommunityModel;
 import org.jeecg.modules.course.model.vo.UserCourseDetailVo;
 import org.jeecg.modules.course.model.vo.UserCourseVo;
 import org.jeecg.modules.course.service.CourseService;
+import org.jeecg.modules.index.model.PartyModel;
 import org.jeecg.modules.user.service.UserModelService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -91,11 +93,24 @@ public class CourseController {
         return Result.OK(info);
     }
 
-    @ApiOperation("热搜标题")
-    @PostMapping("/topSearch")
-    public Result<List<String>> topSearch() {
-        List<String> list = courseService.topSearch();
-        return Result.OK(list);
+
+
+    @ApiOperation("亨氧学院")
+    @PostMapping("/loadHengYangCourse")
+    public Result loadHengYangCourse(String token,String type) {
+
+        Map map = courseService.loadHengYangCourse(type);
+        return Result.oKWithToken(token,map);
     }
+
+    @ApiOperation("亨氧学院,活动")
+    @PostMapping("/loadHengYangActivity")
+    public Result loadHengYangActivity(String token) {
+
+        List<PartyModel> partyModels = courseService.loadHengYangActivity();
+        return Result.oKWithToken(token,partyModels);
+    }
+
+
 
 }

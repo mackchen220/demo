@@ -304,7 +304,19 @@
     <include refid="Base_Column_List" />
     from tb_party
     where del_flag = 0
+    order by good_num desc
   </select>
+
+  <select id="loadHengYangPartyList" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from tb_party
+    where del_flag = 0
+    order by good_num desc
+    limit  #{limit}
+  </select>
+
+
   <select id="getListOrderByLikeNum" resultMap="BaseResultMap">
     SELECT <include refid="Base_Column_List"/>
     from tb_party
