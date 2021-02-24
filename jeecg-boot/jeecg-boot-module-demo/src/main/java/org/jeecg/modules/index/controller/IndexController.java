@@ -7,6 +7,8 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.jeecg.common.api.vo.Result;
 import org.jeecg.common.util.RedisUtil;
+import org.jeecg.modules.index.model.vo.HotSearchVo;
+import org.jeecg.modules.index.service.HotSearchModelService;
 import org.jeecg.modules.index.service.IndexService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,6 +30,9 @@ public class IndexController {
     private IndexService indexService;
     @Autowired
     private RedisUtil redisUtil;
+    @Resource
+    private HotSearchModelService hotSearchModelService;
+
 
     @DynamicResponseParameters(name = "indexResult",properties = {
             @DynamicParameter(name = "turnImage",value = "轮播图集合"),
@@ -44,6 +49,13 @@ public class IndexController {
         return result;
     }
 
+
+    @ApiOperation("热搜列表接口")
+    @RequestMapping(value = "/loadHotSearchList", method = RequestMethod.POST)
+    public Result<List> loadHotSearchList(String type,String token) {
+        List<HotSearchVo> list = hotSearchModelService.loadHotSearchList(type);
+        return Result.oKWithToken(token,list);
+    }
 
 
 }
