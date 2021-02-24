@@ -45,7 +45,7 @@
     <!--@mbg.generated-->
     <!--@Table tb_hospital-->
     <result column="id" jdbcType="VARCHAR" property="id" />
-    <result column="head_name" jdbcType="VARCHAR" property="headImage" />
+    <result column="head_image" jdbcType="VARCHAR" property="headImage" />
     <result column="nick_name" jdbcType="VARCHAR" property="nickName" />
   </resultMap>
 
@@ -142,6 +142,12 @@
       </if>
     </set>
     where id = #{id,jdbcType=VARCHAR}
+  </update>
+
+  <update id="updateTalentHospital">
+    update tb_talent_hospital set
+        del_flag = 1
+    where  hospital_id = #{hospitalId,jdbcType=VARCHAR} and talent_id  = #{talentId,jdbcType=VARCHAR}
   </update>
 
   <select id="loadTalentHospitalLst" parameterType="string" resultMap="HospitalResultMap">

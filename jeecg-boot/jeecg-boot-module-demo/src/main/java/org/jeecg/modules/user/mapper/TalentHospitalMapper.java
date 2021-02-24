@@ -21,6 +21,7 @@ public interface TalentHospitalMapper {
 
     int updateByPrimaryKeySelective(TalentHospital record);
 
+    int updateTalentHospital(@Param("hospitalId") String hospitalId ,@Param("talentId")String talentId);
 
     List<HospitalVo> loadTalentHospitalLst(@Param("id") String userId);
 

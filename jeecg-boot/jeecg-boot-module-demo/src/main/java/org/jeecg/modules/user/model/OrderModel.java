@@ -154,6 +154,38 @@ public class OrderModel implements Serializable {
     private String courseId;
 
 
+    /**
+     * 效果评分
+     */
+    @ApiModelProperty(value="效果评分")
+    private String effect;
+
+    /**
+     * 态度评分
+     */
+    @ApiModelProperty(value="态度评分")
+    private String attitude;
+
+    /**
+     * 价格评分
+     */
+    @ApiModelProperty(value="价格评分")
+    private String price;
+
+    /**
+     * 综合评分
+     */
+    @ApiModelProperty(value="综合评分")
+    private String averageScore;
+
+    /**
+     * 是否已评价
+     */
+    @ApiModelProperty(value="是否已评价")
+    private Integer evaluateStatus;
+
+
+
 
     private static final long serialVersionUID = 1L;
 }

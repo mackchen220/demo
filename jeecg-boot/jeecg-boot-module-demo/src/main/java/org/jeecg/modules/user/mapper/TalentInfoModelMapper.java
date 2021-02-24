@@ -33,4 +33,8 @@ public interface TalentInfoModelMapper {
 
     int increase(@Param("userId") String userId, @Param("incNum") int incNum);
 
+
+    int updateTalentScore(TalentInfoModel record);
+
+
 }

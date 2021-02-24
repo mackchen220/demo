@@ -26,6 +26,11 @@
     <result column="num" jdbcType="INTEGER" property="num" />
     <result column="hospital_id" jdbcType="VARCHAR" property="hospitalId" />
     <result column="talent_id" jdbcType="VARCHAR" property="talentId" />
+    <result column="evaluate_status" jdbcType="VARCHAR" property="evaluateStatus" />
+    <result column="effect" jdbcType="VARCHAR" property="effect"/>
+    <result column="attitude" jdbcType="VARCHAR" property="attitude"/>
+    <result column="price" jdbcType="VARCHAR" property="price"/>
+    <result column="average_score" jdbcType="VARCHAR" property="averageScore"/>
   </resultMap>
 
 
@@ -62,7 +67,8 @@
     <!--@mbg.generated-->
     id, user_id, operation_type, amount, inside_card_num, checker, check_dt, remark,
     `status`, pay_money, outside_card_num, opt_status, sys_ins_name, content, create_time,
-    update_time, create_by, update_by, del_flag, num, hospital_id, talent_id, project_id ,course_id
+    update_time, create_by, update_by, del_flag, num, hospital_id, talent_id, project_id ,course_id,effect,attitude,price,
+    average_score,evaluate_status
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     <!--@mbg.generated-->
@@ -298,6 +304,37 @@
     where id = #{id,jdbcType=VARCHAR}
   </update>
 
+
+  <update id="updateOrderScore" parameterType="org.jeecg.modules.user.model.OrderModel">
+    <!--@mbg.generated-->
+    update tb_order
+    <set>
+      <if test="effect != null">
+        effect = #{effect,jdbcType=DECIMAL},
+      </if>
+      <if test="attitude != null">
+        attitude = #{attitude,jdbcType=DECIMAL},
+      </if>
+      <if test="price != null">
+        price = #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="averageScore != null">
+        average_score = #{averageScore,jdbcType=DECIMAL},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=VARCHAR},
+      </if>
+      <if test="updateBy != null">
+        update_by = #{updateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="evaluateStatus != null">
+        evaluate_status=1,
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+
+
   <select id="loadOrderList" parameterType="string" resultMap="voResultMap">
     SELECT  a.id, a.user_id ,a.operation_type, a.amount, a.remark,
     a.`status`, a.pay_money, a.opt_status, a.content, a.create_time,  a.num, a.hospital_id, a.project_id ,a.course_id,b.image as course_image
@@ -310,6 +347,9 @@
   </select>
 
 
-
+<select id="loadScoreModel" parameterType="string" resultMap="BaseResultMap">
+  SELECT SUM(effect) as effect , SUM(attitude) as attitude , SUM(price) as price , SUM(average_score) as average_score ,COUNT(id) as num
+   from tb_order where talent_id = #{userId,jdbcType=VARCHAR} and operation_type=1 and evaluate_status=1
+</select>
 
 </mapper>

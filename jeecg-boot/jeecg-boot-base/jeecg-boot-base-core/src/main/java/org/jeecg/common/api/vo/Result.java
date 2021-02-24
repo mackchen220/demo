@@ -95,11 +95,10 @@ public class Result<T> implements Serializable {
 	}
 
 
-	public static <T> Result<T> OK(String msg, String token, T data) {
+	public static <T> Result<T> oKWithToken(String token, T data) {
 		Result<T> r = new Result<T>();
 		r.setSuccess(true);
 		r.setCode(CommonConstant.SC_OK_200);
-		r.setMessage(msg);
 		r.setResult(data);
 		r.setToken(token);
 		log.info("请求返回{}", JSONObject.toJSONString(r));

@@ -2,6 +2,7 @@ package org.jeecg.modules.user.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.log4j.Log4j2;
 import lombok.extern.slf4j.Slf4j;
@@ -65,6 +66,30 @@ public class UserOrderController {
         result.setResult(orderModelVoPage);
         return result;
     }
+
+
+
+
+//    @ApiModelProperty(value="效果评分")
+//    private String effect;
+
+//    @ApiModelProperty(value="态度评分")
+//    private String attitude;
+
+//    @ApiModelProperty(value="价格评分")
+//    private String price;
+
+    @ApiOperation("订单评分")
+    @RequestMapping(value = "/updateOrderScore", method = RequestMethod.POST)
+    public Result updateOrderScore(String token, String orderId ,String effect ,String attitude,String price) {
+
+        String id = userModelService.getUserIdByToken(token);
+
+        String score = orderModelService.updateOrderScore(id, orderId, effect, attitude, price);
+        return Result.oKWithToken(token,score);
+    }
+
+
 
 
 

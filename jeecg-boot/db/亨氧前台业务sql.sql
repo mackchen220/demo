@@ -364,6 +364,20 @@ CREATE TABLE `tb_order` (
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB COMMENT='订单表';
 
+		ALTER TABLE `tb_order`
+ADD COLUMN `effect` decimal(3, 2) DEFAULT '0.00' NULL COMMENT '效果评分' AFTER `project_id`;
+		ALTER TABLE `tb_order`
+ADD COLUMN `attitude` decimal(3, 2) DEFAULT '0.00' NULL COMMENT '态度评分' AFTER `effect`;
+		ALTER TABLE `tb_order`
+ADD COLUMN `price` decimal(3, 2) DEFAULT '0.00' NULL COMMENT '价格评分' AFTER `attitude`;
+
+					ALTER TABLE `tb_order`
+ADD COLUMN `average_score` decimal(3, 2) DEFAULT '0.00' NULL COMMENT '综合评分' AFTER `price`;
+
+			ALTER TABLE `tb_order`
+ADD COLUMN `evaluate_status` int(1) NULL DEFAULT 0 COMMENT '订单是否已评价 0未评价 1已评价' AFTER `average_score`;
+
+
 DROP TABLE IF EXISTS `tb_party`;
 CREATE TABLE tb_party  (
   `id` varchar(32) NOT NULL,
