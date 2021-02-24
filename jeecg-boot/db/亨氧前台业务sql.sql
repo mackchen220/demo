@@ -135,26 +135,28 @@ VALUES ('24432456343454', 'www.baidu.com', 'www.baidu.com', 'ddddfdftttttttdfd',
 
 
 DROP TABLE IF EXISTS `tb_community`;
-CREATE TABLE `tb_community`  (
-`id` varchar(32)  NOT NULL,
-`user_id` varchar(32)  NOT NULL,
-`title` varchar(32) NULL DEFAULT NULL COMMENT '标题',
-`content` varchar(512)  NULL DEFAULT NULL COMMENT '内容',
-`url` varchar(128)  NULL DEFAULT NULL COMMENT '链接',
-`image_url` varchar(128)  NULL DEFAULT NULL COMMENT '图片或者视频地址',
-`city` varchar(64)  NULL DEFAULT NULL COMMENT '图片地址',
-`type` tinyint(2) NULL DEFAULT 1 COMMENT '朋友圈类型:1 照片 2视频 3课程  4其他  ',
-`user_type` tinyint(2)  DEFAULT 1 COMMENT '1-用户，2-达人，3-机构，4-平台',
-`star_num` bigint(32)   DEFAULT 0 COMMENT '收藏数量',
-`good_num` bigint(32)   DEFAULT 0 COMMENT '点赞数量',
-`forward_num` bigint(32)   DEFAULT 0 COMMENT '转发数量',
-`create_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '创建时间',
-`update_time` timestamp(0) NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '更新日期',
-`create_by` varchar(32)  NULL DEFAULT NULL COMMENT '创建人',
-`update_by` varchar(50)  NULL DEFAULT NULL COMMENT '更新人',
-`del_flag` tinyint(1) NOT NULL DEFAULT '0' COMMENT '删除标识0-正常,1-已删除',
-PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB COMMENT = '社区朋友圈表';
+CREATE TABLE `tb_community` (
+    `id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+    `user_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+    `title` varchar(32) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '标题',
+    `content` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '内容',
+    `url` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '链接',
+    `image_url` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '图片或者视频地址',
+    `city` varchar(64) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '定位城市',
+    `type` tinyint(1) DEFAULT '1' COMMENT '朋友圈类型:1 照片 2视频 3课程  4其他  ',
+    `user_type` tinyint(1) DEFAULT '1' COMMENT '1-用户，2-达人，3-机构，4-平台',
+    `star_num` bigint DEFAULT '0' COMMENT '收藏数量',
+    `good_num` bigint DEFAULT '0' COMMENT '点赞数量',
+    `forward_num` bigint DEFAULT '0' COMMENT '转发数量',
+    `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `update_time` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '更新日期',
+    `create_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '创建人',
+    `update_by` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '更新人',
+    `del_flag` tinyint(1) NOT NULL DEFAULT '0' COMMENT '删除标识0-正常,1-已删除',
+    `watch_num` bigint DEFAULT '0' COMMENT '观看数量',
+    `check_status` int DEFAULT '0' COMMENT '审核状态 0待审核 1 审核未通过2审核通过',
+    PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='社区朋友圈表';
 
 
 DROP TABLE IF EXISTS `tb_user_focus`;
@@ -174,25 +176,31 @@ PRIMARY KEY (`id`) USING BTREE
 
 
 DROP TABLE IF EXISTS `tb_course`;
-CREATE TABLE `tb_course`  (
-`id` varchar(32)  NOT NULL,
-`title` varchar(32)  NOT NULL,
-`url` varchar(128)  NOT NULL COMMENT '课程地址',
-`image` varchar(128)  NOT NULL COMMENT '封面图片',
-`price` bigint(32)   DEFAULT 0 COMMENT '价格',
-`type` tinyint(1) NOT NULL DEFAULT '2' COMMENT '类型1 -收费,2 免费， 3限时免费',
-`watch_num` bigint(32)   DEFAULT 0 COMMENT '观看数量',
-`good_num` bigint(32)   DEFAULT 0 COMMENT '点赞数量',
-`state` tinyint(1) NOT NULL DEFAULT '0' COMMENT '标识0-完结,1-正在更新',
-`sort` bigint(32)  NULL DEFAULT NULL COMMENT '排序字段',
-`create_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '创建时间',
-`update_time` timestamp(0) NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '更新日期',
-`create_by` varchar(32)  NULL DEFAULT NULL COMMENT '创建人',
-`update_by` varchar(32)  NULL DEFAULT NULL COMMENT '更新人',
-`del_flag` tinyint(1) NOT NULL DEFAULT '0' COMMENT '删除标识0-正常,1-已删除',
-PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB COMMENT = '课程表';
-
+CREATE TABLE `tb_course` (
+  `id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `title` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `url` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '课程地址',
+  `image` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '封面图片',
+  `price` bigint DEFAULT '0' COMMENT '价格',
+  `type` tinyint(1) NOT NULL DEFAULT '2' COMMENT '类型1 -收费,2 免费， 3限时免费',
+  `watch_num` bigint DEFAULT '0' COMMENT '观看数量',
+  `good_num` bigint DEFAULT '0' COMMENT '点赞数量',
+  `state` tinyint(1) NOT NULL DEFAULT '0' COMMENT '标识0-完结,1-正在更新',
+  `sort` bigint DEFAULT NULL COMMENT '排序字段',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '更新日期',
+  `create_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '创建人',
+  `update_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '更新人',
+  `del_flag` tinyint(1) NOT NULL DEFAULT '0' COMMENT '删除标识0-正常,1-已删除',
+  `course_type` tinyint(1) NOT NULL DEFAULT '1' COMMENT '课程类型 1-文章 2-视频',
+  `city` varchar(32) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '城市',
+  `star_num` bigint DEFAULT '0' COMMENT '收藏数量',
+  `forward_num` bigint DEFAULT '0' COMMENT '转发数量',
+  `content_type` int DEFAULT '1' COMMENT '内容分类 1亨氧APP项目 2医美创业项目 3引流爆破项目',
+  `recommend` int DEFAULT '0' COMMENT '设为推荐 0 不推荐 1推荐',
+  `banner` int DEFAULT '0' COMMENT '设为封面课程 0 不推荐 1推荐',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='课程表';
 
 
 
@@ -247,8 +255,7 @@ ALTER TABLE `tb_talent_info`
 ADD COLUMN `num` bigint(32) NULL DEFAULT 0 COMMENT '签约机构数量' AFTER `del_flag`;
 
 
-ALTER TABLE `tb_community`
-MODIFY COLUMN `city` varchar(64)  NULL DEFAULT NULL COMMENT '定位城市';
+
 
 DROP TABLE IF EXISTS `tb_case`;
 CREATE TABLE `tb_case` (
@@ -417,24 +424,8 @@ ALTER TABLE `tb_user` ADD COLUMN `city` varchar(50) DEFAULT NULL COMMENT '城市
 ALTER TABLE `tb_user`
 DROP COLUMN `address_id`;
 
-DROP TABLE IF EXISTS `tb_top_search`;
-CREATE TABLE `tb_top_search`(
-`id` varchar(32)  NOT NULL,
-`top_search` varchar(50)  NOT NULL  COMMENT '热搜关键词',
-`create_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '创建时间',
-`update_time` timestamp(0) NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '更新日期',
-`create_by` varchar(32)  NULL DEFAULT NULL COMMENT '创建人',
-`update_by` varchar(50)  NULL DEFAULT NULL COMMENT '更新人',
-`del_flag` tinyint(1) NOT NULL DEFAULT '0' COMMENT '删除标识0-正常,1-已删除',
-PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB COMMENT = '热搜关键字表';
-
-ALTER TABLE `tb_course`
-ADD COLUMN `course_type` tinyint(1) NOT NULL DEFAULT '1' COMMENT '课程类型 1-文章 2-视频';
 
 
-ALTER TABLE `tb_course`
-ADD COLUMN `city` varchar(32) DEFAULT NULL COMMENT '城市';
 
 DROP TABLE IF EXISTS `tb_activity`;
 CREATE TABLE `tb_activity`  (
@@ -458,13 +449,9 @@ CREATE TABLE `tb_activity`  (
 PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB COMMENT = '活动表';
 
-ALTER TABLE `tb_course`
-ADD COLUMN `star_num` bigint(32) DEFAULT 0 COMMENT '收藏数量';
-ALTER TABLE `tb_course`
-ADD COLUMN `forward_num` bigint(32) DEFAULT 0 COMMENT '转发数量';
 
-ALTER TABLE `tb_community`
-ADD COLUMN `watch_num` bigint(32)   DEFAULT 0 COMMENT '观看数量';
+
+
 
 ALTER TABLE `tb_party`
 ADD COLUMN  `watch_num` varchar(32) NULL DEFAULT 0 COMMENT '观看数量',
@@ -478,7 +465,6 @@ DROP COLUMN `watch`,
 DROP COLUMN `star`;
 
 DROP TABLE IF EXISTS `tb_user_star`;
-
 CREATE TABLE `tb_user_star` (
   `id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `user_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
@@ -492,3 +478,20 @@ CREATE TABLE `tb_user_star` (
   `good` int NOT NULL DEFAULT '0' COMMENT '是否点赞',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='用户点赞收藏朋友圈表';
+
+
+DROP TABLE IF EXISTS `tb_hot_search`;
+CREATE TABLE `tb_hot_search` (
+  `id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `title` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '热搜标题',
+    `content_type` tinyint(1) NOT NULL DEFAULT '0' COMMENT '热搜分类：1 首页热搜 2社区热搜 3朋友圈热搜',
+  `search_num` BIGINT(32) NOT NULL DEFAULT '0' COMMENT '搜索次数',
+  `recommend` tinyint(1) NOT NULL DEFAULT '0' COMMENT '推荐标识0-正常,1-推荐',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '更新日期',
+  `create_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '创建人',
+  `update_by` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '更新人',
+  `del_flag` tinyint(1) NOT NULL DEFAULT '0' COMMENT '删除标识0-正常,1-已删除',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='热搜表';
+
