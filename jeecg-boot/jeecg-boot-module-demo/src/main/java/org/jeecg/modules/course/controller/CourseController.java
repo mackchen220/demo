@@ -10,6 +10,8 @@ import org.jeecg.common.exception.JeecgBootException;
 import org.jeecg.modules.commons.ErrorInfoCode;
 import org.jeecg.modules.commons.util.ValidateTool;
 import org.jeecg.modules.community.model.CommunityModel;
+import org.jeecg.modules.course.model.vo.CourseInfoVo;
+import org.jeecg.modules.course.model.vo.CourseVo;
 import org.jeecg.modules.course.model.vo.UserCourseDetailVo;
 import org.jeecg.modules.course.model.vo.UserCourseVo;
 import org.jeecg.modules.course.service.CourseService;
@@ -109,6 +111,29 @@ public class CourseController {
 
         List<PartyModel> partyModels = courseService.loadHengYangActivity();
         return Result.oKWithToken(token,partyModels);
+    }
+
+    @ApiOperation("课程详情")
+    @PostMapping("/getCourseInfo")
+    public Result getCourseInfo(String token,String id) {
+
+        CourseVo courseInfo = courseService.getCourseInfo(id);
+        return Result.oKWithToken(token,courseInfo);
+    }
+
+    @ApiOperation("课程推荐")
+    @PostMapping("/loadCommendCourse")
+    public Result loadCommendCourse(String token,String type) {
+        Map map = courseService.loadCommendCourse(type);
+        return Result.oKWithToken(token,map);
+    }
+
+    @ApiOperation("课程章节列表")
+    @PostMapping("/getCourseInfoList")
+    public Result getCourseInfoList(String token,String id) {
+
+        List<CourseInfoVo> courseInfoList = courseService.getCourseInfoList(id);
+        return Result.oKWithToken(token,courseInfoList);
     }
 
 

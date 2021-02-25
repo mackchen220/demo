@@ -43,6 +43,17 @@
     <result column="forward_num" jdbcType="BIGINT" property="forwardNum" />
   </resultMap>
 
+  <resultMap id="couserInfoVoResultMap" type="org.jeecg.modules.course.model.vo.CourseInfoVo">
+    <!--@mbg.generated-->
+    <!--@Table tb_course-->
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="url" jdbcType="VARCHAR" property="url" />
+    <result column="image" jdbcType="VARCHAR" property="image" />
+    <result column="price" jdbcType="BIGINT" property="price" />
+    <result column="create_time" jdbcType="VARCHAR" property="createTime" />
+  </resultMap>
+
 
   <sql id="Base_Column_List">
     <!--@mbg.generated-->
@@ -57,6 +68,13 @@
     where id = #{id,jdbcType=VARCHAR}
   </select>
 
+  <select id="getCourseInfo" parameterType="java.lang.String" resultMap="voResultMap">
+    <!--@mbg.generated-->
+    select
+    <include refid="Base_Column_List" />
+    from tb_course
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
 
   <insert id="insertSelective" parameterType="org.jeecg.modules.course.model.Course">
     <!--@mbg.generated-->
@@ -335,9 +353,15 @@
     and course_type = #{courseType}
   </if>
   <if test="contentType != null and contentType != ''">
-    and contentType =#{courseType}
+    and  content_type=#{contentType}
   </if>
   order by good_num desc
 </select>
 
+
+  <select id="getCourseInfoList" parameterType="string" resultMap="couserInfoVoResultMap">
+    select  id, title, image, price, sort, create_time from tb_courese_info
+    where course_id = #{courseId}
+    order by sort asc
+  </select>
 </mapper>

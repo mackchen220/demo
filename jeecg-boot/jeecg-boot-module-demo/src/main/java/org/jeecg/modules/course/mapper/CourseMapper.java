@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.ibatis.annotations.Param;
 import org.jeecg.modules.course.model.Course;
+import org.jeecg.modules.course.model.vo.CourseInfoVo;
 import org.jeecg.modules.course.model.vo.CourseVo;
 import org.jeecg.modules.index.model.CourseModel;
 
@@ -15,6 +16,8 @@ public interface CourseMapper extends BaseMapper<Course> {
     int insertSelective(Course record);
 
     Course selectByPrimaryKey(String id);
+
+    CourseVo getCourseInfo(String id);
 
     int updateByPrimaryKeySelective(Course record);
 
@@ -38,4 +41,5 @@ public interface CourseMapper extends BaseMapper<Course> {
     List<CourseVo> loadCourseListByType(@Param("courseType") String courseType,@Param("contentType") String contentType);
 
 
+    List<CourseInfoVo> getCourseInfoList(@Param("courseId") String courseId);
 }

@@ -11,6 +11,7 @@ import org.jeecg.modules.community.model.CommunityModel;
 import org.jeecg.modules.course.mapper.CourseMapper;
 import org.jeecg.modules.course.model.Activity;
 import org.jeecg.modules.course.model.Course;
+import org.jeecg.modules.course.model.vo.CourseInfoVo;
 import org.jeecg.modules.course.model.vo.CourseVo;
 import org.jeecg.modules.course.model.vo.UserCourseDetailVo;
 import org.jeecg.modules.course.model.vo.UserCourseVo;
@@ -204,5 +205,33 @@ public class CourseServiceImpl implements CourseService {
     public  List<PartyModel> loadHengYangActivity() {
         List<PartyModel> partyModels = partyModelMapper.loadHengYangPartyList("2");
         return partyModels;
+    }
+
+    @Override
+    public CourseVo getCourseInfo(String id) {
+        CourseVo courseInfo = courseMapper.getCourseInfo(id);
+        if (Constant.TYPE_INT_1==courseInfo.getType()){
+            courseInfo.setUrl(null);
+        }
+        return courseInfo;
+    }
+
+    @Override
+    public Map loadCommendCourse(String type) {
+        //亨氧学院banner
+        CourseVo course = courseMapper.getCourse(null, Constant.CHECKTYPE1);
+        List<CourseVo> courses = courseMapper.loadCourseListByType(null,type);
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("banner",course);
+        map.put("courses",courses);
+
+        return map;
+    }
+
+    @Override
+    public List<CourseInfoVo> getCourseInfoList(String courseId) {
+
+        return courseMapper.getCourseInfoList(courseId);
     }
 }

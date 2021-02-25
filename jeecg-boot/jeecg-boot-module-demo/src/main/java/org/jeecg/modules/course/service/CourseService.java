@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.jeecg.modules.community.model.CommunityModel;
 import org.jeecg.modules.course.model.Activity;
+import org.jeecg.modules.course.model.vo.CourseInfoVo;
+import org.jeecg.modules.course.model.vo.CourseVo;
 import org.jeecg.modules.course.model.vo.UserCourseDetailVo;
 import org.jeecg.modules.course.model.vo.UserCourseVo;
 import org.jeecg.modules.index.model.PartyModel;
@@ -32,4 +34,9 @@ public interface CourseService {
 
     List<PartyModel> loadHengYangActivity();
 
+    Map loadCommendCourse(String type);
+
+    CourseVo getCourseInfo(String id);
+
+    List<CourseInfoVo> getCourseInfoList(String courseId);
 }
