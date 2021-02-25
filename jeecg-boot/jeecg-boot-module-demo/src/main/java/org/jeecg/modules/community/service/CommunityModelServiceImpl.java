@@ -74,6 +74,12 @@ public class CommunityModelServiceImpl implements CommunityModelService{
         return page.setRecords(communityModelVos);
     }
 
+    @Override
+    public Page<CommunityModelVo> loadCommunityBySearch(Page<CommunityModelVo> page, String search, Integer type, Integer sortModel, String userId) {
+
+        List<CommunityModelVo> communityModelVos = communityModelMapper.loadCommunityBySearch(page, type, search, sortModel, userId);
+        return page.setRecords(communityModelVos);
+    }
 
     @Override
     public Map loadMomentsInfo(String id) {

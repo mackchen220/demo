@@ -38,7 +38,7 @@ public class CommunityController {
         Result<Page<CommunityModelVo>> result = new Result<Page<CommunityModelVo>>();
         Page<CommunityModelVo> pageList = new Page<CommunityModelVo>(pageNo, pageSize);
 
-        pageList = communityModelService.loadCommunityListByType(pageList, type , userId);
+        pageList = communityModelService.loadCommunityListByType(pageList, type, userId);
         result.setResult(pageList);
         log.info("查询当前页：" + pageList.getCurrent());
         log.info("查询当前页数量：" + pageList.getSize());
@@ -48,12 +48,20 @@ public class CommunityController {
     }
 
 
+    @ApiOperation("朋友圈搜索")
+    @RequestMapping(value = "/loadCommunityBySearch", method = RequestMethod.POST)
+    public Result<Page<CommunityModelVo>> loadCommunityBySearch(int pageNo, int pageSize, String token, String search,
+                                                                Integer type, Integer sortModel) {
 
+        String userId = userModelService.getUserIdByToken(token);
+        Result<Page<CommunityModelVo>> result = new Result<Page<CommunityModelVo>>();
+        Page<CommunityModelVo> pageList = new Page<CommunityModelVo>(pageNo, pageSize);
 
+        Page<CommunityModelVo> communityModelVoPage = communityModelService.loadCommunityBySearch(pageList, search, type, sortModel, userId);
+        result.setResult(communityModelVoPage);
 
-
-
-
+        return result;
+    }
 
 
     @ApiOperation("发朋友圈")
@@ -88,10 +96,10 @@ public class CommunityController {
 
     @ApiOperation("朋友圈点赞接口")
     @RequestMapping(value = "/addCommunityStar", method = RequestMethod.POST)
-    public Result addCommunityStar(String id,String token,String type) {
+    public Result addCommunityStar(String id, String token, String type) {
         String userId = userModelService.getUserIdByToken(token);
         Result result = new Result<>();
-       communityModelService.addCommunityStar(id,userId,type);
+        communityModelService.addCommunityStar(id, userId, type);
         return Result.OK();
     }
 
@@ -104,7 +112,7 @@ public class CommunityController {
         Result<Page<CommunityModelVo>> result = new Result<Page<CommunityModelVo>>();
         Page<CommunityModelVo> pageList = new Page<CommunityModelVo>(pageNo, pageSize);
 
-        pageList = communityModelService.loadGoodCommunityList(pageList, userId , type);
+        pageList = communityModelService.loadGoodCommunityList(pageList, userId, type);
         result.setResult(pageList);
         log.info("查询当前页：" + pageList.getCurrent());
         log.info("查询当前页数量：" + pageList.getSize());
@@ -112,7 +120,6 @@ public class CommunityController {
         log.info("数据总数：" + pageList.getTotal());
         return result;
     }
-
 
 
 }

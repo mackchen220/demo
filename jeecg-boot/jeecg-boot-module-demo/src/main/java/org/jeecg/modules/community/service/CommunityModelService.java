@@ -7,22 +7,22 @@ import org.jeecg.modules.community.model.vo.CommunityModelVo;
 
 import java.util.Map;
 
-public interface CommunityModelService{
+public interface CommunityModelService {
 
     int insertSelective(CommunityModel record);
 
     CommunityModel selectByPrimaryKey(String id);
 
-    Page<CommunityModelVo> loadCommunityListByType(Page<CommunityModelVo> page , int type, String userId);
+    Page<CommunityModelVo> loadCommunityListByType(Page<CommunityModelVo> page, int type, String userId);
 
     Map loadMomentsInfo(String id);
 
     IPage<CommunityModel> getListByUserId(Page<CommunityModel> objectPage, String userId);
 
-    void addCommunityStar(String id,String userId,String type);
+    void addCommunityStar(String id, String userId, String type);
 
-    Page<CommunityModelVo> loadGoodCommunityList(Page<CommunityModelVo> page,String userId,int type);
+    Page<CommunityModelVo> loadGoodCommunityList(Page<CommunityModelVo> page, String userId, int type);
 
+    Page<CommunityModelVo> loadCommunityBySearch(Page<CommunityModelVo> page, String search, Integer type, Integer sortModel, String userId);
 
-
-    }
+}

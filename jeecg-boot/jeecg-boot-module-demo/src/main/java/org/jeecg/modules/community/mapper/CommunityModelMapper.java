@@ -41,6 +41,9 @@ public interface CommunityModelMapper{
     //我的点赞和收藏朋友圈列表
     List<CommunityModelVo> loadStarAndGoodCommunityList(Page<CommunityModelVo> page, @Param("type") int type, @Param("userId") String userId);
 
+    List<CommunityModelVo> loadCommunityBySearch(Page<CommunityModelVo> page, @Param("type") Integer type,
+                                                   @Param("search") String search, @Param("sortmodel") Integer sortmodel,
+                                                 @Param("userId") String userId);
 
 
 

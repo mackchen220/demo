@@ -386,6 +386,29 @@
         </if>
     </select>
 
-
+<select id="loadCommunityBySearch" resultMap="voResultMap" parameterType="string">
+    select
+    a.id, a.user_id, a.title, a.content, a.url, a.image_url, a.city, a.`type`, a.user_type, a.star_num, a.good_num,
+    a.forward_num, a.create_time, b.head_image,b.nick_name,c.star as star_status,c.good as good_status
+    from tb_community as a LEFT JOIN tb_user b on a.user_id =b.id and a.check_status=2
+    LEFT JOIN tb_user_star c on c.community_id =a.id and c.user_id  = #{userId,jdbcType=VARCHAR}
+    <where>
+        <if test="type != null">
+            and a.`type` =#{type,jdbcType=VARCHAR}
+        </if>
+        <if test="search != null and search != ''">
+            and content like '%${search}%'
+        </if>
+    </where>
+    <if test="sortmodel != null and sortmodel==1">
+        order by create_time DESC,good_num desc
+    </if>
+    <if test="sortmodel != null and sortmodel==2">
+        order by create_time DESC
+    </if>
+    <if test="sortmodel != null and sortmodel==3">
+        order by good_num DESC
+    </if>
+</select>
 
 </mapper>
