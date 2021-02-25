@@ -211,4 +211,33 @@ public class TalentController {
         return Result.OK(rtn);
     }
 
+    @ApiOperation("达人身份认证")
+    @PostMapping("/addTalentInfo")
+    public Result addTalentInfo(String token,String idNum,String name,String year,String city) {
+        String id = userModelService.getUserIdByToken(token);
+
+        talentInfoModelService.addTalentInfo(id,idNum,name,year,city);
+        return Result.oKWithToken(token,null);
+    }
+
+
+
+    @ApiOperation("获取保证金")
+    @PostMapping("/getbond")
+    public Result getTalentBond(String token) {
+        String talentBond = talentInfoModelService.getTalentBond();
+        return Result.oKWithToken(token,talentBond);
+    }
+
+
+
+    @ApiOperation("缴纳保证金")
+    @PostMapping("/addTalentBond")
+    public Result addTalentBond(String token) {
+        String id = userModelService.getUserIdByToken(token);
+        talentInfoModelService.addTalentBond(id);
+        return Result.oKWithToken(token,null);
+    }
+
+
 }

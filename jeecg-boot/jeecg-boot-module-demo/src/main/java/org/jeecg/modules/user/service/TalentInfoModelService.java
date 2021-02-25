@@ -35,4 +35,10 @@ public interface TalentInfoModelService{
 
     int addAdvisoryNum(String userId);
 
+    int addTalentInfo(String userId,String idNum,String name,String year,String city);
+
+    String getTalentBond();
+
+    void addTalentBond(String userId);
+
 }
