@@ -21,6 +21,9 @@ public class Constant {
     public final static int TYPE_INT_2 = 2;
     public final static int TYPE_INT_3 = 3;
 
+    public final static int TYPE_INT_4 = 4;
+
+
 
 
 }

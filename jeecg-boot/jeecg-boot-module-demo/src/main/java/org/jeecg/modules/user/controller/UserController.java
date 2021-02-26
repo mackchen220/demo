@@ -18,10 +18,7 @@ import org.jeecg.modules.user.model.UserBankModel;
 import org.jeecg.modules.user.model.UserModel;
 import org.jeecg.modules.user.model.vo.AddressModelVo;
 import org.jeecg.modules.user.model.vo.UserBankVo;
-import org.jeecg.modules.user.service.AddressModelService;
-import org.jeecg.modules.user.service.UserBankModelService;
-import org.jeecg.modules.user.service.UserFocusModelService;
-import org.jeecg.modules.user.service.UserModelService;
+import org.jeecg.modules.user.service.*;
 import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -47,6 +44,9 @@ public class UserController {
 
     @Resource
     private AddressModelService addressModelService;
+
+    @Resource
+    private VipModelService vipModelService;
 
 //    @ApiOperation("测试接口")
 //    @RequestMapping(value = "/test", method = RequestMethod.GET)
@@ -177,6 +177,28 @@ public class UserController {
     }
 
 
+    @ApiOperation("vip列表")
+    @RequestMapping(value = "/getVipList", method = RequestMethod.POST)
+    public Result<List> getVipList(String token) {
+        List list = vipModelService.getVipList();
+        return Result.oKWithToken(token,list);
+    }
+
+    @ApiOperation("购买会员卡，提交订单")
+    @RequestMapping(value = "/addVipOrder", method = RequestMethod.POST)
+    public Result<Map> addVipOrder(String token,String addressId,String vipId) {
+        String id = userModelService.getUserIdByToken(token);
+        Map map = vipModelService.addVipOrder(addressId, vipId, id);
+        return Result.oKWithToken(token,map);
+    }
+
+
+    @ApiOperation("购买会员卡，确认订单")
+    @RequestMapping(value = "/getVipOrder", method = RequestMethod.POST)
+    public Result<Map> getVipOrder(String token,String addressId,String vipId,String orderId) {
+        Map map = vipModelService.getVipOrder(addressId, vipId, orderId);
+        return Result.oKWithToken(token,map);
+    }
 
 
 }

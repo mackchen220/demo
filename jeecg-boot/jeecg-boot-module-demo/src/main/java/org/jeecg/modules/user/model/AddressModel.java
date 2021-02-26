@@ -75,6 +75,12 @@ public class AddressModel implements Serializable {
     private String city;
 
     /**
+     * 收货人姓名
+     */
+    @ApiModelProperty(value="收货人姓名")
+    private String name;
+
+    /**
     * 是否默认地址 0非默认 1默认
     */
     @ApiModelProperty(value="是否默认地址 0非默认 1默认")

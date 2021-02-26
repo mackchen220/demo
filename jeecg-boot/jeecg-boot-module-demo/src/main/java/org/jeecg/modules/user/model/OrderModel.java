@@ -155,6 +155,14 @@ public class OrderModel implements Serializable {
 
 
     /**
+     * 收货地址id
+     */
+    @ApiModelProperty(value="收货地址id")
+    private String addressId;
+
+
+
+    /**
      * 效果评分
      */
     @ApiModelProperty(value="效果评分")

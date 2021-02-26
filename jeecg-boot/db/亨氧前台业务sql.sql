@@ -41,18 +41,19 @@ ADD COLUMN `is_talent` tinyint(1) NOT NULL DEFAULT 0 COMMENT '是否达人，0�
 
 DROP TABLE IF EXISTS `tb_address`;
 CREATE TABLE `tb_address` (
-  `id` varchar(36) NOT NULL,
-  `address` varchar(255) DEFAULT NULL COMMENT '收获详细地址',
-  `is_disable` int NOT NULL DEFAULT '1' COMMENT '禁用 1不禁用 0禁用',
+  `id` varchar(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `address` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '收获详细地址',
+  `is_disable` int NOT NULL DEFAULT '0' COMMENT '禁用0不禁用 1禁用',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_time` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '更新日期',
-  `create_by` varchar(32) DEFAULT NULL COMMENT '创建人',
-  `update_by` varchar(50) DEFAULT NULL COMMENT '更新人',
+  `create_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '创建人',
+  `update_by` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '更新人',
   `del_flag` int NOT NULL DEFAULT '0' COMMENT '删除标识0-正常,1-已删除',
   `user_id` varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '用户id',
   `phone` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '收货手机号',
   `city` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '城市',
   `default_flag` int NOT NULL DEFAULT '0' COMMENT '是否默认地址 0非默认 1默认',
+  `name` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '收货人',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='用户地址表';
 
@@ -344,45 +345,39 @@ PRIMARY KEY (`id`) USING BTREE
 
 DROP TABLE IF EXISTS `tb_order`;
 CREATE TABLE `tb_order` (
-  `id` varchar(32) NOT NULL,
-  `user_id` varchar(32) DEFAULT NULL COMMENT '账号',
-  `operation_type` int NOT NULL COMMENT '1-医美项目,2课程 ,3提现',
+  `id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `user_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '账号',
+  `operation_type` int NOT NULL COMMENT '1-医美项目,2课程 ,3提现 4购买会员卡',
   `amount` bigint DEFAULT NULL COMMENT '用户请求金额，单位：分',
-  `inside_card_num` varchar(32) DEFAULT NULL COMMENT '充值卡号',
-  `checker` varchar(255) DEFAULT NULL COMMENT '提现审核人',
+  `inside_card_num` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '充值卡号',
+  `checker` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '提现审核人',
   `check_dt` datetime DEFAULT NULL COMMENT '审核时间',
-  `remark` varchar(121) DEFAULT NULL COMMENT '备注',
+  `remark` varchar(121) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '备注',
   `status` int DEFAULT '1' COMMENT '订单状态1：未审核 2：成功 3：失败',
   `pay_money` bigint DEFAULT '0' COMMENT '系统根据用户请求金额生成实际支付金额，单位：分',
-  `outside_card_num` varchar(32) DEFAULT NULL COMMENT '提现银行卡号',
+  `outside_card_num` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '提现银行卡号',
   `opt_status` tinyint NOT NULL DEFAULT '0' COMMENT '操作状态0-未确认 1-已确认 2-成功 3-已取消 4-锁定 5-恢复 6-拒绝 ',
-  `sys_ins_name` varchar(32) DEFAULT NULL COMMENT '系统收款银行-收款人',
-  `content` varchar(128) DEFAULT NULL COMMENT '订单简介',
+  `sys_ins_name` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '系统收款银行-收款人',
+  `content` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '订单简介',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_time` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '更新日期',
-  `create_by` varchar(32) DEFAULT NULL COMMENT '创建人',
-  `update_by` varchar(50) DEFAULT NULL COMMENT '更新人',
+  `create_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '创建人',
+  `update_by` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '更新人',
   `del_flag` int NOT NULL DEFAULT '0' COMMENT '删除标识0-正常,1-已删除',
   `num` int DEFAULT '1' COMMENT '商品数量',
   `hospital_id` varchar(32) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '机构id',
   `talent_id` varchar(32) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '达人id',
   `course_id` varchar(32) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '课程id',
   `project_id` varchar(256) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '项目id',
+  `effect` decimal(3,2) DEFAULT '0.00' COMMENT '效果评分',
+  `attitude` decimal(3,2) DEFAULT '0.00' COMMENT '态度评分',
+  `price` decimal(3,2) DEFAULT '0.00' COMMENT '价格评分',
+  `average_score` decimal(3,2) DEFAULT '0.00' COMMENT '综合评分',
+  `evaluate_status` int DEFAULT '0' COMMENT '订单是否已评价 0未评价 1已评价',
+  `address_id` varchar(32) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '收货地址id',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB COMMENT='订单表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='订单表';
 
-		ALTER TABLE `tb_order`
-ADD COLUMN `effect` decimal(3, 2) DEFAULT '0.00' NULL COMMENT '效果评分' AFTER `project_id`;
-		ALTER TABLE `tb_order`
-ADD COLUMN `attitude` decimal(3, 2) DEFAULT '0.00' NULL COMMENT '态度评分' AFTER `effect`;
-		ALTER TABLE `tb_order`
-ADD COLUMN `price` decimal(3, 2) DEFAULT '0.00' NULL COMMENT '价格评分' AFTER `attitude`;
-
-					ALTER TABLE `tb_order`
-ADD COLUMN `average_score` decimal(3, 2) DEFAULT '0.00' NULL COMMENT '综合评分' AFTER `price`;
-
-			ALTER TABLE `tb_order`
-ADD COLUMN `evaluate_status` int(1) NULL DEFAULT 0 COMMENT '订单是否已评价 0未评价 1已评价' AFTER `average_score`;
 
 
 DROP TABLE IF EXISTS `tb_party`;
@@ -511,3 +506,28 @@ CREATE TABLE `tb_course_info` (
   `del_flag` tinyint(1) NOT NULL DEFAULT '0' COMMENT '删除标识0-正常,1-已删除',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='课程章节表';
+
+
+DROP TABLE IF EXISTS `tb_course_info`;
+CREATE TABLE `tb_vip` (
+  `id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `vip_name` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `price_low` bigint DEFAULT '0' COMMENT '限时价格',
+  `price_high` bigint DEFAULT '0' COMMENT '原价格',
+  `commission` bigint DEFAULT '0' COMMENT '佣金百分比，例：百分之五十，数据为50',
+  `bonus_high` bigint DEFAULT '0' COMMENT '奖金区间小',
+  `bonus_low` bigint DEFAULT '0' COMMENT '奖金区间大',
+  `discount` bigint DEFAULT '0' COMMENT '整形折扣百分比 例：五折，数据为50',
+  `times` bigint DEFAULT '0' COMMENT '旅游次数',
+  `area_commission` bigint DEFAULT '0' COMMENT '区域分红百分比',
+  `quota_num` bigint DEFAULT '0' COMMENT '限时名额数量',
+  `begin_time` timestamp NULL DEFAULT NULL COMMENT '开始时间',
+  `end_time` timestamp NULL DEFAULT NULL COMMENT '结束日期',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '更新日期',
+  `create_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '创建人',
+  `update_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '更新人',
+  `del_flag` tinyint(1) NOT NULL DEFAULT '0' COMMENT '删除标识0-正常,1-已删除',
+  `image` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT 'vip卡图标',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='会员表';
