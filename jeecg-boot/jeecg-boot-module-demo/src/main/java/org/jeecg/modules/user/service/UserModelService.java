@@ -1,8 +1,10 @@
 package org.jeecg.modules.user.service;
 
 import com.alibaba.fastjson.JSONObject;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.jeecg.common.api.vo.Result;
 import org.jeecg.modules.user.model.UserModel;
+import org.jeecg.modules.user.model.vo.UserIncomeDetailVo;
 
 import java.util.Map;
 
@@ -23,4 +25,8 @@ public interface UserModelService {
     void addUserAgencyModel(String inviteCode,String userId);
 
     int checkfirst(String phone);
+
+    Map loadMyWalletInfo(String userId);
+
+    Page<UserIncomeDetailVo> loadIncomeDetail(String userId, Page<UserIncomeDetailVo> page, Integer type);
 }

@@ -2,6 +2,7 @@ package org.jeecg.modules.user.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.xiaoymin.knife4j.annotations.DynamicParameter;
 import com.github.xiaoymin.knife4j.annotations.DynamicResponseParameters;
 import io.swagger.annotations.Api;
@@ -18,6 +19,7 @@ import org.jeecg.modules.user.model.UserBankModel;
 import org.jeecg.modules.user.model.UserModel;
 import org.jeecg.modules.user.model.vo.AddressModelVo;
 import org.jeecg.modules.user.model.vo.UserBankVo;
+import org.jeecg.modules.user.model.vo.UserIncomeDetailVo;
 import org.jeecg.modules.user.service.*;
 import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
@@ -199,6 +201,30 @@ public class UserController {
         Map map = vipModelService.getVipOrder(addressId, vipId, orderId);
         return Result.oKWithToken(token,map);
     }
+
+
+    @ApiOperation("我的钱包")
+    @RequestMapping(value = "/loadMyWalletInfo", method = RequestMethod.POST)
+    public Result<Map> loadMyWalletInfo(String token) {
+        String id = userModelService.getUserIdByToken(token);
+        Map map = userModelService.loadMyWalletInfo(id);
+        return Result.oKWithToken(token,map);
+    }
+
+
+    @ApiOperation("收益记录")
+    @RequestMapping(value = "/loadIncomeDetail", method = RequestMethod.POST)
+    public Result<Page<UserIncomeDetailVo>> loadIncomeDetail(String token, Integer pageNo, Integer pageSize, Integer type) {
+        String id = userModelService.getUserIdByToken(token);
+        Page<UserIncomeDetailVo> page = new Page<>(pageNo, pageSize);
+        Page<UserIncomeDetailVo> incomeDetail = userModelService.loadIncomeDetail(id, page, type);
+        return Result.oKWithToken(token, incomeDetail);
+    }
+
+
+
+
+
 
 
 }

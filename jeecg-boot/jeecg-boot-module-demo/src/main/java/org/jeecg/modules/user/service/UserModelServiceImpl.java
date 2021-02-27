@@ -1,6 +1,7 @@
 package org.jeecg.modules.user.service;
 
 import com.alibaba.fastjson.JSONObject;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.extern.log4j.Log4j2;
 import org.jeecg.common.exception.JeecgBootException;
 import org.jeecg.common.system.util.JwtUtil;
@@ -8,19 +9,25 @@ import org.jeecg.common.util.MD5Util;
 import org.jeecg.common.util.RedisUtil;
 import org.jeecg.modules.commons.ErrorInfoCode;
 import org.jeecg.modules.commons.RedisKey;
+import org.jeecg.modules.commons.util.DateHelper;
 import org.jeecg.modules.commons.util.RandomUtil;
 import org.jeecg.modules.commons.util.SeqUtils;
 import org.jeecg.modules.commons.util.ValidateTool;
 import org.jeecg.modules.user.mapper.UserAgencyModelMapper;
+import org.jeecg.modules.user.mapper.UserIncomeDetailMapper;
+import org.jeecg.modules.user.mapper.UserIncomeMapper;
 import org.jeecg.modules.user.mapper.UserModelMapper;
 import org.jeecg.modules.user.model.UserAgencyModel;
 import org.jeecg.modules.user.model.UserModel;
+import org.jeecg.modules.user.model.vo.UserIncomeDetailVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.activation.DataHandler;
 import javax.annotation.Resource;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Log4j2
@@ -34,6 +41,10 @@ public class UserModelServiceImpl implements UserModelService {
     private UserAgencyModelMapper userAgencyModelMapper;
     @Autowired
     private RedisUtil redisUtil;
+    @Resource
+    private UserIncomeDetailMapper userIncomeDetailMapper;
+    @Resource
+    private UserIncomeMapper userIncomeMapper;
 
     @Override
     public UserModel getUserById(String id) {
@@ -205,6 +216,52 @@ public class UserModelServiceImpl implements UserModelService {
             throw new JeecgBootException("修改失败");
         }
         userModelMapper.updateByPrimaryKeySelective(userModel1);
+    }
+
+    @Override
+    public Map loadMyWalletInfo(String userId) {
+
+        Map map =new HashMap<>();
+        UserModel userModel = userModelMapper.loadUser(userId, null, null, null);
+
+        map.put("headImage",userModel.getHeadImage());
+        map.put("nickName",userModel.getNickName());
+
+        //可提现收入
+        map.put("excess",userModel.getMoney());
+        //审核中 todo
+        map.put("Review",0);
+
+        //手续费 todo
+        map.put("excess","0.1");
+
+        //今日收入
+        String startTimeToday = DateHelper.getToday() + DateHelper.DEFUALT_TIME_START;
+        String endTimeToday = DateHelper.getToday() + DateHelper.DEFUALT_TIME_END;
+        String incomeToday = userIncomeMapper.getIncomeByTime(userId, startTimeToday, endTimeToday);
+        map.put("incomeToday",incomeToday);
+
+        //本月收入
+        String firstDayOfMonth = DateHelper.getFirstDayOfMonth();
+        String lastDayOfMonth = DateHelper.getLastDayOfMonth();
+        String incomeMonth = userIncomeMapper.getIncomeByTime(userId, firstDayOfMonth, lastDayOfMonth);
+        map.put("incomeMonth",incomeMonth);
+
+        //总收入
+        String incomeTotal = userIncomeMapper.getIncomeByTime(userId, firstDayOfMonth, lastDayOfMonth);
+
+        map.put("incomeTotal",incomeTotal);
+
+        return map;
+    }
+
+
+    @Override
+    public Page<UserIncomeDetailVo> loadIncomeDetail(String userId, Page<UserIncomeDetailVo> page, Integer type) {
+
+        List<UserIncomeDetailVo> detailVos = userIncomeDetailMapper.loadUserIncomeList(page, userId, type == 1 ? 1 : 3);
+
+        return page.setRecords(detailVos);
     }
 
 

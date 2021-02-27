@@ -5,16 +5,15 @@ import org.jeecg.common.exception.JeecgBootException;
 import org.jeecg.modules.commons.Constant;
 import org.jeecg.modules.commons.util.SeqUtils;
 import org.jeecg.modules.commons.util.ValidateTool;
-import org.jeecg.modules.user.mapper.ProjectInfoMapper;
-import org.jeecg.modules.user.mapper.ProjectMapper;
-import org.jeecg.modules.user.mapper.TalentInfoModelMapper;
+import org.jeecg.modules.user.mapper.*;
 import org.jeecg.modules.user.model.TalentInfoModel;
+import org.jeecg.modules.user.model.UserBankModel;
+import org.jeecg.modules.user.model.UserModel;
 import org.jeecg.modules.user.model.vo.OrderModelVo;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 
-import org.jeecg.modules.user.mapper.OrderModelMapper;
 import org.jeecg.modules.user.model.OrderModel;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,6 +30,10 @@ public class OrderModelServiceImpl implements OrderModelService {
     private ProjectMapper projectMapper;
     @Resource
     private TalentInfoModelMapper talentInfoModelMapper;
+    @Resource
+    private UserBankModelMapper userBankModelMapper;
+    @Resource
+    private UserModelMapper userModelMapper;
 
 
     @Override
@@ -187,6 +190,35 @@ public class OrderModelServiceImpl implements OrderModelService {
         talentInfoModelMapper.updateTalentScore(talentInfoModel);
 
         return String.valueOf(divide.doubleValue());
+    }
+
+    @Override
+    public void addWithdrawalOrder(UserModel user, String bankId, String money) {
+
+        UserBankModel userBankModel = userBankModelMapper.loadBankInfoByUserId(null, bankId, user.getId());
+
+        if (ValidateTool.isNull(userBankModel)) {
+            throw new JeecgBootException("银行卡错误");
+        }
+        if (Long.valueOf(user.getMoney()) < Long.valueOf(money)) {
+            throw new JeecgBootException("余额不足");
+        }
+
+        int i = userModelMapper.updateUserMoney(user.getId(), money, Constant.TYPE_INT_1);
+        if (i < 1) {
+            throw new JeecgBootException("余额不足");
+        }
+        OrderModel orderModel = new OrderModel();
+        orderModel.setId(SeqUtils.nextIdStr());
+        orderModel.setUserId(user.getId());
+        orderModel.setAmount(money);
+        orderModel.setOperationType(Constant.TYPE_INT_3);
+        orderModel.setContent("提现");
+        orderModel.setOutsideCardNum(userBankModel.getCardNumber());
+        orderModel.setOptStatus(Constant.TYPE_INT_0);
+        orderModelMapper.insertSelective(orderModel);
+
+
     }
 
     public static void main(String[] args) {

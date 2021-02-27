@@ -360,4 +360,18 @@
     where id = #{Id,jdbcType=BIGINT}
   </update>
 
+  <update id="updateUserMoney" parameterType="string">
+    update tb_user
+    <set>
+      <if test="type != null and type==1">
+        money =money+ #{money,jdbcType=BIGINT}
+      </if>
+      <if test="type != null and type==2">
+        money =money- #{money,jdbcType=BIGINT}
+      </if>
+      and id =#{userId,jdbcType=VARCHAR}
+    </set>
+  </update>
+
+
 </mapper>

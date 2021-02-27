@@ -2,6 +2,7 @@ package org.jeecg.modules.user.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.jeecg.modules.user.model.OrderModel;
+import org.jeecg.modules.user.model.UserModel;
 import org.jeecg.modules.user.model.vo.OrderModelVo;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -25,5 +26,7 @@ public interface OrderModelService{
 
     String updateOrderScore(String userId, String orderId,String effect ,String attitude,String price);
 
+
+    void addWithdrawalOrder(UserModel user, String bankId , String money);
 
 }

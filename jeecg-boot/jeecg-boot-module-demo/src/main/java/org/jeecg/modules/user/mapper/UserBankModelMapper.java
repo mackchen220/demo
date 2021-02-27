@@ -10,7 +10,8 @@ public interface UserBankModelMapper {
 
     int insertSelective(UserBankModel record);
 
-    UserBankModel loadBankInfoByUserId(String cardNumber);
+    UserBankModel loadBankInfoByUserId(@Param("cardNumber") String cardNumber,@Param("id") String id
+            , @Param("userId") String userId);
 
     int updateByPrimaryKeySelective(UserBankModel record);
 

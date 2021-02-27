@@ -8,6 +8,7 @@ import lombok.extern.log4j.Log4j2;
 import lombok.extern.slf4j.Slf4j;
 import org.jeecg.common.api.vo.Result;
 import org.jeecg.common.util.RedisUtil;
+import org.jeecg.modules.user.model.UserModel;
 import org.jeecg.modules.user.model.vo.OrderModelVo;
 import org.jeecg.modules.user.model.vo.UserProjectVo;
 import org.jeecg.modules.user.service.AddressModelService;
@@ -87,6 +88,19 @@ public class UserOrderController {
 
         String score = orderModelService.updateOrderScore(id, orderId, effect, attitude, price);
         return Result.oKWithToken(token,score);
+    }
+
+
+
+
+    @ApiOperation("用户提现")
+    @RequestMapping(value = "/addWithdrawalOrder", method = RequestMethod.POST)
+    public Result addWithdrawalOrder(String token, String bankId ,String money) {
+
+        UserModel user = userModelService.getUserModelByToken(token);
+
+        orderModelService.addWithdrawalOrder(user, bankId, money);
+        return Result.oKWithToken(token,null);
     }
 
 

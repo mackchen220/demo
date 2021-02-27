@@ -27,13 +27,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-/**
- * @className: CourseController
- * @description: 社区模块
- * @author: LongXiang
- * @data: 2021-02-05 16:41
- * @version: V1.0
- */
+
 @RestController
 @RequestMapping("/hy/course")
 @Api(tags = "前台社区模块",
@@ -84,9 +78,9 @@ public class CourseController {
 
     @ApiOperation("社区搜索动态-数据详情")
     @PostMapping("/searchInfoDetail")
-    public Result<UserCourseDetailVo> searchInfoDetail(String token,
-                                                       @ApiParam(name = "记录ID", required = true) String id,
-                                                       @ApiParam(name = "数据来源类型", required = true, value = "1-朋友圈 2-课程 3-活动") Integer courseType) {
+    public Result<UserCourseDetailVo> searchInfoDetail(String token, @ApiParam(name = "记录ID", required = true) String id,
+                                                       @ApiParam(name = "数据来源类型", required = true, value = "1-朋友圈 2-课程 3-活动")
+                                                               Integer courseType) {
         if (ValidateTool.isNull(id) || ValidateTool.isNull(courseType)) {
             throw new JeecgBootException(ErrorInfoCode.PARAMS_ERROR.getMsg());
         }

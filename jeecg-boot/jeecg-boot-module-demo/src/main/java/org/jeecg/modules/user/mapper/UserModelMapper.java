@@ -14,4 +14,6 @@ public interface UserModelMapper {
 
     int updateByPrimaryKeySelective(UserModel record);
 
+    int updateUserMoney(@Param("userId") String userId, @Param("money") String money, @Param("type") Integer type);
+
 }

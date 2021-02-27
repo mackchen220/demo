@@ -531,3 +531,52 @@ CREATE TABLE `tb_vip` (
   `image` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT 'vip卡图标',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='会员表';
+
+
+
+
+DROP TABLE IF EXISTS `tb_user_income`;
+CREATE TABLE `tb_user_income`  (
+	`id` varchar(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+	`user_id` varchar(36) NULL DEFAULT NULL COMMENT '用户id',
+	`recharge_money` bigint(10) NULL DEFAULT 0 COMMENT '充值金额，单位：分',
+	`extension_money` bigint(10) NULL DEFAULT 0 COMMENT '推广收入，单位：分',
+	`project_money` bigint(10) NULL DEFAULT 0 COMMENT '医美项目支出，单位：分',
+	`course_money` bigint(10) NULL DEFAULT 0 COMMENT '课程支出，单位：分',
+	`commission_money` bigint(10) NULL DEFAULT 0 COMMENT '佣金收入，单位：分',
+	`other_money` bigint(10) NULL DEFAULT 0 COMMENT '其他收入',
+	`get_out_money` bigint(10) NULL DEFAULT 0 COMMENT '提现金额',
+	`other_out_money` bigint(10) NULL DEFAULT 0 COMMENT '其它支出',
+	`seq_unique` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '防止数据重复添加唯一索引',
+	`create_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '创建时间',
+	`update_time` timestamp(0) NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '更新日期',
+	`create_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
+	`update_by` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
+	`del_flag` int NOT NULL DEFAULT '0' COMMENT '删除标识0-正常,1-已删除',
+PRIMARY KEY (`id`) USING BTREE,
+UNIQUE INDEX `uq_seq_unique`(`seq_unique`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户收入、支出日表';
+
+
+
+DROP TABLE IF EXISTS `tb_user_income_detail`;
+CREATE TABLE `tb_user_income_detail`  (
+  `id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `user_id` bigint(20) NULL DEFAULT NULL,
+  `income_type` tinyint(2) NULL DEFAULT 1 COMMENT '收入支出类型1:提现 2充值 推广奖励  4项目佣金 5购买课程 6购买项目  ',
+  `income_content` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '内容',
+  `pay_money` bigint(10) NULL DEFAULT NULL COMMENT '金额',
+  `remark` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
+  `pay_type` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '支付类型',
+  `excess` bigint(20) NOT NULL DEFAULT 0 COMMENT '操作后余额',
+	`create_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '创建时间',
+  `update_time` timestamp(0) NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '更新日期',
+	`create_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
+  `update_by` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
+	 `del_flag` int NOT NULL DEFAULT '0' COMMENT '删除标识0-正常,1-已删除',
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `index_user_income_detail`(`user_id`) USING BTREE,
+  INDEX `idx_user_insert`(`user_id`, `create_time`, `id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户收入、支出明细' ;
+
+

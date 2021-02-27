@@ -67,7 +67,7 @@ public class UserBankModelServiceImpl implements UserBankModelService{
             result.error500("验证码错误");
             return result;
         }
-        UserBankModel userBank = userBankModelMapper.loadBankInfoByUserId(userBankModel.getCardNumber());
+        UserBankModel userBank = userBankModelMapper.loadBankInfoByUserId(userBankModel.getCardNumber(),null,null);
         if (ValidateTool.checkIsNull(userBank)){
             result.error500("卡号已绑定");
         }
@@ -79,7 +79,7 @@ public class UserBankModelServiceImpl implements UserBankModelService{
 
     @Override
     public UserBankModel selectByPrimaryKey(String id) {
-        return userBankModelMapper.loadBankInfoByUserId(id);
+        return userBankModelMapper.loadBankInfoByUserId(null,id,null);
     }
 
     @Override
