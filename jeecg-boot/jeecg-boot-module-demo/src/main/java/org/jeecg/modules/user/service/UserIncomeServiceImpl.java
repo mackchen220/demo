@@ -63,17 +63,18 @@ public class UserIncomeServiceImpl implements UserIncomeService {
         userIncomeDetail.setId(SeqUtils.nextIdStr());
         UserModel userModel = userModelMapper.loadUser(userId, null, null, null);
         userIncomeDetail.setExcess(userModel.getMoney());
-        userIncomeDetail.setPayType(String.valueOf(type));
+        //    * 收入支出类型1:提现 2充值 推广奖励  4项目佣金 5购买课程 6购买项目
+        userIncomeDetail.setIncomeType(type);
         userIncomeDetailMapper.insertSelective(userIncomeDetail);
 
-        String str = userId + DateHelper.getTodayTime();
+        String str = userId + DateHelper.getToday();
 
         UserIncome userIncome = userIncomeMapper.getUserIncome(str);
         if (ValidateTool.isNull(userIncome)) {
             //添加记录
             UserIncome income = new UserIncome();
             income.setId(SeqUtils.nextIdStr());
-            setMoney(type,userIncome,money);
+            setMoney(type,income,money);
             income.setSeqUnique(str);
             userIncomeMapper.insertSelective(income);
         } else {
@@ -86,38 +87,30 @@ public class UserIncomeServiceImpl implements UserIncomeService {
 
     }
 
-
+    //    * 收入支出类型1:提现 2充值 推广奖励  4项目佣金 5购买课程 6购买项目
     public void setMoney(int type,UserIncome userIncome,Long money){
         switch (type) {
-            // 充值金额，单位：分
             case 1:
-                userIncome.setRechargeMoney(money);
-                break;
-            //   * 推广收入，单位：分
-            case 2:
-                userIncome.setExtensionMoney(money);
-                break;
-            // 医美项目支出，单位：分
-            case 3:
-                userIncome.setProjectMoney(money);
-                break;
-            // 课程支出，单位：分
-            case 4:
-                userIncome.setCourseMoney(money);
-                break;
-            //佣金收入，单位：分
-            case 5:
-                userIncome.setCommissionMoney(money);
-                break;
-            //其他收入
-            case 6:
-                userIncome.setOtherMoney(money);
-                break;
-            //提现金额
-            case 7:
                 userIncome.setGetOutMoney(money);
                 break;
-            //其它支出
+            case 2:
+                userIncome.setRechargeMoney(money);
+                break;
+            case 3:
+                userIncome.setExtensionMoney(money);
+                break;
+            case 4:
+                userIncome.setCommissionMoney(money);
+                break;
+            case 5:
+                userIncome.setCourseMoney(money);
+                break;
+            case 6:
+                userIncome.setProjectMoney(money);
+                break;
+            case 7:
+                userIncome.setOtherMoney(money);
+                break;
             default:
                 userIncome.setOtherOutMoney(money);
         }

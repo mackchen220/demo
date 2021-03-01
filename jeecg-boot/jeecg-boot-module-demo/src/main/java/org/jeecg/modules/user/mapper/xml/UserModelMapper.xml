@@ -369,8 +369,8 @@
       <if test="type != null and type==2">
         money =money- #{money,jdbcType=BIGINT}
       </if>
-      and id =#{userId,jdbcType=VARCHAR}
     </set>
+    where id =#{userId,jdbcType=VARCHAR}
   </update>
 
 
