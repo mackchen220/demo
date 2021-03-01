@@ -18,7 +18,7 @@ public interface UserIncomeMapper {
 
     UserIncome selectByPrimaryKey(String id);
 
-    int updateByPrimaryKeySelective(UserIncome record);
+    int updateUserMoney(UserIncome record);
 
     int updateByPrimaryKey(UserIncome record);
 

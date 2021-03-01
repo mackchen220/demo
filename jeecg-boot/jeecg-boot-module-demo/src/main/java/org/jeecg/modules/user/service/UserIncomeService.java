@@ -12,10 +12,8 @@ public interface UserIncomeService{
 
     UserIncome selectByPrimaryKey(String id);
 
-    int updateByPrimaryKeySelective(UserIncome record);
-
     int updateByPrimaryKey(UserIncome record);
 
-    void addUserIncome(String userId,String type,String contect,String money);
+    void addUserIncome(String userId,Integer type,String contect,Long money);
 
 }
