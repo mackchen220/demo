@@ -34,7 +34,8 @@ public class OrderModelServiceImpl implements OrderModelService {
     private UserBankModelMapper userBankModelMapper;
     @Resource
     private UserModelMapper userModelMapper;
-
+    @Resource
+    private UserIncomeService userIncomeService;
 
     @Override
     public int insertSelective(OrderModel record) {
@@ -172,7 +173,7 @@ public class OrderModelServiceImpl implements OrderModelService {
         OrderModel scoreModel = orderModelMapper.loadScoreModel(orderModel.getTalentId());
 
         //计算新的平均分数
-        BigDecimal averageScore =  new BigDecimal(scoreModel.getAverageScore()).divide(new BigDecimal(scoreModel.getNum()), 2, BigDecimal.ROUND_DOWN);
+        BigDecimal averageScore = new BigDecimal(scoreModel.getAverageScore()).divide(new BigDecimal(scoreModel.getNum()), 2, BigDecimal.ROUND_DOWN);
         //计算新的服务分
         BigDecimal attitudeScore = new BigDecimal(scoreModel.getAttitude()).divide(new BigDecimal(scoreModel.getNum()), 2, BigDecimal.ROUND_DOWN);
         //计算新的价格分
@@ -204,10 +205,11 @@ public class OrderModelServiceImpl implements OrderModelService {
             throw new JeecgBootException("余额不足");
         }
 
-        int i = userModelMapper.updateUserMoney(user.getId(), money, Constant.TYPE_INT_1);
+        int i = userModelMapper.updateUserMoney(user.getId(), money, Constant.TYPE_INT_2);
         if (i < 1) {
             throw new JeecgBootException("余额不足");
         }
+        userIncomeService.addUserIncome(user.getId(), 1, "用户提现", Long.valueOf(money));
         OrderModel orderModel = new OrderModel();
         orderModel.setId(SeqUtils.nextIdStr());
         orderModel.setUserId(user.getId());
