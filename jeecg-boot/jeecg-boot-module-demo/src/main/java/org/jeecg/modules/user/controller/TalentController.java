@@ -13,15 +13,11 @@ import org.jeecg.common.exception.JeecgBootException;
 import org.jeecg.modules.commons.ErrorInfoCode;
 import org.jeecg.modules.community.model.CommunityModel;
 import org.jeecg.modules.community.service.CommunityModelService;
-import org.jeecg.modules.user.model.CaseModel;
-import org.jeecg.modules.user.model.TalentInfoModel;
-import org.jeecg.modules.user.model.UserModel;
+import org.jeecg.modules.user.model.*;
+import org.jeecg.modules.user.model.vo.TalentCustomerVo;
 import org.jeecg.modules.user.model.vo.TalentInfoVo;
 import org.jeecg.modules.user.model.vo.UserProjectVo;
-import org.jeecg.modules.user.service.CaseModelService;
-import org.jeecg.modules.user.service.TalentInfoModelService;
-import org.jeecg.modules.user.service.UserFocusModelService;
-import org.jeecg.modules.user.service.UserModelService;
+import org.jeecg.modules.user.service.*;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -238,6 +234,44 @@ public class TalentController {
         talentInfoModelService.addTalentBond(id);
         return Result.oKWithToken(token,null);
     }
+
+    //达人中心
+    @ApiOperation("达人中心")
+    @PostMapping("/loadTalentCenter")
+    public Result loadTalentCenter(String token) {
+        UserModel userModelByToken = userModelService.getUserModelByToken(token);
+        Map map = talentInfoModelService.loadTalentCenter(userModelByToken);
+        return Result.oKWithToken(token, map);
+    }
+
+
+    //达人咨询
+    @ApiOperation("添加客户")
+    @PostMapping("/addCustomer")
+    public Result addCustomer(String token, String userId) {
+        String id = userModelService.getUserIdByToken(token);
+        talentInfoModelService.addCustomer(id, userId);
+        return Result.oKWithToken(token, null);
+    }
+
+
+    @ApiOperation("达人中心 我的客户列表")
+    @RequestMapping(value = "/loadMyCustomer", method = RequestMethod.POST)
+    public Result<Page<TalentCustomerVo>> loadMyCustomer(@RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo,
+                                                         @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize,
+                                                         String token) {
+        String id = userModelService.getUserIdByToken(token);
+        Result<Page<TalentCustomerVo>> result = new Result<Page<TalentCustomerVo>>();
+        Page<TalentCustomerVo> pageList = new Page<TalentCustomerVo>(pageNo, pageSize);
+        Page<TalentCustomerVo> page = talentInfoModelService.loadMyCustomer(pageList, id);
+        result.setResult(page);
+        result.setToken(token);
+        return result;
+    }
+
+
+
+
 
 
 }

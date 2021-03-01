@@ -1,11 +1,15 @@
 package org.jeecg.modules.user.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import org.jeecg.modules.user.model.TalentCustomer;
 import org.jeecg.modules.user.model.TalentInfoModel;
+import org.jeecg.modules.user.model.UserModel;
+import org.jeecg.modules.user.model.vo.TalentCustomerVo;
 import org.jeecg.modules.user.model.vo.TalentInfoVo;
 import org.jeecg.modules.user.model.vo.UserProjectVo;
 
 import java.util.List;
+import java.util.Map;
 
 public interface TalentInfoModelService{
 
@@ -40,5 +44,16 @@ public interface TalentInfoModelService{
     String getTalentBond();
 
     void addTalentBond(String userId);
+
+    Map loadTalentCenter(UserModel user);
+
+
+    void addCustomer(String talentId, String userId);
+
+
+    Page<TalentCustomerVo> loadMyCustomer(Page<TalentCustomerVo> pageList, String userId);
+
+
+
 
 }

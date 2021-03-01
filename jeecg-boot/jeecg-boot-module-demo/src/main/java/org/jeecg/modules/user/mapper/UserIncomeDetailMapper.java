@@ -24,4 +24,7 @@ public interface UserIncomeDetailMapper {
 
     List<UserIncomeDetailVo> loadUserIncomeList(Page<UserIncomeDetailVo> page, @Param("userId")String userId , @Param("type") Integer type);
 
+
+    String getSumMoney(@Param("userId")String userId, @Param("type") String type);
+
 }

@@ -14,6 +14,13 @@ public class Constant {
 
     public final static String CHECKTYPE2 = "2";
 
+
+    public final static String CHECKTYPE3 = "3";
+
+
+    public final static String CHECKTYPE4 = "4";
+
+
     public final static int TYPE_INT_0 = 0;
     public final static int TYPE_INT_1 = 1;
     public final static int TYPE_INT_fuyi = -1;

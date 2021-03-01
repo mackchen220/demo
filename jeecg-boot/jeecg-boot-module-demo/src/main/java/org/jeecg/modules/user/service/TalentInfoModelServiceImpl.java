@@ -3,21 +3,15 @@ package org.jeecg.modules.user.service;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
 import org.jeecg.common.exception.JeecgBootException;
+import org.jeecg.modules.commons.Constant;
 import org.jeecg.modules.commons.util.SeqUtils;
 import org.jeecg.modules.commons.util.ValidateTool;
-import org.jeecg.modules.user.mapper.HospitalProjectMapper;
-import org.jeecg.modules.user.mapper.TalentHospitalMapper;
-import org.jeecg.modules.user.model.TalentHospital;
-import org.jeecg.modules.user.model.vo.ProjectInfoVo;
-import org.jeecg.modules.user.model.vo.TalentInfoVo;
-import org.jeecg.modules.user.model.vo.UserModelVo;
-import org.jeecg.modules.user.model.vo.UserProjectVo;
+import org.jeecg.modules.user.mapper.*;
+import org.jeecg.modules.user.model.*;
+import org.jeecg.modules.user.model.vo.*;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-
-import org.jeecg.modules.user.mapper.TalentInfoModelMapper;
-import org.jeecg.modules.user.model.TalentInfoModel;
 
 import java.util.HashMap;
 import java.util.List;
@@ -34,6 +28,12 @@ public class TalentInfoModelServiceImpl implements TalentInfoModelService {
     private TalentHospitalMapper talentHospitalMapper;
     @Resource
     private HospitalProjectMapper hospitalProjectMapper;
+    @Resource
+    private OrderModelMapper orderModelMapper;
+    @Resource
+    private UserIncomeDetailMapper userIncomeDetailMapper;
+    @Resource
+    private TalentCustomerMapper talentCustomerMapper;
 
 
     @Override
@@ -173,4 +173,41 @@ public class TalentInfoModelServiceImpl implements TalentInfoModelService {
     }
 
 
+    @Override
+    public Map loadTalentCenter(UserModel userModel) {
+        OrderModel orderModel = orderModelMapper.getOrderNumAndMoney(userModel.getId());
+        Map<String, Object> map = new HashMap<>();
+        //订单量
+        map.put("num", orderModel.getNum());
+        //成交额
+        map.put("orderMoney", orderModel.getPayMoney());
+        //总提成收益
+        String sumMoney = userIncomeDetailMapper.getSumMoney(userModel.getId(), Constant.CHECKTYPE4);
+        map.put("sumMoney", ValidateTool.isNull(sumMoney) ? 0 : sumMoney);
+
+        //头像
+        map.put("headImage", userModel.getHeadImage());
+        //昵称
+        map.put("nickName", userModel.getNickName());
+        //邀请码
+        map.put("inviteCode", userModel.getInviteCode());
+        return map;
+    }
+
+
+    @Override
+    public void addCustomer(String talentId, String userId) {
+        TalentCustomer customer = new TalentCustomer();
+        customer.setId(SeqUtils.nextIdStr());
+        customer.setUserId(userId);
+        customer.setTalentId(talentId);
+        talentCustomerMapper.insertSelective(customer);
+    }
+
+
+    @Override
+    public Page<TalentCustomerVo> loadMyCustomer(Page<TalentCustomerVo> pageList, String userId) {
+        List<TalentCustomerVo> talentCustomerVos = talentCustomerMapper.loadMyCustomer(pageList, userId);
+        return pageList.setRecords(talentCustomerVos);
+    }
 }

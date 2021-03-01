@@ -221,4 +221,7 @@
   </select>
 
 
+  <select id="getSumMoney" resultType="string" parameterType="string">
+    select  sum(pay_money) from tb_user_income_detail  where user_id = #{userId,jdbcType=VARCHAR} and income_content = #{type,jdbcType=VARCHAR}
+  </select>
 </mapper>
