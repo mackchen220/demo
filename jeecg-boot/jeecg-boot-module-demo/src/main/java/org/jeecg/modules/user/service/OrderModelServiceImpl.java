@@ -192,7 +192,7 @@ public class OrderModelServiceImpl implements OrderModelService {
 
         return String.valueOf(divide.doubleValue());
     }
-
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public void addWithdrawalOrder(UserModel user, String bankId, String money) {
 

@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import org.jeecg.modules.user.mapper.UserFocusModelMapper;
 import org.jeecg.modules.user.model.UserFocusModel;
+import org.springframework.transaction.annotation.Transactional;
 
 @Log4j2
 @Service
@@ -23,7 +24,7 @@ public class UserFocusModelServiceImpl implements UserFocusModelService{
     private UserModelMapper userModelMapper;
 
 
-
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public Result addUserFocus(String id,String userId) {
         Result result = new Result<>();
@@ -49,7 +50,7 @@ public class UserFocusModelServiceImpl implements UserFocusModelService{
         }
         return result;
     }
-
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public Result delUserFocus(String id, String userId) {
         Result result = new Result<>();

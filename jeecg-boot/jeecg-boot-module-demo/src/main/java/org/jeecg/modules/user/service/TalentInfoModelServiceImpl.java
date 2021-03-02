@@ -10,6 +10,7 @@ import org.jeecg.modules.user.mapper.*;
 import org.jeecg.modules.user.model.*;
 import org.jeecg.modules.user.model.vo.*;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 
@@ -129,6 +130,7 @@ public class TalentInfoModelServiceImpl implements TalentInfoModelService {
 
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public int addTalentInfo(String userId, String idNum, String name, String year, String city) {
 
@@ -161,6 +163,7 @@ public class TalentInfoModelServiceImpl implements TalentInfoModelService {
         return "2000000";
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public void addTalentBond(String userId) {
         TalentInfoModel talentInfoModel = talentInfoModelMapper.selectByUserId(userId);
@@ -194,7 +197,7 @@ public class TalentInfoModelServiceImpl implements TalentInfoModelService {
         return map;
     }
 
-
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public void addCustomer(String talentId, String userId) {
         TalentCustomer customer = new TalentCustomer();
