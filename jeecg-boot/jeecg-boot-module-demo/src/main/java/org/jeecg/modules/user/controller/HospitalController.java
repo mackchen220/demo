@@ -1,7 +1,6 @@
 package org.jeecg.modules.user.controller;
 
 
-import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.xiaoymin.knife4j.annotations.DynamicParameter;
 import com.github.xiaoymin.knife4j.annotations.DynamicResponseParameters;
@@ -10,7 +9,6 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.jeecg.common.api.vo.Result;
 import org.jeecg.modules.user.model.HospitalModel;
-import org.jeecg.modules.user.model.vo.TalentInfoVo;
 import org.jeecg.modules.user.service.HospitalModelService;
 import org.jeecg.modules.user.service.TalentHospitalService;
 import org.jeecg.modules.user.service.TalentInfoModelService;
@@ -21,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
-import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -135,6 +132,13 @@ public class HospitalController {
 
 
 
+    @ApiOperation("机构认证")
+    @RequestMapping(value = "/addHospitalInfo", method = RequestMethod.POST)
+    public Result addHospitalInfo(String token,HospitalModel hospitalModel) {
+        String id = userModelService.getUserIdByToken(token);
+        hospitalModelService.addHospitalInfo(id,hospitalModel);
+        return Result.oKWithToken(token,null);
+    }
 
 
 }

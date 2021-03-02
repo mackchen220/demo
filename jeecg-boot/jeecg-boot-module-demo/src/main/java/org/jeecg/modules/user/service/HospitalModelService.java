@@ -32,4 +32,5 @@ public interface HospitalModelService{
     void updateTalentHospit(String hospitalId,String talentId);
 
 
+    void addHospitalInfo(String userId,HospitalModel hospitalModel);
 }

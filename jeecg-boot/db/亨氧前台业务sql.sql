@@ -595,3 +595,10 @@ CREATE TABLE `tb_talent_customer` (
 `del_flag` tinyint(1) NOT NULL DEFAULT '0' COMMENT '删除标识0-正常,1-已删除',
 PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='达人客户表';
+
+
+ALTER TABLE tb_hospital
+    ADD COLUMN `user_id` varchar(32) NULL COMMENT '机构认证上传人' AFTER `del_flag`,
+    ADD COLUMN `authenticated` int(1) NOT NULL DEFAULT 0 COMMENT '是否完成验证 0未验证 1已验证' AFTER `user_id`;
+
+

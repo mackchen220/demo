@@ -3,6 +3,7 @@ package org.jeecg.modules.user.service;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.jeecg.common.exception.JeecgBootException;
+import org.jeecg.modules.commons.util.SeqUtils;
 import org.jeecg.modules.commons.util.ValidateTool;
 import org.jeecg.modules.user.mapper.HospitalModelMapper;
 import org.jeecg.modules.user.mapper.TalentHospitalMapper;
@@ -10,6 +11,7 @@ import org.jeecg.modules.user.model.HospitalModel;
 import org.jeecg.modules.user.model.vo.TalentInfoVo;
 import org.jeecg.modules.user.model.vo.UserModelVo;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -92,7 +94,7 @@ public class HospitalModelServiceImpl implements HospitalModelService{
         map.put("talents",userModelVos);
         return map;
     }
-
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public void updateTalentHospit(String hospitalId, String talentId) {
         HospitalModel hospitalModel = hospitalModelMapper.selectByPrimaryKey(hospitalId);
@@ -100,5 +102,23 @@ public class HospitalModelServiceImpl implements HospitalModelService{
             throw new JeecgBootException("机构不存在");
         }
         talentHospitalMapper.updateTalentHospital(hospitalId,talentId);
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public void addHospitalInfo(String userId, HospitalModel hospitalModel) {
+
+        HospitalModel hospitalByUserId = hospitalModelMapper.getHospitalByUserId(userId);
+        if (ValidateTool.isNull(hospitalByUserId)){
+            hospitalModel.setId(SeqUtils.nextIdStr());
+            hospitalModel.setUserId(userId);
+            hospitalModelMapper.insertSelective(hospitalModel);
+        }{
+            //更新记录
+            hospitalModel.setId(hospitalByUserId.getId());
+            hospitalModel.setUserId(userId);
+            hospitalModelMapper.updateByPrimaryKeySelective(hospitalModel);
+        }
+
     }
 }

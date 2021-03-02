@@ -57,6 +57,18 @@ public class HospitalModel implements Serializable {
     private String contractUrl;
 
     /**
+     * 机构认证上传人
+     */
+    @ApiModelProperty(value="机构认证上传人")
+    private String userId;
+
+    /**
+     * 是否完成验证 0未验证 1已验证
+     */
+    @ApiModelProperty(value="是否完成验证 0未验证 1已验证")
+    private String authenticated;
+
+    /**
     * 创建时间
     */
     @ApiModelProperty(value="创建时间")

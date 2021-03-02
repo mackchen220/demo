@@ -27,5 +27,6 @@ public interface HospitalModelMapper {
     List<HospitalModel> loadMyHospitlist(Page<HospitalModel> page,@Param("talentId") String talentId);
 
 
+    HospitalModel getHospitalByUserId(String userId);
 
 }
