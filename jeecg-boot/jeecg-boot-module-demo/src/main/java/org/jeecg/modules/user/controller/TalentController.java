@@ -270,6 +270,30 @@ public class TalentController {
     }
 
 
+    //达人中心
+    @ApiOperation("客户详情")
+    @PostMapping("/loadCustomrInfo")
+    public Result loadCustomrInfo(String token,String userId,String id) {
+        String talentId = userModelService.getUserIdByToken(token);
+        Map map = talentInfoModelService.loadCustomrInfo(talentId,id,userId);
+        return Result.oKWithToken(token, map);
+    }
+
+
+
+
+    //推广中心
+    @ApiOperation("推广中心")
+    @PostMapping("/loadExtensionCenter")
+    public Result loadExtensionCenter(String token) {
+        UserModel model = userModelService.getUserModelByToken(token);
+        Map map = talentInfoModelService.loadExtensionCenter(model);
+        return Result.oKWithToken(token, map);
+    }
+
+
+
+
 
 
 

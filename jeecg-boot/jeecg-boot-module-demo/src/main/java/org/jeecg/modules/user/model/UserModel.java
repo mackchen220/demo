@@ -30,12 +30,6 @@ public class UserModel {
     private String vipId;
 
 
-
-    /**
-    * 银行卡id
-    */
-    private String bankId;
-
     /**
     * 个性签名
     */

@@ -21,4 +21,6 @@ public interface VipModelMapper {
     int updateByPrimaryKey(VipModel record);
 
     List<VipModelVo> getVipList();
+
+
 }

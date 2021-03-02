@@ -23,5 +23,7 @@ public interface UserAgencyModelMapper {
     UserAgencyModel loadUserAgency(@Param("userId") String userId,@Param("puserId") String puserId);
 
 
+    String countUserNum(@Param("userId") String userId);
+
 
 }

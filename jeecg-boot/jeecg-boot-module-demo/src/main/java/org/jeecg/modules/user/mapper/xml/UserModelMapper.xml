@@ -9,7 +9,6 @@
     <result column="nick_name" jdbcType="VARCHAR" property="nickName" />
     <result column="head_image" jdbcType="VARCHAR" property="headImage" />
     <result column="vip_id" jdbcType="BIGINT" property="vipId" />
-    <result column="bank_id" jdbcType="BIGINT" property="bankId" />
     <result column="sign" jdbcType="VARCHAR" property="sign" />
     <result column="money" jdbcType="BIGINT" property="money" />
     <result column="del_flag" jdbcType="INTEGER" property="delFlag" />
@@ -40,7 +39,7 @@
   </resultMap>
   <sql id="Base_Column_List">
     <!--@mbg.generated-->
-    id, user_name, nick_name, head_image, vip_id, bank_id, sign, money,
+    id, user_name, nick_name, head_image, vip_id, sign, money,
     del_flag, is_disable, `password`, last_login_time, login_time, create_time, update_time,
     last_login_ip, login_ip, wechat, user_type, agency_id, login_times, gender, birthday,
     phone, upd_pwd_time, register_ip, disable_remark,create_by,update_by,del_flag,invite_code,is_talent, province, city
@@ -86,9 +85,6 @@
       </if>
       <if test="vipId != null">
         vip_id,
-      </if>
-      <if test="bankId != null">
-        bank_id,
       </if>
       <if test="sign != null">
         sign,
@@ -185,9 +181,6 @@
       <if test="vipId != null">
         #{vipId,jdbcType=BIGINT},
       </if>
-      <if test="bankId != null">
-        #{bankId,jdbcType=BIGINT},
-      </if>
       <if test="sign != null">
         #{sign,jdbcType=VARCHAR},
       </if>
@@ -283,9 +276,6 @@
       </if>
       <if test="vipId != null">
         vip_id = #{vipId,jdbcType=BIGINT},
-      </if>
-      <if test="bankId != null">
-        bank_id = #{bankId,jdbcType=BIGINT},
       </if>
       <if test="sign != null">
         sign = #{sign,jdbcType=VARCHAR},

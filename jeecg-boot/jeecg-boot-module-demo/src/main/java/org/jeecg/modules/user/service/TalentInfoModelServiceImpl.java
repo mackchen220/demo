@@ -2,8 +2,10 @@ package org.jeecg.modules.user.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
+import org.checkerframework.checker.nullness.NullnessUtil;
 import org.jeecg.common.exception.JeecgBootException;
 import org.jeecg.modules.commons.Constant;
+import org.jeecg.modules.commons.util.DateHelper;
 import org.jeecg.modules.commons.util.SeqUtils;
 import org.jeecg.modules.commons.util.ValidateTool;
 import org.jeecg.modules.user.mapper.*;
@@ -35,6 +37,14 @@ public class TalentInfoModelServiceImpl implements TalentInfoModelService {
     private UserIncomeDetailMapper userIncomeDetailMapper;
     @Resource
     private TalentCustomerMapper talentCustomerMapper;
+    @Resource
+    private UserIncomeMapper userIncomeMapper;
+    @Resource
+    private UserModelMapper userModelMapper;
+    @Resource
+    private VipModelMapper vipModelMapper;
+    @Resource
+    private UserAgencyModelMapper userAgencyModelMapper;
 
 
     @Override
@@ -92,10 +102,10 @@ public class TalentInfoModelServiceImpl implements TalentInfoModelService {
 
     @Override
     public Page<UserProjectVo> loadProjectlist(String search, Page<UserProjectVo> pageList) {
-        List<UserProjectVo> talentHospitals=null;
-        if (ValidateTool.isNull(search)){
+        List<UserProjectVo> talentHospitals = null;
+        if (ValidateTool.isNull(search)) {
             //取出达人和机构id
-            talentHospitals= talentHospitalMapper.loadAllTalentId(pageList);
+            talentHospitals = talentHospitalMapper.loadAllTalentId(pageList);
             for (UserProjectVo model : talentHospitals) {
                 List<String> list = talentHospitalMapper.getHospitalIdByTalentId(model.getTalentId());
                 model.setHospitalId(list.get(new Random().nextInt(list.size())));
@@ -109,13 +119,13 @@ public class TalentInfoModelServiceImpl implements TalentInfoModelService {
                     model.setProjectName(projectInfoVo.getProjectName());
                 }
             }
-        }else {
+        } else {
             //按条件搜索包含此项目的机构
-             talentHospitals = talentHospitalMapper.getHospitalIdByProjectName(pageList, search);
+            talentHospitals = talentHospitalMapper.getHospitalIdByProjectName(pageList, search);
             for (UserProjectVo talentHospital : talentHospitals) {
                 //根据机构随机取出一个达人信息
                 UserProjectVo userProjectVo = talentHospitalMapper.loadAllTalentByHospitalId(talentHospital.getHospitalId());
-                if (ValidateTool.isNotNull(userProjectVo)){
+                if (ValidateTool.isNotNull(userProjectVo)) {
                     talentHospital.setHeadImage(userProjectVo.getHeadImage());
                     talentHospital.setNickName(userProjectVo.getNickName());
                     talentHospital.setUserName(userProjectVo.getUserName());
@@ -134,16 +144,16 @@ public class TalentInfoModelServiceImpl implements TalentInfoModelService {
     @Override
     public int addTalentInfo(String userId, String idNum, String name, String year, String city) {
 
-        if (ValidateTool.isNull(idNum)){
+        if (ValidateTool.isNull(idNum)) {
             throw new JeecgBootException("身份证号码不能为空");
         }
-        if (ValidateTool.isNull(name)){
+        if (ValidateTool.isNull(name)) {
             throw new JeecgBootException("请填写真实姓名");
         }
-        if (ValidateTool.isNull(year)){
+        if (ValidateTool.isNull(year)) {
             throw new JeecgBootException("请填写从业年限");
         }
-        if (ValidateTool.isNull(city)){
+        if (ValidateTool.isNull(city)) {
             throw new JeecgBootException("城市不能为空");
         }
         TalentInfoModel talentInfoModel = new TalentInfoModel();
@@ -167,7 +177,7 @@ public class TalentInfoModelServiceImpl implements TalentInfoModelService {
     @Override
     public void addTalentBond(String userId) {
         TalentInfoModel talentInfoModel = talentInfoModelMapper.selectByUserId(userId);
-        if (ValidateTool.isNull(talentInfoModel)){
+        if (ValidateTool.isNull(talentInfoModel)) {
             throw new JeecgBootException("请先完成身份认证");
         }
         //更新保证金
@@ -212,5 +222,67 @@ public class TalentInfoModelServiceImpl implements TalentInfoModelService {
     public Page<TalentCustomerVo> loadMyCustomer(Page<TalentCustomerVo> pageList, String userId) {
         List<TalentCustomerVo> talentCustomerVos = talentCustomerMapper.loadMyCustomer(pageList, userId);
         return pageList.setRecords(talentCustomerVos);
+    }
+
+    @Override
+    public Map loadCustomrInfo(String talentId, String id, String userId) {
+        UserModel userModel = userModelMapper.loadUser(userId, null, null, null);
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("nickName", userModel.getNickName());
+        map.put("headImage", userModel.getHeadImage());
+        map.put("username", userModel.getUserName());
+        map.put("city", userModel.getCity());
+        map.put("sign", userModel.getSign());
+        map.put("gender", userModel.getGender());
+
+        TalentCustomer talentCustomer = talentCustomerMapper.selectByPrimaryKey(id);
+        map.put("orderMoney", talentCustomer.getOrderMoney());
+        map.put("orderNum", talentCustomer.getOrderNum());
+        map.put("commissionMoney", talentCustomer.getCommissionMoney());
+
+        //本月收益
+
+        //今日收益
+
+
+        return map;
+    }
+
+
+    @Override
+    public Map loadExtensionCenter(UserModel userModel) {
+
+        Map map = new HashMap<>();
+
+        map.put("headImage", userModel.getHeadImage());
+        map.put("nickName", userModel.getNickName());
+
+        VipModel vipModel = vipModelMapper.selectByPrimaryKey(userModel.getVipId());
+
+        map.put("vipName", ValidateTool.isNull(vipModel) ? "" : vipModel.getVipName());
+
+        //今日收入
+        String startTimeToday = DateHelper.getToday() + DateHelper.DEFUALT_TIME_START;
+        String endTimeToday = DateHelper.getToday() + DateHelper.DEFUALT_TIME_END;
+        String incomeToday = userIncomeMapper.getIncomeByTime(userModel.getId(), startTimeToday, endTimeToday);
+        map.put("incomeToday", ValidateTool.isNull(incomeToday) ? 0 : incomeToday);
+
+        //本月收入
+        String firstDayOfMonth = DateHelper.getFirstDayOfMonth();
+        String lastDayOfMonth = DateHelper.getLastDayOfMonth();
+        String incomeMonth = userIncomeMapper.getIncomeByTime(userModel.getId(), firstDayOfMonth, lastDayOfMonth);
+        map.put("incomeMonth", ValidateTool.isNull(incomeMonth) ? 0 : incomeMonth);
+
+        //总收入
+        String incomeTotal = userIncomeMapper.getIncomeByTime(userModel.getId(), firstDayOfMonth, lastDayOfMonth);
+
+        map.put("incomeTotal", ValidateTool.isNull(incomeTotal) ? 0 : incomeTotal);
+
+        String userNum = userAgencyModelMapper.countUserNum(userModel.getId());
+
+        map.put("userNum", userNum);
+
+        return map;
     }
 }

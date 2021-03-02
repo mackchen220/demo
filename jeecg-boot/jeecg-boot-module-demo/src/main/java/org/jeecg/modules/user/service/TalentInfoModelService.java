@@ -54,6 +54,13 @@ public interface TalentInfoModelService{
     Page<TalentCustomerVo> loadMyCustomer(Page<TalentCustomerVo> pageList, String userId);
 
 
+    Map loadCustomrInfo(String talentId,String id,String userId);
+
+
+
+    Map loadExtensionCenter(UserModel userModel);
+
+
 
 
 }

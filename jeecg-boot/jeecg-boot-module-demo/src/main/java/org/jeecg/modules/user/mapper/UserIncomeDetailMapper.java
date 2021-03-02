@@ -27,4 +27,6 @@ public interface UserIncomeDetailMapper {
 
     String getSumMoney(@Param("userId")String userId, @Param("type") String type);
 
+
+
 }

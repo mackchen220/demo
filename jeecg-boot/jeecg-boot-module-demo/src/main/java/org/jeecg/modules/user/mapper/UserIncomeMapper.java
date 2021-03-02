@@ -26,4 +26,6 @@ public interface UserIncomeMapper {
 
     UserIncome getUserIncome(@Param("seqStr") String seqStr);
 
+
+
 }
