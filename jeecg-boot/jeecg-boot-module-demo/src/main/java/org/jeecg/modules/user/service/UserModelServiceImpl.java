@@ -239,18 +239,18 @@ public class UserModelServiceImpl implements UserModelService {
         String startTimeToday = DateHelper.getToday() + DateHelper.DEFUALT_TIME_START;
         String endTimeToday = DateHelper.getToday() + DateHelper.DEFUALT_TIME_END;
         String incomeToday = userIncomeMapper.getIncomeByTime(userId, startTimeToday, endTimeToday);
-        map.put("incomeToday",incomeToday);
+        map.put("incomeToday", ValidateTool.isNull(incomeToday) ? 0 : incomeToday);
 
         //本月收入
         String firstDayOfMonth = DateHelper.getFirstDayOfMonth();
         String lastDayOfMonth = DateHelper.getLastDayOfMonth();
         String incomeMonth = userIncomeMapper.getIncomeByTime(userId, firstDayOfMonth, lastDayOfMonth);
-        map.put("incomeMonth",incomeMonth);
+        map.put("incomeMonth", ValidateTool.isNull(incomeMonth) ? 0 : incomeMonth);
 
         //总收入
         String incomeTotal = userIncomeMapper.getIncomeByTime(userId, firstDayOfMonth, lastDayOfMonth);
 
-        map.put("incomeTotal",incomeTotal);
+        map.put("incomeTotal", ValidateTool.isNull(incomeTotal) ? 0 : incomeTotal);
 
         return map;
     }
