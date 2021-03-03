@@ -30,7 +30,7 @@ public interface CourseMapper extends BaseMapper<Course> {
     List<Course> searchListOrderByType(Page<Course> page, @Param("type") Integer type, @Param("search") String search);
 
 
-    List<Course> loadCourseModelList(Page<CourseModel> page, @Param("search")String search);
+    List<CourseVo> loadCourseModelList(Page<CourseVo> page, @Param("search")String search);
 
     //首页四个课程推荐
     List<Course> loadIndexCourseModelList(@Param("limit") String limit);

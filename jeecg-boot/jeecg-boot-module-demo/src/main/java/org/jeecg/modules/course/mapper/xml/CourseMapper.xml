@@ -317,7 +317,7 @@
     </if>
   </select>
 
-  <select id="loadCourseModelList" parameterType="string" resultMap="BaseResultMap">
+  <select id="loadCourseModelList" parameterType="string" resultMap="voResultMap">
     select title,image,type,state,price from tb_course
     <where>
       <if test="search != null and search != ''">

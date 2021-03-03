@@ -188,21 +188,21 @@ public class CourseServiceImpl implements CourseService {
         //亨氧学院banner
         CourseVo course2 = courseMapper.getCourse(null, Constant.CHECKTYPE1);
 
-        List<CourseVo> courses1 = courseMapper.loadCourseListByType(Constant.CHECKTYPE1,null);
+        List<CourseVo> courses1 = courseMapper.loadCourseListByType(Constant.CHECKTYPE1, null);
 
-        List<CourseVo> courses2 = courseMapper.loadCourseListByType(null,Constant.CHECKTYPE1);
+        List<CourseVo> courses2 = courseMapper.loadCourseListByType(null, Constant.CHECKTYPE1);
 
         Map<String, Object> map = new HashMap<>();
-        map.put("banner",course1);
-        map.put("recommed",course2);
-        map.put("courses",courses1);
-        map.put("others",courses2);
+        map.put("banner", course1);
+        map.put("recommed", course2);
+        map.put("courses", courses1);
+        map.put("others", courses2);
 
         return map;
     }
 
     @Override
-    public  List<PartyModel> loadHengYangActivity() {
+    public List<PartyModel> loadHengYangActivity() {
         List<PartyModel> partyModels = partyModelMapper.loadHengYangPartyList("2");
         return partyModels;
     }
@@ -210,7 +210,7 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public CourseVo getCourseInfo(String id) {
         CourseVo courseInfo = courseMapper.getCourseInfo(id);
-        if (Constant.TYPE_INT_1==courseInfo.getType()){
+        if (Constant.TYPE_INT_1 == courseInfo.getType()) {
             courseInfo.setUrl(null);
         }
         return courseInfo;
@@ -220,11 +220,11 @@ public class CourseServiceImpl implements CourseService {
     public Map loadCommendCourse(String type) {
         //亨氧学院banner
         CourseVo course = courseMapper.getCourse(null, Constant.CHECKTYPE1);
-        List<CourseVo> courses = courseMapper.loadCourseListByType(null,type);
+        List<CourseVo> courses = courseMapper.loadCourseListByType(null, type);
 
         Map<String, Object> map = new HashMap<>();
-        map.put("banner",course);
-        map.put("courses",courses);
+        map.put("banner", course);
+        map.put("courses", courses);
 
         return map;
     }
@@ -233,5 +233,12 @@ public class CourseServiceImpl implements CourseService {
     public List<CourseInfoVo> getCourseInfoList(String courseId) {
 
         return courseMapper.getCourseInfoList(courseId);
+    }
+
+
+    @Override
+    public Page<CourseVo> loadCourseModelList(Page<CourseVo> page, String search) {
+        List<CourseVo> courses = courseMapper.loadCourseModelList(page, search);
+        return page.setRecords(courses);
     }
 }

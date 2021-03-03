@@ -272,6 +272,11 @@ public class TalentInfoModelServiceImpl implements TalentInfoModelService {
         //本月成交额
         String monthMoney = userIncomeDetailMapper.getSumMoney(userId, "6", startTime, endTime);
         map.put("monthMoney",monthMoney);
+
+        map.put("page",userIncomeDetailVoPage);
+
+
+
         return map;
     }
 
@@ -310,4 +315,9 @@ public class TalentInfoModelServiceImpl implements TalentInfoModelService {
 
         return map;
     }
+
+
+
+
+
 }

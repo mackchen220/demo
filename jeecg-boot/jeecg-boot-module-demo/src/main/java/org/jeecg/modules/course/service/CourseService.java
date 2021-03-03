@@ -2,6 +2,7 @@ package org.jeecg.modules.course.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import org.apache.ibatis.annotations.Param;
 import org.jeecg.modules.community.model.CommunityModel;
 import org.jeecg.modules.course.model.Activity;
 import org.jeecg.modules.course.model.vo.CourseInfoVo;
@@ -39,4 +40,6 @@ public interface CourseService {
     CourseVo getCourseInfo(String id);
 
     List<CourseInfoVo> getCourseInfoList(String courseId);
+
+    Page<CourseVo> loadCourseModelList(Page<CourseVo> page, @Param("search")String search);
 }
