@@ -217,11 +217,24 @@
     <if test="type != null != null and type != null != ''">
       and  income_type = #{type,jdbcType=TINYINT}
     </if>
-
+    <if test="startTime != null and startTime != ''">
+      and  create_time  <![CDATA[ >=]]> #{startTime,jdbcType=VARCHAR}
+    </if>
+    <if test="endTime != null and endTime != ''">
+      and create_time  <![CDATA[<=]]> #{endTime,jdbcType=VARCHAR}
+    </if>
   </select>
 
 
   <select id="getSumMoney" resultType="string" parameterType="string">
-    select  sum(pay_money) from tb_user_income_detail  where user_id = #{userId,jdbcType=VARCHAR} and income_content = #{type,jdbcType=VARCHAR}
+    select  sum(pay_money) from tb_user_income_detail
+    where user_id = #{userId,jdbcType=VARCHAR}
+    and income_type = #{type,jdbcType=VARCHAR}
+    <if test="startTime != null and startTime != ''">
+      and  create_time  <![CDATA[ >=]]> #{startTime,jdbcType=VARCHAR}
+    </if>
+    <if test="endTime != null and endTime != ''">
+      and create_time  <![CDATA[<=]]> #{endTime,jdbcType=VARCHAR}
+    </if>
   </select>
 </mapper>

@@ -217,12 +217,21 @@ public class UserController {
     public Result<Page<UserIncomeDetailVo>> loadIncomeDetail(String token, Integer pageNo, Integer pageSize, Integer type) {
         String id = userModelService.getUserIdByToken(token);
         Page<UserIncomeDetailVo> page = new Page<>(pageNo, pageSize);
-        Page<UserIncomeDetailVo> incomeDetail = userModelService.loadIncomeDetail(id, page, type);
+        Page<UserIncomeDetailVo> incomeDetail = userModelService.loadIncomeDetail(id, page, type,null,null);
         return Result.oKWithToken(token, incomeDetail);
     }
 
 
 
+
+    @ApiOperation("微信登录")
+    @RequestMapping(value = "/weixinLogin", method = RequestMethod.POST)
+    public Result weixinLogin(String code,String token) {
+
+        userModelService.weixinLogin(code);
+
+        return Result.oKWithToken(token, null);
+    }
 
 
 

@@ -1,5 +1,9 @@
 package org.jeecg.modules.user.service;
 
+import cn.hutool.core.util.StrUtil;
+import cn.hutool.http.HttpRequest;
+import cn.hutool.http.HttpResponse;
+import cn.hutool.json.JSONUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.extern.log4j.Log4j2;
@@ -21,6 +25,7 @@ import org.jeecg.modules.user.model.UserAgencyModel;
 import org.jeecg.modules.user.model.UserModel;
 import org.jeecg.modules.user.model.vo.UserIncomeDetailVo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -45,6 +50,12 @@ public class UserModelServiceImpl implements UserModelService {
     private UserIncomeDetailMapper userIncomeDetailMapper;
     @Resource
     private UserIncomeMapper userIncomeMapper;
+
+    @Value("${justauth.type.WECHAT_OPEN.client-id}")
+    private String accessKeyId;
+
+    @Value("${justauth.type.WECHAT_OPEN.client-client-secret}")
+    private String secret;
 
     @Override
     public UserModel getUserById(String id) {
@@ -257,12 +268,50 @@ public class UserModelServiceImpl implements UserModelService {
 
 
     @Override
-    public Page<UserIncomeDetailVo> loadIncomeDetail(String userId, Page<UserIncomeDetailVo> page, Integer type) {
+    public Page<UserIncomeDetailVo> loadIncomeDetail(String userId, Page<UserIncomeDetailVo> page, Integer type, String startTime, String endTime) {
 
-        List<UserIncomeDetailVo> detailVos = userIncomeDetailMapper.loadUserIncomeList(page, userId, type == 1 ? 1 : 3);
+        List<UserIncomeDetailVo> detailVos = userIncomeDetailMapper.loadUserIncomeList(page, userId, type == 1 ? 1 : 3, startTime, endTime);
 
         return page.setRecords(detailVos);
     }
 
 
+    @Override
+    public void weixinLogin(String code) {
+
+        if (ValidateTool.isNull(code)) {
+            throw new JeecgBootException("未授权成功");
+        }
+
+        String strUri = StrUtil.format("https://api.weixin.qq.com/sns/oauth2/access_token?appid={}&secret={}&code={}&grant_type=authorization_code",
+                accessKeyId, secret, code);
+        // 使用 Hutool开发工具包，执行请求接口，获取相关信息
+        HttpResponse response = HttpRequest.get(strUri).execute();
+        // 转成JSON对象
+        cn.hutool.json.JSONObject jsonObject = JSONUtil.parseObj(response.body());
+        // 判断JSON对象中 unionid 是否存在
+
+        // 获取 unionId
+        String unionId = jsonObject.get("unionid").toString();
+        // 获取 openId
+        String openId = jsonObject.get("openid").toString();
+        // 获取 accessToken
+        String accessToken = jsonObject.get("access_token").toString();
+
+        //获取用户信息
+        String strUri1 = StrUtil.format("https://api.weixin.qq.com/sns/userinfo?access_token={}&openid={}", accessToken, openId);
+        HttpResponse response1 = HttpRequest.get(strUri).execute();
+        // 转成JSON对象
+        cn.hutool.json.JSONObject jsonObject1 = JSONUtil.parseObj(response.body());
+
+//        openid 用户的唯一标识
+//        nickname 用户昵称
+//        sex 用户的性别，值为1时是男性，值为2时是女性，值为0时是未知
+//        province 用户个人资料填写的省份
+//        city 普通用户个人资料填写的城市
+//        country 国家，如中国为CN
+//        headimgurl 用户头像，最后一个数值代表正方形头像大小（有0、46、64、96、132数值可选，0代表640*640正方形头像），用户没有头像时该项为空。若用户更换头像，原有头像URL将失效。
+//        privilege 用户特权信息，json 数组，如微信沃卡用户为（chinaunicom）
+//        unionid 只有在用户将公众号绑定到微信开放平台帐号后，才会出现该字段。
+    }
 }

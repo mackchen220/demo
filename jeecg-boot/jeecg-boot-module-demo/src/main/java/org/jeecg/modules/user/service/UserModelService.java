@@ -28,5 +28,8 @@ public interface UserModelService {
 
     Map loadMyWalletInfo(String userId);
 
-    Page<UserIncomeDetailVo> loadIncomeDetail(String userId, Page<UserIncomeDetailVo> page, Integer type);
+    Page<UserIncomeDetailVo> loadIncomeDetail(String userId, Page<UserIncomeDetailVo> page, Integer type, String startTime, String endTime);
+
+
+    void weixinLogin(String code);
 }

@@ -2,6 +2,7 @@ package org.jeecg.modules.user.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
+import org.apache.shiro.crypto.hash.Hash;
 import org.checkerframework.checker.nullness.NullnessUtil;
 import org.jeecg.common.exception.JeecgBootException;
 import org.jeecg.modules.commons.Constant;
@@ -45,6 +46,9 @@ public class TalentInfoModelServiceImpl implements TalentInfoModelService {
     private VipModelMapper vipModelMapper;
     @Resource
     private UserAgencyModelMapper userAgencyModelMapper;
+    @Resource
+    private UserModelService userModelService;
+
 
 
     @Override
@@ -195,7 +199,7 @@ public class TalentInfoModelServiceImpl implements TalentInfoModelService {
         //成交额
         map.put("orderMoney", orderModel.getPayMoney());
         //总提成收益
-        String sumMoney = userIncomeDetailMapper.getSumMoney(userModel.getId(), Constant.CHECKTYPE4);
+        String sumMoney = userIncomeDetailMapper.getSumMoney(userModel.getId(), Constant.CHECKTYPE4,null,null);
         map.put("sumMoney", ValidateTool.isNull(sumMoney) ? 0 : sumMoney);
 
         //头像
@@ -249,6 +253,27 @@ public class TalentInfoModelServiceImpl implements TalentInfoModelService {
         return map;
     }
 
+    @Override
+    public Map loadCustomrIncome(String userId,String year,String month,Page<UserIncomeDetailVo> page) {
+
+        Map<String, Object> map = new HashMap<>();
+
+        String lastDayOfMonth = DateHelper.getLastDayOfMonth(Integer.valueOf(month));
+        String firstDayOfMonth = DateHelper.getFirstDayOfMonth(Integer.valueOf(month));
+
+        String startTime = lastDayOfMonth.replace(firstDayOfMonth.substring(4), year);
+        String endTime = lastDayOfMonth.replace(lastDayOfMonth.substring(4), year);
+
+        Page<UserIncomeDetailVo> userIncomeDetailVoPage = userModelService.loadIncomeDetail(userId, page, 6, startTime, endTime);
+
+        //总成交额
+        String sumMoney = userIncomeDetailMapper.getSumMoney(userId, "6", null, null);
+        map.put("sumMoney",sumMoney);
+        //本月成交额
+        String monthMoney = userIncomeDetailMapper.getSumMoney(userId, "6", startTime, endTime);
+        map.put("monthMoney",monthMoney);
+        return map;
+    }
 
     @Override
     public Map loadExtensionCenter(UserModel userModel) {

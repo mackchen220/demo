@@ -6,6 +6,7 @@ import org.jeecg.modules.user.model.TalentInfoModel;
 import org.jeecg.modules.user.model.UserModel;
 import org.jeecg.modules.user.model.vo.TalentCustomerVo;
 import org.jeecg.modules.user.model.vo.TalentInfoVo;
+import org.jeecg.modules.user.model.vo.UserIncomeDetailVo;
 import org.jeecg.modules.user.model.vo.UserProjectVo;
 
 import java.util.List;
@@ -55,6 +56,9 @@ public interface TalentInfoModelService{
 
 
     Map loadCustomrInfo(String talentId,String id,String userId);
+
+
+    Map loadCustomrIncome(String userId,String year,String month,Page<UserIncomeDetailVo> page);
 
 
 

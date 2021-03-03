@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.jeecg.common.api.vo.Result;
@@ -16,6 +17,7 @@ import org.jeecg.modules.community.service.CommunityModelService;
 import org.jeecg.modules.user.model.*;
 import org.jeecg.modules.user.model.vo.TalentCustomerVo;
 import org.jeecg.modules.user.model.vo.TalentInfoVo;
+import org.jeecg.modules.user.model.vo.UserIncomeDetailVo;
 import org.jeecg.modules.user.model.vo.UserProjectVo;
 import org.jeecg.modules.user.service.*;
 import org.springframework.web.bind.annotation.*;
@@ -279,6 +281,17 @@ public class TalentController {
         return Result.oKWithToken(token, map);
     }
 
+    //达人中心
+    @ApiOperation("客户消费详情")
+    @PostMapping("/loadCustomrIncome")
+    public Result loadCustomrIncome(String token,String userId,@RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo,
+                                    @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize,String year,String month) {
+
+        Page<UserIncomeDetailVo> page = new Page<>(pageNo, pageSize);
+        Map map = talentInfoModelService.loadCustomrIncome(userId, year,month, page);
+
+        return Result.oKWithToken(token, map);
+    }
 
 
 

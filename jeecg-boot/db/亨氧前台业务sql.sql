@@ -288,7 +288,7 @@ CREATE TABLE `tb_case` (
 `image_url` varchar(255) DEFAULT NULL COMMENT '图片地址',
 PRIMARY KEY (`id`) USING BTREE,
 KEY `ind_userid_type` (`user_id`,`type`) USING BTREE
-) ENGINE=InnoDB DEFAULT COMMENT='达人机构案例表';
+) ENGINE=InnoDB  COMMENT='达人机构案例表';
 
 
 DROP TABLE IF EXISTS `tb_project`;
@@ -586,6 +586,8 @@ CREATE TABLE `tb_user_income_detail` (
      KEY `idx_user_type` (`user_id`,`income_type`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='用户收入、支出明细';
 
+ALTER TABLE `tb_user_income_detail`
+    MODIFY COLUMN `income_type` tinyint(0) NULL DEFAULT 1 COMMENT '收入支出类型1:提现 2充值 推广奖励  4项目佣金 5购买课程 6项目定金' AFTER `user_id`;
 
 DROP TABLE IF EXISTS `tb_talent_customer`;
 CREATE TABLE `tb_talent_customer` (

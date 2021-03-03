@@ -22,10 +22,13 @@ public interface UserIncomeDetailMapper {
 
     int updateByPrimaryKey(UserIncomeDetail record);
 
-    List<UserIncomeDetailVo> loadUserIncomeList(Page<UserIncomeDetailVo> page, @Param("userId")String userId , @Param("type") Integer type);
+    List<UserIncomeDetailVo> loadUserIncomeList(Page<UserIncomeDetailVo> page, @Param("userId")String userId ,
+                                                @Param("type") Integer type, @Param("startTime")String startTime,
+                                                @Param("endTime")String endTime);
 
 
-    String getSumMoney(@Param("userId")String userId, @Param("type") String type);
+    String getSumMoney(@Param("userId")String userId, @Param("type") String type, @Param("startTime")String startTime,
+                       @Param("endTime")String endTime);
 
 
 
