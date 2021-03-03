@@ -7,4 +7,11 @@ import java.util.Map;
 public interface IndexService {
 
     Map loadIndexlist();
+
+
+    Map loadAppVersion(String versionNum);
+
+
+
+
 }

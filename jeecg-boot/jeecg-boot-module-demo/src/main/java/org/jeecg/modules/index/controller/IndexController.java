@@ -58,4 +58,12 @@ public class IndexController {
     }
 
 
+    @ApiOperation("检查app更新")
+    @RequestMapping(value = "/loadAppVersion", method = RequestMethod.POST)
+    public Result loadAppVersion(String version) {
+        Map map = indexService.loadAppVersion(version);
+        return Result.OK(map);
+    }
+
+
 }

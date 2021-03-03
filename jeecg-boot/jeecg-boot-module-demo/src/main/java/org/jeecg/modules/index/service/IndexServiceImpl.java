@@ -1,11 +1,15 @@
 package org.jeecg.modules.index.service;
 
 import com.alibaba.fastjson.JSONObject;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.extern.log4j.Log4j2;
 import org.jeecg.common.util.DateUtils;
+import org.jeecg.modules.commons.util.ValidateTool;
 import org.jeecg.modules.course.mapper.CourseMapper;
 import org.jeecg.modules.course.model.Course;
+import org.jeecg.modules.index.mapper.AppVersionMapper;
 import org.jeecg.modules.index.mapper.TurnImageModelMapper;
+import org.jeecg.modules.index.model.AppVersion;
 import org.jeecg.modules.index.model.CourseModel;
 import org.jeecg.modules.index.model.TurnImageModel;
 import org.jeecg.modules.user.mapper.TalentInfoModelMapper;
@@ -28,6 +32,8 @@ public class IndexServiceImpl implements IndexService{
     private CourseMapper courseModelMapper;
     @Resource
     private TalentInfoModelMapper talentInfoModelMapper;
+    @Resource
+    private AppVersionMapper appVersionMapper;
 
     @Override
     public Map loadIndexlist() {
@@ -74,6 +80,28 @@ public class IndexServiceImpl implements IndexService{
         }
         map.put("talents",list3);
 
+        return map;
+    }
+
+
+    @Override
+    public Map loadAppVersion(String versionNum) {
+
+        AppVersion appVersion = appVersionMapper.loadNewAppVersion();
+        Map<String, Object> map = new HashMap<>();
+        if (ValidateTool.isNull(appVersion)){
+            map.put("showVersion",null);
+            map.put("sysVersion",null);
+            map.put("content","");
+            map.put("downloadUrl","");
+            map.put("updateFlag",0);
+        }else {
+            map.put("showVersion",appVersion.getShowVersion());
+            map.put("sysVersion",appVersion.getSysVersion());
+            map.put("content",appVersion.getContent());
+            map.put("downloadUrl",appVersion.getDownloadUrl());
+            map.put("updateFlag",appVersion.getUpdateFlag());
+        }
         return map;
     }
 }
