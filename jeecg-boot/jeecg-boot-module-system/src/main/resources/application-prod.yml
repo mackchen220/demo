@@ -284,3 +284,15 @@ justauth:
     type: default
     prefix: 'demo::'
     timeout: 1h
+
+
+
+##配置微信
+wechat:
+  mpAppId:
+  mpAppSecret:
+  mchId:
+  mchKey:
+  keyPath:
+  notifyUrl:
+

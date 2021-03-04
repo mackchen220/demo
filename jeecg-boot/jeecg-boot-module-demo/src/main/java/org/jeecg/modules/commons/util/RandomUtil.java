@@ -20,6 +20,21 @@ public final class RandomUtil {
     private static final String[] LOWER = {"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"};
     private static final String[] UPPER = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"};
 
+
+
+    private static final String RANDOM_STR = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+
+    private static final java.util.Random RANDOM = new java.util.Random();
+
+    public static String getRandomStr() {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < 16; i++) {
+            sb.append(RANDOM_STR.charAt(RANDOM.nextInt(RANDOM_STR.length())));
+        }
+        return sb.toString();
+    }
+
+
     /**
      * 生成一组指定长度的，由数字及大写英文字母组成的随机字符串。
      *
