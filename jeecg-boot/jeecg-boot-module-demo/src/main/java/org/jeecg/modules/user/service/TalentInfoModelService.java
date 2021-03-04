@@ -4,10 +4,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.jeecg.modules.user.model.TalentCustomer;
 import org.jeecg.modules.user.model.TalentInfoModel;
 import org.jeecg.modules.user.model.UserModel;
-import org.jeecg.modules.user.model.vo.TalentCustomerVo;
-import org.jeecg.modules.user.model.vo.TalentInfoVo;
-import org.jeecg.modules.user.model.vo.UserIncomeDetailVo;
-import org.jeecg.modules.user.model.vo.UserProjectVo;
+import org.jeecg.modules.user.model.vo.*;
 
 import java.util.List;
 import java.util.Map;
@@ -65,6 +62,8 @@ public interface TalentInfoModelService{
     Map loadExtensionCenter(UserModel userModel);
 
 
+
+    Page<ExtensionVo> loadExtensionIncome(String userId, Page<ExtensionVo> page, Integer sortModel);
 
 
 }

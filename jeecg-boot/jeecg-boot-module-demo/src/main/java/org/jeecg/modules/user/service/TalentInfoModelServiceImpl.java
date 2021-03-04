@@ -17,10 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
 
 @Service
@@ -48,7 +45,6 @@ public class TalentInfoModelServiceImpl implements TalentInfoModelService {
     private UserAgencyModelMapper userAgencyModelMapper;
     @Resource
     private UserModelService userModelService;
-
 
 
     @Override
@@ -199,7 +195,7 @@ public class TalentInfoModelServiceImpl implements TalentInfoModelService {
         //成交额
         map.put("orderMoney", orderModel.getPayMoney());
         //总提成收益
-        String sumMoney = userIncomeDetailMapper.getSumMoney(userModel.getId(), Constant.CHECKTYPE4,null,null);
+        String sumMoney = userIncomeDetailMapper.getSumMoney(userModel.getId(), Constant.CHECKTYPE4, null, null);
         map.put("sumMoney", ValidateTool.isNull(sumMoney) ? 0 : sumMoney);
 
         //头像
@@ -245,16 +241,11 @@ public class TalentInfoModelServiceImpl implements TalentInfoModelService {
         map.put("orderNum", talentCustomer.getOrderNum());
         map.put("commissionMoney", talentCustomer.getCommissionMoney());
 
-        //本月收益
-
-        //今日收益
-
-
         return map;
     }
 
     @Override
-    public Map loadCustomrIncome(String userId,String year,String month,Page<UserIncomeDetailVo> page) {
+    public Map loadCustomrIncome(String userId, String year, String month, Page<UserIncomeDetailVo> page) {
 
         Map<String, Object> map = new HashMap<>();
 
@@ -268,13 +259,12 @@ public class TalentInfoModelServiceImpl implements TalentInfoModelService {
 
         //总成交额
         String sumMoney = userIncomeDetailMapper.getSumMoney(userId, "6", null, null);
-        map.put("sumMoney",sumMoney);
+        map.put("sumMoney", sumMoney);
         //本月成交额
         String monthMoney = userIncomeDetailMapper.getSumMoney(userId, "6", startTime, endTime);
-        map.put("monthMoney",monthMoney);
+        map.put("monthMoney", monthMoney);
 
-        map.put("page",userIncomeDetailVoPage);
-
+        map.put("page", userIncomeDetailVoPage);
 
 
         return map;
@@ -317,7 +307,63 @@ public class TalentInfoModelServiceImpl implements TalentInfoModelService {
     }
 
 
+    @Override
+    public Page<ExtensionVo> loadExtensionIncome(String userId, Page<ExtensionVo> page, Integer sortModel) {
 
+        List<ExtensionVo> extensionVos = talentCustomerMapper.loadExtensionIncome(page, userId);
+        if (extensionVos.size() > 0) {
+            for (ExtensionVo extensionVo : extensionVos) {
+                //今日收入
+                String startTimeToday = DateHelper.getToday() + DateHelper.DEFUALT_TIME_START;
+                String endTimeToday = DateHelper.getToday() + DateHelper.DEFUALT_TIME_END;
+                String incomeToday = userIncomeMapper.getIncomeByTime(extensionVo.getUserId(), startTimeToday, endTimeToday);
+                extensionVo.setDayMoney(ValidateTool.isNull(incomeToday) ? 0 : Long.valueOf(incomeToday));
+                //本月收入
+                String firstDayOfMonth = DateHelper.getFirstDayOfMonth();
+                String lastDayOfMonth = DateHelper.getLastDayOfMonth();
+                String incomeMonth = userIncomeMapper.getIncomeByTime(extensionVo.getUserId(), firstDayOfMonth, lastDayOfMonth);
+                extensionVo.setMonthMoney(ValidateTool.isNull(incomeMonth) ? 0 : Long.valueOf(incomeMonth));
+                //总收入
+                String incomeTotal = userIncomeMapper.getIncomeByTime(extensionVo.getUserId(), firstDayOfMonth, lastDayOfMonth);
+                extensionVo.setTotelMoney(ValidateTool.isNull(incomeTotal) ? 0 : Long.valueOf(incomeTotal));
+            }
+        }
+        //sortModel 1 收入高 2收入地 3 等级高  4 等级低 5 时间
+        if (Constant.TYPE_INT_1==sortModel){
+            extensionVos.stream().sorted(new Comparator<ExtensionVo>() {
+                @Override
+                public int compare(ExtensionVo o1, ExtensionVo o2) {
+                    return o1.getTotelMoney()>o2.getTotelMoney()?1:0;
 
+                }
+            });
+        }
+        if (Constant.TYPE_INT_2==sortModel){
+            extensionVos.stream().sorted(new Comparator<ExtensionVo>() {
+                @Override
+                public int compare(ExtensionVo o1, ExtensionVo o2) {
+                    return o1.getTotelMoney()>o2.getTotelMoney()?0:1;
 
+                }
+            });
+        }
+//        if (Constant.TYPE_INT_3==sortModel){
+//            extensionVos.stream().sorted(new Comparator<ExtensionVo>() {
+//                @Override
+//                public int compare(ExtensionVo o1, ExtensionVo o2) {
+//                    return o1.getTotelMoney()>o2.getTotelMoney()?0:1;
+//                }
+//            });
+//        }
+//        if (Constant.TYPE_INT_4==sortModel){
+//            extensionVos.stream().sorted(new Comparator<ExtensionVo>() {
+//                @Override
+//                public int compare(ExtensionVo o1, ExtensionVo o2) {
+//                    return o1.getTotelMoney()>o2.getTotelMoney()?0:1;
+//
+//                }
+//            });
+//        }
+        return page.setRecords(extensionVos);
+    }
 }

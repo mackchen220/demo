@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.jeecg.modules.user.model.TalentCustomer;
+import org.jeecg.modules.user.model.vo.ExtensionVo;
 import org.jeecg.modules.user.model.vo.TalentCustomerVo;
 
 import java.util.List;
@@ -24,4 +25,9 @@ public interface TalentCustomerMapper {
 
 
     List<TalentCustomerVo> loadMyCustomer(Page<TalentCustomerVo> page ,@Param("talentId") String talentId);
+
+
+    List<ExtensionVo> loadExtensionIncome(Page<ExtensionVo> page ,@Param("userId") String userId);
+
+
 }
