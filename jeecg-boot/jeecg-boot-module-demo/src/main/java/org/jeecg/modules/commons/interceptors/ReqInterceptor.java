@@ -48,7 +48,9 @@ public class ReqInterceptor implements HandlerInterceptor {
 
     private boolean checkSession(HttpServletRequest request) {
         String[] unAuthList = {"/hy/user/userLogin", "hy/index/getCaptchaCode","/sys","/online","/mock","/jmreport"
-                ,"/bigscreen","/test/bigScreen","/swagger","/webjars","/druid","/generic","/doc.html","/favicon.ico","hy/index/loadAppVersion"};
+                ,"/bigscreen","/test/bigScreen","/swagger","/webjars","/druid","/generic","/doc.html","/favicon.ico",
+                "hy/index/loadAppVersion","/vip/vipAdmin","getDictItems","/user/userAdmin","/course/adminCourse",
+                "/sys/common/static","/search/adminHotSearch","/turnImage/adminTurnImage","/party/adminParty"};
         for (String tem : unAuthList) {
             if (request.getRequestURI().contains(tem)) {
                 return true;
