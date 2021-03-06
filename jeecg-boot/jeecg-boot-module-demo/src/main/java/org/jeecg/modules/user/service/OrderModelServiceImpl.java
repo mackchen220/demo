@@ -223,6 +223,31 @@ public class OrderModelServiceImpl implements OrderModelService {
 
     }
 
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public String orderCallBack(String orderId) {
+        OrderModel orderModel = orderModelMapper.selectByPrimaryKey(orderId);
+        if (ValidateTool.isNull(orderModel)) {
+            throw new JeecgBootException("订单不存在" + orderId);
+        }
+        if (Constant.TYPE_INT_1 == orderModel.getOperationType()) {
+            //医美项目定金
+            //TODO 达人提成
+
+        }
+        if (Constant.TYPE_INT_4 == orderModel.getOperationType()) {
+            //购买会员
+            //TODO 上级提成
+
+        }
+        OrderModel orderModel1 = new OrderModel();
+        orderModel1.setId(orderId);
+        orderModel1.setOptStatus(Constant.TYPE_INT_2);
+        orderModelMapper.updateByPrimaryKeySelective(orderModel1);
+        return "ok";
+    }
+
     public static void main(String[] args) {
         //尽量用字符串的形式初始化
         BigDecimal num1 = new BigDecimal("2.23");

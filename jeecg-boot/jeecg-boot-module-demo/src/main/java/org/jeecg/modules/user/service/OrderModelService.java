@@ -29,4 +29,7 @@ public interface OrderModelService{
 
     void addWithdrawalOrder(UserModel user, String bankId , String money);
 
+
+    String orderCallBack(String orderId);
+
 }

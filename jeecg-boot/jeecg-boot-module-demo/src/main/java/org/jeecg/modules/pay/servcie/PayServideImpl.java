@@ -14,6 +14,7 @@ import org.jeecg.modules.pay.model.PayModel;
 import org.jeecg.modules.pay.model.PayRequest;
 import org.jeecg.modules.pay.model.PayResponse;
 import org.jeecg.modules.pay.model.request.WxPayAsyncResponse;
+import org.jeecg.modules.user.service.OrderModelService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,6 +30,9 @@ public class PayServideImpl implements PayService{
 
     @Resource
     private BestPayService bestPayService;
+
+    @Resource
+    private OrderModelService orderModelService;
 
     @Override
     public Result<?> wxOrderPay(PayModel payModel) {
@@ -80,6 +84,8 @@ public class PayServideImpl implements PayService{
     @Override
     public JSONArray notify(String notifyDate) {
         PayResponse payResponse = bestPayService.asyncNotify(notifyDate);
+
+        orderModelService.orderCallBack(payResponse.getOrderId());
 
         return null;
     }
