@@ -51,6 +51,7 @@ public class AdminPartyController extends JeecgController<AdminParty, IAdminPart
 								   @RequestParam(name="pageNo", defaultValue="1") Integer pageNo,
 								   @RequestParam(name="pageSize", defaultValue="10") Integer pageSize,
 								   HttpServletRequest req) {
+		adminParty.setDelFlag(0);
 		QueryWrapper<AdminParty> queryWrapper = QueryGenerator.initQueryWrapper(adminParty, req.getParameterMap());
 		Page<AdminParty> page = new Page<AdminParty>(pageNo, pageSize);
 		IPage<AdminParty> pageList = adminPartyService.page(page, queryWrapper);

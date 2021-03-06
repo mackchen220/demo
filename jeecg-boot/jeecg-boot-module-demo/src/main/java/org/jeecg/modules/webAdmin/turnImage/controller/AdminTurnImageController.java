@@ -51,6 +51,7 @@ public class AdminTurnImageController extends JeecgController<AdminTurnImage, IA
 								   @RequestParam(name="pageNo", defaultValue="1") Integer pageNo,
 								   @RequestParam(name="pageSize", defaultValue="10") Integer pageSize,
 								   HttpServletRequest req) {
+		adminTurnImage.setDelFlag(0);
 		QueryWrapper<AdminTurnImage> queryWrapper = QueryGenerator.initQueryWrapper(adminTurnImage, req.getParameterMap());
 		Page<AdminTurnImage> page = new Page<AdminTurnImage>(pageNo, pageSize);
 		IPage<AdminTurnImage> pageList = adminTurnImageService.page(page, queryWrapper);

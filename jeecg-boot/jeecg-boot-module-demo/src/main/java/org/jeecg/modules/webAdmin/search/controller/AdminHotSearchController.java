@@ -51,6 +51,7 @@ public class AdminHotSearchController extends JeecgController<AdminHotSearch, IA
 								   @RequestParam(name="pageNo", defaultValue="1") Integer pageNo,
 								   @RequestParam(name="pageSize", defaultValue="10") Integer pageSize,
 								   HttpServletRequest req) {
+		adminHotSearch.setDelFlag(0);
 		QueryWrapper<AdminHotSearch> queryWrapper = QueryGenerator.initQueryWrapper(adminHotSearch, req.getParameterMap());
 		Page<AdminHotSearch> page = new Page<AdminHotSearch>(pageNo, pageSize);
 		IPage<AdminHotSearch> pageList = adminHotSearchService.page(page, queryWrapper);

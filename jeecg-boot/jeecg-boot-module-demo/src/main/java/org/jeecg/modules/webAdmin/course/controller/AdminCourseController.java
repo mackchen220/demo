@@ -51,6 +51,7 @@ public class AdminCourseController extends JeecgController<AdminCourse, IAdminCo
 								   @RequestParam(name="pageNo", defaultValue="1") Integer pageNo,
 								   @RequestParam(name="pageSize", defaultValue="10") Integer pageSize,
 								   HttpServletRequest req) {
+		adminCourse.setDelFlag(0);
 		QueryWrapper<AdminCourse> queryWrapper = QueryGenerator.initQueryWrapper(adminCourse, req.getParameterMap());
 		Page<AdminCourse> page = new Page<AdminCourse>(pageNo, pageSize);
 		IPage<AdminCourse> pageList = adminCourseService.page(page, queryWrapper);
