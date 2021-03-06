@@ -363,5 +363,16 @@
     where id =#{userId,jdbcType=VARCHAR}
   </update>
 
-
+  <update id="updateUserDelFlag"  parameterType="string">
+    update tb_user
+    <set>
+      <if test="type != null and type==1">
+        del_flag=1
+      </if>
+      <if test="type != null and type==0">
+        del_flag=0
+      </if>
+    </set>
+    where id =#{userId,jdbcType=VARCHAR}
+  </update>
 </mapper>

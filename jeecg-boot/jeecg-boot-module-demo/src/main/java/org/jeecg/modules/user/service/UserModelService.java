@@ -32,4 +32,8 @@ public interface UserModelService {
 
 
     void weixinLogin(String code);
+
+    void removeById(String id);
+
+
 }

@@ -16,4 +16,7 @@ public interface UserModelMapper {
 
     int updateUserMoney(@Param("userId") String userId, @Param("money") String money, @Param("type") Integer type);
 
+
+    void updateUserDelFlag(@Param("userId") String userId, @Param("type") Integer type);
+
 }
