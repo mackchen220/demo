@@ -71,7 +71,7 @@ public class ReqInterceptor implements HandlerInterceptor {
 
         String token = request.getParameter("token");
         if (token == null) {
-            token = request.getHeader("X-Access-Token");
+            token = request.getHeader("token");
         }
 
         if (ValidateTool.checkIsNull(token)) {
