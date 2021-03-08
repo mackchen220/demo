@@ -6,6 +6,7 @@ import com.alibaba.fastjson.JSON;
 import com.google.common.collect.Maps;
 import lombok.extern.log4j.Log4j2;
 import org.jeecg.common.exception.JeecgBootException;
+import org.jeecg.common.util.IPUtils;
 import org.jeecg.common.util.RedisUtil;
 import org.jeecg.modules.commons.Constant;
 import org.jeecg.modules.commons.RedisKey;
@@ -36,7 +37,7 @@ public class ReqInterceptor implements HandlerInterceptor {
         //拦截器的请求处理跨域的的问题
         contextHolder.set(System.currentTimeMillis());
 //        response.addHeader("Access-Control-Allow-Origin", "*");
-        log.info(new StringBuilder().append("请求信息### - IP:").append(request.getRemoteAddr())
+        log.info(new StringBuilder().append("请求信息### - IP:").append(IPUtils.getIpAddr(request))
                 .append(" <<<<<请求地址>>>>>:").append(request.getRequestURI()).append(" - 请求参数：")
                 .append(JSON.toJSONString(request.getParameterMap())));
 
@@ -50,7 +51,8 @@ public class ReqInterceptor implements HandlerInterceptor {
         String[] unAuthList = {"/hy/user/userLogin", "hy/index/getCaptchaCode","/sys","/online","/mock","/jmreport"
                 ,"/bigscreen","/test/bigScreen","/swagger","/webjars","/druid","/generic","/doc.html","/favicon.ico",
                 "hy/index/loadAppVersion","/vip/vipAdmin","getDictItems","/user/userAdmin","/course/adminCourse",
-                "/sys/common/static","/search/adminHotSearch","/turnImage/adminTurnImage","/party/adminParty","/user/adminUser"};
+                "/sys/common/static","/search/adminHotSearch","/turnImage/adminTurnImage","/party/adminParty",
+                "/user/adminUser","/user/weixinLogin","/hy/user/bindUserPhone"};
         for (String tem : unAuthList) {
             if (request.getRequestURI().contains(tem)) {
                 return true;

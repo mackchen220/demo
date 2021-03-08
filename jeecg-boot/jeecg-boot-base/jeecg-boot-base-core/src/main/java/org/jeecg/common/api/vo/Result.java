@@ -62,6 +62,7 @@ public class Result<T> implements Serializable {
 	private long timestamp = System.currentTimeMillis();
 
 	public Result() {
+		log.info("请求返回{}", JSONObject.toJSONString(this));
 
 	}
 

@@ -61,7 +61,7 @@ public class UserIncomeServiceImpl implements UserIncomeService {
         userIncomeDetail.setIncomeContent(contect);
         userIncomeDetail.setUserId(userId);
         userIncomeDetail.setId(SeqUtils.nextIdStr());
-        UserModel userModel = userModelMapper.loadUser(userId, null, null, null);
+        UserModel userModel = userModelMapper.loadUser(userId, null, null, null,null);
         userIncomeDetail.setExcess(userModel.getMoney());
         //    * 收入支出类型1:提现 2充值 推广奖励  4项目佣金 5购买课程 6购买项目
         userIncomeDetail.setIncomeType(type);

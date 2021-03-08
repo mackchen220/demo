@@ -45,15 +45,13 @@ public class CaptchaController {
         String captchaCode = captchaCodeService.getCaptchaCode(6);
         int checkfirst = userModelService.checkfirst(phone);
         String realKey = MD5Util.MD5Encode(captchaCode + phone, "utf-8");
-        redisUtil.set(realKey, captchaCode, 60);
+        redisUtil.set(realKey, captchaCode, 300);
         Result<JSONObject> result = new Result<JSONObject>();
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("code", captchaCode);
         jsonObject.put("first", checkfirst);
-
-        result.setResult(jsonObject);
         log.info("checkKey{},,,,验证码{},,,,,phone{}",phone,captchaCode,realKey);
-        return result;
+        return Result.OK(jsonObject);
     }
 
 

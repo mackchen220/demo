@@ -1,41 +1,42 @@
 DROP TABLE IF EXISTS `tb_user`;
 CREATE TABLE `tb_user` (
-   `id` varchar(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-   `user_name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '用户名',
-   `nick_name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '昵称',
-   `head_image` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '头像',
-   `vip_id` bigint DEFAULT NULL COMMENT 'VIP等级id',
-   `sign` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '个性签名',
-   `money` bigint NOT NULL DEFAULT '0' COMMENT '可提现余额度',
-   `del_flag` int NOT NULL DEFAULT '0' COMMENT '删除标识0-正常,1-已删除',
-   `is_disable` int NOT NULL DEFAULT '1' COMMENT '禁用 1不禁用 0禁用',
-   `password` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '密码',
-   `last_login_time` timestamp NULL DEFAULT NULL COMMENT '最后一次登录时间',
-   `login_time` timestamp NULL DEFAULT NULL COMMENT '此次登录时间',
-   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-   `update_time` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '更新日期',
-   `last_login_ip` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '最后一次登陆IP',
-   `login_ip` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '当前登录ip',
-   `wechat` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '微信号码',
-   `user_type` tinyint DEFAULT NULL COMMENT '1-用户，2-达人，3-机构，4-平台',
-   `agency_id` bigint NOT NULL DEFAULT '-1' COMMENT '代理id',
-   `login_times` int NOT NULL DEFAULT '0' COMMENT '登录次数',
-   `gender` int DEFAULT '1' COMMENT '1-男,0-女',
-   `birthday` date DEFAULT NULL COMMENT '出生日期',
-   `phone` varchar(24) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '电话.',
-   `upd_pwd_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '最后修改密码时间',
-   `register_ip` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '用户注册域名',
-   `disable_remark` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '禁用说明',
-   `create_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '创建人',
-   `update_by` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '更新人',
-   `invite_code` varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '邀请码',
-   `is_talent` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否达人，0不是 1是',
-   `province` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '省份',
-   `city` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '城市',
-   PRIMARY KEY (`id`) USING BTREE,
-   KEY `index_nickname` (`nick_name`) USING BTREE,
-   KEY `idx_phone` (`phone`) USING BTREE,
-   KEY `idx_invitecode` (`invite_code`) USING BTREE
+  `id` varchar(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `user_name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '用户名',
+  `nick_name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '昵称',
+  `head_image` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '头像',
+  `vip_id` bigint DEFAULT NULL COMMENT 'VIP等级id',
+  `sign` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '个性签名',
+  `money` bigint NOT NULL DEFAULT '0' COMMENT '可提现余额度',
+  `del_flag` int NOT NULL DEFAULT '0' COMMENT '删除标识0-正常,1-已删除',
+  `is_disable` int NOT NULL DEFAULT '1' COMMENT '禁用 1不禁用 0禁用',
+  `password` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '密码',
+  `last_login_time` timestamp NULL DEFAULT NULL COMMENT '最后一次登录时间',
+  `login_time` timestamp NULL DEFAULT NULL COMMENT '此次登录时间',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '更新日期',
+  `last_login_ip` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '最后一次登陆IP',
+  `login_ip` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '当前登录ip',
+  `wechat` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '微信号码',
+  `user_type` tinyint DEFAULT NULL COMMENT '1-用户，2-达人，3-机构，4-平台',
+  `agency_id` bigint NOT NULL DEFAULT '-1' COMMENT '代理id',
+  `login_times` int NOT NULL DEFAULT '0' COMMENT '登录次数',
+  `gender` int DEFAULT '1' COMMENT '1-男,0-女',
+  `birthday` date DEFAULT NULL COMMENT '出生日期',
+  `phone` varchar(24) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '电话.',
+  `upd_pwd_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '最后修改密码时间',
+  `register_ip` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '用户注册域名',
+  `disable_remark` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '禁用说明',
+  `create_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '创建人',
+  `update_by` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '更新人',
+  `invite_code` varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '邀请码',
+  `is_talent` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否达人，0不是 1是',
+  `province` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '省份',
+  `city` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '城市',
+  `weixin_id` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '绑定微信的id',
+  PRIMARY KEY (`id`) USING BTREE,
+  KEY `index_nickname` (`nick_name`) USING BTREE,
+  KEY `idx_phone` (`phone`) USING BTREE,
+  KEY `idx_invitecode` (`invite_code`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 ALTER TABLE `tb_user`
@@ -44,7 +45,8 @@ ALTER TABLE `tb_user`
     ADD INDEX `idx_phone`(`phone`) USING BTREE;
 ALTER TABLE `tb_user`
     ADD INDEX `idx_invitecode`(`invite_code`) USING BTREE;
-
+ALTER TABLE `tb_user`
+ADD UNIQUE INDEX `wx_unique`(`weixin_id`) USING BTREE;
 
 DROP TABLE IF EXISTS `tb_address`;
 CREATE TABLE `tb_address` (

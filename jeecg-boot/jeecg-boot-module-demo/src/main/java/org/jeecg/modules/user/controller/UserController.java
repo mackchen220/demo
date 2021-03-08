@@ -11,12 +11,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.jeecg.common.api.vo.Result;
 import org.jeecg.common.constant.CommonConstant;
 import org.jeecg.common.system.vo.LoginUser;
+import org.jeecg.common.util.IPUtils;
 import org.jeecg.common.util.MD5Util;
 import org.jeecg.common.util.PasswordUtil;
 import org.jeecg.common.util.RedisUtil;
 import org.jeecg.modules.commons.util.ValidateTool;
 import org.jeecg.modules.user.model.UserBankModel;
 import org.jeecg.modules.user.model.UserModel;
+import org.jeecg.modules.user.model.WeiXinModel;
 import org.jeecg.modules.user.model.vo.AddressModelVo;
 import org.jeecg.modules.user.model.vo.UserBankVo;
 import org.jeecg.modules.user.model.vo.UserIncomeDetailVo;
@@ -25,6 +27,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -50,28 +53,37 @@ public class UserController {
     @Resource
     private VipModelService vipModelService;
 
-//    @ApiOperation("测试接口")
-//    @RequestMapping(value = "/test", method = RequestMethod.GET)
-//    public Result<JSONObject> login(String str) {
-//        UserModel user = userModelService.getUserById("12");
-//        Result<JSONObject> result = new Result<JSONObject>();
-//        log.info("这是测试接口{},user{}", str, JSONObject.toJSONString(user));
-//        return result;
-//    }
 
-
-
-    @DynamicResponseParameters(name = "login",properties = {
-            @DynamicParameter(name = "headImage",value = "头像"),
-            @DynamicParameter(name = "nickname",value = "昵称" ),
-            @DynamicParameter(name = "first",value = "是否第一次注册 1是 0不是" ),
-            @DynamicParameter(name = "token",value = "token 登录以后每个`接口都需要token参数"
-                    ,example = "88291a6fbf21a186165037f866aedc63,3c1138239ddca40a8f49d8a89d78c6f3"),
+    @DynamicResponseParameters(name = "login", properties = {
+            @DynamicParameter(name = "headImage", value = "头像"),
+            @DynamicParameter(name = "nickname", value = "昵称"),
+            @DynamicParameter(name = "first", value = "是否第一次注册 1是 0不是"),
+            @DynamicParameter(name = "token", value = "token 登录以后每个`接口都需要token参数"
+                    , example = "88291a6fbf21a186165037f866aedc63,3c1138239ddca40a8f49d8a89d78c6f3"),
     })
     @ApiOperation("前台用户登录接口")
     @RequestMapping(value = "/userLogin", method = RequestMethod.POST)
-    public Result<JSONObject> login(String inviteCode, String captcha, String phone) {
+    public Result<JSONObject> login(String inviteCode, String captcha, String phone, String unionId, HttpServletRequest request) {
+
+        JSONObject object = userModelService.userLogin(inviteCode, captcha, phone, unionId, IPUtils.getIpAddr(request));
+        return Result.OK(object);
+    }
+
+
+    @ApiOperation("微信登录")
+    @RequestMapping(value = "/weixinLogin", method = RequestMethod.POST)
+    public Result weixinLogin(WeiXinModel weiXinModel, String phone) {
+
+        Map<String, Object> map = userModelService.weixinLogin(weiXinModel, phone);
+
+        return Result.OK(map);
+    }
+
+    @ApiOperation("微信登录，绑定手机号")
+    @RequestMapping(value = "/bindUserPhone", method = RequestMethod.POST)
+    public Result bindUserPhone(String unionId, String phone, String captcha) {
         Result<JSONObject> result = new Result<JSONObject>();
+
         if (captcha == null) {
             result.error500("请输入验证码");
             return result;
@@ -85,16 +97,18 @@ public class UserController {
             result.error500("验证码错误");
             return result;
         }
-        JSONObject object = userModelService.userLogin(inviteCode, captcha, phone);
-        result.setResult(object);
-        return result;
+
+        userModelService.bindUserPhone(unionId, phone, captcha);
+
+        return Result.OK();
     }
+
 
     @ApiOperation("填写邀请码")
     @RequestMapping(value = "/addUserAgency", method = RequestMethod.POST)
-    public Result addUserAgency( String token,String inviteCode) {
+    public Result addUserAgency(String token, String inviteCode) {
         String id = userModelService.getUserIdByToken(token);
-        userModelService.addUserAgencyModel(inviteCode,id);
+        userModelService.addUserAgencyModel(inviteCode, id);
         return Result.OK();
     }
 
@@ -115,7 +129,7 @@ public class UserController {
 
     @ApiOperation("用户银行卡列表接口")
     @RequestMapping(value = "/loadUserCardList", method = RequestMethod.POST)
-    public Result<Object> loadUserCardList( String token) {
+    public Result<Object> loadUserCardList(String token) {
         Result<Object> result = new Result<>();
         String id = userModelService.getUserIdByToken(token);
         List<UserBankVo> userBankModels = userBankModelService.loadUserCard(id);
@@ -126,7 +140,7 @@ public class UserController {
 
     @ApiOperation("用户关注接口")
     @RequestMapping(value = "/addUserFocus", method = RequestMethod.POST)
-    public Result addUserFocus( String token,String userId) {
+    public Result addUserFocus(String token, String userId) {
         String id = userModelService.getUserIdByToken(token);
         Result result = userFocusModelService.addUserFocus(id, userId);
         return result;
@@ -135,20 +149,19 @@ public class UserController {
 
     @ApiOperation("用户取消关注接口")
     @RequestMapping(value = "/delUserFocus", method = RequestMethod.POST)
-    public Result delUserFocus( String token,String userId) {
+    public Result delUserFocus(String token, String userId) {
         String id = userModelService.getUserIdByToken(token);
         Result result = userFocusModelService.delUserFocus(id, userId);
         return result;
     }
 
 
-
     @ApiOperation("修改用户信息")
     @RequestMapping(value = "/updateUserInfo", method = RequestMethod.POST)
-    public Result updateUserInfo(String nickName,String headImage,String sign,String token) {
+    public Result updateUserInfo(String nickName, String headImage, String sign, String token) {
         UserModel userModel = userModelService.getUserModelByToken(token);
         userModelService.updateUserInfo(userModel, nickName, headImage, sign);
-        return Result.OK("修改成功",null);
+        return Result.OK("修改成功", null);
     }
 
 
@@ -171,7 +184,7 @@ public class UserController {
 
     @ApiOperation("添加收货地址")
     @RequestMapping(value = "/addUserAddress", method = RequestMethod.POST)
-    public Result addUserAddress(AddressModelVo model,String token) {
+    public Result addUserAddress(AddressModelVo model, String token) {
         String id = userModelService.getUserIdByToken(token);
         model.setUserId(id);
         addressModelService.insertSelective(model);
@@ -183,23 +196,23 @@ public class UserController {
     @RequestMapping(value = "/getVipList", method = RequestMethod.POST)
     public Result<List> getVipList(String token) {
         List list = vipModelService.getVipList();
-        return Result.oKWithToken(token,list);
+        return Result.oKWithToken(token, list);
     }
 
     @ApiOperation("购买会员卡，提交订单")
     @RequestMapping(value = "/addVipOrder", method = RequestMethod.POST)
-    public Result<Map> addVipOrder(String token,String addressId,String vipId) {
+    public Result<Map> addVipOrder(String token, String addressId, String vipId) {
         String id = userModelService.getUserIdByToken(token);
         Map map = vipModelService.addVipOrder(addressId, vipId, id);
-        return Result.oKWithToken(token,map);
+        return Result.oKWithToken(token, map);
     }
 
 
     @ApiOperation("购买会员卡，确认订单")
     @RequestMapping(value = "/getVipOrder", method = RequestMethod.POST)
-    public Result<Map> getVipOrder(String token,String addressId,String vipId,String orderId) {
+    public Result<Map> getVipOrder(String token, String addressId, String vipId, String orderId) {
         Map map = vipModelService.getVipOrder(addressId, vipId, orderId);
-        return Result.oKWithToken(token,map);
+        return Result.oKWithToken(token, map);
     }
 
 
@@ -208,7 +221,7 @@ public class UserController {
     public Result<Map> loadMyWalletInfo(String token) {
         String id = userModelService.getUserIdByToken(token);
         Map map = userModelService.loadMyWalletInfo(id);
-        return Result.oKWithToken(token,map);
+        return Result.oKWithToken(token, map);
     }
 
 
@@ -217,23 +230,9 @@ public class UserController {
     public Result<Page<UserIncomeDetailVo>> loadIncomeDetail(String token, Integer pageNo, Integer pageSize, Integer type) {
         String id = userModelService.getUserIdByToken(token);
         Page<UserIncomeDetailVo> page = new Page<>(pageNo, pageSize);
-        Page<UserIncomeDetailVo> incomeDetail = userModelService.loadIncomeDetail(id, page, type,null,null);
+        Page<UserIncomeDetailVo> incomeDetail = userModelService.loadIncomeDetail(id, page, type, null, null);
         return Result.oKWithToken(token, incomeDetail);
     }
-
-
-
-
-    @ApiOperation("微信登录")
-    @RequestMapping(value = "/weixinLogin", method = RequestMethod.POST)
-    public Result weixinLogin(String code,String token) {
-
-        userModelService.weixinLogin(code);
-
-        return Result.oKWithToken(token, null);
-    }
-
-
 
 
 }

@@ -53,7 +53,7 @@ public class PartyModelServiceImpl implements PartyModelService{
             throw new JeecgBootException("活动不存在");
         }
         Map<String, Object> map = new HashMap<>();
-        UserModel userModel = userModelMapper.loadUser(partyModel.getUserId(), null, null, null);
+        UserModel userModel = userModelMapper.loadUser(partyModel.getUserId(), null, null, null,null);
         map.put("userName",ValidateTool.isNull(userModel)?"":userModel.getNickName());
         map.put("headImage",ValidateTool.isNull(userModel)?"":userModel.getHeadImage());
         map.put("party",partyModel);

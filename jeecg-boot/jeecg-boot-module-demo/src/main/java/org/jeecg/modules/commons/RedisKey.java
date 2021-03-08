@@ -6,6 +6,10 @@ public class RedisKey {
     //分割
     public final static String KEY_SPLIT=":";
 
+    public final static String WEIXIN_USER_INFO="w_user_info:";
+
+
+
     public final static String USER_LOGIN_CODE_KEY = "login_code";
 
 

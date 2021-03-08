@@ -28,7 +28,7 @@ public class UserFocusModelServiceImpl implements UserFocusModelService{
     @Override
     public Result addUserFocus(String id,String userId) {
         Result result = new Result<>();
-        UserModel userModel = userModelMapper.loadUser(userId, null, null, null);
+        UserModel userModel = userModelMapper.loadUser(userId, null, null, null,null);
         if (userModel==null){
             throw new JeecgBootException("关注失败");
         }
@@ -54,7 +54,7 @@ public class UserFocusModelServiceImpl implements UserFocusModelService{
     @Override
     public Result delUserFocus(String id, String userId) {
         Result result = new Result<>();
-        UserModel userModel = userModelMapper.loadUser(userId, null, null, null);
+        UserModel userModel = userModelMapper.loadUser(userId, null, null, null,null);
         UserFocusModel userFocusModel = userFocusModelMapper.selectById(id, userId);
 
         if (userModel==null || userFocusModel==null){

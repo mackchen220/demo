@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.jeecg.common.api.vo.Result;
 import org.jeecg.modules.user.model.UserModel;
+import org.jeecg.modules.user.model.WeiXinModel;
 import org.jeecg.modules.user.model.vo.UserIncomeDetailVo;
 
 import java.util.Map;
@@ -12,7 +13,7 @@ public interface UserModelService {
 
     UserModel getUserById(String id);
 
-    JSONObject userLogin(String inviteCode, String captcha, String phone);
+    JSONObject userLogin(String inviteCode, String captcha, String phone, String unionId, String ip);
 
     UserModel getUserModelByToken(String token);
 
@@ -31,9 +32,11 @@ public interface UserModelService {
     Page<UserIncomeDetailVo> loadIncomeDetail(String userId, Page<UserIncomeDetailVo> page, Integer type, String startTime, String endTime);
 
 
-    void weixinLogin(String code);
+    Map<String, Object> weixinLogin(WeiXinModel weiXinModel, String phone);
 
     void removeById(String id);
 
+
+    void bindUserPhone(String unionId, String phone, String captcha);
 
 }

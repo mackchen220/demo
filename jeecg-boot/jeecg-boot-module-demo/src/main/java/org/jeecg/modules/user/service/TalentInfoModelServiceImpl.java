@@ -226,7 +226,7 @@ public class TalentInfoModelServiceImpl implements TalentInfoModelService {
 
     @Override
     public Map loadCustomrInfo(String talentId, String id, String userId) {
-        UserModel userModel = userModelMapper.loadUser(userId, null, null, null);
+        UserModel userModel = userModelMapper.loadUser(userId, null, null, null,null);
 
         Map<String, Object> map = new HashMap<>();
         map.put("nickName", userModel.getNickName());

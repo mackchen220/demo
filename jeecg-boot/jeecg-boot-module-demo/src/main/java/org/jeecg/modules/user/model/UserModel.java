@@ -155,4 +155,12 @@ public class UserModel {
 
     private String province;
     private String city;
+    /**
+     * 绑定微信的id
+     */
+    private String weixinId;
+
+
+
+
 }
