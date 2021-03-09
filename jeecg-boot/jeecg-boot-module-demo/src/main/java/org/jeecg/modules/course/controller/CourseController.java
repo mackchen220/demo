@@ -53,26 +53,22 @@ public class CourseController {
     @ApiOperation("社区发现动态列表")
     @PostMapping("/findList")
     public Result<IPage<UserCourseVo>> findList(@ApiParam(name = "查询类型", value = "1-推荐 2-视频 3-照片 4-知识 5-Vlog 6-活动 7-课程 不传默认1") Integer type,
-                              @ApiParam(name = "城市", value = "不传默认全国") String city,
-                              @RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo,
-                              @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize) {
-        if (ValidateTool.isNull(type)) {
-            type = 1;
-        }
-        IPage<UserCourseVo> page = courseService.findList(pageNo, pageSize, type, city);
+                                                @ApiParam(name = "城市", value = "不传默认全国") String city,
+                                                @RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo,
+                                                @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize) {
+
+        IPage<UserCourseVo> page = courseService.findList(pageNo, pageSize, ValidateTool.isNull(type) ? 1 : type, city);
         return Result.OK(page);
     }
 
     @ApiOperation("社区搜索动态列表")
     @PostMapping("/searchList")
     public Result<IPage<UserCourseVo>> searchList(@ApiParam(name = "查询类型", value = "1-综合 2-最热 3-最新 不传默认1") Integer type,
-                                @ApiParam(name = "查询关键词", value = "查询关键词") String search,
-                                @RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo,
-                                @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize) {
-        if (ValidateTool.isNull(type)) {
-            type = 1;
-        }
-        IPage<UserCourseVo> page = courseService.searchList(pageNo, pageSize, type, search);
+                                                  @ApiParam(name = "查询关键词", value = "查询关键词") String search,
+                                                  @RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo,
+                                                  @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize) {
+
+        IPage<UserCourseVo> page = courseService.searchList(pageNo, pageSize, ValidateTool.isNull(type) ? 1 : type, search);
         return Result.OK(page);
     }
 

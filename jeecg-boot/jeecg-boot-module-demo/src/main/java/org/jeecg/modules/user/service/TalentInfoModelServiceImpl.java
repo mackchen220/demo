@@ -368,81 +368,81 @@ public class TalentInfoModelServiceImpl implements TalentInfoModelService {
 
     @Override
     public Map<String, Object> talentMiniInfo(String userId, String talentId) {
-        Map<String, Object> rtn = new HashMap<>();
+        Map<String, Object> map = new HashMap<>();
 
         UserModel user = userModelService.getUserById(talentId);
         if (Objects.nonNull(user)) {
-            rtn.put("id", talentId);
-            rtn.put("nickName", user.getNickName());
-            rtn.put("headImage", user.getHeadImage());
-            rtn.put("userName", user.getUserName());
-            rtn.put("gender", user.getGender());
-            rtn.put("birthday", ValidateTool.isNotNull(user.getBirthday()) ? DateHelper.getAge(user.getBirthday()) : null);
-            rtn.put("province", user.getProvince());
-            rtn.put("city", user.getCity());
-            rtn.put("wechat", user.getWechat());
+            map.put("id", talentId);
+            map.put("nickName", user.getNickName());
+            map.put("headImage", user.getHeadImage());
+            map.put("userName", user.getUserName());
+            map.put("gender", user.getGender());
+            map.put("birthday", ValidateTool.isNotNull(user.getBirthday()) ? DateHelper.getAge(user.getBirthday()) : null);
+            map.put("province", user.getProvince());
+            map.put("city", user.getCity());
+            map.put("wechat", user.getWechat());
         }
 
         TalentInfoModel talent = talentInfoModelMapper.selectByUserId(talentId);
         if (Objects.nonNull(talent)) {
 //            rtn.put("isTalent", true);
-            rtn.put("authenticated", talent.getAuthenticated());
-            rtn.put("num", talent.getNum());
-            rtn.put("orderNum", ValidateTool.isNotNull(talent.getOrderNum()) ? talent.getOrderNum() : 0);
-            rtn.put("advisoryNum", talent.getAdvisoryNum());
-            rtn.put("likeNum", ValidateTool.isNotNull(talent.getLikeNum()) ? talent.getLikeNum() : 0);
-            rtn.put("averageScore", talent.getAverageScore());
+            map.put("authenticated", talent.getAuthenticated());
+            map.put("num", talent.getNum());
+            map.put("orderNum", ValidateTool.isNotNull(talent.getOrderNum()) ? talent.getOrderNum() : 0);
+            map.put("advisoryNum", talent.getAdvisoryNum());
+            map.put("likeNum", ValidateTool.isNotNull(talent.getLikeNum()) ? talent.getLikeNum() : 0);
+            map.put("averageScore", talent.getAverageScore());
         } else {
 //            rtn.put("isTalent", false);
             throw new JeecgBootException("参数错误");
         }
         //粉丝数量
         int fansNum = userFocusModelMapper.selectCountByFocusId(talentId);
-        rtn.put("fansNum", fansNum);
+        map.put("fansNum", fansNum);
         //是否关注
         int isFans = userFocusModelMapper.selectUserFocus(talentId, userId);
-        rtn.put("isFans", isFans);
+        map.put("isFans", isFans);
 
-        return rtn;
+        return map;
     }
 
     @Override
     public Map<String, Object> talentArchives(String userId, String talentId) {
 
-        Map<String, Object> rtn = new HashMap<>();
+        Map<String, Object> map = new HashMap<>();
 
         UserModel user = userModelService.getUserById(talentId);
         if (Objects.nonNull(user)) {
-            rtn.put("id", talentId);
-            rtn.put("nickName", user.getNickName());
-            rtn.put("province", user.getProvince());
-            rtn.put("city", user.getCity());
-            rtn.put("createTime", user.getCreateTime());
+            map.put("id", talentId);
+            map.put("nickName", user.getNickName());
+            map.put("headImage", user.getHeadImage());
+            map.put("province", user.getProvince());
+            map.put("city", user.getCity());
+            map.put("createTime", user.getCreateTime());
         }
 
         TalentInfoModel talent = talentInfoModelMapper.selectByUserId(talentId);
         if (Objects.nonNull(talent)) {
 //            rtn.put("isTalent", true);
-            rtn.put("averageScore", talent.getAverageScore());
-            rtn.put("effect", talent.getEffect());
-            rtn.put("price", talent.getPrice());
-            rtn.put("attitude", talent.getAttitude());
-            rtn.put("deposit", talent.getDeposit() > 0 ? 1 : 0);
-            rtn.put("num", talent.getNum());
-            rtn.put("authenticated", talent.getAuthenticated());
+            map.put("averageScore", talent.getAverageScore());
+            map.put("effect", talent.getEffect());
+            map.put("price", talent.getPrice());
+            map.put("attitude", talent.getAttitude());
+            map.put("deposit", talent.getDeposit() > 0 ? 1 : 0);
+            map.put("num", talent.getNum());
+            map.put("authenticated", talent.getAuthenticated());
         } else {
             throw new JeecgBootException("参数错误");
         }
         //是否关注
         int isFans = userFocusModelMapper.selectUserFocus(talentId, userId);
-        rtn.put("isFans", isFans);
+        map.put("isFans", isFans);
 
-        //TODO 客户数量未确定含义
-
+        //客户数量
         String customer = talentCustomerMapper.countCustomer(talentId);
-        rtn.put("customerNum", customer);
+        map.put("customerNum", customer);
 
 
-        return rtn;
+        return map;
     }
 }

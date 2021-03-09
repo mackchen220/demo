@@ -140,7 +140,8 @@ public class UserController {
 
     @ApiOperation("用户关注接口")
     @RequestMapping(value = "/addUserFocus", method = RequestMethod.POST)
-    public Result addUserFocus(String token, String userId) {
+    public Result addUserFocus(HttpServletRequest request, String userId) {
+        String token = request.getHeader("token");
         String id = userModelService.getUserIdByToken(token);
         Result result = userFocusModelService.addUserFocus(id, userId);
         return result;
@@ -149,7 +150,8 @@ public class UserController {
 
     @ApiOperation("用户取消关注接口")
     @RequestMapping(value = "/delUserFocus", method = RequestMethod.POST)
-    public Result delUserFocus(String token, String userId) {
+    public Result delUserFocus(HttpServletRequest request, String userId) {
+        String token = request.getHeader("token");
         String id = userModelService.getUserIdByToken(token);
         Result result = userFocusModelService.delUserFocus(id, userId);
         return result;

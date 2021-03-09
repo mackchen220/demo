@@ -147,7 +147,7 @@ public class TalentController {
 
         String mineId = userModelService.getUserIdByToken(token);
 
-        Map<String, Object> map = talentInfoModelService.talentArchives(userId, mineId);
+        Map<String, Object> map = talentInfoModelService.talentArchives(mineId, userId);
         return Result.OK(map);
     }
 
