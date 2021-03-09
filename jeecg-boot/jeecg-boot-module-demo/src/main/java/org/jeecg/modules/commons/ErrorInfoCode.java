@@ -32,6 +32,9 @@ public enum ErrorInfoCode {
 	UPLOAD_FILE_OVER_LIMIT_ERROR(2004, "上次文件不能超过2MB"),
 	/** 不满足接口条件 */
 	NO_INVITE_CODE_ERROR(3001, "请填写邀请码"),
+	LOGIN__TOKEN_ERROR(9998, "登录信息过期，请重新登录"),
+	LOGIN_ERROR(9999, "账号在异地登录，请重新登录"),
+
 	;
 
 	private int code;

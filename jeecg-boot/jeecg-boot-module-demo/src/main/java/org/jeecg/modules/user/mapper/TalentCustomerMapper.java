@@ -30,4 +30,5 @@ public interface TalentCustomerMapper {
     List<ExtensionVo> loadExtensionIncome(Page<ExtensionVo> page ,@Param("userId") String userId);
 
 
+    String countCustomer(@Param("userId") String userId);
 }

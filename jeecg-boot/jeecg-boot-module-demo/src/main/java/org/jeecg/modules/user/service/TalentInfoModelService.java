@@ -28,7 +28,7 @@ public interface TalentInfoModelService{
     Page<TalentInfoVo> loadTalentList(Page<TalentInfoVo> pageList, String search,String city);
 
     //搜索达人下面的可能感兴趣的人
-    List loadOtherTalentList(String search);
+    List loadOtherTalentList(String city);
 
 
     Page<UserProjectVo> loadProjectlist(String search,Page<UserProjectVo> pageList);
@@ -65,5 +65,11 @@ public interface TalentInfoModelService{
 
     Page<ExtensionVo> loadExtensionIncome(String userId, Page<ExtensionVo> page, Integer sortModel);
 
+
+
+    Map<String, Object> talentMiniInfo(String userId,String talentId);
+
+
+    Map<String, Object> talentArchives(String userId,String talentId);
 
 }

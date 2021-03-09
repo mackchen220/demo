@@ -9,6 +9,7 @@ import org.jeecg.common.exception.JeecgBootException;
 import org.jeecg.common.util.IPUtils;
 import org.jeecg.common.util.RedisUtil;
 import org.jeecg.modules.commons.Constant;
+import org.jeecg.modules.commons.ErrorInfoCode;
 import org.jeecg.modules.commons.RedisKey;
 import org.jeecg.modules.commons.util.MapUtil;
 import org.jeecg.modules.commons.util.ValidateTool;
@@ -81,17 +82,17 @@ public class ReqInterceptor implements HandlerInterceptor {
                 Secret = (String) redisUtil.get(RedisKey.USER_LOGIN_TOKEN + RedisKey.KEY_SPLIT + split[0]);
             } catch (JeecgBootException e) {
                 log.warn("token错误{}", token);
-                throw new JeecgBootException("登录信息过期，请重新登录");
+                throw new JeecgBootException(ErrorInfoCode.LOGIN__TOKEN_ERROR.getCode(),ErrorInfoCode.LOGIN__TOKEN_ERROR.getMsg());
             }
             if (ValidateTool.checkIsNull(Secret)) {
                 if (!Secret.equals(split[1])) {
-                    throw new JeecgBootException("账号在异地登录，请重新登录");
+                    throw new JeecgBootException(ErrorInfoCode.LOGIN_ERROR.getCode(),ErrorInfoCode.LOGIN_ERROR.getMsg());
                 }
             } else {
-                throw new JeecgBootException("登录信息过期，请重新登录");
+                throw new JeecgBootException(ErrorInfoCode.LOGIN__TOKEN_ERROR.getCode(),ErrorInfoCode.LOGIN__TOKEN_ERROR.getMsg());
             }
         } else {
-            throw new JeecgBootException("登录信息过期，请重新登录");
+            throw new JeecgBootException(ErrorInfoCode.LOGIN__TOKEN_ERROR.getCode(),ErrorInfoCode.LOGIN__TOKEN_ERROR.getMsg());
         }
 
         return true;

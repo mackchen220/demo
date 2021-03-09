@@ -211,4 +211,8 @@
     order by create_time desc
   </select>
 
+
+  <select id="countCustomer" parameterType="string" resultType="string">
+    select  count(0) from tb_talent_customer where  talent_id = #{userId,jdbcType=VARCHAR} and del_flag =0
+  </select>
 </mapper>

@@ -1,20 +1,13 @@
 package org.jeecg.modules.user.service;
 
-import cn.hutool.core.util.StrUtil;
-import cn.hutool.http.HttpRequest;
-import cn.hutool.http.HttpResponse;
-import cn.hutool.json.JSONUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.extern.log4j.Log4j2;
-import org.ini4j.Reg;
 import org.jeecg.common.exception.JeecgBootException;
 import org.jeecg.common.system.util.JwtUtil;
-import org.jeecg.common.util.IPUtils;
 import org.jeecg.common.util.MD5Util;
 import org.jeecg.common.util.RedisUtil;
 import org.jeecg.modules.commons.Constant;
-import org.jeecg.modules.commons.ErrorInfoCode;
 import org.jeecg.modules.commons.RedisKey;
 import org.jeecg.modules.commons.util.DateHelper;
 import org.jeecg.modules.commons.util.RandomUtil;
@@ -33,7 +26,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.activation.DataHandler;
 import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.List;
@@ -176,7 +168,7 @@ public class UserModelServiceImpl implements UserModelService {
             userModel.setWeixinId(unionId);
             userModel.setGender(ValidateTool.isNull(gender)?0:Integer.parseInt(String.valueOf(gender)));
             userModel.setNickName(String.valueOf(nickName));
-            userModel.setUserName(phone);
+            userModel.setUserName(String.valueOf(nextUserName()));
             userModel.setCity(String.valueOf(city));
             userModel.setProvince(String.valueOf(province));
             userModel.setRegisterIp(ip);
@@ -215,6 +207,29 @@ public class UserModelServiceImpl implements UserModelService {
         log.info("最终生成邀请码{}", code);
         return code;
     }
+
+
+
+    public int nextUserName() {
+        //生成一个不重复的邀请码
+        int number = RandomUtil.nextNumber(6, 6);
+        log.info("生成用户名{}", number);
+        do {
+            UserModel userModel = userModelMapper.loadUserByUserName(String.valueOf(number));
+            if (ValidateTool.isNull(userModel)) {
+                log.warn("生成用户名未重复{}", number);
+                break;
+            } else {
+                log.warn("生成用户名重复{}", number);
+                number = RandomUtil.nextNumber(6, 6);
+                log.warn("再次生成用户名{}", number);
+            }
+        } while (true);
+        log.info("最终生成用户名{}", number);
+        return number;
+    }
+
+
 
     @Override
     public int checkfirst(String phone) {

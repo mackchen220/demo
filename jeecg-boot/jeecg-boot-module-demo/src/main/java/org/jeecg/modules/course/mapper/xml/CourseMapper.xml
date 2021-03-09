@@ -328,7 +328,7 @@
   </select>
 
   <select id="loadIndexCourseModelList"  resultMap="BaseResultMap">
-    select title,image,type,state,price from tb_course
+    select title,image,type,state,price , watch_num from tb_course
     order by sort desc limit ${limit}
   </select>
 

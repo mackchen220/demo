@@ -53,6 +53,13 @@ public class TalentInfoVo {
     @ApiModelProperty(value="签约机构数量")
     private String num;
 
+    /**
+     * 认证状态
+     */
+    @ApiModelProperty(value="认证状态")
+    private String authenticated;
+
+
 
 
 

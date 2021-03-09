@@ -1,9 +1,6 @@
 package org.jeecg.modules.user.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-
-import org.apache.shiro.crypto.hash.Hash;
-import org.checkerframework.checker.nullness.NullnessUtil;
 import org.jeecg.common.exception.JeecgBootException;
 import org.jeecg.modules.commons.Constant;
 import org.jeecg.modules.commons.util.DateHelper;
@@ -16,7 +13,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-
 import java.util.*;
 
 
@@ -45,6 +41,8 @@ public class TalentInfoModelServiceImpl implements TalentInfoModelService {
     private UserAgencyModelMapper userAgencyModelMapper;
     @Resource
     private UserModelService userModelService;
+    @Resource
+    private UserFocusModelMapper userFocusModelMapper;
 
 
     @Override
@@ -95,8 +93,8 @@ public class TalentInfoModelServiceImpl implements TalentInfoModelService {
 
 
     @Override
-    public List loadOtherTalentList(String search) {
-        List<TalentInfoVo> talentInfoVos = talentInfoModelMapper.loadOtherTalentList(search, "4");
+    public List loadOtherTalentList(String city) {
+        List<TalentInfoVo> talentInfoVos = talentInfoModelMapper.loadOtherTalentList(city, "4");
         return talentInfoVos;
     }
 
@@ -226,7 +224,7 @@ public class TalentInfoModelServiceImpl implements TalentInfoModelService {
 
     @Override
     public Map loadCustomrInfo(String talentId, String id, String userId) {
-        UserModel userModel = userModelMapper.loadUser(userId, null, null, null,null);
+        UserModel userModel = userModelMapper.loadUser(userId, null, null, null, null);
 
         Map<String, Object> map = new HashMap<>();
         map.put("nickName", userModel.getNickName());
@@ -329,20 +327,20 @@ public class TalentInfoModelServiceImpl implements TalentInfoModelService {
             }
         }
         //sortModel 1 收入高 2收入地 3 等级高  4 等级低 5 时间
-        if (Constant.TYPE_INT_1==sortModel){
+        if (Constant.TYPE_INT_1 == sortModel) {
             extensionVos.stream().sorted(new Comparator<ExtensionVo>() {
                 @Override
                 public int compare(ExtensionVo o1, ExtensionVo o2) {
-                    return o1.getTotelMoney()>o2.getTotelMoney()?1:0;
+                    return o1.getTotelMoney() > o2.getTotelMoney() ? 1 : 0;
 
                 }
             });
         }
-        if (Constant.TYPE_INT_2==sortModel){
+        if (Constant.TYPE_INT_2 == sortModel) {
             extensionVos.stream().sorted(new Comparator<ExtensionVo>() {
                 @Override
                 public int compare(ExtensionVo o1, ExtensionVo o2) {
-                    return o1.getTotelMoney()>o2.getTotelMoney()?0:1;
+                    return o1.getTotelMoney() > o2.getTotelMoney() ? 0 : 1;
 
                 }
             });
@@ -365,5 +363,86 @@ public class TalentInfoModelServiceImpl implements TalentInfoModelService {
 //            });
 //        }
         return page.setRecords(extensionVos);
+    }
+
+
+    @Override
+    public Map<String, Object> talentMiniInfo(String userId, String talentId) {
+        Map<String, Object> rtn = new HashMap<>();
+
+        UserModel user = userModelService.getUserById(talentId);
+        if (Objects.nonNull(user)) {
+            rtn.put("id", talentId);
+            rtn.put("nickName", user.getNickName());
+            rtn.put("headImage", user.getHeadImage());
+            rtn.put("userName", user.getUserName());
+            rtn.put("gender", user.getGender());
+            rtn.put("birthday", ValidateTool.isNotNull(user.getBirthday()) ? DateHelper.getAge(user.getBirthday()) : null);
+            rtn.put("province", user.getProvince());
+            rtn.put("city", user.getCity());
+            rtn.put("wechat", user.getWechat());
+        }
+
+        TalentInfoModel talent = talentInfoModelMapper.selectByUserId(talentId);
+        if (Objects.nonNull(talent)) {
+//            rtn.put("isTalent", true);
+            rtn.put("authenticated", talent.getAuthenticated());
+            rtn.put("num", talent.getNum());
+            rtn.put("orderNum", ValidateTool.isNotNull(talent.getOrderNum()) ? talent.getOrderNum() : 0);
+            rtn.put("advisoryNum", talent.getAdvisoryNum());
+            rtn.put("likeNum", ValidateTool.isNotNull(talent.getLikeNum()) ? talent.getLikeNum() : 0);
+            rtn.put("averageScore", talent.getAverageScore());
+        } else {
+//            rtn.put("isTalent", false);
+            throw new JeecgBootException("参数错误");
+        }
+        //粉丝数量
+        int fansNum = userFocusModelMapper.selectCountByFocusId(talentId);
+        rtn.put("fansNum", fansNum);
+        //是否关注
+        int isFans = userFocusModelMapper.selectUserFocus(talentId, userId);
+        rtn.put("isFans", isFans);
+
+        return rtn;
+    }
+
+    @Override
+    public Map<String, Object> talentArchives(String userId, String talentId) {
+
+        Map<String, Object> rtn = new HashMap<>();
+
+        UserModel user = userModelService.getUserById(talentId);
+        if (Objects.nonNull(user)) {
+            rtn.put("id", talentId);
+            rtn.put("nickName", user.getNickName());
+            rtn.put("province", user.getProvince());
+            rtn.put("city", user.getCity());
+            rtn.put("createTime", user.getCreateTime());
+        }
+
+        TalentInfoModel talent = talentInfoModelMapper.selectByUserId(talentId);
+        if (Objects.nonNull(talent)) {
+//            rtn.put("isTalent", true);
+            rtn.put("averageScore", talent.getAverageScore());
+            rtn.put("effect", talent.getEffect());
+            rtn.put("price", talent.getPrice());
+            rtn.put("attitude", talent.getAttitude());
+            rtn.put("deposit", talent.getDeposit() > 0 ? 1 : 0);
+            rtn.put("num", talent.getNum());
+            rtn.put("authenticated", talent.getAuthenticated());
+        } else {
+            throw new JeecgBootException("参数错误");
+        }
+        //是否关注
+        int isFans = userFocusModelMapper.selectUserFocus(talentId, userId);
+        rtn.put("isFans", isFans);
+
+        //TODO 客户数量未确定含义
+
+        String customer = talentCustomerMapper.countCustomer(talentId);
+        rtn.put("customerNum", customer);
+
+
+        return rtn;
     }
 }

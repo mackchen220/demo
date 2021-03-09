@@ -13,6 +13,8 @@ public interface UserModelMapper {
     UserModel loadUser(@Param("Id") String userId, @Param("phone") String phone, @Param("nickName") String nickName,
                        @Param("inviteCode") String invite_code, @Param("weixinId") String weixinId);
 
+    UserModel loadUserByUserName(@Param("userName") String userName);
+
     int updateByPrimaryKeySelective(UserModel record);
 
     int updateUserMoney(@Param("userId") String userId, @Param("money") String money, @Param("type") Integer type);

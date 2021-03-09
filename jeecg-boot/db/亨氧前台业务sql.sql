@@ -20,7 +20,7 @@ CREATE TABLE `tb_user` (
   `user_type` tinyint DEFAULT NULL COMMENT '1-用户，2-达人，3-机构，4-平台',
   `agency_id` bigint NOT NULL DEFAULT '-1' COMMENT '代理id',
   `login_times` int NOT NULL DEFAULT '0' COMMENT '登录次数',
-  `gender` int DEFAULT '1' COMMENT '1-男,0-女',
+  `gender` int DEFAULT '1' COMMENT '1-女,0-男',
   `birthday` date DEFAULT NULL COMMENT '出生日期',
   `phone` varchar(24) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '电话.',
   `upd_pwd_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '最后修改密码时间',
@@ -47,6 +47,11 @@ ALTER TABLE `tb_user`
     ADD INDEX `idx_invitecode`(`invite_code`) USING BTREE;
 ALTER TABLE `tb_user`
 ADD UNIQUE INDEX `wx_unique`(`weixin_id`) USING BTREE;
+
+
+ALTER TABLE `db_0`.`tb_user`
+MODIFY COLUMN `gender` int(0) NULL DEFAULT 1 COMMENT '1-女,0-男' AFTER `login_times`;
+
 
 DROP TABLE IF EXISTS `tb_address`;
 CREATE TABLE `tb_address` (

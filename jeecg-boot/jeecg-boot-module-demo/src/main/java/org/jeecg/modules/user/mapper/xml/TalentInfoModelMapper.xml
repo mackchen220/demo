@@ -49,6 +49,7 @@
     <result column="head_image" jdbcType="VARCHAR" property="headImage" />
     <result column="nick_name" jdbcType="VARCHAR" property="nickName" />
     <result column="num" jdbcType="INTEGER" property="num" />
+    <result column="authenticated" jdbcType="INTEGER" property="authenticated" />
   </resultMap>
 
 
@@ -330,7 +331,7 @@
   </select>
 
   <select id="loadTalentList" resultMap="listTalentMap" parameterType="string">
-    SELECT a.user_id,a.id,a.average_score,a.num,b.head_image,b.nick_name,b.user_name
+    SELECT a.user_id,a.id,a.average_score,a.num,b.head_image,b.nick_name,b.user_name,a.authenticated
     from tb_talent_info as a
     LEFT JOIN tb_user as b ON a.user_id =b.id
     <where>
@@ -358,14 +359,14 @@
 
 
   <select id="loadOtherTalentList" resultMap="listTalentMap" parameterType="string">
-    SELECT a.user_id,a.id,a.average_score,a.num,b.head_image,b.nick_name,b.user_name
+    SELECT a.user_id,a.id,a.average_score,a.num,b.head_image,b.nick_name,b.user_name,a.authenticated
     from tb_talent_info as a
     LEFT JOIN tb_user as b ON a.user_id =b.id
     <where>
-      <if test="search != null and search != ''">
-        b.nick_name
-        LIKE '%${search}%'
-      </if>
+        <if test="city != null and city != ''">
+          a.city
+          LIKE '%${city}%'
+        </if>
     </where>
     ORDER BY a.average_score desc
     limit ${limit}
