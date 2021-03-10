@@ -53,7 +53,7 @@ public class ReqInterceptor implements HandlerInterceptor {
                 ,"/bigscreen","/test/bigScreen","/swagger","/webjars","/druid","/generic","/doc.html","/favicon.ico",
                 "hy/index/loadAppVersion","/vip/vipAdmin","getDictItems","/user/userAdmin","/course/adminCourse",
                 "/sys/common/static","/search/adminHotSearch","/turnImage/adminTurnImage","/party/adminParty",
-                "/user/adminUser","/user/weixinLogin","/hy/user/bindUserPhone"};
+                "/user/adminUser","/user/weixinLogin","/hy/user/bindUserPhone","/community/adminCommunity"};
         for (String tem : unAuthList) {
             if (request.getRequestURI().contains(tem)) {
                 return true;
