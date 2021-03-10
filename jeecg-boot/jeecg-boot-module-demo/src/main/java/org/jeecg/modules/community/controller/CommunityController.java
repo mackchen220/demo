@@ -5,6 +5,8 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.jeecg.common.api.vo.Result;
+import org.jeecg.common.util.TokenUtils;
+import org.jeecg.modules.commons.Constant;
 import org.jeecg.modules.commons.util.ValidateTool;
 import org.jeecg.modules.community.model.CommunityModel;
 import org.jeecg.modules.community.model.vo.CommunityModelVo;
@@ -13,9 +15,11 @@ import org.jeecg.modules.user.model.UserModel;
 import org.jeecg.modules.user.service.UserModelService;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 @Slf4j
@@ -32,7 +36,10 @@ public class CommunityController {
 
     @ApiOperation("朋友圈列表")
     @RequestMapping(value = "/loadCommunityListByType", method = RequestMethod.POST)
-    public Result<Page<CommunityModelVo>> loadCommunityListByType(int type, int pageNo, int pageSize, String token) {
+    public Result<Page<CommunityModelVo>> loadCommunityListByType(int type, @RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo,
+                                                                  @RequestParam(name = "pageSize", defaultValue = "10")
+                                                                          Integer pageSize,HttpServletRequest request) {
+        String token = request.getHeader("token");
 
         String userId = userModelService.getUserIdByToken(token);
         Result<Page<CommunityModelVo>> result = new Result<Page<CommunityModelVo>>();
@@ -50,8 +57,9 @@ public class CommunityController {
 
     @ApiOperation("朋友圈搜索")
     @RequestMapping(value = "/loadCommunityBySearch", method = RequestMethod.POST)
-    public Result<Page<CommunityModelVo>> loadCommunityBySearch(int pageNo, int pageSize, String token, String search,
+    public Result<Page<CommunityModelVo>> loadCommunityBySearch(int pageNo, int pageSize, HttpServletRequest request, String search,
                                                                 Integer type, Integer sortModel) {
+        String token = request.getHeader("token");
 
         String userId = userModelService.getUserIdByToken(token);
         Result<Page<CommunityModelVo>> result = new Result<Page<CommunityModelVo>>();
@@ -66,18 +74,20 @@ public class CommunityController {
 
     @ApiOperation("发朋友圈")
     @RequestMapping(value = "/addMoments", method = RequestMethod.POST)
-    public Result addMoments(CommunityModel communityModel, String token) {
+    public Result addMoments(CommunityModel communityModel, HttpServletRequest request) {
         Result result = new Result<>();
-        if (!ValidateTool.checkIsNull(communityModel.getTitle())) {
-            result.error500("请输入标题");
-            return result;
-        }
+//        if (!ValidateTool.checkIsNull(communityModel.getTitle())) {
+//            result.error500("请输入标题");
+//            return result;
+//        }
         if (!ValidateTool.checkIsNull(communityModel.getContent())) {
             result.error500("请输入内容");
             return result;
         }
-        String userId = userModelService.getUserIdByToken(token);
-        communityModel.setUserId(userId);
+        String token = request.getHeader("token");
+        UserModel user = userModelService.getUserModelByToken(token);
+        communityModel.setUserId(user.getId());
+        communityModel.setUserType(user.getUserType());
         communityModelService.insertSelective(communityModel);
 
         return result;
@@ -96,9 +106,9 @@ public class CommunityController {
 
     @ApiOperation("朋友圈点赞接口")
     @RequestMapping(value = "/addCommunityStar", method = RequestMethod.POST)
-    public Result addCommunityStar(String id, String token, String type) {
+    public Result addCommunityStar(String id, HttpServletRequest request, String type) {
+        String token = request.getHeader("token");
         String userId = userModelService.getUserIdByToken(token);
-        Result result = new Result<>();
         communityModelService.addCommunityStar(id, userId, type);
         return Result.OK();
     }
@@ -106,7 +116,8 @@ public class CommunityController {
 
     @ApiOperation("我的点赞我的收藏朋友圈列表")
     @RequestMapping(value = "/loadGoodCommunityList", method = RequestMethod.POST)
-    public Result<Page<CommunityModelVo>> loadGoodCommunityList(int type, int pageNo, int pageSize, String token) {
+    public Result<Page<CommunityModelVo>> loadGoodCommunityList(int type, int pageNo, int pageSize, HttpServletRequest request) {
+        String token = request.getHeader("token");
 
         String userId = userModelService.getUserIdByToken(token);
         Result<Page<CommunityModelVo>> result = new Result<Page<CommunityModelVo>>();

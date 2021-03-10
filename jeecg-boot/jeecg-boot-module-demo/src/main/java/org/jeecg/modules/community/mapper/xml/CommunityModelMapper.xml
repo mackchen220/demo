@@ -268,15 +268,16 @@
 
         select
         a.id, a.user_id, a.title, a.content, a.url, a.image_url, a.city, a.`type`, a.user_type, a.star_num, a.good_num,
-        a.forward_num, a.create_time, b.head_image,b.nick_name,c.star as star_status,c.good as good_status
-        from tb_community as a LEFT JOIN tb_user b on a.user_id =b.id and a.check_status=2
+        a.forward_num, a.create_time, b.head_image,b.nick_name,IFNULL(c.star ,0)as star_status,IFNULL(c.good ,0) as good_status
+        from tb_community as a LEFT JOIN tb_user b on a.user_id =b.id
         LEFT JOIN tb_user_star c on c.community_id =a.id and c.user_id  = #{userId,jdbcType=VARCHAR}
             <where>
+                 a.check_status=2
                 <if test="type != null and type==1">
-                    a.user_type =4
+                    and a.user_type =4
                 </if>
                 <if test="type != null and type==3">
-                    a.type =2
+                   and a.type =2
                 </if>
             </where>
         order by create_time DESC
@@ -310,12 +311,12 @@
 <!--        order by create_time DESC-->
 
         select a.id, a.user_id, a.title, a.content, a.url, a.image_url, a.city, a.`type`, a.user_type, a.star_num, a.good_num,
-        a.forward_num, a.create_time, c.head_image,c.nick_name,d.star as star_status,d.good as good_status
-        from tb_community as a LEFT JOIN tb_talent_info b on a.user_id =b.user_id  and a.check_status=2
+        a.forward_num, a.create_time, c.head_image,c.nick_name,IFNULL(d.star,0) as star_status,IFNULL(d.good,0) as good_status
+        from tb_community as a LEFT JOIN tb_talent_info b on a.user_id =b.user_id
         LEFT JOIN tb_user c on b.user_id =c.id
         LEFT JOIN tb_user_star d on d.community_id =a.id and d.user_id = #{userId,jdbcType=VARCHAR}
         order by create_time DESC
-
+        where  a.check_status=2
     </select>
 
 
@@ -375,9 +376,9 @@
     <select id="loadStarAndGoodCommunityList" parameterType="string" resultMap="voResultMap">
     SELECT  a.user_id,b.title, b.content, b.url, b.image_url, b.city, b.`type`, b.user_type, b.star_num, b.good_num,
         b.forward_num, b.create_time, c.head_image,c.nick_name,a.star as star_status,a.good as good_status
-        from tb_user_star a LEFT JOIN tb_community as b on a.community_id =b.id and  and b.check_status=2
+        from tb_user_star a LEFT JOIN tb_community as b on a.community_id =b.id
         LEFT JOIN tb_user c on b.user_id =c.id
-        where a.user_id  = #{userId,jdbcType=VARCHAR}
+        where a.user_id  = #{userId,jdbcType=VARCHAR} and b.check_status=2
         <if test="type != null and type==1">
             and a.star=1
         </if>
@@ -386,13 +387,15 @@
         </if>
     </select>
 
+
 <select id="loadCommunityBySearch" resultMap="voResultMap" parameterType="string">
     select
     a.id, a.user_id, a.title, a.content, a.url, a.image_url, a.city, a.`type`, a.user_type, a.star_num, a.good_num,
-    a.forward_num, a.create_time, b.head_image,b.nick_name,c.star as star_status,c.good as good_status
-    from tb_community as a LEFT JOIN tb_user b on a.user_id =b.id and a.check_status=2
+    a.forward_num, a.create_time, b.head_image,b.nick_name,IFNULL(c.star ,0) as star_status,IFNULL(c.good ,0) as good_status
+    from tb_community as a LEFT JOIN tb_user b on a.user_id =b.id
     LEFT JOIN tb_user_star c on c.community_id =a.id and c.user_id  = #{userId,jdbcType=VARCHAR}
     <where>
+         a.check_status=2
         <if test="type != null">
             and a.`type` =#{type,jdbcType=VARCHAR}
         </if>
@@ -404,10 +407,10 @@
         order by create_time DESC,good_num desc
     </if>
     <if test="sortmodel != null and sortmodel==2">
-        order by create_time DESC
+        order by good_num DESC
     </if>
     <if test="sortmodel != null and sortmodel==3">
-        order by good_num DESC
+        order by create_time DESC
     </if>
 </select>
 

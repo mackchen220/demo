@@ -33,6 +33,21 @@ public class TokenUtils {
     }
 
     /**
+     * 获取 request 前台app接口使用
+     *
+     * @param request
+     * @return
+     */
+    public static String getToken(HttpServletRequest request) {
+        String token = request.getHeader("token");
+        if (token == null) {
+            token = request.getParameter("token");
+        }
+        return token;
+    }
+
+
+    /**
      * 验证Token
      */
     public static boolean verifyToken(HttpServletRequest request, CommonAPI commonAPI, RedisUtil redisUtil) {

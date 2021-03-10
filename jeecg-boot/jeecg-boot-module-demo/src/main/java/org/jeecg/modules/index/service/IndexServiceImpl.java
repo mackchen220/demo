@@ -75,6 +75,7 @@ public class IndexServiceImpl implements IndexService{
         for (UserModel model : talents) {
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("headName",model.getHeadImage());
+            jsonObject.put("userId",model.getId());
             jsonObject.put("nickName",model.getNickName());
             list3.add(jsonObject);
         }
