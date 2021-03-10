@@ -315,8 +315,8 @@
         from tb_community as a LEFT JOIN tb_talent_info b on a.user_id =b.user_id
         LEFT JOIN tb_user c on b.user_id =c.id
         LEFT JOIN tb_user_star d on d.community_id =a.id and d.user_id = #{userId,jdbcType=VARCHAR}
-        order by create_time DESC
         where  a.check_status=2
+        order by create_time DESC
     </select>
 
 
