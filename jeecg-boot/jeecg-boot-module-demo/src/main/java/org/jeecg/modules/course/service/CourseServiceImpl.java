@@ -17,7 +17,10 @@ import org.jeecg.modules.course.model.vo.UserCourseDetailVo;
 import org.jeecg.modules.course.model.vo.UserCourseVo;
 import org.jeecg.modules.index.mapper.PartyModelMapper;
 import org.jeecg.modules.index.model.PartyModel;
+import org.jeecg.modules.user.mapper.UserCourseMapper;
 import org.jeecg.modules.user.model.UserModel;
+import org.jeecg.modules.user.service.UserCourseService;
+import org.jeecg.modules.user.service.UserCourseServiceImpl;
 import org.jeecg.modules.user.service.UserFocusModelService;
 import org.jeecg.modules.user.service.UserModelService;
 import org.springframework.stereotype.Service;
@@ -42,13 +45,15 @@ public class CourseServiceImpl implements CourseService {
     private UserFocusModelService userFocusModelService;
     @Resource
     private UserModelService userModelService;
-
     @Resource
     private CommunityModelMapper communityModelMapper;
     @Resource
     private CourseMapper courseMapper;
     @Resource
     private PartyModelMapper partyModelMapper;
+    @Resource
+    private UserCourseMapper userCourseMapper;
+
 
 
     @Override
@@ -188,13 +193,13 @@ public class CourseServiceImpl implements CourseService {
         //亨氧学院banner
         CourseVo course2 = courseMapper.getCourse(null, Constant.CHECKTYPE1);
 
-        List<CourseVo> courses1 = courseMapper.loadCourseListByType(Constant.CHECKTYPE1, null);
+        List<CourseVo> courses1 = courseMapper.loadCourseListByType(null, null);
 
         List<CourseVo> courses2 = courseMapper.loadCourseListByType(null, Constant.CHECKTYPE1);
 
         Map<String, Object> map = new HashMap<>();
-        map.put("banner", course1);
-        map.put("recommed", course2);
+        map.put("recommed", course1);
+        map.put("banner", ValidateTool.isNotNull(course2) ? course2.getImage() : "");
         map.put("courses", courses1);
         map.put("others", courses2);
 
@@ -208,11 +213,19 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public CourseVo getCourseInfo(String id) {
+    public CourseVo getCourseInfo(String id,String userId) {
         CourseVo courseInfo = courseMapper.getCourseInfo(id);
+        if (ValidateTool.isNotNull(courseInfo.getUserId())) {
+            UserModel user = userModelService.getUserById(courseInfo.getUserId());
+            courseInfo.setHeadImage(ValidateTool.isNotNull(user) ? user.getHeadImage() : "");
+            courseInfo.setNickName(ValidateTool.isNotNull(user) ? user.getNickName() : "");
+            courseInfo.setUserSign(ValidateTool.isNotNull(user) ? user.getSign() : "");
+        }
         if (Constant.TYPE_INT_1 == courseInfo.getType()) {
             courseInfo.setUrl(null);
         }
+        String course = userCourseMapper.loadUserCourse(userId, id);
+        courseInfo.setByState(Integer.parseInt(course) > 0 ? 1 : 0);
         return courseInfo;
     }
 

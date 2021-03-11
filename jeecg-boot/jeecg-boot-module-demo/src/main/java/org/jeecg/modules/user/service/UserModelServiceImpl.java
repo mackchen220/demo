@@ -115,12 +115,20 @@ public class UserModelServiceImpl implements UserModelService {
             throw new JeecgBootException("请输入验证码");
         }
         ValidateTool.checkParamIsMobile(phone);
-        String realKey = MD5Util.MD5Encode(captcha + phone, "utf-8");
-        Object checkCode = redisUtil.get(realKey);
+//        String realKey = MD5Util.MD5Encode(captcha + phone, "utf-8");
+//        Object checkCode = redisUtil.get(realKey);
+//        //当进入登录页时，有一定几率出现验证码错误 #1714
+//        if (checkCode == null || !checkCode.toString().equals(captcha)) {
+//            throw new JeecgBootException("验证码错误");
+//        }
+        Object code = redisUtil.get(RedisKey.SMS_CODE + phone);
+
         //当进入登录页时，有一定几率出现验证码错误 #1714
-        if (checkCode == null || !checkCode.toString().equals(captcha)) {
+        if (code == null || !code.toString().equals(captcha)) {
             throw new JeecgBootException("验证码错误");
         }
+
+
     }
     public void login(UserModel userModel, JSONObject object) {
         // 生成前台token
@@ -212,7 +220,7 @@ public class UserModelServiceImpl implements UserModelService {
 
     public int nextUserName() {
         //生成一个不重复的邀请码
-        int number = RandomUtil.nextNumber(6, 6);
+        int number = RandomUtil.nextNumber(1000000, 9999999);
         log.info("生成用户名{}", number);
         do {
             UserModel userModel = userModelMapper.loadUserByUserName(String.valueOf(number));
@@ -221,12 +229,16 @@ public class UserModelServiceImpl implements UserModelService {
                 break;
             } else {
                 log.warn("生成用户名重复{}", number);
-                number = RandomUtil.nextNumber(6, 6);
+                number = RandomUtil.nextNumber(1000000, 9999999);
                 log.warn("再次生成用户名{}", number);
             }
         } while (true);
         log.info("最终生成用户名{}", number);
         return number;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(RandomUtil.nextNumber(1000000, 9999999));
     }
 
 

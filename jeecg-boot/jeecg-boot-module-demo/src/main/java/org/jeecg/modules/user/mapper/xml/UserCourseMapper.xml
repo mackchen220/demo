@@ -170,4 +170,10 @@
       del_flag = #{delFlag,jdbcType=TINYINT}
     where id = #{id,jdbcType=VARCHAR}
   </update>
+
+  <select id="loadUserCourse" parameterType="string" resultType="string">
+    select count(0) from tb_user_course where
+    user_id = #{userId,jdbcType=VARCHAR} and
+    course_id = #{courseId,jdbcType=VARCHAR}
+  </select>
 </mapper>

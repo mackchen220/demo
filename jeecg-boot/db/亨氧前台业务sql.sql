@@ -226,6 +226,12 @@ CREATE TABLE `tb_course` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='课程表';
 
 
+ALTER TABLE `tb_course`
+ADD COLUMN `content` varchar(255) NULL COMMENT '文章简介' AFTER `banner`,
+ADD COLUMN `course_info` varchar(255) NULL COMMENT '课程详细信息' AFTER `content`;
+ALTER TABLE `tb_course`
+ADD COLUMN `user_id` varchar(32) NULL COMMENT '作者' AFTER `course_info`;
+
 
 DROP TABLE IF EXISTS `tb_user_course`;
 CREATE TABLE `tb_user_course` (
@@ -485,6 +491,10 @@ KEY `idx_user_id` (`user_id`,`community_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='用户点赞收藏朋友圈表';
 
 
+ALTER TABLE `tb_user_star`
+ADD COLUMN `page_type` int(1) NOT NULL COMMENT '内容分类 1 朋友圈 2 活动 3课程' AFTER `good`;
+
+
 DROP TABLE IF EXISTS `tb_hot_search`;
 CREATE TABLE `tb_hot_search` (
      `id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
@@ -646,3 +656,25 @@ CREATE TABLE `tb_app_version` (
   `del_flag` tinyint(1) NOT NULL DEFAULT '0' COMMENT '删除标识0-正常,1-已删除',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='app升级版本号';
+
+
+
+
+DROP TABLE IF EXISTS `tb_sms_config`;
+CREATE TABLE `tb_sms_config` (
+  `id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+	 `send_api` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '短信接口地址',
+  `login_name` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '接口账号 (必填)（企业登录名）',
+	 `send_content` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '短信内容模板',
+	 `password` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '密码 (必填)（企业账号对应密码）',
+ 	 `sign_name` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '签名（可为空）',
+	 `fee_type` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '计费套餐类型 (必填)2 行业套餐 3 为政务套餐',
+	 `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+`update_time` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '更新日期',
+  `create_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '创建人',
+  `update_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '更新人',
+  `del_flag` tinyint(1) NOT NULL DEFAULT '0' COMMENT '删除标识0-正常,1-已删除',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='短信配置表';
+
+

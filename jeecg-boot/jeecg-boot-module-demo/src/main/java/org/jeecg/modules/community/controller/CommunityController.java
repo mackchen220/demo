@@ -106,10 +106,10 @@ public class CommunityController {
 
     @ApiOperation("朋友圈点赞接口")
     @RequestMapping(value = "/addCommunityStar", method = RequestMethod.POST)
-    public Result addCommunityStar(String id, HttpServletRequest request, String type) {
+    public Result addCommunityStar(String id, HttpServletRequest request, String type,String pageType) {
         String token = request.getHeader("token");
         String userId = userModelService.getUserIdByToken(token);
-        communityModelService.addCommunityStar(id, userId, type);
+        communityModelService.addCommunityStar(id, userId, type, pageType);
         return Result.OK();
     }
 

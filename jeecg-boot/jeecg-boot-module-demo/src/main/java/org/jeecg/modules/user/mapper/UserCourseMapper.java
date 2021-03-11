@@ -1,5 +1,6 @@
 package org.jeecg.modules.user.mapper;
 
+import org.apache.ibatis.annotations.Param;
 import org.jeecg.modules.user.model.UserCourse;
 
 public interface UserCourseMapper {
@@ -14,4 +15,6 @@ public interface UserCourseMapper {
     int updateByPrimaryKeySelective(UserCourse record);
 
     int updateByPrimaryKey(UserCourse record);
+
+    String loadUserCourse(@Param("userId") String userId, @Param("courseId")String courseId);
 }

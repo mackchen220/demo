@@ -37,7 +37,7 @@ public interface CourseService {
 
     Map loadCommendCourse(String type);
 
-    CourseVo getCourseInfo(String id);
+    CourseVo getCourseInfo(String id,String userId);
 
     List<CourseInfoVo> getCourseInfoList(String courseId);
 

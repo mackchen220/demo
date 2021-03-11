@@ -19,7 +19,7 @@ public interface CommunityModelService {
 
     IPage<CommunityModel> getListByUserId(Page<CommunityModel> objectPage, String userId);
 
-    void addCommunityStar(String id, String userId, String type);
+    void addCommunityStar(String id, String userId, String type,String pageType);
 
     Page<CommunityModelVo> loadGoodCommunityList(Page<CommunityModelVo> page, String userId, int type);
 

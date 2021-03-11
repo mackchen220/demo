@@ -22,6 +22,24 @@ public class Course implements Serializable {
     private String image;
 
     /**
+     * 课程简介
+     */
+    private String content;
+
+
+    /**
+     * 课程详细信息
+     */
+    private String courseInfo;
+
+
+    /**
+     * 作者
+     */
+    private String userId;
+
+
+    /**
     * 价格
     */
     private Long price;

@@ -7,6 +7,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.jeecg.common.api.vo.Result;
 import org.jeecg.common.exception.JeecgBootException;
+import org.jeecg.common.util.TokenUtils;
 import org.jeecg.modules.commons.ErrorInfoCode;
 import org.jeecg.modules.commons.util.ValidateTool;
 import org.jeecg.modules.community.model.CommunityModel;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -105,9 +107,11 @@ public class CourseController {
 
     @ApiOperation("课程详情")
     @PostMapping("/getCourseInfo")
-    public Result getCourseInfo(String token,String id) {
+    public Result getCourseInfo(HttpServletRequest request, String id) {
 
-        CourseVo courseInfo = courseService.getCourseInfo(id);
+        String token = TokenUtils.getToken(request);
+        String idByToken = userModelService.getUserIdByToken(token);
+        CourseVo courseInfo = courseService.getCourseInfo(id,idByToken);
         return Result.oKWithToken(token,courseInfo);
     }
 

@@ -2,6 +2,8 @@ package org.jeecg.modules.index.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.jeecg.common.exception.JeecgBootException;
+import org.jeecg.common.util.RedisUtil;
+import org.jeecg.modules.commons.RedisKey;
 import org.jeecg.modules.commons.util.ValidateTool;
 import org.jeecg.modules.user.mapper.UserModelMapper;
 import org.jeecg.modules.user.model.UserModel;
@@ -22,6 +24,8 @@ public class PartyModelServiceImpl implements PartyModelService{
     private PartyModelMapper partyModelMapper;
     @Resource
     private UserModelMapper userModelMapper;
+    @Resource
+    private RedisUtil redisUtil;
 
 
     @Override
@@ -52,6 +56,9 @@ public class PartyModelServiceImpl implements PartyModelService{
         if (ValidateTool.isNull(partyModel)) {
             throw new JeecgBootException("活动不存在");
         }
+        //剩余名额
+//        Object num = redisUtil.get(RedisKey.PARTY_NUM + partyId);
+//        partyModel.setNextNum(Integer.parseInt(String.valueOf(num)));
         Map<String, Object> map = new HashMap<>();
         UserModel userModel = userModelMapper.loadUser(partyModel.getUserId(), null, null, null,null);
         map.put("userName",ValidateTool.isNull(userModel)?"":userModel.getNickName());

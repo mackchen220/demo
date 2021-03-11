@@ -26,7 +26,11 @@ public class UserStar implements Serializable {
     @ApiModelProperty(value="是否点赞")
     private String good;
 
-
+    /**
+     *  内容分类 1 朋友圈 2 活动 3课程
+     */
+    @ApiModelProperty(value="内容分类 1 朋友圈 2 活动 3课程")
+    private String pageType;
     /**
      *  是否收藏
      */

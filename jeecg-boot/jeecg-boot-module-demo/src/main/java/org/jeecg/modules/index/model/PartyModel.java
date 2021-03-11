@@ -65,6 +65,21 @@ public class PartyModel implements Serializable {
     @ApiModelProperty(value="价格")
     private String price;
 
+
+    /**
+     * 原价格
+     */
+    @ApiModelProperty(value="原价格")
+    private String oldPrice;
+
+
+    /**
+     * 剩余名额
+     */
+    @ApiModelProperty(value="剩余名额")
+    private Integer nextNum;
+
+
     /**
     * 名额
     */

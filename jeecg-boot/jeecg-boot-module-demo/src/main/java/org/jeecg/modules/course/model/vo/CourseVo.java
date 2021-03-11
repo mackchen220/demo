@@ -56,9 +56,51 @@ public class CourseVo implements Serializable {
 //    private Integer courseType;
 
     /**
+     * 用户是否已购买
+     */
+    private Integer byState;
+
+
+
+    /**
      * 城市
      */
     private String city;
+
+    /**
+     *
+     */
+    private String headImage;
+
+    /**
+     *
+     */
+    private String nickName;
+
+    /**
+     * 个性签名
+     */
+    private String userSign;
+
+
+    /**
+     * 作者
+     */
+    private String userId;
+
+
+    /**
+     * 课程简介
+     */
+    private String content;
+
+
+    /**
+     * 课程详细信息
+     */
+    private String courseInfo;
+
+
 
     /**
      * 收藏数量

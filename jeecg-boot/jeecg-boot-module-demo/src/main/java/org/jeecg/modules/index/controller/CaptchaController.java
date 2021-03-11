@@ -59,12 +59,11 @@ public class CaptchaController {
     @RequestMapping(value = "/getPhoneCaptchaCode", method = RequestMethod.POST)
     public Result<JSONObject> getPhoneCaptchaCode(String phone) {
 
-        String captchaCode = captchaCodeService.getCaptchaCode(6);
-        Result<JSONObject> result = new Result<JSONObject>();
+        captchaCodeService.getPhoneCaptchaCode(phone);
+        int checkfirst = userModelService.checkfirst(phone);
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("code", captchaCode);
-        result.setResult(jsonObject);
-        return result;
+        jsonObject.put("first", checkfirst);
+        return Result.OK(jsonObject);
     }
 
 }
