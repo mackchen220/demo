@@ -20,6 +20,11 @@ public class UserModel {
     private String nickName;
 
     /**
+     * 是否实名认证 1是 0否
+     */
+    private String verified;
+
+    /**
     * 头像
     */
     private String headImage;

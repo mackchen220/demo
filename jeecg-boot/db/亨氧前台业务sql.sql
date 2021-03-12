@@ -53,6 +53,13 @@ ALTER TABLE `db_0`.`tb_user`
 MODIFY COLUMN `gender` int(0) NULL DEFAULT 1 COMMENT '1-女,0-男' AFTER `login_times`;
 
 
+ALTER TABLE `db_0`.`tb_user`
+ADD COLUMN `verified` int(1) NULL DEFAULT 0 COMMENT '是否实名认证 0否 1是' AFTER `weixin_id`,
+ADD COLUMN `id_num` varchar(32) NULL COMMENT '身份证号码' AFTER `verified`,
+ADD COLUMN `real_name` varchar(16) NULL COMMENT '真实姓名' AFTER `id_num`;
+
+
+
 DROP TABLE IF EXISTS `tb_address`;
 CREATE TABLE `tb_address` (
   `id` varchar(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
@@ -677,4 +684,17 @@ CREATE TABLE `tb_sms_config` (
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='短信配置表';
 
+
+CREATE TABLE `tb_verified_config` (
+  `id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `send_api` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '接口地址',
+  `app_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'appId',
+  `app_key` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'appKey',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '更新日期',
+  `create_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '创建人',
+  `update_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '更新人',
+  `del_flag` tinyint(1) NOT NULL DEFAULT '0' COMMENT '删除标识0-正常,1-已删除',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='实名认证配置表';
 

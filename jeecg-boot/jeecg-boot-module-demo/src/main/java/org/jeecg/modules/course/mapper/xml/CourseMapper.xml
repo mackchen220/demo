@@ -364,6 +364,15 @@
   order by good_num desc
 </select>
 
+  <select id="loadCourseListPage" resultMap="voResultMap" parameterType="string">
+    select <include refid="Base_Column_List"/>
+    from tb_course
+    where del_flag = 0
+    <if test="courseType != null and courseType != ''">
+      and course_type = #{courseType}
+    </if>
+    order by good_num desc
+  </select>
 
   <select id="getCourseInfoList" parameterType="string" resultMap="couserInfoVoResultMap">
     select  id, title, image, price, sort, create_time from tb_courese_info

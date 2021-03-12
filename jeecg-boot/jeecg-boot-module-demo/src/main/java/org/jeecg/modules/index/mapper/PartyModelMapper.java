@@ -21,7 +21,7 @@ public interface PartyModelMapper {
 
     int updateByPrimaryKey(PartyModel record);
 
-    List<PartyModel> loadPartyList(Page<PartyModel> page);
+    List<PartyModel> loadPartyList(Page<PartyModel> page, @Param("userId") String userId);
 
     List<PartyModel> getListOrderByLikeNum(Page<PartyModel> page, @Param("city") String city);
 

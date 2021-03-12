@@ -17,7 +17,7 @@ public interface PartyModelService{
     int updateByPrimaryKeySelective(PartyModel record);
 
 
-    Page<PartyModel> loadPartyList(Page<PartyModel> page);
+    Page<PartyModel> loadPartyList(Page<PartyModel> page, String userId );
 
-    Map loadPartyInfo(String partyId);
+    Map loadPartyInfo(String partyId, String userId);
 }

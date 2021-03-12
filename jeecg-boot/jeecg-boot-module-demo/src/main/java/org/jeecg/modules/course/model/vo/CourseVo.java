@@ -112,6 +112,21 @@ public class CourseVo implements Serializable {
     private Long forwardNum;
 
 
+    /**
+     * 是否收藏 1是0否
+     */
+    @ApiModelProperty(value="是否收藏 1是0否")
+    private String starStatus ;
+
+    /**
+     * 是否点赞 1是0否
+     */
+    @ApiModelProperty(value="是否点赞 1是0否")
+    private String goodStatus;
+
+
+
+
 //    /**
 //     * 内容分类 1亨氧APP项目 2医美创业项目 3引流爆破项目
 //     */

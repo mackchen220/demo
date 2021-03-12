@@ -11,10 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.jeecg.common.api.vo.Result;
 import org.jeecg.common.constant.CommonConstant;
 import org.jeecg.common.system.vo.LoginUser;
-import org.jeecg.common.util.IPUtils;
-import org.jeecg.common.util.MD5Util;
-import org.jeecg.common.util.PasswordUtil;
-import org.jeecg.common.util.RedisUtil;
+import org.jeecg.common.util.*;
 import org.jeecg.modules.commons.util.ValidateTool;
 import org.jeecg.modules.user.model.UserBankModel;
 import org.jeecg.modules.user.model.UserModel;
@@ -236,5 +233,13 @@ public class UserController {
         return Result.oKWithToken(token, incomeDetail);
     }
 
+
+    @ApiOperation("实名认证")
+    @RequestMapping(value = "/addUserVerified", method = RequestMethod.POST)
+    public Result addUserVerified(HttpServletRequest request, String userName, String idNum, String image) {
+        UserModel user = userModelService.getUserModelByToken(TokenUtils.getToken(request));
+        userModelService.addUserVerified(user, userName, idNum, image);
+        return Result.OK();
+    }
 
 }

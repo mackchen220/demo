@@ -28,7 +28,8 @@
     <result column="create_by" jdbcType="VARCHAR" property="createBy" />
     <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
     <result column="del_flag" jdbcType="INTEGER" property="delFlag" />
-
+    <result column="star_status" jdbcType="VARCHAR" property="starStatus"/>
+    <result column="good_status" jdbcType="VARCHAR" property="goodStatus"/>
   </resultMap>
   <sql id="Base_Column_List">
     <!--@mbg.generated-->
@@ -303,11 +304,10 @@
   </update>
 
   <select id="loadPartyList" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List" />
-    from tb_party
-    where del_flag = 0
-    order by good_num desc
+    select a.*,IFNULL(b.star ,0) as star_status,IFNULL(b.good ,0) as good_status
+    from tb_party as a LEFT JOIN tb_user_star as b on a.id =b.community_id and  b.user_id = #{userId,jdbcType=VARCHAR}
+    where a.del_flag = 0
+    order by a.good_num desc
   </select>
 
   <select id="loadHengYangPartyList" resultMap="BaseResultMap">

@@ -35,7 +35,7 @@ public interface CourseService {
 
     List<PartyModel> loadHengYangActivity();
 
-    Map loadCommendCourse(String type);
+    Page<CourseVo> loadCommendCourse(Page<CourseVo> page ,String type);
 
     CourseVo getCourseInfo(String id,String userId);
 

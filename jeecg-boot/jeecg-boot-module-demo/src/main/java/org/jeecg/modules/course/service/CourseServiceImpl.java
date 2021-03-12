@@ -18,6 +18,7 @@ import org.jeecg.modules.course.model.vo.UserCourseVo;
 import org.jeecg.modules.index.mapper.PartyModelMapper;
 import org.jeecg.modules.index.model.PartyModel;
 import org.jeecg.modules.user.mapper.UserCourseMapper;
+import org.jeecg.modules.user.mapper.UserStarMapper;
 import org.jeecg.modules.user.model.UserModel;
 import org.jeecg.modules.user.service.UserCourseService;
 import org.jeecg.modules.user.service.UserCourseServiceImpl;
@@ -53,6 +54,8 @@ public class CourseServiceImpl implements CourseService {
     private PartyModelMapper partyModelMapper;
     @Resource
     private UserCourseMapper userCourseMapper;
+    @Resource
+    private UserStarMapper userStarMapper;
 
 
 
@@ -226,20 +229,17 @@ public class CourseServiceImpl implements CourseService {
         }
         String course = userCourseMapper.loadUserCourse(userId, id);
         courseInfo.setByState(Integer.parseInt(course) > 0 ? 1 : 0);
+        int star = userStarMapper.isStar(id, userId, Constant.CHECKTYPE1, null);
+        int good = userStarMapper.isStar(id, userId, null, Constant.CHECKTYPE1);
+        courseInfo.setStarStatus(String.valueOf(star));
+        courseInfo.setGoodStatus(String.valueOf(good));
         return courseInfo;
     }
 
     @Override
-    public Map loadCommendCourse(String type) {
-        //亨氧学院banner
-        CourseVo course = courseMapper.getCourse(null, Constant.CHECKTYPE1);
-        List<CourseVo> courses = courseMapper.loadCourseListByType(null, type);
-
-        Map<String, Object> map = new HashMap<>();
-        map.put("banner", course);
-        map.put("courses", courses);
-
-        return map;
+    public Page<CourseVo> loadCommendCourse(Page<CourseVo> page,String type) {
+        List<CourseVo> courses = courseMapper.loadCourseListPage(page, type);
+        return page.setRecords(courses);
     }
 
     @Override

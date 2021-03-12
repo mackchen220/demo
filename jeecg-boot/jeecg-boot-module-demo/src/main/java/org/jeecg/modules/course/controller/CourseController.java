@@ -117,9 +117,11 @@ public class CourseController {
 
     @ApiOperation("课程推荐")
     @PostMapping("/loadCommendCourse")
-    public Result loadCommendCourse(String token,String type) {
-        Map map = courseService.loadCommendCourse(type);
-        return Result.oKWithToken(token,map);
+    public Result loadCommendCourse(String type,@RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo,
+                                    @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize) {
+        Page<CourseVo> page = new Page<>(pageNo,pageSize);
+        Page<CourseVo> courseVoPage = courseService.loadCommendCourse(page, type);
+        return Result.OK(courseVoPage);
     }
 
     @ApiOperation("课程章节列表")

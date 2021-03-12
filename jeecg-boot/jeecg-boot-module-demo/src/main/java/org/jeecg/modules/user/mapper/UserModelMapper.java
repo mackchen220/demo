@@ -22,4 +22,7 @@ public interface UserModelMapper {
 
     void updateUserDelFlag(@Param("userId") String userId, @Param("type") Integer type);
 
+
+    void updateUserVerified(@Param("userId") String userId, @Param("idNum") String idNum, @Param("realName") String realName);
+
 }

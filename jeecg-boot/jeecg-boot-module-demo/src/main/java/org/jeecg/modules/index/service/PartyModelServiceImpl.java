@@ -3,12 +3,16 @@ package org.jeecg.modules.index.service;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.jeecg.common.exception.JeecgBootException;
 import org.jeecg.common.util.RedisUtil;
+import org.jeecg.modules.commons.Constant;
 import org.jeecg.modules.commons.RedisKey;
 import org.jeecg.modules.commons.util.ValidateTool;
 import org.jeecg.modules.user.mapper.UserModelMapper;
+import org.jeecg.modules.user.mapper.UserStarMapper;
 import org.jeecg.modules.user.model.UserModel;
 import org.springframework.stereotype.Service;
+
 import javax.annotation.Resource;
+
 import org.jeecg.modules.index.model.PartyModel;
 import org.jeecg.modules.index.mapper.PartyModelMapper;
 import org.jeecg.modules.index.service.PartyModelService;
@@ -18,7 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-public class PartyModelServiceImpl implements PartyModelService{
+public class PartyModelServiceImpl implements PartyModelService {
 
     @Resource
     private PartyModelMapper partyModelMapper;
@@ -26,6 +30,8 @@ public class PartyModelServiceImpl implements PartyModelService{
     private UserModelMapper userModelMapper;
     @Resource
     private RedisUtil redisUtil;
+    @Resource
+    private UserStarMapper userStarMapper;
 
 
     @Override
@@ -45,13 +51,13 @@ public class PartyModelServiceImpl implements PartyModelService{
 
 
     @Override
-    public Page<PartyModel> loadPartyList(Page<PartyModel> page) {
-        List<PartyModel> partyModels = partyModelMapper.loadPartyList(page);
+    public Page<PartyModel> loadPartyList(Page<PartyModel> page, String userId) {
+        List<PartyModel> partyModels = partyModelMapper.loadPartyList(page,userId);
         return page.setRecords(partyModels);
     }
 
     @Override
-    public Map loadPartyInfo(String partyId) {
+    public Map loadPartyInfo(String partyId, String userId) {
         PartyModel partyModel = partyModelMapper.selectByPrimaryKey(partyId);
         if (ValidateTool.isNull(partyModel)) {
             throw new JeecgBootException("活动不存在");
@@ -60,10 +66,15 @@ public class PartyModelServiceImpl implements PartyModelService{
 //        Object num = redisUtil.get(RedisKey.PARTY_NUM + partyId);
 //        partyModel.setNextNum(Integer.parseInt(String.valueOf(num)));
         Map<String, Object> map = new HashMap<>();
-        UserModel userModel = userModelMapper.loadUser(partyModel.getUserId(), null, null, null,null);
-        map.put("userName",ValidateTool.isNull(userModel)?"":userModel.getNickName());
-        map.put("headImage",ValidateTool.isNull(userModel)?"":userModel.getHeadImage());
-        map.put("party",partyModel);
+
+        int star = userStarMapper.isStar(partyId, userId, Constant.CHECKTYPE1, null);
+        int good = userStarMapper.isStar(partyId, userId, null, Constant.CHECKTYPE1);
+        partyModel.setStarStatus(String.valueOf(star));
+        partyModel.setGoodStatus(String.valueOf(good));
+        UserModel userModel = userModelMapper.loadUser(partyModel.getUserId(), null, null, null, null);
+        map.put("userName", ValidateTool.isNull(userModel) ? "" : userModel.getNickName());
+        map.put("headImage", ValidateTool.isNull(userModel) ? "" : userModel.getHeadImage());
+        map.put("party", partyModel);
         return map;
     }
 }

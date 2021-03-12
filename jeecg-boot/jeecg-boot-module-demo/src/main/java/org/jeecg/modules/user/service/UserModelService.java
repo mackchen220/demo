@@ -7,6 +7,7 @@ import org.jeecg.modules.user.model.UserModel;
 import org.jeecg.modules.user.model.WeiXinModel;
 import org.jeecg.modules.user.model.vo.UserIncomeDetailVo;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 public interface UserModelService {
@@ -38,5 +39,9 @@ public interface UserModelService {
 
 
     void bindUserPhone(String unionId, String phone, String captcha);
+
+    void addUserVerified(String userId, String userName, String idNum, String imageFirst, String imageBack);
+
+    void addUserVerified(UserModel user, String userName, String idNum, String image);
 
 }

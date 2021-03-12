@@ -42,16 +42,14 @@ public class CommunityController {
         String token = request.getHeader("token");
 
         String userId = userModelService.getUserIdByToken(token);
-        Result<Page<CommunityModelVo>> result = new Result<Page<CommunityModelVo>>();
         Page<CommunityModelVo> pageList = new Page<CommunityModelVo>(pageNo, pageSize);
 
         pageList = communityModelService.loadCommunityListByType(pageList, type, userId);
-        result.setResult(pageList);
         log.info("查询当前页：" + pageList.getCurrent());
         log.info("查询当前页数量：" + pageList.getSize());
         log.info("查询结果数量：" + pageList.getRecords().size());
         log.info("数据总数：" + pageList.getTotal());
-        return result;
+        return Result.OK(pageList);
     }
 
 

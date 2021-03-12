@@ -12,6 +12,18 @@ public class PartyModel implements Serializable {
     private String id;
 
     /**
+     * 是否收藏 1是0否
+     */
+    @ApiModelProperty(value="是否收藏 1是0否")
+    private String starStatus ;
+
+    /**
+     * 是否点赞 1是0否
+     */
+    @ApiModelProperty(value="是否点赞 1是0否")
+    private String goodStatus;
+
+    /**
     * 派对标题
     */
     @ApiModelProperty(value="派对标题")
