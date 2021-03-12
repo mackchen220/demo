@@ -178,7 +178,8 @@ public class UserModelServiceImpl implements UserModelService {
             userModel.setInviteCode(nextInviteCode());
             userModel.setPassword(phone);
             userModel.setWeixinId(unionId);
-            userModel.setGender(ValidateTool.isNull(gender) ? 0 : Integer.parseInt(String.valueOf(gender)));
+            //腾讯1男2女
+            userModel.setGender(ValidateTool.isNotNull(gender) ? (Integer.parseInt(String.valueOf(gender)) == 1 ? 1 : 0) : 0);
             userModel.setNickName(String.valueOf(nickName));
             userModel.setUserName(String.valueOf(nextUserName()));
             userModel.setCity(String.valueOf(city));
