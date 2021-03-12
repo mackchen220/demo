@@ -14,13 +14,7 @@ import org.jeecg.modules.index.model.PartyModel;
 import java.util.List;
 import java.util.Map;
 
-/**
- * @className: CourseService
- * @description: 社区模块业务
- * @author: LongXiang
- * @data: 2021-02-05 16:50
- * @version: V1.0
- */
+
 public interface CourseService {
 
     IPage<CommunityModel> followList(Page<CommunityModel> page, String userId);
