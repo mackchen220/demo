@@ -55,6 +55,9 @@ public class UserModelServiceImpl implements UserModelService {
     @Resource
     private VerifiedConfigMapper verifiedConfigMapper;
 
+    @Resource
+    private UserAgencyModelMapper userAgencyModelMapperl;
+
     @Override
     public UserModel getUserById(String id) {
         UserModel userModel = userModelMapper.loadUser(id, null, null, null, null);
@@ -295,7 +298,8 @@ public class UserModelServiceImpl implements UserModelService {
         map.put("headImage", model.getHeadImage());
         map.put("nickName", model.getNickName());
         map.put("sige", model.getSign());
-
+        map.put("inviteCode", model.getInviteCode());
+        map.put("wx", ValidateTool.isNull(model.getWeixinId()) ? 0 : 1);
         String phone = "";
         if (ValidateTool.isNotNull(model.getPhone())) {
             phone = model.getPhone().replace(model.getPhone().substring(3, 7), "****");
@@ -303,6 +307,23 @@ public class UserModelServiceImpl implements UserModelService {
         map.put("phone", phone);
         map.put("id", model.getId());
         return map;
+    }
+
+    @Override
+    public void updateUserPhone(String phone, String captcha, UserModel userModel) {
+        ValidateTool.checkParamIsMobile(phone);
+        if (ValidateTool.isNull(captcha)) {
+            throw new JeecgBootException("请输入验证码");
+        }
+        Object code = redisUtil.get(RedisKey.SMS_CODE + phone);
+        if (code == null || !code.toString().equals(captcha)) {
+            throw new JeecgBootException("验证码错误");
+        }
+        UserModel userModel1 = new UserModel();
+        userModel1.setId(userModel.getId());
+        userModel1.setPhone(phone);
+        userModelMapper.updateByPrimaryKeySelective(userModel1);
+
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -314,12 +335,15 @@ public class UserModelServiceImpl implements UserModelService {
             userModel1.setHeadImage(headImage);
         }
         if (ValidateTool.isNotNull(nickName)) {
-            userModel1.setHeadImage(headImage);
+            userModel1.setNickName(nickName);
         }
         if (ValidateTool.isNotNull(content)) {
+            if (content.length()>16){
+                throw new JeecgBootException("个性签名限制十六个字");
+            }
             userModel1.setSign(content);
         }
-        if (ValidateTool.isNull(content) && ValidateTool.isNull(content) && ValidateTool.isNull(content)) {
+        if (ValidateTool.isNull(headImage) && ValidateTool.isNull(nickName) && ValidateTool.isNull(content)) {
             throw new JeecgBootException("修改失败");
         }
         userModelMapper.updateByPrimaryKeySelective(userModel1);
@@ -337,10 +361,10 @@ public class UserModelServiceImpl implements UserModelService {
         //可提现收入
         map.put("excess", userModel.getMoney());
         //审核中 todo
-        map.put("Review", 0);
+        map.put("review", 0);
 
         //手续费 todo
-        map.put("excess", "0.1");
+        map.put("handlingFee", "0.1");
 
         //今日收入
         String startTimeToday = DateHelper.getToday() + DateHelper.DEFUALT_TIME_START;
@@ -368,6 +392,14 @@ public class UserModelServiceImpl implements UserModelService {
 
         List<UserIncomeDetailVo> detailVos = userIncomeDetailMapper.loadUserIncomeList(page, userId, type == 1 ? 1 : 3, startTime, endTime);
 
+        if (Constant.TYPE_INT_2 == type && detailVos.size() > 0) {
+            for (UserIncomeDetailVo incomeDetailVo : detailVos) {
+                UserAgencyModel userAgencyModel = userAgencyModelMapper.loadUserAgency(incomeDetailVo.getSendId(), userId);
+                incomeDetailVo.setSondType(ValidateTool.isNotNull(userAgencyModel) ? 1 : 2);
+                UserModel userModel = userModelMapper.loadUser(incomeDetailVo.getSendId(), null, null, null, null);
+                incomeDetailVo.setNickName(userModel.getNickName());
+            }
+        }
         return page.setRecords(detailVos);
     }
 

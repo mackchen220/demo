@@ -157,17 +157,28 @@ public class UserController {
 
     @ApiOperation("修改用户信息")
     @RequestMapping(value = "/updateUserInfo", method = RequestMethod.POST)
-    public Result updateUserInfo(String nickName, String headImage, String sign, String token) {
+    public Result updateUserInfo(String nickName, String headImage, String sign, HttpServletRequest request) {
+        String token = request.getHeader("token");
         UserModel userModel = userModelService.getUserModelByToken(token);
         userModelService.updateUserInfo(userModel, nickName, headImage, sign);
+        return Result.OK("修改成功", null);
+    }
+
+    @ApiOperation("用户修改手机号")
+    @RequestMapping(value = "/updateUserPhone", method = RequestMethod.POST)
+    public Result updateUserPhone(String phone, String captcha, HttpServletRequest request) {
+        String token = request.getHeader("token");
+        UserModel userModel = userModelService.getUserModelByToken(token);
+        userModelService.updateUserPhone(phone, captcha, userModel);
         return Result.OK("修改成功", null);
     }
 
 
     @ApiOperation("我的页面点击头像加载用户信息")
     @RequestMapping(value = "/loadUserInfo", method = RequestMethod.POST)
-    public Result<Map> loadUserInfo(String token) {
-        Map map = userModelService.loadUserInfo(token);
+    public Result<Map> loadUserInfo(HttpServletRequest request) {
+
+        Map map = userModelService.loadUserInfo(TokenUtils.getToken(request));
         return Result.OK(map);
     }
 
@@ -217,20 +228,20 @@ public class UserController {
 
     @ApiOperation("我的钱包")
     @RequestMapping(value = "/loadMyWalletInfo", method = RequestMethod.POST)
-    public Result<Map> loadMyWalletInfo(String token) {
-        String id = userModelService.getUserIdByToken(token);
+    public Result<Map> loadMyWalletInfo(HttpServletRequest request) {
+        String id = userModelService.getUserIdByToken(TokenUtils.getToken(request));
         Map map = userModelService.loadMyWalletInfo(id);
-        return Result.oKWithToken(token, map);
+        return Result.OK(map);
     }
 
 
     @ApiOperation("收益记录")
     @RequestMapping(value = "/loadIncomeDetail", method = RequestMethod.POST)
-    public Result<Page<UserIncomeDetailVo>> loadIncomeDetail(String token, Integer pageNo, Integer pageSize, Integer type) {
-        String id = userModelService.getUserIdByToken(token);
+    public Result<Page<UserIncomeDetailVo>> loadIncomeDetail(HttpServletRequest request, Integer pageNo, Integer pageSize, Integer type) {
+        String id = userModelService.getUserIdByToken(TokenUtils.getToken(request));
         Page<UserIncomeDetailVo> page = new Page<>(pageNo, pageSize);
         Page<UserIncomeDetailVo> incomeDetail = userModelService.loadIncomeDetail(id, page, type, null, null);
-        return Result.oKWithToken(token, incomeDetail);
+        return Result.OK(incomeDetail);
     }
 
 

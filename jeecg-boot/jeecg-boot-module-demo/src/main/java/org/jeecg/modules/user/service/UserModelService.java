@@ -22,6 +22,8 @@ public interface UserModelService {
 
     void updateUserInfo(UserModel userModel, String nickName, String headImage, String content);
 
+    void updateUserPhone(String phone, String captcha, UserModel userModel);
+
     Map loadUserInfo(String token);
 
     void addUserAgencyModel(String inviteCode,String userId);
