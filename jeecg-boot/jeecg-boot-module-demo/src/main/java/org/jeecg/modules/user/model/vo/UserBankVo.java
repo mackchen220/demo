@@ -9,6 +9,12 @@ import lombok.Data;
 public class UserBankVo {
 
     /**
+     * 主键id
+     */
+    private String id;
+
+
+    /**
     * 开户银行
     */
     private String bank;
@@ -28,6 +34,6 @@ public class UserBankVo {
     /**
      * 图标
      */
-    private Integer icon;
+    private String icon;
 
 }

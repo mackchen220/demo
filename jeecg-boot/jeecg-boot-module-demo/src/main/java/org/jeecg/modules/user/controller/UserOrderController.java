@@ -8,6 +8,7 @@ import lombok.extern.log4j.Log4j2;
 import lombok.extern.slf4j.Slf4j;
 import org.jeecg.common.api.vo.Result;
 import org.jeecg.common.util.RedisUtil;
+import org.jeecg.common.util.TokenUtils;
 import org.jeecg.modules.user.model.UserModel;
 import org.jeecg.modules.user.model.vo.OrderModelVo;
 import org.jeecg.modules.user.model.vo.UserProjectVo;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Log4j2
@@ -95,12 +97,11 @@ public class UserOrderController {
 
     @ApiOperation("用户提现")
     @RequestMapping(value = "/addWithdrawalOrder", method = RequestMethod.POST)
-    public Result addWithdrawalOrder(String token, String bankId ,String money) {
+    public Result addWithdrawalOrder(HttpServletRequest request, String bankId , String money) {
 
-        UserModel user = userModelService.getUserModelByToken(token);
-
+        UserModel user = userModelService.getUserModelByToken(TokenUtils.getToken(request));
         orderModelService.addWithdrawalOrder(user, bankId, money);
-        return Result.oKWithToken(token,null);
+        return Result.OK();
     }
 
 

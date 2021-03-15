@@ -91,6 +91,6 @@ public class UserBankModel {
     /**
      * 图标
      */
-    private Integer icon;
+    private String icon;
 
 }

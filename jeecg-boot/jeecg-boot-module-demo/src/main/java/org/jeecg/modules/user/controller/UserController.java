@@ -2,6 +2,8 @@ package org.jeecg.modules.user.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.xiaoymin.knife4j.annotations.DynamicParameter;
 import com.github.xiaoymin.knife4j.annotations.DynamicResponseParameters;
@@ -9,10 +11,13 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.jeecg.common.api.vo.Result;
+import org.jeecg.common.aspect.annotation.AutoLog;
 import org.jeecg.common.constant.CommonConstant;
+import org.jeecg.common.system.query.QueryGenerator;
 import org.jeecg.common.system.vo.LoginUser;
 import org.jeecg.common.util.*;
 import org.jeecg.modules.commons.util.ValidateTool;
+import org.jeecg.modules.user.model.BankModel;
 import org.jeecg.modules.user.model.UserBankModel;
 import org.jeecg.modules.user.model.UserModel;
 import org.jeecg.modules.user.model.WeiXinModel;
@@ -20,6 +25,7 @@ import org.jeecg.modules.user.model.vo.AddressModelVo;
 import org.jeecg.modules.user.model.vo.UserBankVo;
 import org.jeecg.modules.user.model.vo.UserIncomeDetailVo;
 import org.jeecg.modules.user.service.*;
+import org.jeecg.modules.webAdmin.bank.entity.AdminBank;
 import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -112,28 +118,33 @@ public class UserController {
 
     @ApiOperation("添加银行卡接口")
     @RequestMapping(value = "/addUserBank", method = RequestMethod.POST)
-    public Result<JSONObject> loadIndexlist(UserBankModel userBankModel, String phone, String captchaCode, String token) {
+    public Result<JSONObject> loadIndexlist(UserBankModel userBankModel, String phone, String captchaCode, HttpServletRequest request) {
 
-        String id = userModelService.getUserIdByToken(token);
-
-
+        String id = userModelService.getUserIdByToken(TokenUtils.getToken(request));
         Result result = userBankModelService.insertUserBank(userBankModel, captchaCode, phone, id);
-
-
         return result;
     }
 
 
     @ApiOperation("用户银行卡列表接口")
     @RequestMapping(value = "/loadUserCardList", method = RequestMethod.POST)
-    public Result<Object> loadUserCardList(String token) {
+    public Result<Object> loadUserCardList(HttpServletRequest request) {
         Result<Object> result = new Result<>();
-        String id = userModelService.getUserIdByToken(token);
+        String id = userModelService.getUserIdByToken(TokenUtils.getToken(request));
         List<UserBankVo> userBankModels = userBankModelService.loadUserCard(id);
         result.setResult(userBankModels);
         return result;
     }
 
+
+    @ApiOperation(value = "银行列表")
+    @PostMapping(value = "/loadBankList")
+    public Result<?> loadBankList(@RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo,
+                                  @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize) {
+        Page<BankModel> page = new Page<BankModel>(pageNo, pageSize);
+        IPage<BankModel> pageList = userBankModelService.loadBankList(page);
+        return Result.OK(pageList);
+    }
 
     @ApiOperation("用户关注接口")
     @RequestMapping(value = "/addUserFocus", method = RequestMethod.POST)

@@ -54,7 +54,7 @@ public class ReqInterceptor implements HandlerInterceptor {
                 "hy/index/loadAppVersion","/vip/vipAdmin","getDictItems","/user/userAdmin","/course/adminCourse",
                 "/sys/common/static","/search/adminHotSearch","/turnImage/adminTurnImage","/party/adminParty",
                 "/user/adminUser","/user/weixinLogin","/hy/user/bindUserPhone","/community/adminCommunity",
-                "/index/getPhoneCaptchaCode","/smsConfig/adminSmsConfig","/verified/adminVerifiedConfig"};
+                "/index/getPhoneCaptchaCode","/smsConfig/adminSmsConfig","/verified/adminVerifiedConfig","/bank/adminBank"};
         for (String tem : unAuthList) {
             if (request.getRequestURI().contains(tem)) {
                 return true;
@@ -86,9 +86,9 @@ public class ReqInterceptor implements HandlerInterceptor {
                 throw new JeecgBootException(ErrorInfoCode.LOGIN__TOKEN_ERROR.getCode(),ErrorInfoCode.LOGIN__TOKEN_ERROR.getMsg());
             }
             if (ValidateTool.checkIsNull(Secret)) {
-                if (!Secret.equals(split[1])) {
-                    throw new JeecgBootException(ErrorInfoCode.LOGIN_ERROR.getCode(),ErrorInfoCode.LOGIN_ERROR.getMsg());
-                }
+//                if (!Secret.equals(split[1])) {
+//                    throw new JeecgBootException(ErrorInfoCode.LOGIN_ERROR.getCode(),ErrorInfoCode.LOGIN_ERROR.getMsg());
+//                }
             } else {
                 throw new JeecgBootException(ErrorInfoCode.LOGIN__TOKEN_ERROR.getCode(),ErrorInfoCode.LOGIN__TOKEN_ERROR.getMsg());
             }
