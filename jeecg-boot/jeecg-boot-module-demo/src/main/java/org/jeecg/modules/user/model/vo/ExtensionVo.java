@@ -28,6 +28,11 @@ public class ExtensionVo implements Serializable {
      */
     @ApiModelProperty(value="昵称")
     private String nickName;
+    /**
+     * 用户名
+     */
+    @ApiModelProperty(value="用户名")
+    private String userName;
 
     /**
      * 时间

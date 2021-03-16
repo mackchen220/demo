@@ -24,10 +24,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Log4j2
 @Service
@@ -618,13 +615,17 @@ public class UserModelServiceImpl implements UserModelService {
 
         map.put("headImage", user.getHeadImage());
         map.put("nickName", user.getNickName());
+        List<String> list = new ArrayList<>();
 
         List<String> userIds = userAgencyModelMapper.loadUserId(user.getId());
         for (String userId : userIds) {
             //间接下级
             List<String> userIds1 = userAgencyModelMapper.loadUserId(userId);
-            userIds.addAll(userIds1);
+            list.addAll(userIds1);
+
         }
+        userIds.addAll(list);
+
         //今日收入
         String startTimeToday = DateHelper.getToday() + DateHelper.DEFUALT_TIME_START;
         String endTimeToday = DateHelper.getToday() + DateHelper.DEFUALT_TIME_END;

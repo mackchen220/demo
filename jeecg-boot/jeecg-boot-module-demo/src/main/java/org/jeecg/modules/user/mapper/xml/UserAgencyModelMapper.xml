@@ -22,6 +22,7 @@
     <result column="nick_name" jdbcType="VARCHAR" property="nickName" />
     <result column="head_image" jdbcType="VARCHAR" property="headImage" />
     <result column="create_time" jdbcType="VARCHAR" property="createTime" />
+    <result column="user_name" jdbcType="VARCHAR" property="userName" />
 
   </resultMap>
 
@@ -194,7 +195,7 @@
 
   <select id="loadProxyIncome" parameterType="string" resultMap="incomeResultMap">
 
-    SELECT a.user_id  ,b.head_image,b.nick_name,b.create_time
+    SELECT a.user_id  ,b.head_image,b.nick_name,b.create_time,b.user_name
     from tb_user_agency as a LEFT JOIN tb_user as b on a.user_id =b.id
     where a.p_user_id = #{userId,jdbcType=VARCHAR}
     order by create_time desc
