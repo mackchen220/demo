@@ -38,6 +38,10 @@ public class AddressModelServiceImpl implements AddressModelService{
         if (ValidateTool.isNull(record.getAddress())){
             throw  new JeecgBootException("请输入详细地址");
         }
+        List<AddressModelVo> addressModelVos = addressModelMapper.loadUserAddressList(record.getUserId());
+        if (addressModelVos.size()==0){
+            record.setDefaultFlag(1);
+        }
         record.setId(SeqUtils.nextIdStr());
         return addressModelMapper.insertSelective(record);
     }

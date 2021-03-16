@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.jeecg.common.api.vo.Result;
 import org.jeecg.modules.user.model.UserModel;
 import org.jeecg.modules.user.model.WeiXinModel;
+import org.jeecg.modules.user.model.vo.ExtensionVo;
 import org.jeecg.modules.user.model.vo.UserIncomeDetailVo;
 
 import javax.servlet.http.HttpServletRequest;
@@ -20,7 +21,7 @@ public interface UserModelService {
 
     String getUserIdByToken(String token);
 
-    void updateUserInfo(UserModel userModel, String nickName, String headImage, String content);
+    void updateUserInfo(UserModel userModel, String nickName, String headImage, String content, String wechat);
 
     void updateUserPhone(String phone, String captcha, UserModel userModel);
 
@@ -45,5 +46,9 @@ public interface UserModelService {
     void addUserVerified(String userId, String userName, String idNum, String imageFirst, String imageBack);
 
     void addUserVerified(UserModel user, String userName, String idNum, String image);
+
+    Map<String, Object> loadProxyCenter(UserModel user);
+
+    Page<ExtensionVo> loadProxyIncome(String userId, Page<ExtensionVo> page);
 
 }
