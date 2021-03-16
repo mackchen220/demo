@@ -22,6 +22,7 @@ import org.jeecg.modules.user.model.UserBankModel;
 import org.jeecg.modules.user.model.UserModel;
 import org.jeecg.modules.user.model.WeiXinModel;
 import org.jeecg.modules.user.model.vo.AddressModelVo;
+import org.jeecg.modules.user.model.vo.ExtensionVo;
 import org.jeecg.modules.user.model.vo.UserBankVo;
 import org.jeecg.modules.user.model.vo.UserIncomeDetailVo;
 import org.jeecg.modules.user.service.*;
@@ -168,10 +169,10 @@ public class UserController {
 
     @ApiOperation("修改用户信息")
     @RequestMapping(value = "/updateUserInfo", method = RequestMethod.POST)
-    public Result updateUserInfo(String nickName, String headImage, String sign, HttpServletRequest request) {
+    public Result updateUserInfo(String nickName, String headImage, String sign, HttpServletRequest request, String wechat) {
         String token = request.getHeader("token");
         UserModel userModel = userModelService.getUserModelByToken(token);
-        userModelService.updateUserInfo(userModel, nickName, headImage, sign);
+        userModelService.updateUserInfo(userModel, nickName, headImage, sign, wechat);
         return Result.OK("修改成功", null);
     }
 
@@ -196,8 +197,8 @@ public class UserController {
 
     @ApiOperation("我的收货地址")
     @RequestMapping(value = "/loadUserAddressList", method = RequestMethod.POST)
-    public Result<List> loadUserAddressList(String token) {
-        String id = userModelService.getUserIdByToken(token);
+    public Result<List> loadUserAddressList(HttpServletRequest request) {
+        String id = userModelService.getUserIdByToken(TokenUtils.getToken(request));
         List list = addressModelService.loadUserAddressList(id);
         return Result.OK(list);
     }
@@ -205,8 +206,8 @@ public class UserController {
 
     @ApiOperation("添加收货地址")
     @RequestMapping(value = "/addUserAddress", method = RequestMethod.POST)
-    public Result addUserAddress(AddressModelVo model, String token) {
-        String id = userModelService.getUserIdByToken(token);
+    public Result addUserAddress(AddressModelVo model, HttpServletRequest request) {
+        String id = userModelService.getUserIdByToken(TokenUtils.getToken(request));
         model.setUserId(id);
         addressModelService.insertSelective(model);
         return Result.OK();
@@ -215,25 +216,26 @@ public class UserController {
 
     @ApiOperation("vip列表")
     @RequestMapping(value = "/getVipList", method = RequestMethod.POST)
-    public Result<List> getVipList(String token) {
+    public Result<List> getVipList() {
         List list = vipModelService.getVipList();
-        return Result.oKWithToken(token, list);
+        return Result.OK(list);
     }
 
     @ApiOperation("购买会员卡，提交订单")
     @RequestMapping(value = "/addVipOrder", method = RequestMethod.POST)
-    public Result<Map> addVipOrder(String token, String addressId, String vipId) {
-        String id = userModelService.getUserIdByToken(token);
+    public Result<Map> addVipOrder(HttpServletRequest request, String addressId, String vipId) {
+        String id = userModelService.getUserIdByToken(TokenUtils.getToken(request));
         Map map = vipModelService.addVipOrder(addressId, vipId, id);
-        return Result.oKWithToken(token, map);
+        return Result.OK(map);
     }
 
 
     @ApiOperation("购买会员卡，确认订单")
     @RequestMapping(value = "/getVipOrder", method = RequestMethod.POST)
-    public Result<Map> getVipOrder(String token, String addressId, String vipId, String orderId) {
-        Map map = vipModelService.getVipOrder(addressId, vipId, orderId);
-        return Result.oKWithToken(token, map);
+    public Result<Map> getVipOrder(HttpServletRequest request, String addressId, String vipId, String orderId) {
+        String id = userModelService.getUserIdByToken(TokenUtils.getToken(request));
+        Map map = vipModelService.getVipOrder(addressId, vipId, orderId,id);
+        return Result.OK(map);
     }
 
 
@@ -263,5 +265,29 @@ public class UserController {
         userModelService.addUserVerified(user, userName, idNum, image);
         return Result.OK();
     }
+
+
+    //代理中心
+    @ApiOperation("代理中心")
+    @PostMapping("/loadProxyCenter")
+    public Result loadProxyCenter(HttpServletRequest request) {
+        UserModel model = userModelService.getUserModelByToken(TokenUtils.getToken(request));
+        Map map = userModelService.loadProxyCenter(model);
+        return Result.OK(map);
+    }
+
+    //代理中心分页详情
+    @ApiOperation("代理中心分页详情")
+    @PostMapping("/loadProxyIncome")
+    public Result loadProxyIncome(HttpServletRequest request,  @RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo,
+                                      @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize) {
+        String id = userModelService.getUserIdByToken(TokenUtils.getToken(request));
+
+        Page<ExtensionVo> page = new Page<>(pageNo, pageSize);
+        Page<ExtensionVo> extensionVoPage = userModelService.loadProxyIncome(id, page);
+
+        return Result.OK(extensionVoPage);
+    }
+
 
 }

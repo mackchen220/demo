@@ -105,4 +105,17 @@ public class IndexServiceImpl implements IndexService{
         }
         return map;
     }
+
+
+    @Override
+    public Map addInviteImage(UserModel user) {
+        AppVersion appVersion = appVersionMapper.loadNewAppVersion();
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("headName",user.getHeadImage());
+        map.put("inviteCode",user.getInviteCode());
+        map.put("nickName",user.getNickName());
+        map.put("downloadUrl",appVersion.getDownloadUrl());
+        return map;
+    }
 }

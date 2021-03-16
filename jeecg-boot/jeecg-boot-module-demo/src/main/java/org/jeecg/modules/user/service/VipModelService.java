@@ -26,7 +26,7 @@ public interface VipModelService{
 
     Map addVipOrder(String adressId,String vipId, String userId);
 
-    Map getVipOrder(String addressId,String vipId, String orderId);
+    Map getVipOrder(String addressId,String vipId, String orderId,String userId);
 
 
 }

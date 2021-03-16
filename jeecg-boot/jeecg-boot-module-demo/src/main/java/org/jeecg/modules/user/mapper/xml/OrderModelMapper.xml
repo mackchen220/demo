@@ -154,6 +154,9 @@
       <if test="projectId != null">
         project_id,
       </if>
+      <if test="payType != null">
+        pay_type,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -224,6 +227,9 @@
       </if>
       <if test="projectId != null">
         #{projectId,jdbcType=VARCHAR},
+      </if>
+      <if test="payType != null">
+        #{payType,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -356,5 +362,11 @@
   <select id="getOrderNumAndMoney" resultMap="BaseResultMap" parameterType="string">
         select  sum(pay_money) as pay_money,count(0) as num from tb_order where user_id = #{userId,jdbcType=VARCHAR}
   </select>
+
+
+  <select id="getVipOrder" resultMap="BaseResultMap" parameterType="string">
+    select  * from tb_order where user_id = #{userId,jdbcType=VARCHAR} and operation_type=4 limit 1
+  </select>
+
 
 </mapper>

@@ -39,7 +39,7 @@ public interface TalentInfoModelService{
 
     int addTalentInfo(String userId,String idNum,String name,String year,String city);
 
-    String getTalentBond();
+    Map getTalentBond(String userId);
 
     void addTalentBond(String userId);
 

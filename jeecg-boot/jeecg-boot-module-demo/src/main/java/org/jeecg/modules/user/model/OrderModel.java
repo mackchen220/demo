@@ -80,6 +80,13 @@ public class OrderModel implements Serializable {
     @ApiModelProperty(value="操作状态0-未确认 1-已确认 2-成功 3-已取消 4-锁定 5-恢复 6-拒绝 ")
     private Integer optStatus;
 
+
+    /**
+     * 支付类型 1 银行卡 2微信 3支付宝
+     */
+    @ApiModelProperty(value="支付类型 1 银行卡 2微信 3支付宝")
+    private Integer payType;
+
     /**
     * 系统收款银行-收款人
     */

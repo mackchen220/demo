@@ -54,7 +54,7 @@ public class UserIncomeServiceImpl implements UserIncomeService {
     //添加用户消费记录 并发问题后期mq队列解决
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public synchronized void addUserIncome(String userId, Integer type, String contect, Long money) {
+    public synchronized void addUserIncome(String userId, Integer type, String contect, Long money,String other) {
         log.warn("添加收入记录userId{},type{},contect{},money{}", userId, type, contect, money);
         UserIncomeDetail userIncomeDetail = new UserIncomeDetail();
         userIncomeDetail.setPayMoney(money);
@@ -65,6 +65,10 @@ public class UserIncomeServiceImpl implements UserIncomeService {
         userIncomeDetail.setExcess(userModel.getMoney());
         //    * 收入支出类型1:提现 2充值 推广奖励  4项目佣金 5购买课程 6购买项目
         userIncomeDetail.setIncomeType(type);
+        if (type==1){
+            //手续费
+            userIncomeDetail.setFee(other);
+        }
         userIncomeDetailMapper.insertSelective(userIncomeDetail);
 
         String str = userId + DateHelper.getToday();

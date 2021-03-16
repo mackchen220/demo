@@ -7,15 +7,19 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.jeecg.common.api.vo.Result;
 import org.jeecg.common.util.RedisUtil;
+import org.jeecg.common.util.TokenUtils;
 import org.jeecg.modules.index.model.vo.HotSearchVo;
 import org.jeecg.modules.index.service.HotSearchModelService;
 import org.jeecg.modules.index.service.IndexService;
+import org.jeecg.modules.user.model.UserModel;
+import org.jeecg.modules.user.service.UserModelService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
 
@@ -32,6 +36,8 @@ public class IndexController {
     private RedisUtil redisUtil;
     @Resource
     private HotSearchModelService hotSearchModelService;
+    @Resource
+    private UserModelService userModelService;
 
 
     @DynamicResponseParameters(name = "indexResult",properties = {
@@ -62,6 +68,16 @@ public class IndexController {
     @RequestMapping(value = "/loadAppVersion", method = RequestMethod.POST)
     public Result loadAppVersion(String version) {
         Map map = indexService.loadAppVersion(version);
+        return Result.OK(map);
+    }
+
+
+
+    @ApiOperation("生成海报")
+    @RequestMapping(value = "/addInviteImage", method = RequestMethod.POST)
+    public Result addInviteImage(HttpServletRequest request) {
+        UserModel user = userModelService.getUserModelByToken(TokenUtils.getToken(request));
+        Map map = indexService.addInviteImage(user);
         return Result.OK(map);
     }
 

@@ -26,6 +26,8 @@ public interface UserIncomeMapper {
 
     UserIncome getUserIncome(@Param("seqStr") String seqStr);
 
+    String getExtensionMoneyByTime(@Param("userId") String userId, @Param("startTime")String startTime, @Param("endTime")String endTime);
+
 
 
 }

@@ -34,5 +34,10 @@ public class Constant {
     public final static String SUCCESS_CODE = "200000";
 
 
+    public final static String CONFIG_KEY_FEE = "fee";
+
+    public final static String CONFIG_KEY_BOOD = "bood";
+
+
 
 }

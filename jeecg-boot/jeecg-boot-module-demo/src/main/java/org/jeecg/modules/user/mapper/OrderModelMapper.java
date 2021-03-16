@@ -21,11 +21,13 @@ public interface OrderModelMapper {
 
     int updateOrderScore(OrderModel record);
 
-
     List<OrderModelVo> loadOrderList(@Param("userId") String userId, @Param("type")String type, Page<OrderModelVo> page);
 
     OrderModel loadScoreModel(@Param("userId") String userId);
 
     OrderModel getOrderNumAndMoney(@Param("userId") String userId);
+
+    OrderModel getVipOrder(@Param("userId") String userId);
+
 
 }

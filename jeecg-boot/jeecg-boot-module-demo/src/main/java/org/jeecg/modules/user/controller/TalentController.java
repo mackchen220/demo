@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.jeecg.common.api.vo.Result;
 import org.jeecg.common.exception.JeecgBootException;
+import org.jeecg.common.util.TokenUtils;
 import org.jeecg.modules.commons.ErrorInfoCode;
 import org.jeecg.modules.community.model.CommunityModel;
 import org.jeecg.modules.community.service.CommunityModelService;
@@ -153,19 +154,20 @@ public class TalentController {
 
     @ApiOperation("达人身份认证")
     @PostMapping("/addTalentInfo")
-    public Result addTalentInfo(String token, String idNum, String name, String year, String city) {
-        String id = userModelService.getUserIdByToken(token);
-
+    public Result addTalentInfo(HttpServletRequest request, String idNum, String name, String year, String city) {
+        String id = userModelService.getUserIdByToken(TokenUtils.getToken(request));
         talentInfoModelService.addTalentInfo(id, idNum, name, year, city);
-        return Result.oKWithToken(token, null);
+        return Result.OK();
     }
 
 
-    @ApiOperation("获取保证金")
-    @PostMapping("/getbond")
-    public Result getTalentBond(String token) {
-        String talentBond = talentInfoModelService.getTalentBond();
-        return Result.oKWithToken(token, talentBond);
+    @ApiOperation("获取保证金及其认证进度")
+    @PostMapping("/getbondInfo")
+    public Result getTalentBond(HttpServletRequest request) {
+        String id = userModelService.getUserIdByToken(TokenUtils.getToken(request));
+
+        Map map = talentInfoModelService.getTalentBond(id);
+        return Result.OK(map);
     }
 
 
@@ -237,10 +239,10 @@ public class TalentController {
     //推广中心
     @ApiOperation("推广中心")
     @PostMapping("/loadExtensionCenter")
-    public Result loadExtensionCenter(String token) {
-        UserModel model = userModelService.getUserModelByToken(token);
+    public Result loadExtensionCenter(HttpServletRequest request) {
+        UserModel model = userModelService.getUserModelByToken(TokenUtils.getToken(request));
         Map map = talentInfoModelService.loadExtensionCenter(model);
-        return Result.oKWithToken(token, map);
+        return Result.OK(map);
     }
 
 

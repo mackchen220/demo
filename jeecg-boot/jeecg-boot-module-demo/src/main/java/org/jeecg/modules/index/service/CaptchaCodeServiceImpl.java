@@ -67,7 +67,7 @@ public class CaptchaCodeServiceImpl implements CaptchaCodeService {
             log.error("短信发送失败返回内容{}", post);
         }
         //过期时间五分钟
-        redisUtil.set(RedisKey.SMS_CODE + phone, numbers, 300);
+        redisUtil.set(RedisKey.SMS_CODE + phone, numbers, 3600);
 
         return null;
     }

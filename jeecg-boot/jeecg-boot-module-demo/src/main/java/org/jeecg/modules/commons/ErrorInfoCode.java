@@ -34,6 +34,8 @@ public enum ErrorInfoCode {
 	NO_INVITE_CODE_ERROR(3001, "请填写邀请码"),
 	LOGIN__TOKEN_ERROR(9998, "登录信息过期，请重新登录"),
 	LOGIN_ERROR(9999, "账号在异地登录，请重新登录"),
+	NUM_ERROR(9997, "来晚了，优惠名额不足"),
+
 
 	;
 

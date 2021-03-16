@@ -3,6 +3,7 @@ package org.jeecg.modules.user.service;
 import org.jeecg.common.exception.JeecgBootException;
 import org.jeecg.common.util.RedisUtil;
 import org.jeecg.modules.commons.Constant;
+import org.jeecg.modules.commons.ErrorInfoCode;
 import org.jeecg.modules.commons.RedisKey;
 import org.jeecg.modules.commons.util.SeqUtils;
 import org.jeecg.modules.commons.util.ValidateTool;
@@ -79,18 +80,24 @@ public class VipModelServiceImpl implements VipModelService {
         if (ValidateTool.isNull(vipModel)) {
             throw new JeecgBootException("产品已下架");
         }
-        AddressModel addressModel = addressModelMapper.selectByPrimaryKey(adressId);
-        if (ValidateTool.isNull(addressModel)) {
-            throw new JeecgBootException("请填写地址");
-        }
-        if (!userId.equals(addressModel.getUserId())) {
-            throw new JeecgBootException("地址错误");
-        }
+//        OrderModel vipOrder = orderModelMapper.getVipOrder(userId);
+//        if (ValidateTool.isNotNull(vipOrder)) {
+//            throw new JeecgBootException("已确认名额，请勿重复购买");
+//        }
+
+//        AddressModel addressModel = addressModelMapper.selectByPrimaryKey(adressId);
+//        if (ValidateTool.isNull(addressModel)) {
+//            throw new JeecgBootException("请填写地址");
+//        }
+//        if (!userId.equals(addressModel.getUserId())) {
+//            throw new JeecgBootException("地址错误");
+//        }
         Object sumNum = redisUtil.get(RedisKey.VIP_NUM + RedisKey.KEY_SPLIT + vipId);
         long incr = redisUtil.decr(RedisKey.VIP_NUM + RedisKey.KEY_SPLIT + vipId, 1);
         if (incr <= 0) {
-            throw new JeecgBootException("来晚了，优惠名额不足");
+            throw new JeecgBootException(ErrorInfoCode.NUM_ERROR.getCode(),ErrorInfoCode.NUM_ERROR.getMsg());
         }
+        vipModelMapper.updateNum(vipId);
         OrderModel orderModel = new OrderModel();
         orderModel.setId(SeqUtils.nextIdStr());
         orderModel.setUserId(userId);
@@ -120,20 +127,25 @@ public class VipModelServiceImpl implements VipModelService {
 
 
     @Override
-    public Map getVipOrder(String addressId, String vipId, String orderId) {
+    public Map getVipOrder(String addressId, String vipId, String orderId,String userId) {
         VipModel vipModel = vipModelMapper.selectByPrimaryKey(vipId);
         if (ValidateTool.isNull(vipModel)) {
             throw new JeecgBootException("产品已下架");
         }
         AddressModel addressModel = addressModelMapper.selectByPrimaryKey(addressId);
         if (ValidateTool.isNull(addressModel)) {
-            throw new JeecgBootException("地址参数错误");
+            throw new JeecgBootException("请填写地址");
+        }
+        if (!userId.equals(addressModel.getUserId())) {
+            throw new JeecgBootException("地址错误");
         }
         OrderModel orderModel = orderModelMapper.selectByPrimaryKey(orderId);
         if (ValidateTool.isNull(orderModel)) {
             throw new JeecgBootException("订单错误");
         }
-
+        if (!userId.equals(orderModel.getUserId())) {
+            throw new JeecgBootException("非法订单");
+        }
         //地址信息
         Map<String, Object> map = new HashMap<>();
         map.put("address", addressModel.getAddress());
@@ -145,7 +157,10 @@ public class VipModelServiceImpl implements VipModelService {
         map.put("image", vipModel.getImage());
         //订单信息
         map.put("price", vipModel.getPriceLow());
+        map.put("priceHigh", vipModel.getPriceHigh());
         map.put("orderTime", orderModel.getCreateTime());
+        map.put("orderId", orderId);
+        map.put("vipName", vipModel.getVipName()+"会员卡");
 
         return map;
     }

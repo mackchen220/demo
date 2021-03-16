@@ -71,12 +71,11 @@ public class ReqInterceptor implements HandlerInterceptor {
         }
 
 
-        String token = request.getParameter("token");
-        if (token == null) {
-            token = request.getHeader("token");
+        String token = request.getHeader("token");
+        if (ValidateTool.isNull(token)) {
+            token = request.getParameter("token");
         }
-
-        if (ValidateTool.checkIsNull(token)) {
+        if (ValidateTool.isNotNull(token)) {
             String Secret;
             String[] split = token.split(",");
             try {
@@ -85,14 +84,17 @@ public class ReqInterceptor implements HandlerInterceptor {
                 log.warn("token错误{}", token);
                 throw new JeecgBootException(ErrorInfoCode.LOGIN__TOKEN_ERROR.getCode(),ErrorInfoCode.LOGIN__TOKEN_ERROR.getMsg());
             }
-            if (ValidateTool.checkIsNull(Secret)) {
+            if (ValidateTool.isNotNull(Secret)) {
 //                if (!Secret.equals(split[1])) {
+//
 //                    throw new JeecgBootException(ErrorInfoCode.LOGIN_ERROR.getCode(),ErrorInfoCode.LOGIN_ERROR.getMsg());
 //                }
             } else {
+                log.warn("token格式错误");
                 throw new JeecgBootException(ErrorInfoCode.LOGIN__TOKEN_ERROR.getCode(),ErrorInfoCode.LOGIN__TOKEN_ERROR.getMsg());
             }
         } else {
+            log.warn("获取不到token");
             throw new JeecgBootException(ErrorInfoCode.LOGIN__TOKEN_ERROR.getCode(),ErrorInfoCode.LOGIN__TOKEN_ERROR.getMsg());
         }
 

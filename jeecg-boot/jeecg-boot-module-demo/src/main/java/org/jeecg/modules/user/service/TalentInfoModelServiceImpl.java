@@ -6,6 +6,8 @@ import org.jeecg.modules.commons.Constant;
 import org.jeecg.modules.commons.util.DateHelper;
 import org.jeecg.modules.commons.util.SeqUtils;
 import org.jeecg.modules.commons.util.ValidateTool;
+import org.jeecg.modules.index.mapper.PlatformConfigurationMapper;
+import org.jeecg.modules.index.model.PlatformConfiguration;
 import org.jeecg.modules.user.mapper.*;
 import org.jeecg.modules.user.model.*;
 import org.jeecg.modules.user.model.vo.*;
@@ -43,6 +45,8 @@ public class TalentInfoModelServiceImpl implements TalentInfoModelService {
     private UserModelService userModelService;
     @Resource
     private UserFocusModelMapper userFocusModelMapper;
+    @Resource
+    private PlatformConfigurationMapper platformConfigurationMapper;
 
 
     @Override
@@ -166,9 +170,21 @@ public class TalentInfoModelServiceImpl implements TalentInfoModelService {
     }
 
     @Override
-    public String getTalentBond() {
-        //Todo   保证金配置？？？？
-        return "2000000";
+    public Map getTalentBond(String userId) {
+        Map<String, Object> map = new HashMap<>();
+        // 保证金配置
+        PlatformConfiguration config = platformConfigurationMapper.getConfigByKey(Constant.CONFIG_KEY_BOOD);
+        map.put("bond", ValidateTool.isNotNull(config) && ValidateTool.isNotNull(config.getConfigValue()) ? config.getConfigValue() : "2000000");
+        TalentInfoModel talentInfoModel = talentInfoModelMapper.selectByUserId(userId);
+        map.put("status", ValidateTool.isNull(talentInfoModel) ? 1 : 0);
+        map.put("idStatus", ValidateTool.isNull(talentInfoModel) ? talentInfoModel.getIdStatus() : 1);
+        map.put("idNum", ValidateTool.isNotNull(talentInfoModel) ? talentInfoModel.getIdCard() : "");
+        map.put("name", ValidateTool.isNotNull(talentInfoModel) ? talentInfoModel.getName() : "");
+        map.put("city", ValidateTool.isNotNull(talentInfoModel) ? talentInfoModel.getCity() : "");
+        map.put("time", ValidateTool.isNotNull(talentInfoModel) ? talentInfoModel.getTime() : "");
+        map.put("contractStatus", ValidateTool.isNotNull(talentInfoModel) ? talentInfoModel.getContractStatus() : "1");
+        map.put("deposit", ValidateTool.isNull(talentInfoModel) ? 1 : (talentInfoModel.getDeposit() > 0 ? 0 : 1));
+        return map;
     }
 
     @Transactional(rollbackFor = Exception.class)

@@ -228,6 +228,26 @@
 
   </select>
 
+  <select id="getExtensionMoneyByTime" parameterType="string" resultType="string">
+    SELECT ifnull(SUM(extension_money),0)
+    from tb_user_income
+    <where>
+      <if test="userId != null and userId != ''">
+        user_id = #{userId,jdbcType=VARCHAR}
+      </if>
+      <if test="startTime != null and startTime != ''">
+        and  create_time  <![CDATA[ >=]]> #{startTime,jdbcType=VARCHAR}
+      </if>
+      <if test="endTime != null and endTime != ''">
+        and create_time  <![CDATA[<=]]> #{endTime,jdbcType=VARCHAR}
+      </if>
+    </where>
+
+  </select>
+
+
+
+
   <select id="getUserIncome" parameterType="string" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />

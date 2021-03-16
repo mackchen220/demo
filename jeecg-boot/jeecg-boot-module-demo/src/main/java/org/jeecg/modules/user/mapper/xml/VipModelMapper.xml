@@ -284,4 +284,11 @@
     <include refid="Base_Column_List" />
     from tb_vip
   </select>
+
+  <update id="updateNum">
+    update tb_vip set
+    quota_num = quota_num-1
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+
 </mapper>
