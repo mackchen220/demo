@@ -21,7 +21,7 @@ public class OrderModel implements Serializable {
     private String userId;
 
     /**
-    * '1-医美项目,2课程 ,3提现
+    * '1-医美项目,2课程 ,3提现,4购买会员卡
     */
     @ApiModelProperty(value="'1-医美项目,2课程 ,3提现")
     private Integer operationType;

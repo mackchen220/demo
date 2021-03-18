@@ -344,6 +344,7 @@
     from tb_order as a LEFT JOIN tb_course b on a.course_id = b.id
     LEFT JOIN tb_vip as c on a.vip_id =c.id
     where a.user_id = #{userId,jdbcType=VARCHAR}
+    and a.operation_type in (1,2,4)
     <if test="type != null and type != ''">
       and opt_status= #{type,jdbcType=VARCHAR}
     </if>
