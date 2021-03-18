@@ -1,6 +1,7 @@
 package org.jeecg.modules.pay.servcie;
 
 import com.alibaba.druid.util.StringUtils;
+import com.alibaba.fastjson.JSON;
 import lombok.extern.log4j.Log4j2;
 import net.sf.json.JSONArray;
 import org.jeecg.common.api.vo.Result;
@@ -85,7 +86,8 @@ public class PayServideImpl implements PayService{
     public JSONArray notify(String notifyDate) {
         PayResponse payResponse = bestPayService.asyncNotify(notifyDate);
 
-        orderModelService.orderCallBack(payResponse.getOrderId());
+        log.info("支付回调内容{}", JSON.toJSONString(payResponse));
+        orderModelService.orderCallBack(payResponse);
 
         return null;
     }

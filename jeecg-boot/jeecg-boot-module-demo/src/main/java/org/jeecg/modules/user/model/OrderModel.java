@@ -75,9 +75,9 @@ public class OrderModel implements Serializable {
     private String outsideCardNum;
 
     /**
-    * 操作状态0-未确认 1-已确认 2-成功 3-已取消 4-锁定 5-恢复 6-拒绝
+    * 操作状态0-未确认 1-已确认,未付款 2-成功 3-待评价4-已评价 5-已取消6-拒绝
     */
-    @ApiModelProperty(value="操作状态0-未确认 1-已确认 2-成功 3-已取消 4-锁定 5-恢复 6-拒绝 ")
+    @ApiModelProperty(value="操作状态0-未确认 1-已确认,未付款 2-成功 3-待评价4-已评价 5-已取消6-拒绝 ")
     private Integer optStatus;
 
 
@@ -142,7 +142,11 @@ public class OrderModel implements Serializable {
     */
     @ApiModelProperty(value="达人id")
     private String talentId;
-
+    /**
+     * 会员卡id
+     */
+    @ApiModelProperty(value="会员卡id")
+    private String vipId;
 
     /**
      * 项目id

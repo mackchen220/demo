@@ -357,6 +357,9 @@
       <if test="city != null and city != ''">
         city = #{city},
       </if>
+      <if test="vipId != null and vipId != ''">
+        vip_id = #{vipId},
+      </if>
     </set>
     where id = #{Id,jdbcType=BIGINT}
   </update>

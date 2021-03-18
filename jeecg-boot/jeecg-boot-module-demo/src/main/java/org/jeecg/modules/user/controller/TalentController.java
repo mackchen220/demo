@@ -249,16 +249,12 @@ public class TalentController {
     //推广中心分页详情
     @ApiOperation("推广中心分页详情")
     @PostMapping("/loadExtensionIncome")
-    public Result loadExtensionIncome(String token, String userId, @RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo,
+    public Result loadExtensionIncome(HttpServletRequest request, @RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo,
                                       @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize, Integer sortModel) {
-
         Page<ExtensionVo> page = new Page<>(pageNo, pageSize);
-        Page<ExtensionVo> extensionVoPage = talentInfoModelService.loadExtensionIncome(userId, page, sortModel);
-
-        Result<Object> objectResult = new Result<>();
-        objectResult.setToken(token);
-        objectResult.setResult(extensionVoPage);
-        return objectResult;
+        String id = userModelService.getUserIdByToken(TokenUtils.getToken(request));
+        Page<ExtensionVo> extensionVoPage = talentInfoModelService.loadExtensionIncome(id, page, sortModel);
+        return Result.OK(extensionVoPage);
     }
 
 

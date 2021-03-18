@@ -9,6 +9,7 @@ import org.jeecg.modules.commons.util.SeqUtils;
 import org.jeecg.modules.commons.util.ValidateTool;
 import org.jeecg.modules.index.mapper.PlatformConfigurationMapper;
 import org.jeecg.modules.index.model.PlatformConfiguration;
+import org.jeecg.modules.pay.model.PayResponse;
 import org.jeecg.modules.user.mapper.*;
 import org.jeecg.modules.user.model.TalentInfoModel;
 import org.jeecg.modules.user.model.UserBankModel;
@@ -43,6 +44,8 @@ public class OrderModelServiceImpl implements OrderModelService {
     private UserIncomeService userIncomeService;
     @Resource
     private PlatformConfigurationMapper platformConfigurationMapper;
+    @Resource
+    private VipModelService vipModelService;
 
     @Override
     public int insertSelective(OrderModel record) {
@@ -88,6 +91,9 @@ public class OrderModelServiceImpl implements OrderModelService {
     @Override
     public Page<OrderModelVo> loadOrderList(String userId, String optStatus, Page<OrderModelVo> page) {
 
+        if (Constant.CHECKTYPE0.equals(optStatus)){
+            optStatus=null;
+        }
         List<OrderModelVo> orderModelVos = orderModelMapper.loadOrderList(userId, optStatus, page);
 
         return page.setRecords(orderModelVos);
@@ -252,11 +258,15 @@ public class OrderModelServiceImpl implements OrderModelService {
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public String orderCallBack(String orderId) {
-        OrderModel orderModel = orderModelMapper.selectByPrimaryKey(orderId);
-        log.info("orderModel{},orderId{}", JSON.toJSONString(orderModel),orderId);
+    public String orderCallBack(PayResponse payResponse) {
+        OrderModel orderModel = orderModelMapper.selectByPrimaryKey(payResponse.getOrderId());
+        log.info("orderModel{},orderId{}", JSON.toJSONString(orderModel),payResponse.getOrderId());
         if (ValidateTool.isNull(orderModel)) {
-            throw new JeecgBootException("订单不存在" + orderId);
+            throw new JeecgBootException("订单不存在" + payResponse.getOrderId());
+        }
+        if (orderModel.getOptStatus()==2){
+            log.warn("重复回调,订单id{}",orderModel.getId());
+            return "ok";
         }
         if (Constant.TYPE_INT_1 == orderModel.getOperationType()) {
             //医美项目定金
@@ -266,13 +276,31 @@ public class OrderModelServiceImpl implements OrderModelService {
         if (Constant.TYPE_INT_4 == orderModel.getOperationType()) {
             //购买会员
             //TODO 上级提成
+            vipModelService.addVipCallBack(payResponse.getOrderId());
+        }
+        OrderModel orderModel1 = new OrderModel();
+        orderModel1.setId(payResponse.getOrderId());
+        orderModel1.setOptStatus(Constant.TYPE_INT_2);
+        orderModel1.setPayType(Constant.TYPE_INT_2);
+        orderModel1.setPayMoney(String.valueOf(payResponse.getOrderAmount()));
+        orderModelMapper.updateByPrimaryKeySelective(orderModel1);
+        return "ok";
+    }
 
+
+    @Override
+    public void updateOrderStatus(String orderId) {
+        if (ValidateTool.isNull(orderId)) {
+            throw new JeecgBootException("订单参数错误");
+        }
+        OrderModel orderModel = orderModelMapper.selectByPrimaryKey(orderId);
+        if (ValidateTool.isNull(orderModel)) {
+            throw new JeecgBootException("订单不存在");
         }
         OrderModel orderModel1 = new OrderModel();
         orderModel1.setId(orderId);
-        orderModel1.setOptStatus(Constant.TYPE_INT_2);
+        orderModel1.setOptStatus(Constant.TYPE_INT_5);
         orderModelMapper.updateByPrimaryKeySelective(orderModel1);
-        return "ok";
     }
 
     public static void main(String[] args) {

@@ -29,6 +29,7 @@ public class Constant {
     public final static int TYPE_INT_3 = 3;
 
     public final static int TYPE_INT_4 = 4;
+    public final static int TYPE_INT_5 = 5;
 
 
     public final static String SUCCESS_CODE = "200000";

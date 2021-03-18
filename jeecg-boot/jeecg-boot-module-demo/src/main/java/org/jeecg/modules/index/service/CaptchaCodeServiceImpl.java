@@ -91,7 +91,7 @@ public class CaptchaCodeServiceImpl implements CaptchaCodeService {
             log.warn("同一手机号短信发送频繁 ip{} phone{}", ip, phone);
             throw new JeecgBootException("短信发送频繁，请联系客服");
         }
-        if (ValidateTool.isNotNull(ipTimes) && Long.valueOf(String.valueOf(times)) >= 10) {
+        if (ValidateTool.isNotNull(ipTimes) && Long.valueOf(String.valueOf(ipTimes)) >= 10) {
             log.warn("同一ip短信发送频繁 ip{} phone{}", ip, phone);
             throw new JeecgBootException("短信发送频繁，请联系客服");
         }

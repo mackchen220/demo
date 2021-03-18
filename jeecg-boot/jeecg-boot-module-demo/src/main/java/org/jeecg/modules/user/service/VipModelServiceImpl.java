@@ -1,5 +1,6 @@
 package org.jeecg.modules.user.service;
 
+import lombok.extern.log4j.Log4j2;
 import org.jeecg.common.exception.JeecgBootException;
 import org.jeecg.common.util.RedisUtil;
 import org.jeecg.modules.commons.Constant;
@@ -7,12 +8,8 @@ import org.jeecg.modules.commons.ErrorInfoCode;
 import org.jeecg.modules.commons.RedisKey;
 import org.jeecg.modules.commons.util.SeqUtils;
 import org.jeecg.modules.commons.util.ValidateTool;
-import org.jeecg.modules.user.mapper.AddressModelMapper;
-import org.jeecg.modules.user.mapper.OrderModelMapper;
-import org.jeecg.modules.user.mapper.VipModelMapper;
-import org.jeecg.modules.user.model.AddressModel;
-import org.jeecg.modules.user.model.OrderModel;
-import org.jeecg.modules.user.model.VipModel;
+import org.jeecg.modules.user.mapper.*;
+import org.jeecg.modules.user.model.*;
 import org.jeecg.modules.user.model.vo.VipModelVo;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,6 +20,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Log4j2
 @Service
 public class VipModelServiceImpl implements VipModelService {
 
@@ -34,6 +32,12 @@ public class VipModelServiceImpl implements VipModelService {
     private AddressModelMapper addressModelMapper;
     @Resource
     private OrderModelMapper orderModelMapper;
+    @Resource
+    private UserModelMapper userModelMapper;
+    @Resource
+    private UserAgencyModelMapper userAgencyModelMapper;
+    @Resource
+    private UserIncomeService userIncomeService;
 
     @Override
     public int deleteByPrimaryKey(String id) {
@@ -95,7 +99,7 @@ public class VipModelServiceImpl implements VipModelService {
         Object sumNum = redisUtil.get(RedisKey.VIP_NUM + RedisKey.KEY_SPLIT + vipId);
         long incr = redisUtil.decr(RedisKey.VIP_NUM + RedisKey.KEY_SPLIT + vipId, 1);
         if (incr <= 0) {
-            throw new JeecgBootException(ErrorInfoCode.NUM_ERROR.getCode(),ErrorInfoCode.NUM_ERROR.getMsg());
+            throw new JeecgBootException(ErrorInfoCode.NUM_ERROR.getCode(), ErrorInfoCode.NUM_ERROR.getMsg());
         }
         vipModelMapper.updateNum(vipId);
         OrderModel orderModel = new OrderModel();
@@ -105,7 +109,9 @@ public class VipModelServiceImpl implements VipModelService {
         orderModel.setContent("亨氧" + vipModel.getVipName() + "会员卡");
         orderModel.setOperationType(Constant.TYPE_INT_4);
         orderModel.setNum(Constant.TYPE_INT_1);
-        orderModel.setOptStatus(Constant.TYPE_INT_0);
+        orderModel.setOptStatus(Constant.TYPE_INT_1);
+        orderModel.setVipId(vipId);
+        orderModel.setAmount(String.valueOf(vipModel.getPriceLow()));
         orderModelMapper.insertSelective(orderModel);
         BigDecimal divide = new BigDecimal(String.valueOf(sumNum)).divide(new BigDecimal(vipModel.getQuotaNum()), 2, BigDecimal.ROUND_DOWN);
         BigDecimal subtract = new BigDecimal("1").subtract(divide);
@@ -127,7 +133,7 @@ public class VipModelServiceImpl implements VipModelService {
 
 
     @Override
-    public Map getVipOrder(String addressId, String vipId, String orderId,String userId) {
+    public Map getVipOrder(String addressId, String vipId, String orderId, String userId) {
         VipModel vipModel = vipModelMapper.selectByPrimaryKey(vipId);
         if (ValidateTool.isNull(vipModel)) {
             throw new JeecgBootException("产品已下架");
@@ -160,8 +166,45 @@ public class VipModelServiceImpl implements VipModelService {
         map.put("priceHigh", vipModel.getPriceHigh());
         map.put("orderTime", orderModel.getCreateTime());
         map.put("orderId", orderId);
-        map.put("vipName", vipModel.getVipName()+"会员卡");
+        map.put("vipName", vipModel.getVipName() + "会员卡");
 
         return map;
+    }
+
+    @Override
+    public String addVipCallBack(String orderId) {
+        log.info("会员推广奖励{}", orderId);
+        OrderModel orderModel = orderModelMapper.selectByPrimaryKey(orderId);
+        if (ValidateTool.isNull(orderModel)) {
+            log.warn("会员推广奖励,查询不到订单{}", orderId);
+            return null;
+        }
+        UserModel userModel = userModelMapper.loadUser(orderModel.getUserId(), null, null, null, null);
+        if (ValidateTool.isNull(userModel)) {
+            log.warn("会员推广奖励,查询不到用户{} orderId{}", orderModel.getUserId(), orderId);
+            return null;
+        }
+        //修改用户vip
+        UserModel model = new UserModel();
+        model.setId(orderModel.getUserId());
+        model.setVipId(orderModel.getVipId());
+        userModelMapper.updateByPrimaryKeySelective(model);
+        String money1 = "2000";
+        String money2 = "1000";
+        //查询上级用户 增加推广奖励
+        UserAgencyModel userAgencyModel1 = userAgencyModelMapper.loadUserAgency(orderModel.getUserId(), null);
+        if (ValidateTool.isNotNull(userAgencyModel1)) {
+            log.warn("会员推广奖励，返现上级id{}", userAgencyModel1.getpUserId());
+            userModelMapper.updateUserMoney(userAgencyModel1.getpUserId(), money1, Constant.TYPE_INT_1);
+            userIncomeService.addUserIncome(userAgencyModel1.getpUserId(), Constant.TYPE_INT_3, "推广奖励", Long.valueOf(money1), orderModel.getUserId());
+        }
+        //查询上级的上级用户，增加推广奖励
+        UserAgencyModel userAgencyModel2 = userAgencyModelMapper.loadUserAgency(userAgencyModel1.getpUserId(), null);
+        if (ValidateTool.isNotNull(userAgencyModel2) && "-1".equals(userAgencyModel2.getpUserId())) {
+            log.warn("会员推广奖励，返现上上级id{}", userAgencyModel2.getpUserId());
+            userModelMapper.updateUserMoney(userAgencyModel2.getpUserId(), money2, Constant.TYPE_INT_1);
+            userIncomeService.addUserIncome(userAgencyModel2.getpUserId(), Constant.TYPE_INT_3, "推广奖励", Long.valueOf(money2), orderModel.getUserId());
+        }
+        return "ok";
     }
 }

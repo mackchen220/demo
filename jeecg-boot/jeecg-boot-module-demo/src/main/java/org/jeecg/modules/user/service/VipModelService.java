@@ -29,4 +29,5 @@ public interface VipModelService{
     Map getVipOrder(String addressId,String vipId, String orderId,String userId);
 
 
+    String addVipCallBack(String orderId);
 }

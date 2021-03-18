@@ -342,24 +342,28 @@ public class TalentInfoModelServiceImpl implements TalentInfoModelService {
                 extensionVo.setTotelMoney(ValidateTool.isNull(incomeTotal) ? 0 : Long.valueOf(incomeTotal));
             }
         }
-        //sortModel 1 收入高 2收入地 3 等级高  4 等级低 5 时间
-        if (Constant.TYPE_INT_1 == sortModel) {
-            extensionVos.stream().sorted(new Comparator<ExtensionVo>() {
-                @Override
-                public int compare(ExtensionVo o1, ExtensionVo o2) {
-                    return o1.getTotelMoney() > o2.getTotelMoney() ? 1 : 0;
+        if (ValidateTool.isNotNull(sortModel)) {
+            //sortModel 1 收入高 2收入地 3 等级高  4 等级低 5 时间
+            if (Constant.TYPE_INT_1 == sortModel) {
+                extensionVos.stream().sorted(new Comparator<ExtensionVo>() {
+                    @Override
+                    public int compare(ExtensionVo o1, ExtensionVo o2) {
+                        return o1.getTotelMoney() > o2.getTotelMoney() ? 1 : 0;
 
-                }
-            });
-        }
-        if (Constant.TYPE_INT_2 == sortModel) {
-            extensionVos.stream().sorted(new Comparator<ExtensionVo>() {
-                @Override
-                public int compare(ExtensionVo o1, ExtensionVo o2) {
-                    return o1.getTotelMoney() > o2.getTotelMoney() ? 0 : 1;
+                    }
+                });
+            }
+            if (Constant.TYPE_INT_2 == sortModel) {
+                extensionVos.stream().sorted(new Comparator<ExtensionVo>() {
+                    @Override
+                    public int compare(ExtensionVo o1, ExtensionVo o2) {
+                        return o1.getTotelMoney() > o2.getTotelMoney() ? 0 : 1;
 
-                }
-            });
+                    }
+                });
+            }
+
+
         }
 //        if (Constant.TYPE_INT_3==sortModel){
 //            extensionVos.stream().sorted(new Comparator<ExtensionVo>() {

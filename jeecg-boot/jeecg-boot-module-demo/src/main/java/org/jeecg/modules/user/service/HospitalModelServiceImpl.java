@@ -128,27 +128,5 @@ public class HospitalModelServiceImpl implements HospitalModelService{
 
     }
 
-//    id;
-//
-//    * 收获详细地址
-//            address;
-//
-//
-//    * 删除标识0-正常,1-已删除
-//            delFlag;
-//
-//     * 收货手机号
-//
-//    private String phone;
-//
-//    * 城市
-//            city;
-//
-//     * 收货人姓名
-//            name;
-//
-//     * 是否默认地址 0非默认 1默认
-//
-//    defaultFlag;
 
 }

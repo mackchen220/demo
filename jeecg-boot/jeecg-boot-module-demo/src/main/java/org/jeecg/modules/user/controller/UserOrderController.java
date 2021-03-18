@@ -56,10 +56,10 @@ public class UserOrderController {
 
     @ApiOperation("我的订单列表")
     @RequestMapping(value = "/loadOrderList", method = RequestMethod.POST)
-    public Result<Page<OrderModelVo>> loadOrderList(String token, String optStatus,@RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo,
+    public Result<Page<OrderModelVo>> loadOrderList(HttpServletRequest request, String optStatus,@RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo,
                                       @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize) {
 
-        String id = userModelService.getUserIdByToken(token);
+        String id = userModelService.getUserIdByToken(TokenUtils.getToken(request));
 
         Result<Page<OrderModelVo>> result = new Result<Page<OrderModelVo>>();
         Page<OrderModelVo> pageList = new Page<OrderModelVo>(pageNo, pageSize);
@@ -91,6 +91,15 @@ public class UserOrderController {
         String score = orderModelService.updateOrderScore(id, orderId, effect, attitude, price);
         return Result.oKWithToken(token,score);
     }
+
+    @ApiOperation("取消订单")
+    @RequestMapping(value = "/updateOrderStatus", method = RequestMethod.POST)
+    public Result updateOrderStatus(String orderId) {
+        orderModelService.updateOrderStatus(orderId);
+        return Result.OK();
+    }
+
+
 
 
 

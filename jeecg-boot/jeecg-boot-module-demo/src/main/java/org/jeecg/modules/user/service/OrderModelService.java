@@ -1,6 +1,7 @@
 package org.jeecg.modules.user.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import org.jeecg.modules.pay.model.PayResponse;
 import org.jeecg.modules.user.model.OrderModel;
 import org.jeecg.modules.user.model.UserModel;
 import org.jeecg.modules.user.model.vo.OrderModelVo;
@@ -30,6 +31,8 @@ public interface OrderModelService{
     void addWithdrawalOrder(UserModel user, String bankId , String money);
 
 
-    String orderCallBack(String orderId);
+    String orderCallBack(PayResponse payResponse);
 
+
+    void updateOrderStatus(String orderId);
 }

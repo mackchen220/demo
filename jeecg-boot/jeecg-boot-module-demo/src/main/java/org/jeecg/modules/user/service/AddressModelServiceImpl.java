@@ -61,7 +61,7 @@ public class AddressModelServiceImpl implements AddressModelService {
         if (ValidateTool.isNull(addressModel)) {
             throw new JeecgBootException("参数错误");
         }
-        if (Constant.CHECKTYPE1.equals( record.getDefaultFlag())) {
+        if (ValidateTool.isNotNull(record.getDefaultFlag()) && Constant.TYPE_INT_1 == record.getDefaultFlag()) {
             addressModelMapper.updateDefaultFlag(record.getUserId());
         }
 
