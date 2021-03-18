@@ -47,6 +47,10 @@
     <result column="id" jdbcType="VARCHAR" property="id" />
     <result column="head_image" jdbcType="VARCHAR" property="headImage" />
     <result column="nick_name" jdbcType="VARCHAR" property="nickName" />
+    <result column="user_name" jdbcType="VARCHAR" property="userName" />
+    <result column="num" jdbcType="VARCHAR" property="num" />
+    <result column="average_score" jdbcType="VARCHAR" property="averageScore" />
+
   </resultMap>
 
   <sql id="Base_Column_List">
@@ -156,8 +160,9 @@
   </select>
 
   <select id="loadAllTalent" parameterType="string" resultMap="userVoResultMap">
-    SELECT a.talent_id as id,b.head_image,b.nick_name from  tb_talent_hospital  as a
+    SELECT a.talent_id as id,b.head_image,b.nick_name,b.user_name ,c.average_score,c.num from  tb_talent_hospital  as a
     LEFT JOIN tb_user as b on b.id=a.talent_id
+    LEFT JOIN tb_talent_info as c on b.id=c.user_id
     where hospital_id =#{hospitalId,jdbcType=VARCHAR}
   </select>
 
