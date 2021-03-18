@@ -41,7 +41,7 @@ public class ReqInterceptor implements HandlerInterceptor {
         log.info(new StringBuilder().append("请求信息### - IP:").append(IPUtils.getIpAddr(request))
                 .append(" <<<<<请求地址>>>>>:").append(request.getRequestURI()).append(" - 请求参数：")
                 .append(JSON.toJSONString(request.getParameterMap())).append("token:").append(request.getHeader("token"))
-                .append("<<<app版本号>>>:").append(request.getHeader("<<<version>>>")));
+                .append("<<<app版本号>>>:").append(request.getHeader("<<<version>>>")).append("后台程序版本116"));
         checkSession(request);
 //        checkSign(request);
         return true;
@@ -51,10 +51,11 @@ public class ReqInterceptor implements HandlerInterceptor {
     private boolean checkSession(HttpServletRequest request) {
         String[] unAuthList = {"/hy/user/userLogin", "hy/index/getCaptchaCode","/sys","/online","/mock","/jmreport"
                 ,"/bigscreen","/test/bigScreen","/swagger","/webjars","/druid","/generic","/doc.html","/favicon.ico",
-                "hy/index/loadAppVersion","/vip/vipAdmin","getDictItems","/user/userAdmin","/course/adminCourse",
+                "hy/index/loadAppVersion","/vip/adminVip","getDictItems","/user/userAdmin","/course/adminCourse",
                 "/sys/common/static","/search/adminHotSearch","/turnImage/adminTurnImage","/party/adminParty",
                 "/user/adminUser","/user/weixinLogin","/hy/user/bindUserPhone","/community/adminCommunity",
-                "/index/getPhoneCaptchaCode","/smsConfig/adminSmsConfig","/verified/adminVerifiedConfig","/bank/adminBank"};
+                "/index/getPhoneCaptchaCode","/smsConfig/adminSmsConfig","/verified/adminVerifiedConfig",
+                "/bank/adminBank","/platformConfig/platformConfig","/hospital/adminHospital","pay/wxNotify"};
         for (String tem : unAuthList) {
             if (request.getRequestURI().contains(tem)) {
                 return true;

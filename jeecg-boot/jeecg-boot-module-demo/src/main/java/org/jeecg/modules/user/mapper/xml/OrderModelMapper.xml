@@ -19,7 +19,6 @@
     <result column="sys_ins_name" jdbcType="VARCHAR" property="sysInsName" />
     <result column="content" jdbcType="VARCHAR" property="content" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
-    <result column="update_time" jdbcType="VARCHAR" property="updateTime" />
     <result column="create_by" jdbcType="VARCHAR" property="createBy" />
     <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
     <result column="del_flag" jdbcType="INTEGER" property="delFlag" />
@@ -127,9 +126,6 @@
       <if test="createTime != null">
         create_time,
       </if>
-      <if test="updateTime != null">
-        update_time,
-      </if>
       <if test="createBy != null">
         create_by,
       </if>
@@ -204,9 +200,6 @@
       <if test="createTime != null">
         #{createTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="updateTime != null">
-        #{updateTime,jdbcType=VARCHAR},
-      </if>
       <if test="createBy != null">
         #{createBy,jdbcType=VARCHAR},
       </if>
@@ -279,9 +272,7 @@
       <if test="createTime != null">
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="updateTime != null">
-        update_time = #{updateTime,jdbcType=VARCHAR},
-      </if>
+
       <if test="createBy != null">
         create_by = #{createBy,jdbcType=VARCHAR},
       </if>
@@ -326,9 +317,6 @@
       </if>
       <if test="averageScore != null">
         average_score = #{averageScore,jdbcType=DECIMAL},
-      </if>
-      <if test="updateTime != null">
-        update_time = #{updateTime,jdbcType=VARCHAR},
       </if>
       <if test="updateBy != null">
         update_by = #{updateBy,jdbcType=VARCHAR},

@@ -33,6 +33,17 @@
     where config_key = #{key,jdbcType=VARCHAR}
   </select>
 
+
+  <select id="getConfigList" parameterType="java.lang.String" resultMap="BaseResultMap">
+    <!--@mbg.generated-->
+    select
+    <include refid="Base_Column_List" />
+    from tb_platform_configuration
+    where config_key = #{key,jdbcType=VARCHAR}
+  </select>
+
+
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     <!--@mbg.generated-->
     delete from tb_platform_configuration

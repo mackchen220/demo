@@ -4,6 +4,8 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.jeecg.modules.index.model.PlatformConfiguration;
 
+import java.util.List;
+
 @Mapper
 public interface PlatformConfigurationMapper {
     int deleteByPrimaryKey(String id);
@@ -20,5 +22,6 @@ public interface PlatformConfigurationMapper {
 
     int updateByPrimaryKey(PlatformConfiguration record);
 
+    List<PlatformConfiguration> getConfigList(@Param("key") String key);
 
 }

@@ -21,5 +21,7 @@ public interface AddressModelMapper {
 
     int updateByPrimaryKey(AddressModel record);
 
+    int updateDefaultFlag(String userId);
+
     List<AddressModelVo> loadUserAddressList(@Param("userId") String userId);
 }

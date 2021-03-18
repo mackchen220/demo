@@ -178,6 +178,16 @@
     where id = #{id,jdbcType=VARCHAR}
   </update>
 
+  <update id="updateDefaultFlag">
+    <!--@mbg.generated-->
+    update tb_address
+    set
+    default_flag = 0
+    where user_id = #{userId,jdbcType=VARCHAR}
+  </update>
+
+
+
   <select id="loadUserAddressList" parameterType="string" resultMap="voResultMap">
     select  id, user_id, phone, city, name, default_flag,address from tb_address where user_id = #{userId,jdbcType=VARCHAR}
     and is_disable =0 and del_flag=0

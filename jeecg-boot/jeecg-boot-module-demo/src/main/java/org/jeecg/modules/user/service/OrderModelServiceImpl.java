@@ -1,5 +1,6 @@
 package org.jeecg.modules.user.service;
 
+import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.extern.log4j.Log4j2;
 import org.jeecg.common.exception.JeecgBootException;
@@ -233,7 +234,7 @@ public class OrderModelServiceImpl implements OrderModelService {
         if (ValidateTool.isNotNull(config) && ValidateTool.isNotNull(config.getConfigValue())) {
             BigDecimal num1 = new BigDecimal(config.getConfigValue());
             BigDecimal num2 = new BigDecimal(money);
-            BigDecimal multiply = num2.multiply(num1);
+            BigDecimal multiply = num2.divide(new BigDecimal("100"),2,BigDecimal.ROUND_DOWN).multiply(num1);
             log.info("提现手续费配置{},提现金额{}，提现手续费{}", config.getConfigValue(), money, multiply.longValue());
             orderModel.setPayMoney(String.valueOf(Long.valueOf(money) - multiply.longValue()));
             fee = String.valueOf(multiply.longValue());
@@ -253,6 +254,7 @@ public class OrderModelServiceImpl implements OrderModelService {
     @Override
     public String orderCallBack(String orderId) {
         OrderModel orderModel = orderModelMapper.selectByPrimaryKey(orderId);
+        log.info("orderModel{},orderId{}", JSON.toJSONString(orderModel),orderId);
         if (ValidateTool.isNull(orderModel)) {
             throw new JeecgBootException("订单不存在" + orderId);
         }

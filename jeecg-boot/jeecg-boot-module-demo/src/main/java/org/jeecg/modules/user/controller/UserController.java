@@ -17,10 +17,7 @@ import org.jeecg.common.system.query.QueryGenerator;
 import org.jeecg.common.system.vo.LoginUser;
 import org.jeecg.common.util.*;
 import org.jeecg.modules.commons.util.ValidateTool;
-import org.jeecg.modules.user.model.BankModel;
-import org.jeecg.modules.user.model.UserBankModel;
-import org.jeecg.modules.user.model.UserModel;
-import org.jeecg.modules.user.model.WeiXinModel;
+import org.jeecg.modules.user.model.*;
 import org.jeecg.modules.user.model.vo.AddressModelVo;
 import org.jeecg.modules.user.model.vo.ExtensionVo;
 import org.jeecg.modules.user.model.vo.UserBankVo;
@@ -210,6 +207,16 @@ public class UserController {
         String id = userModelService.getUserIdByToken(TokenUtils.getToken(request));
         model.setUserId(id);
         addressModelService.insertSelective(model);
+        return Result.OK();
+    }
+
+
+    @ApiOperation("修改收货地址")
+    @RequestMapping(value = "/updateUserAddress", method = RequestMethod.POST)
+    public Result updateUserAddress(AddressModel model, HttpServletRequest request) {
+        String id = userModelService.getUserIdByToken(TokenUtils.getToken(request));
+        model.setUserId(id);
+        addressModelService.updateByPrimaryKeySelective(model);
         return Result.OK();
     }
 

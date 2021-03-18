@@ -7,6 +7,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.jeecg.common.api.vo.Result;
+import org.jeecg.common.util.IPUtils;
 import org.jeecg.common.util.MD5Util;
 import org.jeecg.common.util.RedisUtil;
 import org.jeecg.modules.commons.util.ValidateTool;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
 @Slf4j
 @RestController
@@ -46,7 +48,6 @@ public class CaptchaController {
         int checkfirst = userModelService.checkfirst(phone);
         String realKey = MD5Util.MD5Encode(captchaCode + phone, "utf-8");
         redisUtil.set(realKey, captchaCode, 300);
-        Result<JSONObject> result = new Result<JSONObject>();
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("code", captchaCode);
         jsonObject.put("first", checkfirst);
@@ -57,9 +58,9 @@ public class CaptchaController {
 
     @ApiOperation("获取手机验证码接口")
     @RequestMapping(value = "/getPhoneCaptchaCode", method = RequestMethod.POST)
-    public Result<JSONObject> getPhoneCaptchaCode(String phone) {
-
-        captchaCodeService.getPhoneCaptchaCode(phone);
+    public Result<JSONObject> getPhoneCaptchaCode(String phone, HttpServletRequest request) {
+        String ipAddr = IPUtils.getIpAddr(request);
+        captchaCodeService.getPhoneCaptchaCode(phone, ipAddr);
         int checkfirst = userModelService.checkfirst(phone);
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("first", checkfirst);

@@ -44,10 +44,10 @@ public class CourseController {
 
     @ApiOperation("社区关注动态列表")
     @PostMapping("/followList")
-    public Result<IPage<CommunityModel>> followList(String token,
+    public Result<IPage<CommunityModel>> followList(HttpServletRequest request,
                                 @RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo,
                                 @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize) {
-        String userId = userModelService.getUserIdByToken(token);
+        String userId = userModelService.getUserIdByToken(TokenUtils.getToken(request));
         IPage<CommunityModel> page = courseService.followList(new Page<>(pageNo, pageSize), userId);
         return Result.OK(page);
     }
@@ -76,13 +76,13 @@ public class CourseController {
 
     @ApiOperation("社区搜索动态-数据详情")
     @PostMapping("/searchInfoDetail")
-    public Result<UserCourseDetailVo> searchInfoDetail(String token, @ApiParam(name = "记录ID", required = true) String id,
+    public Result<UserCourseDetailVo> searchInfoDetail(HttpServletRequest request, @ApiParam(name = "记录ID", required = true) String id,
                                                        @ApiParam(name = "数据来源类型", required = true, value = "1-朋友圈 2-课程 3-活动")
                                                                Integer courseType) {
         if (ValidateTool.isNull(id) || ValidateTool.isNull(courseType)) {
             throw new JeecgBootException(ErrorInfoCode.PARAMS_ERROR.getMsg());
         }
-        String userId = userModelService.getUserIdByToken(token);
+        String userId = userModelService.getUserIdByToken(TokenUtils.getToken(request));
         UserCourseDetailVo info = courseService.searchInfoDetail(id, courseType, userId);
         return Result.OK(info);
     }
@@ -91,18 +91,18 @@ public class CourseController {
 
     @ApiOperation("亨氧学院")
     @PostMapping("/loadHengYangCourse")
-    public Result loadHengYangCourse(String token,String type) {
+    public Result loadHengYangCourse(String type) {
 
         Map map = courseService.loadHengYangCourse(type);
-        return Result.oKWithToken(token,map);
+        return Result.OK(map);
     }
 
     @ApiOperation("亨氧学院,活动")
     @PostMapping("/loadHengYangActivity")
-    public Result loadHengYangActivity(String token) {
+    public Result loadHengYangActivity() {
 
         List<PartyModel> partyModels = courseService.loadHengYangActivity();
-        return Result.oKWithToken(token,partyModels);
+        return Result.OK(partyModels);
     }
 
     @ApiOperation("课程详情")

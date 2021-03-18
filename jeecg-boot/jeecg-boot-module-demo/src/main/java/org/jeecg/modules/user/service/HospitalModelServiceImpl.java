@@ -3,6 +3,7 @@ package org.jeecg.modules.user.service;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.jeecg.common.exception.JeecgBootException;
+import org.jeecg.modules.commons.Constant;
 import org.jeecg.modules.commons.util.SeqUtils;
 import org.jeecg.modules.commons.util.ValidateTool;
 import org.jeecg.modules.user.mapper.HospitalModelMapper;
@@ -36,7 +37,7 @@ public class HospitalModelServiceImpl implements HospitalModelService{
 
     @Override
     public HospitalModel selectByPrimaryKey(String id) {
-        return hospitalModelMapper.selectByPrimaryKey(id);
+        return hospitalModelMapper.getModelByUserId(id);
     }
 
     @Override
@@ -113,7 +114,12 @@ public class HospitalModelServiceImpl implements HospitalModelService{
             hospitalModel.setId(SeqUtils.nextIdStr());
             hospitalModel.setUserId(userId);
             hospitalModelMapper.insertSelective(hospitalModel);
-        }{
+        }else {
+            if (Constant.CHECKTYPE1.equals(hospitalByUserId.getAuthenticated())){
+                if (ValidateTool.isNull(hospitalModel)){
+                    throw new JeecgBootException("审核通过，请勿修改信息，请联系客服");
+                }
+            }
             //更新记录
             hospitalModel.setId(hospitalByUserId.getId());
             hospitalModel.setUserId(userId);
@@ -121,4 +127,28 @@ public class HospitalModelServiceImpl implements HospitalModelService{
         }
 
     }
+
+//    id;
+//
+//    * 收获详细地址
+//            address;
+//
+//
+//    * 删除标识0-正常,1-已删除
+//            delFlag;
+//
+//     * 收货手机号
+//
+//    private String phone;
+//
+//    * 城市
+//            city;
+//
+//     * 收货人姓名
+//            name;
+//
+//     * 是否默认地址 0非默认 1默认
+//
+//    defaultFlag;
+
 }
