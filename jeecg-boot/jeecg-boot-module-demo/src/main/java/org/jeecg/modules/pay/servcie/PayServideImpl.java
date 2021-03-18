@@ -5,6 +5,8 @@ import com.alibaba.fastjson.JSON;
 import lombok.extern.log4j.Log4j2;
 import net.sf.json.JSONArray;
 import org.jeecg.common.api.vo.Result;
+import org.jeecg.common.exception.JeecgBootException;
+import org.jeecg.modules.commons.util.ValidateTool;
 import org.jeecg.modules.commons.util.XmlUtil;
 import org.jeecg.modules.pay.config.WeChatAccountConfig;
 import org.jeecg.modules.pay.config.WxPaySignature;
@@ -15,6 +17,8 @@ import org.jeecg.modules.pay.model.PayModel;
 import org.jeecg.modules.pay.model.PayRequest;
 import org.jeecg.modules.pay.model.PayResponse;
 import org.jeecg.modules.pay.model.request.WxPayAsyncResponse;
+import org.jeecg.modules.user.mapper.OrderModelMapper;
+import org.jeecg.modules.user.model.OrderModel;
 import org.jeecg.modules.user.service.OrderModelService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -35,6 +39,9 @@ public class PayServideImpl implements PayService{
     @Resource
     private OrderModelService orderModelService;
 
+    @Resource
+    private OrderModelMapper orderModelMapper;
+
     @Override
     public Result<?> wxOrderPay(PayModel payModel) {
         if(payModel == null){
@@ -43,11 +50,15 @@ public class PayServideImpl implements PayService{
         if(StringUtils.isEmpty(payModel.getOrderId())){
             return Result.error("订单错误");
         }
+        OrderModel orderModel = orderModelMapper.selectByPrimaryKey(payModel.getOrderId());
+        if (ValidateTool.isNull(orderModel)){
+            throw new JeecgBootException("订单信息错误");
+        }
         PayBean pay = new PayBean();
         pay.setOrderId(payModel.getOrderId());
         pay.setOrderName("购买商品");
 //        pay.setOpenId(syMember.getOpenid());
-        pay.setMoney(1);
+        pay.setMoney(Integer.parseInt(orderModel.getAmount()));
         pay.setReturnUrl(notifyUrl);
         PayResponse payResponse = this.create(pay);
         log.warn("支付数据{}" , payResponse);

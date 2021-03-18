@@ -334,11 +334,17 @@
         </where>
         order by create_time desc
     </select>
-    <select id="selectByFocusUserId" resultMap="BaseResultMap">
-    SELECT c.* from tb_community c
-    RIGHT JOIN tb_user_focus uf ON c.user_id = uf.focus_user_id  and c.check_status=2
-    where uf.user_id = #{userId}
-  </select>
+    <select id="selectByFocusUserId" resultMap="voResultMap">
+<!--    SELECT c.* from tb_community c-->
+<!--    RIGHT JOIN tb_user_focus uf ON c.user_id = uf.focus_user_id  and c.check_status=2-->
+<!--    where uf.user_id = #{userId}-->
+
+        SELECT a.*,b.nick_name,b.head_image from tb_community as a LEFT JOIN tb_user as b on a.user_id =b.id
+        where user_id in
+        (SELECT focus_user_id from tb_user_focus where user_id=#{userId} and del_flag =0)
+
+
+    </select>
     <select id="getListOrderByLikeNum" resultMap="BaseResultMap">
         SELECT
         <include refid="Base_Column_List"/>

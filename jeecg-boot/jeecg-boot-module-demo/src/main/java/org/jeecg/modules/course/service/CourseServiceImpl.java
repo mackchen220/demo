@@ -8,6 +8,7 @@ import org.jeecg.modules.commons.ErrorInfoCode;
 import org.jeecg.modules.commons.util.ValidateTool;
 import org.jeecg.modules.community.mapper.CommunityModelMapper;
 import org.jeecg.modules.community.model.CommunityModel;
+import org.jeecg.modules.community.model.vo.CommunityModelVo;
 import org.jeecg.modules.course.mapper.CourseMapper;
 import org.jeecg.modules.course.model.Activity;
 import org.jeecg.modules.course.model.Course;
@@ -60,8 +61,8 @@ public class CourseServiceImpl implements CourseService {
 
 
     @Override
-    public IPage<CommunityModel> followList(Page<CommunityModel> page, String userId) {
-        List<CommunityModel> list = communityModelMapper.selectByFocusUserId(page, userId);
+    public IPage<CommunityModelVo> followList(Page<CommunityModelVo> page, String userId) {
+        List<CommunityModelVo> list = communityModelMapper.selectByFocusUserId(page, userId);
         return page.setRecords(list);
     }
 
@@ -117,7 +118,7 @@ public class CourseServiceImpl implements CourseService {
             } else if (v instanceof CommunityModel) {
                 CommunityModel info = (CommunityModel) v;
                 UserCourseVo vo = UserCourseVo.valueOf(1, info.getId(), info.getTitle(), info.getImageUrl(), info.getWatchNum(),
-                        info.getGoodNum(), info.getStarNum(), info.getForwardNum());
+                        info.getGoodNum(), info.getStarNum(), info.getForwardNum(),info.getType());
                 this.packUserByCourse(vo, info.getCreateBy());
                 result.add(vo);
             } else {

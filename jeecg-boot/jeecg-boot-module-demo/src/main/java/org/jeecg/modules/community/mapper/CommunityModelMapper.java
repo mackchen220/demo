@@ -28,7 +28,7 @@ public interface CommunityModelMapper{
 
     List<CommunityModel> getListByUserId(Page<CommunityModel> page, @Param("userId") String userId);
 
-    List<CommunityModel> selectByFocusUserId(Page<CommunityModel> page, @Param("userId") String userId);
+    List<CommunityModelVo> selectByFocusUserId(Page<CommunityModelVo> page, @Param("userId") String userId);
 
     List<CommunityModel> getListOrderByLikeNum(Page<CommunityModel> page, @Param("type") Integer type, @Param("city") String city);
 

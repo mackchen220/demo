@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.ibatis.annotations.Param;
 import org.jeecg.modules.community.model.CommunityModel;
+import org.jeecg.modules.community.model.vo.CommunityModelVo;
 import org.jeecg.modules.course.model.Activity;
 import org.jeecg.modules.course.model.vo.CourseInfoVo;
 import org.jeecg.modules.course.model.vo.CourseVo;
@@ -17,7 +18,7 @@ import java.util.Map;
 
 public interface CourseService {
 
-    IPage<CommunityModel> followList(Page<CommunityModel> page, String userId);
+    IPage<CommunityModelVo> followList(Page<CommunityModelVo> page, String userId);
 
     IPage<UserCourseVo> findList(int pageNo, int pageSize, int type, String city);
 

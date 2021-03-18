@@ -1,10 +1,13 @@
 package org.jeecg.modules.webAdmin.vip.controller;
 
 import java.util.Arrays;
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.jeecg.common.api.vo.Result;
 import org.jeecg.common.system.query.QueryGenerator;
+import org.jeecg.common.util.RedisUtil;
+import org.jeecg.modules.commons.RedisKey;
 import org.jeecg.modules.webAdmin.vip.entity.AdminVip;
 import org.jeecg.modules.webAdmin.vip.service.IAdminVipService;
 
@@ -34,6 +37,8 @@ import org.jeecg.common.aspect.annotation.AutoLog;
 public class AdminVipController extends JeecgController<AdminVip, IAdminVipService> {
 	@Autowired
 	private IAdminVipService adminVipService;
+	@Resource
+	private RedisUtil redisUtil;
 
 	/**
 	 * 分页列表查询
@@ -67,6 +72,7 @@ public class AdminVipController extends JeecgController<AdminVip, IAdminVipServi
 	@ApiOperation(value="会员设置-添加", notes="会员设置-添加")
 	@PostMapping(value = "/add")
 	public Result<?> add(@RequestBody AdminVip adminVip) {
+		redisUtil.set(RedisKey.VIP_NUM+RedisKey.KEY_SPLIT+adminVip.getId(),adminVip.getQuotaNum());
 		adminVipService.save(adminVip);
 		return Result.OK("添加成功！");
 	}
@@ -81,6 +87,7 @@ public class AdminVipController extends JeecgController<AdminVip, IAdminVipServi
 	@ApiOperation(value="会员设置-编辑", notes="会员设置-编辑")
 	@PutMapping(value = "/edit")
 	public Result<?> edit(@RequestBody AdminVip adminVip) {
+		redisUtil.set(RedisKey.VIP_NUM+RedisKey.KEY_SPLIT+adminVip.getId(),adminVip.getQuotaNum());
 		adminVipService.updateById(adminVip);
 		return Result.OK("编辑成功!");
 	}

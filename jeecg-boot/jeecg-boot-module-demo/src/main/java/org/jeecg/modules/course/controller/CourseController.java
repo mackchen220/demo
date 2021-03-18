@@ -11,6 +11,7 @@ import org.jeecg.common.util.TokenUtils;
 import org.jeecg.modules.commons.ErrorInfoCode;
 import org.jeecg.modules.commons.util.ValidateTool;
 import org.jeecg.modules.community.model.CommunityModel;
+import org.jeecg.modules.community.model.vo.CommunityModelVo;
 import org.jeecg.modules.course.model.vo.CourseInfoVo;
 import org.jeecg.modules.course.model.vo.CourseVo;
 import org.jeecg.modules.course.model.vo.UserCourseDetailVo;
@@ -44,11 +45,11 @@ public class CourseController {
 
     @ApiOperation("社区关注动态列表")
     @PostMapping("/followList")
-    public Result<IPage<CommunityModel>> followList(HttpServletRequest request,
+    public Result<IPage<CommunityModelVo>> followList(HttpServletRequest request,
                                 @RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo,
                                 @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize) {
         String userId = userModelService.getUserIdByToken(TokenUtils.getToken(request));
-        IPage<CommunityModel> page = courseService.followList(new Page<>(pageNo, pageSize), userId);
+        IPage<CommunityModelVo> page = courseService.followList(new Page<>(pageNo, pageSize), userId);
         return Result.OK(page);
     }
 

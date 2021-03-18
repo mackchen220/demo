@@ -41,7 +41,7 @@ public class ReqInterceptor implements HandlerInterceptor {
         log.info(new StringBuilder().append("请求信息### - IP:").append(IPUtils.getIpAddr(request))
                 .append(" <<<<<请求地址>>>>>:").append(request.getRequestURI()).append(" - 请求参数：")
                 .append(JSON.toJSONString(request.getParameterMap())).append("token:").append(request.getHeader("token"))
-                .append("<<<app版本号>>>:").append(request.getHeader("<<<version>>>")).append("后台程序版本116"));
+                .append("<<<app版本号>>>:").append(request.getHeader("<<<version>>>")).append("后台程序版本119"));
         checkSession(request);
 //        checkSign(request);
         return true;
