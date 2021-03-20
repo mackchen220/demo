@@ -27,7 +27,7 @@ public interface OrderModelMapper {
 
     OrderModel getOrderNumAndMoney(@Param("userId") String userId);
 
-    OrderModel getVipOrder(@Param("userId") String userId);
+    OrderModel getVipOrder(@Param("userId") String userId ,@Param("optStatus")String optStatus ,@Param("type")String type);
 
 
 }

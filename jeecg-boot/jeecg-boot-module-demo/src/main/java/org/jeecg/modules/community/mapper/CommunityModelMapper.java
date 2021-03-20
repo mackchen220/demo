@@ -30,7 +30,7 @@ public interface CommunityModelMapper{
 
     List<CommunityModelVo> selectByFocusUserId(Page<CommunityModelVo> page, @Param("userId") String userId);
 
-    List<CommunityModel> getListOrderByLikeNum(Page<CommunityModel> page, @Param("type") Integer type, @Param("city") String city);
+    List<CommunityModelVo> getListOrderByLikeNum(Page<CommunityModelVo> page, @Param("type") Integer type, @Param("city") String city);
 
     //更新朋友圈表收藏点赞转发观看数
     int updateCommunityNum(@Param("communityId") String communityId,@Param("userId") String userId,

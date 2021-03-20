@@ -14,7 +14,9 @@ import org.jeecg.modules.user.model.BankModel;
 import org.jeecg.modules.user.model.vo.UserBankVo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+
 import javax.annotation.Resource;
+
 import org.jeecg.modules.user.model.UserBankModel;
 import org.jeecg.modules.user.mapper.UserBankModelMapper;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,7 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class UserBankModelServiceImpl implements UserBankModelService{
+public class UserBankModelServiceImpl implements UserBankModelService {
 
     @Resource
     private UserBankModelMapper userBankModelMapper;
@@ -40,25 +42,22 @@ public class UserBankModelServiceImpl implements UserBankModelService{
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public Result insertUserBank(UserBankModel userBankModel,String captchaCode,String phone,String userId) {
+    public Result insertUserBank(UserBankModel userBankModel, String captchaCode, String phone, String userId) {
         Result<String> result = new Result<>();
-        if (!ValidateTool.checkIsNull(userBankModel) || !ValidateTool.checkIsNull(userBankModel.getRealName())){
-                result.error500("请输入姓名");
-                return result;
-        }
-        if (!ValidateTool.checkIsNull(userBankModel.getCardNumber())){
-            result.error500("请输入银行卡号");
+        if (!ValidateTool.checkIsNull(userBankModel) || !ValidateTool.checkIsNull(userBankModel.getRealName())) {
+            result.error500("请输入姓名");
             return result;
         }
-        if (!ValidateTool.checkIsNull(userBankModel.getBank())){
+        ValidateTool.isBankCard(userBankModel.getCardNumber());
+        if (!ValidateTool.checkIsNull(userBankModel.getBank())) {
             result.error500("请选择银行");
             return result;
         }
-        if (!ValidateTool.checkIsNull(userBankModel.getCity())){
+        if (!ValidateTool.checkIsNull(userBankModel.getCity())) {
             result.error500("请选择所在地址");
             return result;
         }
-        if (!ValidateTool.checkIsNull(userBankModel.getSubBankName())){
+        if (!ValidateTool.checkIsNull(userBankModel.getSubBankName())) {
             result.error500("请输入开户行");
             return result;
         }
@@ -74,8 +73,8 @@ public class UserBankModelServiceImpl implements UserBankModelService{
 //            result.error500("验证码错误");
 //            return result;
 //        }
-        UserBankModel userBank = userBankModelMapper.loadBankInfoByUserId(userBankModel.getCardNumber(),null,null);
-        if (ValidateTool.checkIsNull(userBank)){
+        UserBankModel userBank = userBankModelMapper.loadBankInfoByUserId(userBankModel.getCardNumber(), null, null);
+        if (ValidateTool.checkIsNull(userBank)) {
             result.error500("卡号已绑定");
         }
         userBankModel.setId(SeqUtils.nextIdStr());
@@ -86,7 +85,7 @@ public class UserBankModelServiceImpl implements UserBankModelService{
 
     @Override
     public UserBankModel selectByPrimaryKey(String id) {
-        return userBankModelMapper.loadBankInfoByUserId(null,id,null);
+        return userBankModelMapper.loadBankInfoByUserId(null, id, null);
     }
 
     @Override

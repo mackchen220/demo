@@ -341,7 +341,7 @@ public class UserModelServiceImpl implements UserModelService {
             userModel1.setWechat(wechat);
         }
         if (ValidateTool.isNotNull(content)) {
-            if (content.length()>16){
+            if (content.length() > 16) {
                 throw new JeecgBootException("个性签名限制十六个字");
             }
             userModel1.setSign(content);
@@ -635,15 +635,15 @@ public class UserModelServiceImpl implements UserModelService {
         //团队人数
         map.put("num", userIds.size());
 
-        Long incomeToday =0L;
-        Long incomeMonth =0L;
-        Long incomeTotal =0L;
+        Long incomeToday = 0L;
+        Long incomeMonth = 0L;
+        Long incomeTotal = 0L;
 
         for (String userId : userIds) {
-            incomeToday= Long.valueOf(userIncomeMapper.getExtensionMoneyByTime(userId, startTimeToday, endTimeToday));
-            incomeMonth  = Long.valueOf(userIncomeMapper.getExtensionMoneyByTime(user.getId(), firstDayOfMonth, lastDayOfMonth));
+            incomeToday = Long.valueOf(userIncomeMapper.getExtensionMoneyByTime(userId, startTimeToday, endTimeToday));
+            incomeMonth = Long.valueOf(userIncomeMapper.getExtensionMoneyByTime(user.getId(), firstDayOfMonth, lastDayOfMonth));
             //总收入
-            incomeTotal = Long.valueOf( userIncomeMapper.getExtensionMoneyByTime(user.getId() ,  firstDayOfMonth, lastDayOfMonth));
+            incomeTotal = Long.valueOf(userIncomeMapper.getExtensionMoneyByTime(user.getId(), firstDayOfMonth, lastDayOfMonth));
         }
 
         map.put("incomeToday", incomeToday);
@@ -681,7 +681,6 @@ public class UserModelServiceImpl implements UserModelService {
 
         return page.setRecords(extensionVos);
     }
-
 
 
 }

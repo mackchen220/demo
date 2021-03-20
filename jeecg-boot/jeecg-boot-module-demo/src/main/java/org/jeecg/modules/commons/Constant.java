@@ -43,6 +43,7 @@ public class Constant {
 
     public final static String CONFIG_KEY_INVITE_CONTEXT = "invite_context";
 
+    public final static String DELIVERY_FEE = "deliveryFee";
 
 
 }

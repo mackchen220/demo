@@ -28,9 +28,7 @@ public class AddressModelServiceImpl implements AddressModelService {
     @Transactional(rollbackFor = Exception.class)
     @Override
     public int insertSelective(AddressModelVo record) {
-        if (ValidateTool.isNull(record.getPhone())) {
-            throw new JeecgBootException("请输入手机号码");
-        }
+        ValidateTool.checkParamIsMobile(record.getPhone());
         if (ValidateTool.isNull(record.getCity())) {
             throw new JeecgBootException("请选择城市");
         }

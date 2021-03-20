@@ -23,10 +23,13 @@ public interface VipModelService{
 
     List<VipModelVo> getVipList();
 
+    Map loadVipInfo(String vipId, String userId);
+
 
     Map addVipOrder(String adressId,String vipId, String userId);
 
     Map getVipOrder(String addressId,String vipId, String orderId,String userId);
+    Map updateOrder(String adressId, String vipId, String orderId);
 
 
     String addVipCallBack(String orderId);

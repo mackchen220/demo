@@ -1,8 +1,6 @@
 package org.jeecg.modules.user.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.xiaoymin.knife4j.annotations.DynamicParameter;
@@ -11,11 +9,10 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.jeecg.common.api.vo.Result;
-import org.jeecg.common.aspect.annotation.AutoLog;
-import org.jeecg.common.constant.CommonConstant;
-import org.jeecg.common.system.query.QueryGenerator;
-import org.jeecg.common.system.vo.LoginUser;
-import org.jeecg.common.util.*;
+import org.jeecg.common.util.IPUtils;
+import org.jeecg.common.util.MD5Util;
+import org.jeecg.common.util.RedisUtil;
+import org.jeecg.common.util.TokenUtils;
 import org.jeecg.modules.commons.util.ValidateTool;
 import org.jeecg.modules.user.model.*;
 import org.jeecg.modules.user.model.vo.AddressModelVo;
@@ -23,13 +20,10 @@ import org.jeecg.modules.user.model.vo.ExtensionVo;
 import org.jeecg.modules.user.model.vo.UserBankVo;
 import org.jeecg.modules.user.model.vo.UserIncomeDetailVo;
 import org.jeecg.modules.user.service.*;
-import org.jeecg.modules.webAdmin.bank.entity.AdminBank;
-import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -228,7 +222,15 @@ public class UserController {
         return Result.OK(list);
     }
 
-    @ApiOperation("购买会员卡，提交订单")
+    @ApiOperation("会员卡名额消息")
+    @RequestMapping(value = "/loadVipInfo", method = RequestMethod.POST)
+    public Result<Map> loadVipInfo(HttpServletRequest request, String vipId) {
+        String id = userModelService.getUserIdByToken(TokenUtils.getToken(request));
+        Map map = vipModelService.loadVipInfo(vipId, id);
+        return Result.OK(map);
+    }
+
+    @ApiOperation("购买会员卡锁定名额")
     @RequestMapping(value = "/addVipOrder", method = RequestMethod.POST)
     public Result<Map> addVipOrder(HttpServletRequest request, String addressId, String vipId) {
         String id = userModelService.getUserIdByToken(TokenUtils.getToken(request));
@@ -241,7 +243,14 @@ public class UserController {
     @RequestMapping(value = "/getVipOrder", method = RequestMethod.POST)
     public Result<Map> getVipOrder(HttpServletRequest request, String addressId, String vipId, String orderId) {
         String id = userModelService.getUserIdByToken(TokenUtils.getToken(request));
-        Map map = vipModelService.getVipOrder(addressId, vipId, orderId,id);
+        Map map = vipModelService.getVipOrder(addressId, vipId, orderId, id);
+        return Result.OK(map);
+    }
+
+    @ApiOperation("购买会员卡，提交订单")
+    @RequestMapping(value = "/updateOrder", method = RequestMethod.POST)
+    public Result<Map> addOrder(String orderId, String addressId, String vipId) {
+        Map map = vipModelService.updateOrder(addressId, vipId, orderId);
         return Result.OK(map);
     }
 
@@ -286,8 +295,8 @@ public class UserController {
     //代理中心分页详情
     @ApiOperation("代理中心分页详情")
     @PostMapping("/loadProxyIncome")
-    public Result loadProxyIncome(HttpServletRequest request,  @RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo,
-                                      @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize) {
+    public Result loadProxyIncome(HttpServletRequest request, @RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo,
+                                  @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize) {
         String id = userModelService.getUserIdByToken(TokenUtils.getToken(request));
 
         Page<ExtensionVo> page = new Page<>(pageNo, pageSize);

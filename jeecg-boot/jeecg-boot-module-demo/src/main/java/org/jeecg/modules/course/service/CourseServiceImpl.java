@@ -59,7 +59,6 @@ public class CourseServiceImpl implements CourseService {
     private UserStarMapper userStarMapper;
 
 
-
     @Override
     public IPage<CommunityModelVo> followList(Page<CommunityModelVo> page, String userId) {
         List<CommunityModelVo> list = communityModelMapper.selectByFocusUserId(page, userId);
@@ -113,19 +112,19 @@ public class CourseServiceImpl implements CourseService {
                 Course info = (Course) v;
                 UserCourseVo vo = UserCourseVo.valueOf(2, info.getId(), info.getTitle(), info.getImage(), info.getWatchNum(),
                         info.getGoodNum(), info.getStarNum(), info.getForwardNum());
-                this.packUserByCourse(vo, info.getCreateBy());
+                this.packUserByCourse(vo, info.getUserId());
                 result.add(vo);
-            } else if (v instanceof CommunityModel) {
-                CommunityModel info = (CommunityModel) v;
+            } else if (v instanceof CommunityModelVo) {
+                CommunityModelVo info = (CommunityModelVo) v;
                 UserCourseVo vo = UserCourseVo.valueOf(1, info.getId(), info.getTitle(), info.getImageUrl(), info.getWatchNum(),
-                        info.getGoodNum(), info.getStarNum(), info.getForwardNum(),info.getType());
-                this.packUserByCourse(vo, info.getCreateBy());
+                        info.getGoodNum(), info.getStarNum(), info.getForwardNum(), info.getType());
+                this.packUserByCourse(vo, info.getUserId());
                 result.add(vo);
             } else {
                 PartyModel info = (PartyModel) v;
                 UserCourseVo vo = UserCourseVo.valueOf(3, info.getId(), info.getTitle(), info.getImage(), info.getWatchNum(),
                         info.getGoodNum(), info.getStarNum(), info.getForwardNum());
-                this.packUserByCourse(vo, info.getCreateBy());
+                this.packUserByCourse(vo, info.getUserId());
                 result.add(vo);
             }
         });
@@ -217,7 +216,7 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public CourseVo getCourseInfo(String id,String userId) {
+    public CourseVo getCourseInfo(String id, String userId) {
         CourseVo courseInfo = courseMapper.getCourseInfo(id);
         if (ValidateTool.isNotNull(courseInfo.getUserId())) {
             UserModel user = userModelService.getUserById(courseInfo.getUserId());
@@ -238,7 +237,7 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public Page<CourseVo> loadCommendCourse(Page<CourseVo> page,String type) {
+    public Page<CourseVo> loadCommendCourse(Page<CourseVo> page, String type) {
         List<CourseVo> courses = courseMapper.loadCourseListPage(page, type);
         return page.setRecords(courses);
     }
