@@ -119,9 +119,9 @@ public class VipModelServiceImpl implements VipModelService {
             throw new JeecgBootException("产品已下架");
         }
         OrderModel vipOrder = orderModelMapper.getVipOrder(userId, Constant.CHECKTYPE1, Constant.CHECKTYPE4);
-//        if (ValidateTool.isNotNull(vipOrder)) {
-//            throw new JeecgBootException("已确认名额，请勿重复购买");
-//        }
+        if (ValidateTool.isNotNull(vipOrder)) {
+            throw new JeecgBootException("已确认名额，请勿重复购买");
+        }
         AddressModel addressModel = addressModelMapper.selectByPrimaryKey(adressId);
         if (ValidateTool.isNull(addressModel)) {
             throw new JeecgBootException("请填写地址");
@@ -134,6 +134,9 @@ public class VipModelServiceImpl implements VipModelService {
             throw new JeecgBootException(ErrorInfoCode.NUM_ERROR.getCode(), ErrorInfoCode.NUM_ERROR.getMsg());
         }
         //物流配送费
+        PlatformConfiguration configByKey = platformConfigurationMapper.getConfigByKey(Constant.DELIVERY_FEE);
+        String delivery = ValidateTool.isNull(configByKey) ? "1500" : configByKey.getConfigValue();
+        log.info("物流配送费{}", delivery);
         vipModelMapper.updateNum(vipId);
         OrderModel orderModel = new OrderModel();
         orderModel.setId(SeqUtils.nextIdStr());
@@ -143,9 +146,9 @@ public class VipModelServiceImpl implements VipModelService {
         orderModel.setContent("亨氧" + vipModel.getVipName() + "会员卡");
         orderModel.setOperationType(Constant.TYPE_INT_4);
         orderModel.setNum(Constant.TYPE_INT_1);
-        orderModel.setOptStatus(Constant.TYPE_INT_0);
+        orderModel.setOptStatus(Constant.TYPE_INT_1);
         orderModel.setVipId(vipId);
-        orderModel.setAmount(String.valueOf(vipModel.getPriceLow()));
+        orderModel.setAmount(String.valueOf(vipModel.getPriceLow() + Long.valueOf(delivery)));
         orderModelMapper.insertSelective(orderModel);
         map.put("orderId", orderModel.getId());
         map.put("adressId", adressId);
