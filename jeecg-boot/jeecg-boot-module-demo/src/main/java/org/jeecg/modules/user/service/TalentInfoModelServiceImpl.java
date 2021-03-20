@@ -1,6 +1,7 @@
 package org.jeecg.modules.user.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import lombok.extern.log4j.Log4j2;
 import org.jeecg.common.exception.JeecgBootException;
 import org.jeecg.modules.commons.Constant;
 import org.jeecg.modules.commons.util.DateHelper;
@@ -17,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import java.util.*;
 
-
+@Log4j2
 @Service
 public class TalentInfoModelServiceImpl implements TalentInfoModelService {
 
@@ -177,7 +178,7 @@ public class TalentInfoModelServiceImpl implements TalentInfoModelService {
         map.put("bond", ValidateTool.isNotNull(config) && ValidateTool.isNotNull(config.getConfigValue()) ? config.getConfigValue() : "2000000");
         TalentInfoModel talentInfoModel = talentInfoModelMapper.selectByUserId(userId);
         map.put("status", ValidateTool.isNull(talentInfoModel) ? 1 : 0);
-        map.put("idStatus", ValidateTool.isNull(talentInfoModel) ? talentInfoModel.getIdStatus() : 1);
+        map.put("idStatus", ValidateTool.isNotNull(talentInfoModel) ? talentInfoModel.getIdStatus() : 1);
         map.put("idNum", ValidateTool.isNotNull(talentInfoModel) ? talentInfoModel.getIdCard() : "");
         map.put("name", ValidateTool.isNotNull(talentInfoModel) ? talentInfoModel.getName() : "");
         map.put("city", ValidateTool.isNotNull(talentInfoModel) ? talentInfoModel.getCity() : "");
@@ -187,18 +188,48 @@ public class TalentInfoModelServiceImpl implements TalentInfoModelService {
         return map;
     }
 
+
+
+
+
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public void addTalentBond(String userId) {
+    public String addTalentBond(String userId) {
+        PlatformConfiguration config = platformConfigurationMapper.getConfigByKey(Constant.CONFIG_KEY_BOOD);
         TalentInfoModel talentInfoModel = talentInfoModelMapper.selectByUserId(userId);
         if (ValidateTool.isNull(talentInfoModel)) {
             throw new JeecgBootException("请先完成身份认证");
         }
+        OrderModel orderModel = new OrderModel();
+        orderModel.setId(SeqUtils.nextIdStr());
+        orderModel.setUserId(userId);
+        orderModel.setOperationType(Constant.TYPE_INT_5);
+        orderModel.setContent("达人认证保证金");
+        orderModel.setNum(Constant.TYPE_INT_1);
+        orderModel.setOptStatus(Constant.TYPE_INT_1);
+        orderModel.setAmount(ValidateTool.isNotNull(config) && ValidateTool.isNotNull(config.getConfigValue()) ? config.getConfigValue() : "2000000");
+        orderModelMapper.insertSelective(orderModel);
+        return orderModel.getId();
+    }
+
+
+    @Override
+    public String talentCallBack(String orderId){
+        log.info("缴纳保证金回调{}", orderId);
+        OrderModel orderModel = orderModelMapper.selectByPrimaryKey(orderId);
+        if (ValidateTool.isNull(orderModel)) {
+            log.warn("缴纳保证金回调,查询不到订单{}", orderId);
+            return null;
+        }
+        TalentInfoModel talentInfoModel = talentInfoModelMapper.selectByUserId(orderModel.getUserId());
+        if (ValidateTool.isNull(talentInfoModel)) {
+            log.warn("缴纳保证金回调,查询不到用户{}", orderModel.getUserId());
+        }
         //更新保证金
         talentInfoModel.setDeposit(2000000L);
         talentInfoModelMapper.updateByPrimaryKeySelective(talentInfoModel);
+        return "ok";
     }
-
 
     @Override
     public Map loadTalentCenter(UserModel userModel) {

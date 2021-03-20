@@ -46,6 +46,8 @@ public class OrderModelServiceImpl implements OrderModelService {
     private PlatformConfigurationMapper platformConfigurationMapper;
     @Resource
     private VipModelService vipModelService;
+    @Resource
+    private TalentInfoModelService talentInfoModelService;
 
     @Override
     public int insertSelective(OrderModel record) {
@@ -273,16 +275,23 @@ public class OrderModelServiceImpl implements OrderModelService {
             //TODO 达人提成
 
         }
+        if (Constant.TYPE_INT_2 == orderModel.getOperationType()) {
+            //购买课程
+
+        }
         if (Constant.TYPE_INT_4 == orderModel.getOperationType()) {
-            //购买会员
-            //TODO 上级提成
+            //购买会员 上级提成
             vipModelService.addVipCallBack(payResponse.getOrderId());
+        }
+        if (Constant.TYPE_INT_5 == orderModel.getOperationType()) {
+            //缴纳保证金
+            talentInfoModelService.talentCallBack(payResponse.getOrderId());
         }
         OrderModel orderModel1 = new OrderModel();
         orderModel1.setId(payResponse.getOrderId());
         orderModel1.setOptStatus(Constant.TYPE_INT_2);
         orderModel1.setPayType(Constant.TYPE_INT_2);
-        orderModel1.setPayMoney(String.valueOf(payResponse.getOrderAmount()));
+        orderModel1.setPayMoney(String.valueOf(orderModel.getAmount()));
         orderModelMapper.updateByPrimaryKeySelective(orderModel1);
         return "ok";
     }

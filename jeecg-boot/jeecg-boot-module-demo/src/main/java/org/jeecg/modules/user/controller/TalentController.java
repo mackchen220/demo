@@ -173,10 +173,10 @@ public class TalentController {
 
     @ApiOperation("缴纳保证金")
     @PostMapping("/addTalentBond")
-    public Result addTalentBond(String token) {
-        String id = userModelService.getUserIdByToken(token);
-        talentInfoModelService.addTalentBond(id);
-        return Result.oKWithToken(token, null);
+    public Result addTalentBond(HttpServletRequest request) {
+        String id = userModelService.getUserIdByToken(TokenUtils.getToken(request));
+        String orderId = talentInfoModelService.addTalentBond(id);
+        return Result.OK(orderId);
     }
 
     //达人中心

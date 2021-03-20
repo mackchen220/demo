@@ -41,10 +41,11 @@ public interface TalentInfoModelService{
 
     Map getTalentBond(String userId);
 
-    void addTalentBond(String userId);
+    String addTalentBond(String userId);
 
     Map loadTalentCenter(UserModel user);
 
+    String talentCallBack(String orderId);
 
     void addCustomer(String talentId, String userId);
 

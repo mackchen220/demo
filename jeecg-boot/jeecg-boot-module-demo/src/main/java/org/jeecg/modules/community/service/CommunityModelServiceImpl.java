@@ -51,7 +51,7 @@ public class CommunityModelServiceImpl implements CommunityModelService {
     @Override
     public int insertSelective(CommunityModel record) {
         record.setId(SeqUtils.nextIdStr());
-
+        record.setCheckStatus(Constant.TYPE_INT_2);
         return communityModelMapper.insertSelective(record);
     }
 

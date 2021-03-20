@@ -122,7 +122,7 @@ public class CourseServiceImpl implements CourseService {
                 this.packUserByCourse(vo, info.getCreateBy());
                 result.add(vo);
             } else {
-                Activity info = (Activity) v;
+                PartyModel info = (PartyModel) v;
                 UserCourseVo vo = UserCourseVo.valueOf(3, info.getId(), info.getTitle(), info.getImage(), info.getWatchNum(),
                         info.getGoodNum(), info.getStarNum(), info.getForwardNum());
                 this.packUserByCourse(vo, info.getCreateBy());
