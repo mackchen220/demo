@@ -11,6 +11,7 @@ import org.jeecg.modules.course.model.vo.CourseVo;
 import org.jeecg.modules.course.model.vo.UserCourseDetailVo;
 import org.jeecg.modules.course.model.vo.UserCourseVo;
 import org.jeecg.modules.index.model.PartyModel;
+import org.jeecg.modules.user.model.UserModel;
 
 import java.util.List;
 import java.util.Map;
@@ -32,9 +33,14 @@ public interface CourseService {
 
     Page<CourseVo> loadCommendCourse(Page<CourseVo> page ,String type);
 
-    CourseVo getCourseInfo(String id,String userId);
+    CourseVo getCourseInfo(String id, UserModel userModel);
 
     List<CourseInfoVo> getCourseInfoList(String courseId);
 
     Page<CourseVo> loadCourseModelList(Page<CourseVo> page, @Param("search")String search);
+
+    Map addUserCourse(String courseId, UserModel userModel);
+
+    String courseCallBack(String orderId);
+
 }

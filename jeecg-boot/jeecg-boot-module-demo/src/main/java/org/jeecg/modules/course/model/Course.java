@@ -133,6 +133,11 @@ public class Course implements Serializable {
     private Integer recommend;
 
 
+    /**
+     * 是否对会员免费 1会员免费 0无优惠
+     */
+    @ApiModelProperty(value="是否对会员免费 1会员免费 0无优惠")
+    private String vipFree;
 
 
 

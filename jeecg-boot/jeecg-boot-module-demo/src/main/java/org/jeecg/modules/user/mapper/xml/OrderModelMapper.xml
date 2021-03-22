@@ -227,6 +227,9 @@
       <if test="talentId != null">
         #{talentId,jdbcType=VARCHAR},
       </if>
+      <if test="courseId != null">
+        #{courseId,jdbcType=VARCHAR},
+      </if>
       <if test="projectId != null">
         #{projectId,jdbcType=VARCHAR},
       </if>
@@ -380,6 +383,5 @@
     </if>
     limit 1
   </select>
-
 
 </mapper>

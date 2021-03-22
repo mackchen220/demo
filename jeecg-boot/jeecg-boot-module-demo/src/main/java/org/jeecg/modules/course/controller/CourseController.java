@@ -18,11 +18,9 @@ import org.jeecg.modules.course.model.vo.UserCourseDetailVo;
 import org.jeecg.modules.course.model.vo.UserCourseVo;
 import org.jeecg.modules.course.service.CourseService;
 import org.jeecg.modules.index.model.PartyModel;
+import org.jeecg.modules.user.model.UserModel;
 import org.jeecg.modules.user.service.UserModelService;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -34,8 +32,8 @@ import java.util.Objects;
 @RestController
 @RequestMapping("/hy/course")
 @Api(tags = "前台社区模块",
-     basePath = "/hy/course",
-     description = "社区这一栏的视频vlog和照片数据是来自发朋友圈功能，知识，活动，课程是后台添加的，知识是文章版的课程")
+        basePath = "/hy/course",
+        description = "社区这一栏的视频vlog和照片数据是来自发朋友圈功能，知识，活动，课程是后台添加的，知识是文章版的课程")
 public class CourseController {
 
     @Resource
@@ -46,8 +44,8 @@ public class CourseController {
     @ApiOperation("社区关注动态列表")
     @PostMapping("/followList")
     public Result<IPage<CommunityModelVo>> followList(HttpServletRequest request,
-                                @RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo,
-                                @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize) {
+                                                      @RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo,
+                                                      @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize) {
         String userId = userModelService.getUserIdByToken(TokenUtils.getToken(request));
         IPage<CommunityModelVo> page = courseService.followList(new Page<>(pageNo, pageSize), userId);
         return Result.OK(page);
@@ -89,7 +87,6 @@ public class CourseController {
     }
 
 
-
     @ApiOperation("亨氧学院")
     @PostMapping("/loadHengYangCourse")
     public Result loadHengYangCourse(String type) {
@@ -111,28 +108,36 @@ public class CourseController {
     public Result getCourseInfo(HttpServletRequest request, String id) {
 
         String token = TokenUtils.getToken(request);
-        String idByToken = userModelService.getUserIdByToken(token);
-        CourseVo courseInfo = courseService.getCourseInfo(id,idByToken);
-        return Result.oKWithToken(token,courseInfo);
+        UserModel userModel = userModelService.getUserModelByToken(token);
+        CourseVo courseInfo = courseService.getCourseInfo(id, userModel);
+        return Result.OK(courseInfo);
     }
 
     @ApiOperation("课程推荐")
     @PostMapping("/loadCommendCourse")
-    public Result loadCommendCourse(String type,@RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo,
+    public Result loadCommendCourse(String type, @RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo,
                                     @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize) {
-        Page<CourseVo> page = new Page<>(pageNo,pageSize);
+        Page<CourseVo> page = new Page<>(pageNo, pageSize);
         Page<CourseVo> courseVoPage = courseService.loadCommendCourse(page, type);
         return Result.OK(courseVoPage);
     }
 
     @ApiOperation("课程章节列表")
     @PostMapping("/getCourseInfoList")
-    public Result getCourseInfoList(String token,String id) {
+    public Result getCourseInfoList(String token, String id) {
 
         List<CourseInfoVo> courseInfoList = courseService.getCourseInfoList(id);
-        return Result.oKWithToken(token,courseInfoList);
+        return Result.oKWithToken(token, courseInfoList);
     }
 
+
+    @ApiOperation("购买课程")
+    @RequestMapping(value = "/addUserCourse", method = RequestMethod.POST)
+    public Result<Map> addUserCourse(HttpServletRequest request, String courseId) {
+        UserModel model = userModelService.getUserModelByToken(TokenUtils.getToken(request));
+        Map map = courseService.addUserCourse(courseId, model);
+        return Result.OK(map);
+    }
 
 
 }

@@ -7,6 +7,7 @@ import org.jeecg.common.exception.JeecgBootException;
 import org.jeecg.modules.commons.Constant;
 import org.jeecg.modules.commons.util.SeqUtils;
 import org.jeecg.modules.commons.util.ValidateTool;
+import org.jeecg.modules.course.service.CourseService;
 import org.jeecg.modules.index.mapper.PlatformConfigurationMapper;
 import org.jeecg.modules.index.model.PlatformConfiguration;
 import org.jeecg.modules.pay.model.PayResponse;
@@ -48,6 +49,8 @@ public class OrderModelServiceImpl implements OrderModelService {
     private VipModelService vipModelService;
     @Resource
     private TalentInfoModelService talentInfoModelService;
+    @Resource
+    private CourseService courseService;
 
     @Override
     public int insertSelective(OrderModel record) {
@@ -277,7 +280,7 @@ public class OrderModelServiceImpl implements OrderModelService {
         }
         if (Constant.TYPE_INT_2 == orderModel.getOperationType()) {
             //购买课程
-
+            courseService.courseCallBack(payResponse.getOrderId());
         }
         if (Constant.TYPE_INT_4 == orderModel.getOperationType()) {
             //购买会员 上级提成

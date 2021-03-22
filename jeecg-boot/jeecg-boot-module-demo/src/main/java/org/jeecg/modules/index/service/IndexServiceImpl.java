@@ -66,10 +66,14 @@ public class IndexServiceImpl implements IndexService {
         List<JSONObject> list2 = new ArrayList<>();
         for (Course courseModel : courseModels) {
             JSONObject jsonObject = new JSONObject();
+            jsonObject.put("id", courseModel.getId());
+            jsonObject.put("courseType", courseModel.getCourseType());
             jsonObject.put("image", courseModel.getImage());
             jsonObject.put("title", courseModel.getTitle());
             jsonObject.put("price", courseModel.getPrice());
             jsonObject.put("num", courseModel.getWatchNum());
+            jsonObject.put("goodNum", courseModel.getGoodNum());
+            jsonObject.put("content", courseModel.getContent());
             list2.add(jsonObject);
         }
         map.put("courses", list2);

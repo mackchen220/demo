@@ -2,6 +2,10 @@ package org.jeecg.modules.commons;
 
 public class RedisKey {
 
+    /**
+     * redis分布式锁
+     */
+    public final static String LOCK_KEY = "str_lock";
 
     //分割
     public final static String KEY_SPLIT=":";
