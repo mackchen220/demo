@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.jeecg.modules.chat.mapper.ChatP2pMapper">
+  <resultMap id="BaseResultMap" type="org.jeecg.modules.chat.model.ChatP2p">
+    <!--@mbg.generated-->
+    <!--@Table tb_chat_p2p-->
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <id column="dialog_id" jdbcType="VARCHAR" property="dialogId" />
+    <result column="user_id" jdbcType="VARCHAR" property="userId" />
+    <result column="to_id" jdbcType="VARCHAR" property="toId" />
+    <result column="type" jdbcType="TINYINT" property="type" />
+    <result column="message" jdbcType="VARCHAR" property="message" />
+    <result column="is_read" jdbcType="TINYINT" property="isRead" />
+    <result column="send_time" jdbcType="VARCHAR" property="sendTime" />
+    <result column="del_flag" jdbcType="TINYINT" property="delFlag" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    id, user_id, to_id, `type`, message, is_read, send_time, del_flag, dialog_id
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    <!--@mbg.generated-->
+    select 
+    <include refid="Base_Column_List" />
+    from tb_chat_p2p
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    <!--@mbg.generated-->
+    delete from tb_chat_p2p
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="org.jeecg.modules.chat.model.ChatP2p">
+    <!--@mbg.generated-->
+    insert into tb_chat_p2p (id, user_id, to_id, 
+      `type`, message, is_read, 
+      send_time, del_flag, dialog_id)
+    values (#{id,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{toId,jdbcType=VARCHAR}, 
+      #{type,jdbcType=TINYINT}, #{message,jdbcType=VARCHAR}, #{isRead,jdbcType=TINYINT}, 
+      #{sendTime,jdbcType=VARCHAR}, #{delFlag,jdbcType=INTEGER}, dialog_id)
+  </insert>
+  <insert id="insertSelective" parameterType="org.jeecg.modules.chat.model.ChatP2p">
+    <!--@mbg.generated-->
+    insert into tb_chat_p2p
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="toId != null">
+        to_id,
+      </if>
+      <if test="type != null">
+        `type`,
+      </if>
+      <if test="message != null">
+        message,
+      </if>
+      <if test="isRead != null">
+        is_read,
+      </if>
+      <if test="sendTime != null">
+        send_time,
+      </if>
+      <if test="delFlag != null">
+        del_flag,
+      </if>
+      <if test="dialogId != null">
+        dialog_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="toId != null">
+        #{toId,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=TINYINT},
+      </if>
+      <if test="message != null">
+        #{message,jdbcType=VARCHAR},
+      </if>
+      <if test="isRead != null">
+        #{isRead,jdbcType=TINYINT},
+      </if>
+      <if test="sendTime != null">
+        #{sendTime,jdbcType=VARCHAR},
+      </if>
+      <if test="delFlag != null">
+        #{delFlag,jdbcType=INTEGER},
+      </if>
+      <if test="dialogId != null">
+        #{dialogId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="org.jeecg.modules.chat.model.ChatP2p">
+    <!--@mbg.generated-->
+    update tb_chat_p2p
+    <set>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="toId != null">
+        to_id = #{toId,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        `type` = #{type,jdbcType=TINYINT},
+      </if>
+      <if test="message != null">
+        message = #{message,jdbcType=VARCHAR},
+      </if>
+      <if test="isRead != null">
+        is_read = #{isRead,jdbcType=TINYINT},
+      </if>
+      <if test="sendTime != null">
+        send_time = #{sendTime,jdbcType=VARCHAR},
+      </if>
+      <if test="delFlag != null">
+        del_flag = #{delFlag,jdbcType=INTEGER},
+      </if>
+      <if test="dialogId != null">
+        dialog_id = #{dialogId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="org.jeecg.modules.chat.model.ChatP2p">
+    <!--@mbg.generated-->
+    update tb_chat_p2p
+    set user_id = #{userId,jdbcType=VARCHAR},
+      to_id = #{toId,jdbcType=VARCHAR},
+      `type` = #{type,jdbcType=TINYINT},
+      message = #{message,jdbcType=VARCHAR},
+      is_read = #{isRead,jdbcType=TINYINT},
+      send_time = #{sendTime,jdbcType=VARCHAR},
+      del_flag = #{delFlag,jdbcType=INTEGER},
+      dialog_id = #{dialogId,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <select id="getLatestList" resultMap="BaseResultMap">
+    SELECT <include refid="Base_Column_List"/>
+    FROM tb_chat_p2p
+    WHERE send_time in (
+      SELECT MAX(send_time) FROM tb_chat_p2p
+      WHERE LOCATE(2, dialog_id)
+      GROUP BY dialog_id
+    )
+    ORDER BY send_time DESC
+  </select>
+</mapper>

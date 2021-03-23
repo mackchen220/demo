@@ -698,3 +698,20 @@ CREATE TABLE `tb_verified_config` (
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='实名认证配置表';
 
+DROP TABLE IF EXISTS `tb_chat_p2p`;
+CREATE TABLE `tb_chat_p2p` (
+  `id` varchar(36) NOT NULL,
+  `dialog_id` varchar(64) NOT NULL COMMENT '对话id userId-userId 双方id字典级正序',
+  `user_id` varchar(64) NOT NULL COMMENT '发送方用户',
+  `to_id` varchar(64) DEFAULT NULL COMMENT '接收方用户',
+  `type` tinyint(1) DEFAULT 1 COMMENT '消息类型 1-文字 2-图片 3-视频 4-报价 5-查看案例 6-交换微信',
+  `message` varchar(255) DEFAULT NULL COMMENT '聊天消息',
+  `is_read` tinyint(1) DEFAULT 0 COMMENT '已读状态 0-未读 1-已读',
+  `send_time` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '消息发送时间',
+	`del_flag` tinyint(1) NOT NULL DEFAULT '0' COMMENT '删除标识0-正常,1-已删除',
+  PRIMARY KEY (`id`) USING BTREE,
+  KEY `idx_dialog_id` (`dialog_id`) USING BTREE,
+  KEY `idx_send_time` (`send_time`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='聊天记录表-单聊';
+
+
