@@ -81,8 +81,6 @@ public class VipModelServiceImpl implements VipModelService {
     }
 
 
-
-
     @Override
     public Map loadVipInfo(String vipId, String userId) {
         Map map = new HashMap();
@@ -90,7 +88,12 @@ public class VipModelServiceImpl implements VipModelService {
         if (ValidateTool.isNull(vipModel)) {
             throw new JeecgBootException("产品已下架");
         }
-        Object sumNum = redisUtil.get(RedisKey.VIP_NUM + RedisKey.KEY_SPLIT + vipId);
+        Object sumNum = "0";
+        sumNum = redisUtil.get(RedisKey.VIP_NUM + RedisKey.KEY_SPLIT + vipId);
+        if (ValidateTool.isNull(sumNum)) {
+            redisUtil.set(RedisKey.VIP_NUM + RedisKey.KEY_SPLIT + vipId, vipModel.getQuotaNum());
+            sumNum = ValidateTool.isNull(vipModel.getQuotaNum()) ? 0 : vipModel.getQuotaNum();
+        }
         BigDecimal divide = new BigDecimal(String.valueOf(sumNum)).divide(new BigDecimal(vipModel.getQuotaNum()), 2, BigDecimal.ROUND_DOWN);
         BigDecimal subtract = new BigDecimal("1").subtract(divide);
         //剩余名额
@@ -107,7 +110,6 @@ public class VipModelServiceImpl implements VipModelService {
         map.put("vipId", vipId);
         return map;
     }
-
 
 
     @Transactional(rollbackFor = Exception.class)
@@ -241,7 +243,6 @@ public class VipModelServiceImpl implements VipModelService {
 
         return map;
     }
-
 
 
     @Override

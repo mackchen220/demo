@@ -60,14 +60,9 @@ public class UserOrderController {
                                       @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize) {
 
         String id = userModelService.getUserIdByToken(TokenUtils.getToken(request));
-
-        Result<Page<OrderModelVo>> result = new Result<Page<OrderModelVo>>();
         Page<OrderModelVo> pageList = new Page<OrderModelVo>(pageNo, pageSize);
-
-
         Page<OrderModelVo> orderModelVoPage = orderModelService.loadOrderList(id, optStatus, pageList);
-        result.setResult(orderModelVoPage);
-        return result;
+        return Result.OK(orderModelVoPage);
     }
 
 
