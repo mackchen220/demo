@@ -153,4 +153,12 @@ public final class RandomUtil {
         return i + start;
     }
 
+    /**
+     * 随机整数
+     * @return
+     */
+    public static int nextInt() {
+        return RANDOM.nextInt();
+    }
+
 }

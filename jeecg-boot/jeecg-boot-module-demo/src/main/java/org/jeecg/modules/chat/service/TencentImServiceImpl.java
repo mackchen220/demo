@@ -4,9 +4,9 @@ import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.extern.slf4j.Slf4j;
-import org.jeecg.common.api.vo.Result;
 import org.jeecg.common.exception.JeecgBootException;
 import org.jeecg.modules.chat.api.GenerateUserSig;
+import org.jeecg.modules.chat.api.Result;
 import org.jeecg.modules.chat.mapper.ChatP2pMapper;
 import org.jeecg.modules.chat.model.ChatP2p;
 import org.jeecg.modules.chat.model.RestRequestEnum;
@@ -22,10 +22,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @className: TencentImServiceImpl
@@ -86,7 +83,7 @@ public class TencentImServiceImpl implements TencentImService {
         String json = HttpUtil.httpPost(url, param);
         Result result = JSONObject.parseObject(json, Result.class);
         if (ValidateTool.isNotNull(result)) {
-            if (result.getCode() == 0) {
+            if (result.getErrorCode() == 0) {
                 log.info("tencent registered userId={}", userId);
             } else {
                 try {
@@ -122,7 +119,7 @@ public class TencentImServiceImpl implements TencentImService {
         sb.append("usersig=".concat(GenerateUserSig.genUserSig(userId)));
 
         //请输入随机的32位无符号整数，取值范围0 - 4294967295
-        long random = ((long) RandomUtil.nextNumber(0, Integer.MAX_VALUE - 1)) << 1;
+        long random = RandomUtil.nextInt() & 0xFFFFFFFFL;
         sb.append("random=").append(random);
 
         return sb.toString();
