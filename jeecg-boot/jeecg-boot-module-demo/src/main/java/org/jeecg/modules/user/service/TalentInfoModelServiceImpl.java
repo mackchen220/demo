@@ -175,7 +175,7 @@ public class TalentInfoModelServiceImpl implements TalentInfoModelService {
         Map<String, Object> map = new HashMap<>();
         // 保证金配置
         PlatformConfiguration config = platformConfigurationMapper.getConfigByKey(Constant.CONFIG_KEY_BOOD);
-        map.put("bond", ValidateTool.isNotNull(config) && ValidateTool.isNotNull(config.getConfigValue()) ? config.getConfigValue() : "2000000");
+        map.put("bond", ValidateTool.isNotNull(config)  ? config.getConfigValue() : "2000000");
         TalentInfoModel talentInfoModel = talentInfoModelMapper.selectByUserId(userId);
         map.put("status", ValidateTool.isNull(talentInfoModel) ? 1 : 0);
         map.put("idStatus", ValidateTool.isNotNull(talentInfoModel) ? talentInfoModel.getIdStatus() : 1);
@@ -187,9 +187,6 @@ public class TalentInfoModelServiceImpl implements TalentInfoModelService {
         map.put("deposit", ValidateTool.isNull(talentInfoModel) ? 1 : (talentInfoModel.getDeposit() > 0 ? 0 : 1));
         return map;
     }
-
-
-
 
 
     @Transactional(rollbackFor = Exception.class)
@@ -207,14 +204,14 @@ public class TalentInfoModelServiceImpl implements TalentInfoModelService {
         orderModel.setContent("达人认证保证金");
         orderModel.setNum(Constant.TYPE_INT_1);
         orderModel.setOptStatus(Constant.TYPE_INT_1);
-        orderModel.setAmount(ValidateTool.isNotNull(config) && ValidateTool.isNotNull(config.getConfigValue()) ? config.getConfigValue() : "2000000");
+        orderModel.setAmount(ValidateTool.isNotNull(config) ? config.getConfigValue() : "2000000");
         orderModelMapper.insertSelective(orderModel);
         return orderModel.getId();
     }
 
 
     @Override
-    public String talentCallBack(String orderId){
+    public String talentCallBack(String orderId) {
         log.info("缴纳保证金回调{}", orderId);
         OrderModel orderModel = orderModelMapper.selectByPrimaryKey(orderId);
         if (ValidateTool.isNull(orderModel)) {
@@ -225,8 +222,10 @@ public class TalentInfoModelServiceImpl implements TalentInfoModelService {
         if (ValidateTool.isNull(talentInfoModel)) {
             log.warn("缴纳保证金回调,查询不到用户{}", orderModel.getUserId());
         }
+//        PlatformConfiguration config = platformConfigurationMapper.getConfigByKey(Constant.CONFIG_KEY_BOOD);
+//        ValidateTool.isNotNull(config) ? Long.valueOf(config.getConfigValue()) : 2000000L
         //更新保证金
-        talentInfoModel.setDeposit(2000000L);
+        talentInfoModel.setDeposit(Long.valueOf(orderModel.getAmount()));
         talentInfoModelMapper.updateByPrimaryKeySelective(talentInfoModel);
         return "ok";
     }
@@ -445,7 +444,7 @@ public class TalentInfoModelServiceImpl implements TalentInfoModelService {
             map.put("averageScore", talent.getAverageScore());
         } else {
 //            rtn.put("isTalent", false);
-            throw new JeecgBootException("参数错误");
+            throw new JeecgBootException("达人未认证");
         }
         //粉丝数量
         int fansNum = userFocusModelMapper.selectCountByFocusId(talentId);

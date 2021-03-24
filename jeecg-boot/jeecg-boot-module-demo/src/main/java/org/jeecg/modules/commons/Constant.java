@@ -39,7 +39,7 @@ public class Constant {
 
     public final static String CONFIG_KEY_BOOD = "bood";
 
-    public final static String CONFIG_KEY_INVITE_IAMGE = "inviteIamge";
+    public final static String CONFIG_KEY_INVITE_IAMGE = "inviteImage";
 
     public final static String CONFIG_KEY_INVITE_CONTEXT = "invite_context";
 

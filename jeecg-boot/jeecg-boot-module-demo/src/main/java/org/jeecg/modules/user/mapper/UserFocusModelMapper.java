@@ -1,8 +1,12 @@
 package org.jeecg.modules.user.mapper;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.jeecg.modules.user.model.UserFocusModel;
+import org.jeecg.modules.user.model.vo.UserModelVo;
+
+import java.util.List;
 
 @Mapper
 public interface UserFocusModelMapper {
@@ -24,5 +28,8 @@ public interface UserFocusModelMapper {
     int selectCountByFocusId(String userId);
 
     int selectUserFocus(@Param("userId") String userId, @Param("fansId") String fansId);
+
+    List<UserModelVo> loadMyFocus(Page<UserModelVo> page, @Param("userId") String userId);
+
 
 }

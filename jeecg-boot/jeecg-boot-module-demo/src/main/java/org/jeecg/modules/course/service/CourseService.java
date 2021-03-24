@@ -12,6 +12,7 @@ import org.jeecg.modules.course.model.vo.UserCourseDetailVo;
 import org.jeecg.modules.course.model.vo.UserCourseVo;
 import org.jeecg.modules.index.model.PartyModel;
 import org.jeecg.modules.user.model.UserModel;
+import org.jeecg.modules.user.model.vo.UserModelVo;
 
 import java.util.List;
 import java.util.Map;
@@ -24,6 +25,8 @@ public interface CourseService {
     IPage<UserCourseVo> findList(int pageNo, int pageSize, int type, String city);
 
     IPage<UserCourseVo> searchList(int pageNo, int pageSize, int type, String search);
+
+    IPage<UserModelVo> loadMyFocus(Page<UserModelVo> page, String userId);
 
     UserCourseDetailVo searchInfoDetail(String id, int courseType, String userId);
 

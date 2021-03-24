@@ -19,6 +19,7 @@ import org.jeecg.modules.course.model.vo.UserCourseVo;
 import org.jeecg.modules.course.service.CourseService;
 import org.jeecg.modules.index.model.PartyModel;
 import org.jeecg.modules.user.model.UserModel;
+import org.jeecg.modules.user.model.vo.UserModelVo;
 import org.jeecg.modules.user.service.UserModelService;
 import org.springframework.web.bind.annotation.*;
 
@@ -50,6 +51,17 @@ public class CourseController {
         IPage<CommunityModelVo> page = courseService.followList(new Page<>(pageNo, pageSize), userId);
         return Result.OK(page);
     }
+
+    @ApiOperation("社区关注人列表")
+    @PostMapping("/loadMyFocus")
+    public Result<IPage<UserModelVo>> loadMyFocus(HttpServletRequest request, @RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo,
+                                             @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize) {
+        String userId = userModelService.getUserIdByToken(TokenUtils.getToken(request));
+        Page<UserModelVo> page = new Page<>(pageNo, pageSize);
+        IPage<UserModelVo> pageRsult = courseService.loadMyFocus(page,userId);
+        return Result.OK(pageRsult);
+    }
+
 
     @ApiOperation("社区发现动态列表")
     @PostMapping("/findList")

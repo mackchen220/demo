@@ -136,18 +136,19 @@ public class CommunityModelServiceImpl implements CommunityModelService {
             }
         }
         UserStar userStar = userStarMapper.loadUserStarByUserId(id, userId);
-
         //点赞
         if (Constant.CHECKTYPE1.equals(type)) {
             //是否已经点过赞
             if (ValidateTool.isNotNull(userStar) && Constant.CHECKTYPE1.equals(userStar.getGood())) {
                 //点过赞,取消点赞
                 userStarMapper.updateStar(id, userId, null, Constant.CHECKTYPE0);
-                communityModelMapper.updateCommunityNum(id, userId, null, null, Constant.TYPE_INT_fuyi, null);
+//                communityModelMapper.updateCommunityNum(id, null, null, Constant.TYPE_INT_fuyi, null);
+                updateNum(pageType, id, Constant.TYPE_INT_fuyi, null, null, null);
             } else if (ValidateTool.isNotNull(userStar)) {
                 ////点过赞,取消过点赞，恢复点赞
                 userStarMapper.updateStar(id, userId, null, Constant.CHECKTYPE1);
-                communityModelMapper.updateCommunityNum(id, userId, null, null, Constant.TYPE_INT_1, null);
+//                communityModelMapper.updateCommunityNum(id, null, null, Constant.TYPE_INT_1, null);
+                updateNum(pageType, id, Constant.TYPE_INT_1, null, null, null);
             } else {
                 UserStar model = new UserStar();
                 model.setId(SeqUtils.nextIdStr());
@@ -156,7 +157,8 @@ public class CommunityModelServiceImpl implements CommunityModelService {
                 model.setGood(Constant.CHECKTYPE1);
                 model.setPageType(pageType);
                 userStarMapper.insertSelective(model);
-                communityModelMapper.updateCommunityNum(id, userId, null, null, Constant.TYPE_INT_1, null);
+//                communityModelMapper.updateCommunityNum(id, null, null, Constant.TYPE_INT_1, null);
+                updateNum(pageType, id, Constant.TYPE_INT_1, null, null, null);
             }
         } else {
             //收藏
@@ -164,10 +166,12 @@ public class CommunityModelServiceImpl implements CommunityModelService {
             if (ValidateTool.isNotNull(userStar) && Constant.CHECKTYPE1.equals(userStar.getStar())) {
                 //点过收藏,取消收藏
                 userStarMapper.updateStar(id, userId, Constant.CHECKTYPE0, null);
-                communityModelMapper.updateCommunityNum(id, userId, null, Constant.TYPE_INT_fuyi, null, null);
+//                communityModelMapper.updateCommunityNum(id, null, Constant.TYPE_INT_fuyi, null, null);
+                updateNum(pageType, id, null, Constant.TYPE_INT_fuyi, null, null);
             } else if (ValidateTool.isNotNull(userStar)) {
                 userStarMapper.updateStar(id, userId, Constant.CHECKTYPE1, null);
-                communityModelMapper.updateCommunityNum(id, userId, null, Constant.TYPE_INT_1, null, null);
+//                communityModelMapper.updateCommunityNum(id, null, Constant.TYPE_INT_1, null, null);
+                updateNum(pageType, id, null, Constant.TYPE_INT_1, null, null);
             } else {
                 UserStar model = new UserStar();
                 model.setId(SeqUtils.nextIdStr());
@@ -176,11 +180,27 @@ public class CommunityModelServiceImpl implements CommunityModelService {
                 model.setStar(Constant.CHECKTYPE1);
                 model.setPageType(pageType);
                 userStarMapper.insertSelective(model);
-                communityModelMapper.updateCommunityNum(id, userId, null, Constant.TYPE_INT_1, null, null);
+//                communityModelMapper.updateCommunityNum(id, null, Constant.TYPE_INT_1, null, null);
+                updateNum(pageType, id, null, Constant.TYPE_INT_1, null, null);
             }
         }
 
     }
+
+
+    public void updateNum(String pageType, String id, Integer goodNum, Integer starNum, Integer watchNum, Integer forwardNum) {
+        //更新点赞收藏数量
+        if (Constant.CHECKTYPE1.equals(pageType)) {
+            communityModelMapper.updateCommunityNum(id, watchNum, starNum, goodNum, forwardNum);
+        }
+        if (Constant.CHECKTYPE2.equals(pageType)) {
+            partyModelMapper.updatePartyNum(id, watchNum, starNum, goodNum, forwardNum);
+        }
+        if (Constant.CHECKTYPE3.equals(pageType)) {
+            courseMapper.updateCourseNum(id, watchNum, starNum, goodNum, forwardNum);
+        }
+    }
+
 
 
 }

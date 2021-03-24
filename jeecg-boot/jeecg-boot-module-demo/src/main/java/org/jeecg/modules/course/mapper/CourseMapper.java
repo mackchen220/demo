@@ -44,4 +44,9 @@ public interface CourseMapper extends BaseMapper<Course> {
 
 
     List<CourseInfoVo> getCourseInfoList(@Param("courseId") String courseId);
+
+
+    //更新课程表收藏点赞转发观看数
+    int updateCourseNum(@Param("courseId") String courseId, @Param("watchNum")Integer watchNum ,@Param("starNum")Integer starNum,
+                       @Param("goodNum")Integer goodNum,@Param("forwardNum")Integer forwardNum);
 }

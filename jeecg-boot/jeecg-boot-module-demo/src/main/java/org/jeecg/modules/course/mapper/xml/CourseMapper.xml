@@ -381,4 +381,25 @@
     where course_id = #{courseId}
     order by sort asc
   </select>
+
+  <update id="updateCourseNum">
+    update tb_course
+    <set>
+      <if test="starNum != null">
+        star_num =star_num+ #{starNum,jdbcType=BIGINT},
+      </if>
+      <if test="goodNum != null">
+        good_num =good_num+ #{goodNum,jdbcType=BIGINT},
+      </if>
+      <if test="forwardNum != null">
+        forward_num = forward_num+#{forwardNum,jdbcType=BIGINT},
+      </if>
+      <if test="watchNum != null">
+        watch_num = watch_num+#{watchNum},
+      </if>
+    </set>
+    where  id = #{courseId,jdbcType=VARCHAR}
+  </update>
+
+
 </mapper>

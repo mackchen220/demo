@@ -23,11 +23,13 @@ import org.jeecg.modules.index.mapper.PartyModelMapper;
 import org.jeecg.modules.index.model.PartyModel;
 import org.jeecg.modules.user.mapper.OrderModelMapper;
 import org.jeecg.modules.user.mapper.UserCourseMapper;
+import org.jeecg.modules.user.mapper.UserFocusModelMapper;
 import org.jeecg.modules.user.mapper.UserStarMapper;
 import org.jeecg.modules.user.model.OrderModel;
 import org.jeecg.modules.user.model.TalentInfoModel;
 import org.jeecg.modules.user.model.UserCourse;
 import org.jeecg.modules.user.model.UserModel;
+import org.jeecg.modules.user.model.vo.UserModelVo;
 import org.jeecg.modules.user.service.UserCourseService;
 import org.jeecg.modules.user.service.UserCourseServiceImpl;
 import org.jeecg.modules.user.service.UserFocusModelService;
@@ -68,6 +70,8 @@ public class CourseServiceImpl implements CourseService {
     private UserStarMapper userStarMapper;
     @Resource
     private OrderModelMapper orderModelMapper;
+    @Resource
+    private UserFocusModelMapper userFocusModelMapper;
 
 
     @Override
@@ -95,7 +99,7 @@ public class CourseServiceImpl implements CourseService {
                 list = courseMapper.getListOrderByLikeNum(page, 1, city);
                 break;
             case 5:
-                list = courseMapper.getListOrderByLikeNum(page, 2, city);
+                list =  communityModelMapper.getListOrderByLikeNum(page, 2, city);
                 break;
             case 6:
                 list = partyModelMapper.getListOrderByLikeNum(page, city);
@@ -160,6 +164,12 @@ public class CourseServiceImpl implements CourseService {
         List<UserCourseVo> result = new LinkedList<>();
         this.packUserCourseVo(list, result);
         return page.setRecords(result);
+    }
+
+    @Override
+    public IPage<UserModelVo> loadMyFocus(Page page, String userId) {
+        List list = userFocusModelMapper.loadMyFocus(page, userId);
+        return page.setRecords(list);
     }
 
     @Override

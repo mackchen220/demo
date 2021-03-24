@@ -86,9 +86,9 @@ public class ReqInterceptor implements HandlerInterceptor {
                 throw new JeecgBootException(ErrorInfoCode.LOGIN__TOKEN_ERROR.getCode(),ErrorInfoCode.LOGIN__TOKEN_ERROR.getMsg());
             }
             if (ValidateTool.isNotNull(Secret)) {
-                if (!Secret.equals(split[1])) {
-                    throw new JeecgBootException(ErrorInfoCode.LOGIN_ERROR.getCode(),ErrorInfoCode.LOGIN_ERROR.getMsg());
-                }
+//                if (!Secret.equals(split[1])) {
+//                    throw new JeecgBootException(ErrorInfoCode.LOGIN_ERROR.getCode(),ErrorInfoCode.LOGIN_ERROR.getMsg());
+//                }
             } else {
                 log.warn("token格式错误");
                 throw new JeecgBootException(ErrorInfoCode.LOGIN__TOKEN_ERROR.getCode(),ErrorInfoCode.LOGIN__TOKEN_ERROR.getMsg());
