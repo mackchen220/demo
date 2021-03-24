@@ -8,12 +8,10 @@ import org.jeecg.common.exception.JeecgBootException;
 import org.jeecg.common.system.util.JwtUtil;
 import org.jeecg.common.util.MD5Util;
 import org.jeecg.common.util.RedisUtil;
+import org.jeecg.modules.chat.service.TencentImService;
 import org.jeecg.modules.commons.Constant;
 import org.jeecg.modules.commons.RedisKey;
-import org.jeecg.modules.commons.util.DateHelper;
-import org.jeecg.modules.commons.util.RandomUtil;
-import org.jeecg.modules.commons.util.SeqUtils;
-import org.jeecg.modules.commons.util.ValidateTool;
+import org.jeecg.modules.commons.util.*;
 import org.jeecg.modules.user.mapper.*;
 import org.jeecg.modules.user.model.*;
 import org.jeecg.modules.user.model.vo.UserIncomeDetailVo;
@@ -26,6 +24,7 @@ import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
 
 @Log4j2
 @Service
@@ -54,6 +53,11 @@ public class UserModelServiceImpl implements UserModelService {
 
     @Resource
     private VerifiedConfigMapper verifiedConfigMapper;
+
+    @Resource
+    private TencentImService tencentImService;
+
+    private ExecutorService executorService = ThreadPoolUtil.newFixedThreadPool(20, "commonThread");
 
     @Override
     public UserModel getUserById(String id) {
@@ -198,6 +202,11 @@ public class UserModelServiceImpl implements UserModelService {
         userAgencyModel.setNum(0);
         userAgencyModelMapper.updateNum(userModel2.getId());
         userAgencyModelMapper.insertSelective(userAgencyModel);
+
+        //异步注册腾讯IM
+        String finalUserId = userModel.getId();
+        executorService.execute(() -> tencentImService.register(finalUserId, 0));
+
         return userModel;
     }
 

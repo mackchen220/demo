@@ -134,6 +134,8 @@ public final class RandomUtil {
 
     public static void main(String[] args) {
         System.out.println(nextInviteCode(6,6));
+        System.out.println(Integer.MIN_VALUE);
+        System.out.println(Integer.MAX_VALUE);
     }
 
     /**
@@ -155,7 +157,7 @@ public final class RandomUtil {
 
     /**
      * 随机整数
-     * @return
+     * @return -2147483648 ~ 2147483647
      */
     public static int nextInt() {
         return RANDOM.nextInt();

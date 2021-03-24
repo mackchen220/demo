@@ -76,7 +76,12 @@ public class TencentImServiceImpl implements TencentImService {
     }
 
     @Override
-    public void register(String userId) {
+    public void register(String userId, int tryCount) {
+        if (++tryCount > 3) {
+            log.error("tencent register fail! userId={}", userId);
+            return;
+        }
+
         Map<String, Object> param = new HashMap<>();
         param.put("Identifier", userId);
         String url =  this.getFullUrl(userId,RestRequestEnum.TIM_REGISTER.getUrl());
@@ -92,7 +97,7 @@ public class TencentImServiceImpl implements TencentImService {
                     e.printStackTrace();
                 }
                 log.warn("re-registration from register fail! userId={} url={} response={}", userId, url, json);
-                this.register(userId);
+                this.register(userId, tryCount);
             }
         } else {
             try {
@@ -101,7 +106,7 @@ public class TencentImServiceImpl implements TencentImService {
                 e.printStackTrace();
             }
             log.warn("re-registration from response black! userId={} url={}", userId, url);
-            this.register(userId);
+            this.register(userId, tryCount);
         }
     }
 

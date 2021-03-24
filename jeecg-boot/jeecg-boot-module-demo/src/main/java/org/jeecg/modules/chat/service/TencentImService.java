@@ -23,6 +23,6 @@ public interface TencentImService {
 
     IPage<ChatLatestVo> latestList(String userId, Page<ChatLatestVo> page);
 
-    void register(String userId);
+    void register(String userId, int tryCount);
 
 }
