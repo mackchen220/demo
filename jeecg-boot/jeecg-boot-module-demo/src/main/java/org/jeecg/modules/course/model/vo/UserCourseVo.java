@@ -1,5 +1,6 @@
 package org.jeecg.modules.course.model.vo;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -19,6 +20,12 @@ public class UserCourseVo implements Serializable {
     private String nickName;
 
     /**
+     * 朋友圈类型:1 照片 2视频 3课程  4其他
+     */
+    @ApiModelProperty(value="朋友圈类型:1 照片 2视频 3课程  4其他  ")
+    private Integer type;
+
+    /**
      * 数据来源类型 1-朋友圈 2-课程 3-活动
      */
     private Integer courseType;
@@ -33,7 +40,8 @@ public class UserCourseVo implements Serializable {
     private Long starNum;
     private Long forwardNum;
 
-    public static UserCourseVo valueOf(Integer courseType, String courseId, String title, String image, Long watchNum, Long goodNum, Long starNum, Long forwardNum) {
+    public static UserCourseVo valueOf(Integer courseType, String courseId, String title, String image, Long watchNum,
+                                       Long goodNum, Long starNum, Long forwardNum) {
         UserCourseVo vo = new UserCourseVo();
         vo.setCourseType(courseType);
         vo.setCourseId(courseId);
@@ -43,6 +51,21 @@ public class UserCourseVo implements Serializable {
         vo.setGoodNum(goodNum);
         vo.setStarNum(starNum);
         vo.setForwardNum(forwardNum);
+        return vo;
+    }
+
+    public static UserCourseVo valueOf(Integer courseType, String courseId, String title, String image, Long watchNum,
+                                       Long goodNum, Long starNum, Long forwardNum,Integer type) {
+        UserCourseVo vo = new UserCourseVo();
+        vo.setCourseType(courseType);
+        vo.setCourseId(courseId);
+        vo.setTitle(title);
+        vo.setImage(image);
+        vo.setWatchNum(watchNum);
+        vo.setGoodNum(goodNum);
+        vo.setStarNum(starNum);
+        vo.setForwardNum(forwardNum);
+        vo.setType(type);
         return vo;
     }
 

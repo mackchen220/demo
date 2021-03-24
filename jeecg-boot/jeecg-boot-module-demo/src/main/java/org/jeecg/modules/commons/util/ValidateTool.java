@@ -337,6 +337,23 @@ public class ValidateTool {
         return true;
     }
 
+    public static boolean isBankCard(String value) {
+        if (isNull(value)) {
+            throw new JeecgBootException("银行卡号不能为空，请确认");
+        }
+        String pattern = "^[0-9]+$";
+        Pattern p = Pattern.compile(pattern);
+        Matcher m = p.matcher(value);
+        if (!m.matches()) {
+            throw new JeecgBootException("银行卡号格式错误");
+        }
+        if (value.length()<16 || value.length()>19) {
+            throw new JeecgBootException("银行卡号格式错误");
+        }
+        return true;
+    }
+
+
     public static boolean isDecimalValid(String code, String str, int start, int end) {
         checkParamIsNull(code, str);
         int s = 0;

@@ -46,11 +46,11 @@ public class OrderModelVo implements Serializable {
     @ApiModelProperty(value="系统根据用户请求金额生成实际支付金额，单位：分")
     private String payMoney;
 
-//    /**
-//    * 操作状态0-未确认 1-已确认 2-成功 3-已取消 4-锁定 5-恢复 6-拒绝
-//    */
-//    @ApiModelProperty(value="操作状态0-未确认 1-已确认 2-成功 3-已取消 4-锁定 5-恢复 6-拒绝 ")
-//    private Integer optStatus;
+    /**
+    * 操作状态0-未确认 1-已确认 2-成功 3-已取消 4-锁定 5-恢复 6-拒绝
+    */
+    @ApiModelProperty(value="操作状态0-未确认 1-已确认 2-成功 3-已取消 4-锁定 5-恢复 6-拒绝 ")
+    private Integer optStatus;
 
     /**
     * 订单简介.
@@ -97,7 +97,11 @@ public class OrderModelVo implements Serializable {
     @ApiModelProperty(value="课程id")
     private String courseId;
 
-
+    /**
+     * 会员卡id
+     */
+    @ApiModelProperty(value="会员卡id")
+    private String vipId;
     /**
      * 课程封面
      */
@@ -112,6 +116,11 @@ public class OrderModelVo implements Serializable {
     private String projectImage;
 
 
+    /**
+     * 会员图片
+     */
+    @ApiModelProperty(value="会员图片")
+    private String vipImage;
 
     private static final long serialVersionUID = 1L;
 }

@@ -8,6 +8,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.jeecg.common.api.vo.Result;
+import org.jeecg.common.util.TokenUtils;
 import org.jeecg.modules.user.model.HospitalModel;
 import org.jeecg.modules.user.service.HospitalModelService;
 import org.jeecg.modules.user.service.TalentHospitalService;
@@ -19,11 +20,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 @Slf4j
 @RestController
-@RequestMapping("/hy/Hospital")
+@RequestMapping("/hy/hospital")
 @Api(tags = "前台机构模块")
 public class HospitalController {
 
@@ -71,11 +73,9 @@ public class HospitalController {
     public Result<Page<HospitalModel>> loadAllHospitlist(@RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo,
                                                      @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize,
                                                         String search) {
-        Result<Page<HospitalModel>> result = new Result<Page<HospitalModel>>();
         Page<HospitalModel> pageList = new Page<HospitalModel>(pageNo, pageSize);
         Page<HospitalModel> talentInfoVoPage = hospitalModelService.loadAllHospitlist(pageList,search);
-        result.setResult(talentInfoVoPage);
-        return result;
+        return Result.OK(talentInfoVoPage);
     }
 
     @DynamicResponseParameters(name = "Result",properties = {
@@ -89,11 +89,9 @@ public class HospitalController {
     @RequestMapping(value = "/loadOtherHospitlist", method = RequestMethod.POST)
     public Result<Page<HospitalModel>> loadOtherHospitlist(@RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo,
                                                          @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize) {
-        Result<Page<HospitalModel>> result = new Result<Page<HospitalModel>>();
         Page<HospitalModel> pageList = new Page<HospitalModel>(pageNo, pageSize);
         Page<HospitalModel> talentInfoVoPage = hospitalModelService.loadAllHospitlist(pageList,null);
-        result.setResult(talentInfoVoPage);
-        return result;
+        return Result.OK(talentInfoVoPage);
     }
 
 
@@ -111,22 +109,19 @@ public class HospitalController {
     public Result<Page<HospitalModel>> loadMyHospitList(@RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo,
                                                            @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize,
                                                         String talentId,String token) {
-        Result<Page<HospitalModel>> result = new Result<Page<HospitalModel>>();
         Page<HospitalModel> pageList = new Page<HospitalModel>(pageNo, pageSize);
         Page<HospitalModel> talentInfoVoPage = hospitalModelService.loadMyHospitList(pageList,talentId);
-        result.setResult(talentInfoVoPage);
-        result.setToken(token);
-        return result;
+        return Result.OK(talentInfoVoPage);
     }
 
 
 
     @ApiOperation("和机构解约")
     @RequestMapping(value = "/updateTalentHospit", method = RequestMethod.POST)
-    public Result updateTalentHospit(String hospitalId,String token) {
-        String id = userModelService.getUserIdByToken(token);
+    public Result updateTalentHospit(String hospitalId,HttpServletRequest request) {
+        String id = userModelService.getUserIdByToken(TokenUtils.getToken(request));
         hospitalModelService.updateTalentHospit(hospitalId,id);
-        return Result.oKWithToken(token,null);
+        return Result.OK(null);
     }
 
 
@@ -134,11 +129,19 @@ public class HospitalController {
 
     @ApiOperation("机构认证")
     @RequestMapping(value = "/addHospitalInfo", method = RequestMethod.POST)
-    public Result addHospitalInfo(String token,HospitalModel hospitalModel) {
-        String id = userModelService.getUserIdByToken(token);
+    public Result addHospitalInfo(HttpServletRequest request, HospitalModel hospitalModel) {
+        String id = userModelService.getUserIdByToken(TokenUtils.getToken(request));
         hospitalModelService.addHospitalInfo(id,hospitalModel);
-        return Result.oKWithToken(token,null);
+        return Result.OK(null);
     }
 
+
+    @ApiOperation("机构认证，获取机构信息")
+    @RequestMapping(value = "/loadHospitalInfo", method = RequestMethod.POST)
+    public Result loadHospitalInfo(HttpServletRequest request) {
+        String id = userModelService.getUserIdByToken(TokenUtils.getToken(request));
+        HospitalModel hospitalModel = hospitalModelService.selectByPrimaryKey(id);
+        return Result.OK(hospitalModel);
+    }
 
 }

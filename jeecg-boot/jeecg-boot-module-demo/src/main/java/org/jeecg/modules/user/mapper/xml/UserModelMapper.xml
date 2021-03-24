@@ -17,7 +17,6 @@
     <result column="last_login_time" jdbcType="TIMESTAMP" property="lastLoginTime" />
     <result column="login_time" jdbcType="TIMESTAMP" property="loginTime" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
-    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="last_login_ip" jdbcType="VARCHAR" property="lastLoginIp" />
     <result column="login_ip" jdbcType="VARCHAR" property="loginIp" />
     <result column="wechat" jdbcType="VARCHAR" property="wechat" />
@@ -125,9 +124,6 @@
       <if test="createTime != null">
         create_time,
       </if>
-      <if test="updateTime != null">
-        update_time,
-      </if>
       <if test="lastLoginIp != null">
         last_login_ip,
       </if>
@@ -222,9 +218,6 @@
       </if>
       <if test="createTime != null">
         #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="updateTime != null">
-        #{updateTime,jdbcType=TIMESTAMP},
       </if>
       <if test="lastLoginIp != null">
         #{lastLoginIp,jdbcType=VARCHAR},
@@ -322,9 +315,6 @@
       <if test="createTime != null">
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="updateTime != null">
-        update_time = #{updateTime,jdbcType=TIMESTAMP},
-      </if>
       <if test="lastLoginIp != null">
         last_login_ip = #{lastLoginIp,jdbcType=VARCHAR},
       </if>
@@ -366,6 +356,9 @@
       </if>
       <if test="city != null and city != ''">
         city = #{city},
+      </if>
+      <if test="vipId != null and vipId != ''">
+        vip_id = #{vipId},
       </if>
     </set>
     where id = #{Id,jdbcType=BIGINT}

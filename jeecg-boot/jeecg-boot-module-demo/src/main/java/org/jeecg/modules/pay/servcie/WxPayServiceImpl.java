@@ -6,6 +6,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.RequestBody;
 import okhttp3.logging.HttpLoggingInterceptor;
 
+import org.jeecg.common.exception.JeecgBootException;
 import org.jeecg.modules.commons.util.MapUtil;
 import org.jeecg.modules.commons.util.RandomUtil;
 import org.jeecg.modules.commons.util.XmlUtil;
@@ -76,15 +77,17 @@ public class WxPayServiceImpl implements BestPayService {
             e.printStackTrace();
         }
         if (!retrofitResponse.isSuccessful()) {
-            throw new RuntimeException("【微信统一支付】发起支付, 网络异常");
+            throw new JeecgBootException("微信支付, 网络异常");
         }
         WxPaySyncResponse response = retrofitResponse.body();
 
         if(!response.getReturnCode().equals(WxPayConstants.SUCCESS)) {
-            throw new RuntimeException("【微信统一支付】发起支付, returnCode != SUCCESS, returnMsg = " + response.getReturnMsg());
+            log.warn("微信支付失败, returnCode != SUCCESS, returnMsg = " + response.getReturnMsg());
+            throw new JeecgBootException("微信支付失败= " + response.getReturnMsg());
         }
         if (!response.getResultCode().equals(WxPayConstants.SUCCESS)) {
-            throw new RuntimeException("【微信统一支付】发起支付, resultCode != SUCCESS, err_code = " + response.getErrCode() + " err_code_des=" + response.getErrCodeDes());
+            log.warn("微信支付失败, resultCode != SUCCESS, err_code = " + response.getErrCode() + " err_code_des=" + response.getErrCodeDes());
+            throw new JeecgBootException("支付失败"+ response.getErrCodeDes());
         }
 
         return buildPayResponse(response);

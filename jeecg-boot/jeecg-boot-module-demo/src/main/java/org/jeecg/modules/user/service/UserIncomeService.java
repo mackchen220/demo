@@ -14,6 +14,6 @@ public interface UserIncomeService{
 
     int updateByPrimaryKey(UserIncome record);
 
-    void addUserIncome(String userId,Integer type,String contect,Long money);
+    void addUserIncome(String userId,Integer type,String contect,Long money,String other);
 
 }

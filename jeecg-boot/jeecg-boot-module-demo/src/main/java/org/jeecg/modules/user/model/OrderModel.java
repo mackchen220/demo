@@ -21,7 +21,7 @@ public class OrderModel implements Serializable {
     private String userId;
 
     /**
-    * '1-医美项目,2课程 ,3提现
+    * '1-医美项目,2课程 ,3提现,4购买会员卡
     */
     @ApiModelProperty(value="'1-医美项目,2课程 ,3提现")
     private Integer operationType;
@@ -75,10 +75,17 @@ public class OrderModel implements Serializable {
     private String outsideCardNum;
 
     /**
-    * 操作状态0-未确认 1-已确认 2-成功 3-已取消 4-锁定 5-恢复 6-拒绝
+    * 操作状态0-未确认 1-已确认,未付款 2-成功 3-待评价4-已评价 5-已取消6-拒绝
     */
-    @ApiModelProperty(value="操作状态0-未确认 1-已确认 2-成功 3-已取消 4-锁定 5-恢复 6-拒绝 ")
+    @ApiModelProperty(value="操作状态0-未确认 1-已确认,未付款 2-成功 3-待评价4-已评价 5-已取消6-拒绝 ")
     private Integer optStatus;
+
+
+    /**
+     * 支付类型 1 银行卡 2微信 3支付宝
+     */
+    @ApiModelProperty(value="支付类型 1 银行卡 2微信 3支付宝")
+    private Integer payType;
 
     /**
     * 系统收款银行-收款人
@@ -98,11 +105,7 @@ public class OrderModel implements Serializable {
     @ApiModelProperty(value="创建时间")
     private String createTime;
 
-    /**
-    * 更新日期
-    */
-    @ApiModelProperty(value="更新日期")
-    private String updateTime;
+
 
     /**
     * 创建人
@@ -139,7 +142,11 @@ public class OrderModel implements Serializable {
     */
     @ApiModelProperty(value="达人id")
     private String talentId;
-
+    /**
+     * 会员卡id
+     */
+    @ApiModelProperty(value="会员卡id")
+    private String vipId;
 
     /**
      * 项目id

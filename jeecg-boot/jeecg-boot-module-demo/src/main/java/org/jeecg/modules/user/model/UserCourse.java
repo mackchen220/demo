@@ -38,7 +38,7 @@ public class UserCourse {
     * f价格
     */
     @ApiModelProperty(value="f价格")
-    private Long price;
+    private String price;
 
     /**
     * 创建时间

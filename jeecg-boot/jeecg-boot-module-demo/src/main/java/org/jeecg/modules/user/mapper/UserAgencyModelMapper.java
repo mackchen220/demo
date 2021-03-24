@@ -1,8 +1,12 @@
 package org.jeecg.modules.user.mapper;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.jeecg.modules.user.model.UserAgencyModel;
+import org.jeecg.modules.user.model.vo.ExtensionVo;
+
+import java.util.List;
 
 @Mapper
 public interface UserAgencyModelMapper {
@@ -24,6 +28,10 @@ public interface UserAgencyModelMapper {
 
 
     String countUserNum(@Param("userId") String userId);
+
+    List<String> loadUserId(@Param("userId") String userId);
+
+    List<ExtensionVo> loadProxyIncome(Page<ExtensionVo> page , @Param("userId") String userId);
 
 
 }

@@ -11,7 +11,6 @@ import java.util.List;
 public interface AddressModelMapper {
     int deleteByPrimaryKey(String id);
 
-    int insert(AddressModel record);
 
     int insertSelective(AddressModelVo record);
 
@@ -20,6 +19,8 @@ public interface AddressModelMapper {
     int updateByPrimaryKeySelective(AddressModel record);
 
     int updateByPrimaryKey(AddressModel record);
+
+    int updateDefaultFlag(String userId);
 
     List<AddressModelVo> loadUserAddressList(@Param("userId") String userId);
 }

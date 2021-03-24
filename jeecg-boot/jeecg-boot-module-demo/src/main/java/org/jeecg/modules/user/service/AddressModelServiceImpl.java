@@ -1,6 +1,7 @@
 package org.jeecg.modules.user.service;
 
 import org.jeecg.common.exception.JeecgBootException;
+import org.jeecg.modules.commons.Constant;
 import org.jeecg.modules.commons.util.SeqUtils;
 import org.jeecg.modules.commons.util.ValidateTool;
 import org.jeecg.modules.user.mapper.AddressModelMapper;
@@ -13,7 +14,7 @@ import javax.annotation.Resource;
 import java.util.List;
 
 @Service
-public class AddressModelServiceImpl implements AddressModelService{
+public class AddressModelServiceImpl implements AddressModelService {
 
     @Resource
     private AddressModelMapper addressModelMapper;
@@ -24,19 +25,19 @@ public class AddressModelServiceImpl implements AddressModelService{
     }
 
 
-
-
     @Transactional(rollbackFor = Exception.class)
     @Override
     public int insertSelective(AddressModelVo record) {
-        if (ValidateTool.isNull(record.getPhone())){
-            throw  new JeecgBootException("请输入手机号码");
+        ValidateTool.checkParamIsMobile(record.getPhone());
+        if (ValidateTool.isNull(record.getCity())) {
+            throw new JeecgBootException("请选择城市");
         }
-        if (ValidateTool.isNull(record.getCity())){
-            throw  new JeecgBootException("请选择城市");
+        if (ValidateTool.isNull(record.getAddress())) {
+            throw new JeecgBootException("请输入详细地址");
         }
-        if (ValidateTool.isNull(record.getAddress())){
-            throw  new JeecgBootException("请输入详细地址");
+        List<AddressModelVo> addressModelVos = addressModelMapper.loadUserAddressList(record.getUserId());
+        if (addressModelVos.size() == 0) {
+            record.setDefaultFlag(1);
         }
         record.setId(SeqUtils.nextIdStr());
         return addressModelMapper.insertSelective(record);
@@ -49,6 +50,19 @@ public class AddressModelServiceImpl implements AddressModelService{
 
     @Override
     public int updateByPrimaryKeySelective(AddressModel record) {
+        if (ValidateTool.isNull(record.getId())) {
+            if (ValidateTool.isNull(record.getAddress())) {
+                throw new JeecgBootException("参数错误");
+            }
+        }
+        AddressModel addressModel = addressModelMapper.selectByPrimaryKey(record.getId());
+        if (ValidateTool.isNull(addressModel)) {
+            throw new JeecgBootException("参数错误");
+        }
+        if (ValidateTool.isNotNull(record.getDefaultFlag()) && Constant.TYPE_INT_1 == record.getDefaultFlag()) {
+            addressModelMapper.updateDefaultFlag(record.getUserId());
+        }
+
         return addressModelMapper.updateByPrimaryKeySelective(record);
     }
 

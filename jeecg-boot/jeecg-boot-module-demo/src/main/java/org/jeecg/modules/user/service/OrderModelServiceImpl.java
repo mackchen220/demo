@@ -1,10 +1,16 @@
 package org.jeecg.modules.user.service;
 
+import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import lombok.extern.log4j.Log4j2;
 import org.jeecg.common.exception.JeecgBootException;
 import org.jeecg.modules.commons.Constant;
 import org.jeecg.modules.commons.util.SeqUtils;
 import org.jeecg.modules.commons.util.ValidateTool;
+import org.jeecg.modules.course.service.CourseService;
+import org.jeecg.modules.index.mapper.PlatformConfigurationMapper;
+import org.jeecg.modules.index.model.PlatformConfiguration;
+import org.jeecg.modules.pay.model.PayResponse;
 import org.jeecg.modules.user.mapper.*;
 import org.jeecg.modules.user.model.TalentInfoModel;
 import org.jeecg.modules.user.model.UserBankModel;
@@ -21,6 +27,7 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
+@Log4j2
 @Service
 public class OrderModelServiceImpl implements OrderModelService {
 
@@ -36,6 +43,14 @@ public class OrderModelServiceImpl implements OrderModelService {
     private UserModelMapper userModelMapper;
     @Resource
     private UserIncomeService userIncomeService;
+    @Resource
+    private PlatformConfigurationMapper platformConfigurationMapper;
+    @Resource
+    private VipModelService vipModelService;
+    @Resource
+    private TalentInfoModelService talentInfoModelService;
+    @Resource
+    private CourseService courseService;
 
     @Override
     public int insertSelective(OrderModel record) {
@@ -81,6 +96,9 @@ public class OrderModelServiceImpl implements OrderModelService {
     @Override
     public Page<OrderModelVo> loadOrderList(String userId, String optStatus, Page<OrderModelVo> page) {
 
+        if (Constant.CHECKTYPE0.equals(optStatus)){
+            optStatus=null;
+        }
         List<OrderModelVo> orderModelVos = orderModelMapper.loadOrderList(userId, optStatus, page);
 
         return page.setRecords(orderModelVos);
@@ -192,60 +210,109 @@ public class OrderModelServiceImpl implements OrderModelService {
 
         return String.valueOf(divide.doubleValue());
     }
+
     @Transactional(rollbackFor = Exception.class)
     @Override
     public void addWithdrawalOrder(UserModel user, String bankId, String money) {
 
-        UserBankModel userBankModel = userBankModelMapper.loadBankInfoByUserId(null, bankId, user.getId());
 
-        if (ValidateTool.isNull(userBankModel)) {
-            throw new JeecgBootException("银行卡错误");
-        }
         if (Long.valueOf(user.getMoney()) < Long.valueOf(money)) {
             throw new JeecgBootException("余额不足");
         }
-
+        OrderModel orderModel = new OrderModel();
+        if (ValidateTool.isNotNull(bankId)) {
+            UserBankModel userBankModel = userBankModelMapper.loadBankInfoByUserId(null, bankId, user.getId());
+            if (ValidateTool.isNull(userBankModel)) {
+                throw new JeecgBootException("银行卡错误");
+            }
+            orderModel.setOutsideCardNum(userBankModel.getCardNumber());
+        } else {
+            if (ValidateTool.isNotNull(user.getWechat())) {
+                orderModel.setOutsideCardNum(user.getWechat());
+                orderModel.setPayType(Constant.TYPE_INT_2);
+            } else {
+                throw new JeecgBootException("请填写微信号或者联系客服");
+            }
+        }
         int i = userModelMapper.updateUserMoney(user.getId(), money, Constant.TYPE_INT_2);
         if (i < 1) {
             throw new JeecgBootException("余额不足");
         }
-        userIncomeService.addUserIncome(user.getId(), 1, "用户提现", Long.valueOf(money));
-        OrderModel orderModel = new OrderModel();
+        //提现手续费
+        String fee = "0";
+        orderModel.setPayMoney(money);
+        PlatformConfiguration config = platformConfigurationMapper.getConfigByKey(Constant.CONFIG_KEY_FEE);
+        if (ValidateTool.isNotNull(config) && ValidateTool.isNotNull(config.getConfigValue())) {
+            BigDecimal num1 = new BigDecimal(config.getConfigValue());
+            BigDecimal num2 = new BigDecimal(money);
+            BigDecimal multiply = num2.divide(new BigDecimal("100"),2,BigDecimal.ROUND_DOWN).multiply(num1);
+            log.info("提现手续费配置{},提现金额{}，提现手续费{}", config.getConfigValue(), money, multiply.longValue());
+            orderModel.setPayMoney(String.valueOf(Long.valueOf(money) - multiply.longValue()));
+            fee = String.valueOf(multiply.longValue());
+        }
+        userIncomeService.addUserIncome(user.getId(), 1, "用户提现", Long.valueOf(money), fee);
         orderModel.setId(SeqUtils.nextIdStr());
         orderModel.setUserId(user.getId());
         orderModel.setAmount(money);
         orderModel.setOperationType(Constant.TYPE_INT_3);
         orderModel.setContent("提现");
-        orderModel.setOutsideCardNum(userBankModel.getCardNumber());
         orderModel.setOptStatus(Constant.TYPE_INT_0);
         orderModelMapper.insertSelective(orderModel);
-
-
     }
 
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public String orderCallBack(String orderId) {
-        OrderModel orderModel = orderModelMapper.selectByPrimaryKey(orderId);
+    public String orderCallBack(PayResponse payResponse) {
+        OrderModel orderModel = orderModelMapper.selectByPrimaryKey(payResponse.getOrderId());
+        log.info("orderModel{},orderId{}", JSON.toJSONString(orderModel),payResponse.getOrderId());
         if (ValidateTool.isNull(orderModel)) {
-            throw new JeecgBootException("订单不存在" + orderId);
+            throw new JeecgBootException("订单不存在" + payResponse.getOrderId());
+        }
+        if (orderModel.getOptStatus()==2){
+            log.warn("重复回调,订单id{}",orderModel.getId());
+            return "ok";
         }
         if (Constant.TYPE_INT_1 == orderModel.getOperationType()) {
             //医美项目定金
             //TODO 达人提成
 
         }
+        if (Constant.TYPE_INT_2 == orderModel.getOperationType()) {
+            //购买课程
+            courseService.courseCallBack(payResponse.getOrderId());
+        }
         if (Constant.TYPE_INT_4 == orderModel.getOperationType()) {
-            //购买会员
-            //TODO 上级提成
+            //购买会员 上级提成
+            vipModelService.addVipCallBack(payResponse.getOrderId());
+        }
+        if (Constant.TYPE_INT_5 == orderModel.getOperationType()) {
+            //缴纳保证金
+            talentInfoModelService.talentCallBack(payResponse.getOrderId());
+        }
+        OrderModel orderModel1 = new OrderModel();
+        orderModel1.setId(payResponse.getOrderId());
+        orderModel1.setOptStatus(Constant.TYPE_INT_2);
+        orderModel1.setPayType(Constant.TYPE_INT_2);
+        orderModel1.setPayMoney(String.valueOf(orderModel.getAmount()));
+        orderModelMapper.updateByPrimaryKeySelective(orderModel1);
+        return "ok";
+    }
 
+
+    @Override
+    public void updateOrderStatus(String orderId) {
+        if (ValidateTool.isNull(orderId)) {
+            throw new JeecgBootException("订单参数错误");
+        }
+        OrderModel orderModel = orderModelMapper.selectByPrimaryKey(orderId);
+        if (ValidateTool.isNull(orderModel)) {
+            throw new JeecgBootException("订单不存在");
         }
         OrderModel orderModel1 = new OrderModel();
         orderModel1.setId(orderId);
-        orderModel1.setOptStatus(Constant.TYPE_INT_2);
+        orderModel1.setOptStatus(Constant.TYPE_INT_5);
         orderModelMapper.updateByPrimaryKeySelective(orderModel1);
-        return "ok";
     }
 
     public static void main(String[] args) {

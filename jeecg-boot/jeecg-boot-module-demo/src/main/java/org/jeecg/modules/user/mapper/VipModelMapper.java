@@ -22,5 +22,7 @@ public interface VipModelMapper {
 
     List<VipModelVo> getVipList();
 
+    int updateNum(String id);
+
 
 }

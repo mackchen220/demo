@@ -29,10 +29,21 @@ public class Constant {
     public final static int TYPE_INT_3 = 3;
 
     public final static int TYPE_INT_4 = 4;
+    public final static int TYPE_INT_5 = 5;
 
 
     public final static String SUCCESS_CODE = "200000";
 
+
+    public final static String CONFIG_KEY_FEE = "fee";
+
+    public final static String CONFIG_KEY_BOOD = "bood";
+
+    public final static String CONFIG_KEY_INVITE_IAMGE = "inviteImage";
+
+    public final static String CONFIG_KEY_INVITE_CONTEXT = "invite_context";
+
+    public final static String DELIVERY_FEE = "deliveryFee";
 
 
 }

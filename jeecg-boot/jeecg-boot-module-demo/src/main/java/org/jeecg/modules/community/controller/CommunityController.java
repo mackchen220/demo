@@ -38,7 +38,7 @@ public class CommunityController {
     @RequestMapping(value = "/loadCommunityListByType", method = RequestMethod.POST)
     public Result<Page<CommunityModelVo>> loadCommunityListByType(int type, @RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo,
                                                                   @RequestParam(name = "pageSize", defaultValue = "10")
-                                                                          Integer pageSize,HttpServletRequest request) {
+                                                                          Integer pageSize, HttpServletRequest request) {
         String token = request.getHeader("token");
 
         String userId = userModelService.getUserIdByToken(token);
@@ -104,9 +104,8 @@ public class CommunityController {
 
     @ApiOperation("朋友圈点赞接口")
     @RequestMapping(value = "/addCommunityStar", method = RequestMethod.POST)
-    public Result addCommunityStar(String id, HttpServletRequest request, String type,String pageType) {
-        String token = request.getHeader("token");
-        String userId = userModelService.getUserIdByToken(token);
+    public Result addCommunityStar(String id, HttpServletRequest request, String type, String pageType) {
+        String userId = userModelService.getUserIdByToken(TokenUtils.getToken(request));
         communityModelService.addCommunityStar(id, userId, type, pageType);
         return Result.OK();
     }

@@ -1,7 +1,7 @@
 package org.jeecg.modules.user.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.xiaoymin.knife4j.annotations.DynamicParameter;
 import com.github.xiaoymin.knife4j.annotations.DynamicResponseParameters;
@@ -9,23 +9,21 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.jeecg.common.api.vo.Result;
-import org.jeecg.common.constant.CommonConstant;
-import org.jeecg.common.system.vo.LoginUser;
-import org.jeecg.common.util.*;
+import org.jeecg.common.util.IPUtils;
+import org.jeecg.common.util.MD5Util;
+import org.jeecg.common.util.RedisUtil;
+import org.jeecg.common.util.TokenUtils;
 import org.jeecg.modules.commons.util.ValidateTool;
-import org.jeecg.modules.user.model.UserBankModel;
-import org.jeecg.modules.user.model.UserModel;
-import org.jeecg.modules.user.model.WeiXinModel;
+import org.jeecg.modules.user.model.*;
 import org.jeecg.modules.user.model.vo.AddressModelVo;
+import org.jeecg.modules.user.model.vo.ExtensionVo;
 import org.jeecg.modules.user.model.vo.UserBankVo;
 import org.jeecg.modules.user.model.vo.UserIncomeDetailVo;
 import org.jeecg.modules.user.service.*;
-import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -112,28 +110,33 @@ public class UserController {
 
     @ApiOperation("添加银行卡接口")
     @RequestMapping(value = "/addUserBank", method = RequestMethod.POST)
-    public Result<JSONObject> loadIndexlist(UserBankModel userBankModel, String phone, String captchaCode, String token) {
+    public Result<JSONObject> loadIndexlist(UserBankModel userBankModel, String phone, String captchaCode, HttpServletRequest request) {
 
-        String id = userModelService.getUserIdByToken(token);
-
-
+        String id = userModelService.getUserIdByToken(TokenUtils.getToken(request));
         Result result = userBankModelService.insertUserBank(userBankModel, captchaCode, phone, id);
-
-
         return result;
     }
 
 
     @ApiOperation("用户银行卡列表接口")
     @RequestMapping(value = "/loadUserCardList", method = RequestMethod.POST)
-    public Result<Object> loadUserCardList(String token) {
+    public Result<Object> loadUserCardList(HttpServletRequest request) {
         Result<Object> result = new Result<>();
-        String id = userModelService.getUserIdByToken(token);
+        String id = userModelService.getUserIdByToken(TokenUtils.getToken(request));
         List<UserBankVo> userBankModels = userBankModelService.loadUserCard(id);
         result.setResult(userBankModels);
         return result;
     }
 
+
+    @ApiOperation(value = "银行列表")
+    @PostMapping(value = "/loadBankList")
+    public Result<?> loadBankList(@RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo,
+                                  @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize) {
+        Page<BankModel> page = new Page<BankModel>(pageNo, pageSize);
+        IPage<BankModel> pageList = userBankModelService.loadBankList(page);
+        return Result.OK(pageList);
+    }
 
     @ApiOperation("用户关注接口")
     @RequestMapping(value = "/addUserFocus", method = RequestMethod.POST)
@@ -157,25 +160,36 @@ public class UserController {
 
     @ApiOperation("修改用户信息")
     @RequestMapping(value = "/updateUserInfo", method = RequestMethod.POST)
-    public Result updateUserInfo(String nickName, String headImage, String sign, String token) {
+    public Result updateUserInfo(String nickName, String headImage, String sign, HttpServletRequest request, String wechat) {
+        String token = request.getHeader("token");
         UserModel userModel = userModelService.getUserModelByToken(token);
-        userModelService.updateUserInfo(userModel, nickName, headImage, sign);
+        userModelService.updateUserInfo(userModel, nickName, headImage, sign, wechat);
+        return Result.OK("修改成功", null);
+    }
+
+    @ApiOperation("用户修改手机号")
+    @RequestMapping(value = "/updateUserPhone", method = RequestMethod.POST)
+    public Result updateUserPhone(String phone, String captcha, HttpServletRequest request) {
+        String token = request.getHeader("token");
+        UserModel userModel = userModelService.getUserModelByToken(token);
+        userModelService.updateUserPhone(phone, captcha, userModel);
         return Result.OK("修改成功", null);
     }
 
 
     @ApiOperation("我的页面点击头像加载用户信息")
     @RequestMapping(value = "/loadUserInfo", method = RequestMethod.POST)
-    public Result<Map> loadUserInfo(String token) {
-        Map map = userModelService.loadUserInfo(token);
+    public Result<Map> loadUserInfo(HttpServletRequest request) {
+
+        Map map = userModelService.loadUserInfo(TokenUtils.getToken(request));
         return Result.OK(map);
     }
 
 
     @ApiOperation("我的收货地址")
     @RequestMapping(value = "/loadUserAddressList", method = RequestMethod.POST)
-    public Result<List> loadUserAddressList(String token) {
-        String id = userModelService.getUserIdByToken(token);
+    public Result<List> loadUserAddressList(HttpServletRequest request) {
+        String id = userModelService.getUserIdByToken(TokenUtils.getToken(request));
         List list = addressModelService.loadUserAddressList(id);
         return Result.OK(list);
     }
@@ -183,54 +197,80 @@ public class UserController {
 
     @ApiOperation("添加收货地址")
     @RequestMapping(value = "/addUserAddress", method = RequestMethod.POST)
-    public Result addUserAddress(AddressModelVo model, String token) {
-        String id = userModelService.getUserIdByToken(token);
+    public Result addUserAddress(AddressModelVo model, HttpServletRequest request) {
+        String id = userModelService.getUserIdByToken(TokenUtils.getToken(request));
         model.setUserId(id);
         addressModelService.insertSelective(model);
         return Result.OK();
     }
 
 
-    @ApiOperation("vip列表")
-    @RequestMapping(value = "/getVipList", method = RequestMethod.POST)
-    public Result<List> getVipList(String token) {
-        List list = vipModelService.getVipList();
-        return Result.oKWithToken(token, list);
+    @ApiOperation("修改收货地址")
+    @RequestMapping(value = "/updateUserAddress", method = RequestMethod.POST)
+    public Result updateUserAddress(AddressModel model, HttpServletRequest request) {
+        String id = userModelService.getUserIdByToken(TokenUtils.getToken(request));
+        model.setUserId(id);
+        addressModelService.updateByPrimaryKeySelective(model);
+        return Result.OK();
     }
 
-    @ApiOperation("购买会员卡，提交订单")
+
+    @ApiOperation("vip列表")
+    @RequestMapping(value = "/getVipList", method = RequestMethod.POST)
+    public Result<List> getVipList() {
+        List list = vipModelService.getVipList();
+        return Result.OK(list);
+    }
+
+    @ApiOperation("会员卡名额消息")
+    @RequestMapping(value = "/loadVipInfo", method = RequestMethod.POST)
+    public Result<Map> loadVipInfo(HttpServletRequest request, String vipId) {
+        String id = userModelService.getUserIdByToken(TokenUtils.getToken(request));
+        Map map = vipModelService.loadVipInfo(vipId, id);
+        return Result.OK(map);
+    }
+
+    @ApiOperation("购买会员卡锁定名额")
     @RequestMapping(value = "/addVipOrder", method = RequestMethod.POST)
-    public Result<Map> addVipOrder(String token, String addressId, String vipId) {
-        String id = userModelService.getUserIdByToken(token);
+    public Result<Map> addVipOrder(HttpServletRequest request, String addressId, String vipId) {
+        String id = userModelService.getUserIdByToken(TokenUtils.getToken(request));
         Map map = vipModelService.addVipOrder(addressId, vipId, id);
-        return Result.oKWithToken(token, map);
+        return Result.OK(map);
     }
 
 
     @ApiOperation("购买会员卡，确认订单")
     @RequestMapping(value = "/getVipOrder", method = RequestMethod.POST)
-    public Result<Map> getVipOrder(String token, String addressId, String vipId, String orderId) {
-        Map map = vipModelService.getVipOrder(addressId, vipId, orderId);
-        return Result.oKWithToken(token, map);
+    public Result<Map> getVipOrder(HttpServletRequest request, String addressId, String vipId, String orderId) {
+        String id = userModelService.getUserIdByToken(TokenUtils.getToken(request));
+        Map map = vipModelService.getVipOrder(addressId, vipId, orderId, id);
+        return Result.OK(map);
+    }
+
+    @ApiOperation("购买会员卡，提交订单")
+    @RequestMapping(value = "/updateOrder", method = RequestMethod.POST)
+    public Result<Map> addOrder(String orderId, String addressId, String vipId) {
+        Map map = vipModelService.updateOrder(addressId, vipId, orderId);
+        return Result.OK(map);
     }
 
 
     @ApiOperation("我的钱包")
     @RequestMapping(value = "/loadMyWalletInfo", method = RequestMethod.POST)
-    public Result<Map> loadMyWalletInfo(String token) {
-        String id = userModelService.getUserIdByToken(token);
+    public Result<Map> loadMyWalletInfo(HttpServletRequest request) {
+        String id = userModelService.getUserIdByToken(TokenUtils.getToken(request));
         Map map = userModelService.loadMyWalletInfo(id);
-        return Result.oKWithToken(token, map);
+        return Result.OK(map);
     }
 
 
     @ApiOperation("收益记录")
     @RequestMapping(value = "/loadIncomeDetail", method = RequestMethod.POST)
-    public Result<Page<UserIncomeDetailVo>> loadIncomeDetail(String token, Integer pageNo, Integer pageSize, Integer type) {
-        String id = userModelService.getUserIdByToken(token);
+    public Result<Page<UserIncomeDetailVo>> loadIncomeDetail(HttpServletRequest request, Integer pageNo, Integer pageSize, Integer type) {
+        String id = userModelService.getUserIdByToken(TokenUtils.getToken(request));
         Page<UserIncomeDetailVo> page = new Page<>(pageNo, pageSize);
         Page<UserIncomeDetailVo> incomeDetail = userModelService.loadIncomeDetail(id, page, type, null, null);
-        return Result.oKWithToken(token, incomeDetail);
+        return Result.OK(incomeDetail);
     }
 
 
@@ -241,5 +281,29 @@ public class UserController {
         userModelService.addUserVerified(user, userName, idNum, image);
         return Result.OK();
     }
+
+
+    //代理中心
+    @ApiOperation("代理中心")
+    @PostMapping("/loadProxyCenter")
+    public Result loadProxyCenter(HttpServletRequest request) {
+        UserModel model = userModelService.getUserModelByToken(TokenUtils.getToken(request));
+        Map map = userModelService.loadProxyCenter(model);
+        return Result.OK(map);
+    }
+
+    //代理中心分页详情
+    @ApiOperation("代理中心分页详情")
+    @PostMapping("/loadProxyIncome")
+    public Result loadProxyIncome(HttpServletRequest request, @RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo,
+                                  @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize) {
+        String id = userModelService.getUserIdByToken(TokenUtils.getToken(request));
+
+        Page<ExtensionVo> page = new Page<>(pageNo, pageSize);
+        Page<ExtensionVo> extensionVoPage = userModelService.loadProxyIncome(id, page);
+
+        return Result.OK(extensionVoPage);
+    }
+
 
 }

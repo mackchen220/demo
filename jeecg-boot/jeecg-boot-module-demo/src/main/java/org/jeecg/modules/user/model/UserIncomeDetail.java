@@ -83,5 +83,22 @@ public class UserIncomeDetail implements Serializable {
     @ApiModelProperty(value="删除标识0-正常,1-已删除")
     private Integer delFlag;
 
+
+    /**
+     * 钱的来源
+     */
+    @ApiModelProperty(value="钱的来源")
+    private String sendId;
+
+
+    /**
+     * 提现手续费
+     */
+    @ApiModelProperty(value="提现手续费")
+    private String fee;
+
+
+
+
     private static final long serialVersionUID = 1L;
 }

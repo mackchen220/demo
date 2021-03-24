@@ -36,9 +36,9 @@
     <!--@Table tb_talent_customer-->
     <result column="user_id" jdbcType="VARCHAR" property="userId" />
     <result column="nick_name" jdbcType="VARCHAR" property="nickName" />
+    <result column="user_name" jdbcType="VARCHAR" property="userName" />
     <result column="head_image" jdbcType="VARCHAR" property="headImage" />
     <result column="create_time" jdbcType="VARCHAR" property="createTime" />
-
   </resultMap>
 
   <sql id="Base_Column_List">
@@ -205,10 +205,12 @@
 
   <select id="loadExtensionIncome" parameterType="string" resultMap="incomeResultMap">
 
-    SELECT a.user_id , b.vip_id ,b.head_image,b.nick_name,b.create_time
+    SELECT a.user_id , b.vip_id ,b.head_image,b.nick_name,b.create_time ,b.user_name
     from tb_user_agency as a LEFT JOIN tb_user as b on a.user_id =b.id
-    where a.p_user_id = #{userId,jdbcType=VARCHAR} and b.vip_id <![CDATA[ <>]]> null
+    where a.p_user_id = #{userId,jdbcType=VARCHAR}
     order by create_time desc
+
+<!--    and b.vip_id <![CDATA[ <>]]> null-->
   </select>
 
 

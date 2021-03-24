@@ -303,6 +303,25 @@
     where id = #{id,jdbcType=VARCHAR}
   </update>
 
+  <update id="updatePartyNum">
+    update tb_party
+    <set>
+      <if test="starNum != null">
+        star_num =star_num+ #{starNum,jdbcType=BIGINT},
+      </if>
+      <if test="goodNum != null">
+        good_num =good_num+ #{goodNum,jdbcType=BIGINT},
+      </if>
+      <if test="forwardNum != null">
+        forward_num = forward_num+#{forwardNum,jdbcType=BIGINT},
+      </if>
+      <if test="watchNum != null">
+        watch_num = watch_num+#{watchNum},
+      </if>
+    </set>
+    where  id = #{id,jdbcType=VARCHAR}
+  </update>
+
   <select id="loadPartyList" resultMap="BaseResultMap">
     select a.*,IFNULL(b.star ,0) as star_status,IFNULL(b.good ,0) as good_status
     from tb_party as a LEFT JOIN tb_user_star as b on a.id =b.community_id and  b.user_id = #{userId,jdbcType=VARCHAR}

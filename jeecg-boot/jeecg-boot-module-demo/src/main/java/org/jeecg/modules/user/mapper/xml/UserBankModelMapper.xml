@@ -219,7 +219,7 @@
   </update>
 
   <select id="loadUserCard" parameterType="string" resultMap="BaseResultMap">
-    select card_number,icon,icon from tb_user_bank
+    select a.id,a.card_number,b.icon from tb_user_bank as a LEFT JOIN tb_bank as b on a.icon =b.id
     where user_id =#{userId,jdbcType=VARCHAR}
   </select>
 </mapper>

@@ -75,8 +75,6 @@ public class UserModel {
     */
     private String createTime;
 
-    private String updateTime;
-
     /**
     * 最后一次登陆IP
     */

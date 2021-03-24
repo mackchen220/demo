@@ -14,6 +14,7 @@ import org.jeecg.modules.commons.RedisKey;
 import org.jeecg.modules.commons.util.*;
 import org.jeecg.modules.user.mapper.*;
 import org.jeecg.modules.user.model.*;
+import org.jeecg.modules.user.model.vo.ExtensionVo;
 import org.jeecg.modules.user.model.vo.UserIncomeDetailVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -21,9 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ExecutorService;
 
 @Log4j2
@@ -53,6 +52,9 @@ public class UserModelServiceImpl implements UserModelService {
 
     @Resource
     private VerifiedConfigMapper verifiedConfigMapper;
+
+    @Resource
+    private UserAgencyModelMapper userAgencyModelMapperl;
 
     @Resource
     private TencentImService tencentImService;
@@ -303,8 +305,10 @@ public class UserModelServiceImpl implements UserModelService {
         Map<Object, Object> map = new HashMap<>();
         map.put("headImage", model.getHeadImage());
         map.put("nickName", model.getNickName());
+        map.put("wechat", model.getWechat());
         map.put("sige", model.getSign());
-
+        map.put("inviteCode", model.getInviteCode());
+        map.put("wx", ValidateTool.isNull(model.getWeixinId()) ? 0 : 1);
         String phone = "";
         if (ValidateTool.isNotNull(model.getPhone())) {
             phone = model.getPhone().replace(model.getPhone().substring(3, 7), "****");
@@ -314,21 +318,45 @@ public class UserModelServiceImpl implements UserModelService {
         return map;
     }
 
+    @Override
+    public void updateUserPhone(String phone, String captcha, UserModel userModel) {
+        ValidateTool.checkParamIsMobile(phone);
+        if (ValidateTool.isNull(captcha)) {
+            throw new JeecgBootException("请输入验证码");
+        }
+        Object code = redisUtil.get(RedisKey.SMS_CODE + phone);
+        if (code == null || !code.toString().equals(captcha)) {
+            throw new JeecgBootException("验证码错误");
+        }
+        UserModel userModel1 = new UserModel();
+        userModel1.setId(userModel.getId());
+        userModel1.setPhone(phone);
+        userModelMapper.updateByPrimaryKeySelective(userModel1);
+
+    }
+
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public void updateUserInfo(UserModel userModel, String nickName, String headImage, String content) {
+    public void updateUserInfo(UserModel userModel, String nickName, String headImage, String content, String wechat) {
         UserModel userModel1 = new UserModel();
         userModel1.setId(userModel.getId());
         if (ValidateTool.isNotNull(headImage)) {
             userModel1.setHeadImage(headImage);
         }
         if (ValidateTool.isNotNull(nickName)) {
-            userModel1.setHeadImage(headImage);
+            userModel1.setNickName(nickName);
+        }
+        if (ValidateTool.isNotNull(wechat)) {
+            userModel1.setWechat(wechat);
         }
         if (ValidateTool.isNotNull(content)) {
+            if (content.length() > 16) {
+                throw new JeecgBootException("个性签名限制十六个字");
+            }
             userModel1.setSign(content);
         }
-        if (ValidateTool.isNull(content) && ValidateTool.isNull(content) && ValidateTool.isNull(content)) {
+        if (ValidateTool.isNull(headImage) && ValidateTool.isNull(nickName) && ValidateTool.isNull(content)
+                && ValidateTool.isNull(wechat)) {
             throw new JeecgBootException("修改失败");
         }
         userModelMapper.updateByPrimaryKeySelective(userModel1);
@@ -346,10 +374,10 @@ public class UserModelServiceImpl implements UserModelService {
         //可提现收入
         map.put("excess", userModel.getMoney());
         //审核中 todo
-        map.put("Review", 0);
+        map.put("review", 0);
 
         //手续费 todo
-        map.put("excess", "0.1");
+        map.put("handlingFee", "0.1");
 
         //今日收入
         String startTimeToday = DateHelper.getToday() + DateHelper.DEFUALT_TIME_START;
@@ -377,6 +405,14 @@ public class UserModelServiceImpl implements UserModelService {
 
         List<UserIncomeDetailVo> detailVos = userIncomeDetailMapper.loadUserIncomeList(page, userId, type == 1 ? 1 : 3, startTime, endTime);
 
+        if (Constant.TYPE_INT_2 == type && detailVos.size() > 0) {
+            for (UserIncomeDetailVo incomeDetailVo : detailVos) {
+                UserAgencyModel userAgencyModel = userAgencyModelMapper.loadUserAgency(incomeDetailVo.getSendId(), userId);
+                incomeDetailVo.setSondType(ValidateTool.isNotNull(userAgencyModel) ? 1 : 2);
+                UserModel userModel = userModelMapper.loadUser(incomeDetailVo.getSendId(), null, null, null, null);
+                incomeDetailVo.setNickName(userModel.getNickName());
+            }
+        }
         return page.setRecords(detailVos);
     }
 
@@ -580,5 +616,80 @@ public class UserModelServiceImpl implements UserModelService {
     //图像结果说明
     //photoScore
     //照片相似的分数(0-100)
+
+
+    @Override
+    public Map<String, Object> loadProxyCenter(UserModel user) {
+        Map map = new HashMap<>();
+
+        map.put("headImage", user.getHeadImage());
+        map.put("nickName", user.getNickName());
+        List<String> list = new ArrayList<>();
+
+        List<String> userIds = userAgencyModelMapper.loadUserId(user.getId());
+        for (String userId : userIds) {
+            //间接下级
+            List<String> userIds1 = userAgencyModelMapper.loadUserId(userId);
+            list.addAll(userIds1);
+
+        }
+        userIds.addAll(list);
+
+        //今日收入
+        String startTimeToday = DateHelper.getToday() + DateHelper.DEFUALT_TIME_START;
+        String endTimeToday = DateHelper.getToday() + DateHelper.DEFUALT_TIME_END;
+        //本月收入
+        String firstDayOfMonth = DateHelper.getFirstDayOfMonth();
+        String lastDayOfMonth = DateHelper.getLastDayOfMonth();
+        //团队人数
+        map.put("num", userIds.size());
+
+        Long incomeToday = 0L;
+        Long incomeMonth = 0L;
+        Long incomeTotal = 0L;
+
+        for (String userId : userIds) {
+            incomeToday = Long.valueOf(userIncomeMapper.getExtensionMoneyByTime(userId, startTimeToday, endTimeToday));
+            incomeMonth = Long.valueOf(userIncomeMapper.getExtensionMoneyByTime(user.getId(), firstDayOfMonth, lastDayOfMonth));
+            //总收入
+            incomeTotal = Long.valueOf(userIncomeMapper.getExtensionMoneyByTime(user.getId(), firstDayOfMonth, lastDayOfMonth));
+        }
+
+        map.put("incomeToday", incomeToday);
+
+        map.put("incomeMonth", incomeMonth);
+
+        map.put("incomeTotal", incomeTotal);
+
+        return map;
+    }
+
+
+    @Override
+    public Page<ExtensionVo> loadProxyIncome(String userId, Page<ExtensionVo> page) {
+
+        List<ExtensionVo> extensionVos = userAgencyModelMapper.loadProxyIncome(page, userId);
+
+        if (extensionVos.size() > 0) {
+            for (ExtensionVo extensionVo : extensionVos) {
+                //今日收入
+                String startTimeToday = DateHelper.getToday() + DateHelper.DEFUALT_TIME_START;
+                String endTimeToday = DateHelper.getToday() + DateHelper.DEFUALT_TIME_END;
+                String incomeToday = userIncomeMapper.getExtensionMoneyByTime(extensionVo.getUserId(), startTimeToday, endTimeToday);
+                extensionVo.setDayMoney(ValidateTool.isNull(incomeToday) ? 0 : Long.valueOf(incomeToday));
+                //本月收入
+                String firstDayOfMonth = DateHelper.getFirstDayOfMonth();
+                String lastDayOfMonth = DateHelper.getLastDayOfMonth();
+                String incomeMonth = userIncomeMapper.getExtensionMoneyByTime(extensionVo.getUserId(), firstDayOfMonth, lastDayOfMonth);
+                extensionVo.setMonthMoney(ValidateTool.isNull(incomeMonth) ? 0 : Long.valueOf(incomeMonth));
+                //总收入
+                String incomeTotal = userIncomeMapper.getExtensionMoneyByTime(extensionVo.getUserId(), firstDayOfMonth, lastDayOfMonth);
+                extensionVo.setTotelMoney(ValidateTool.isNull(incomeTotal) ? 0 : Long.valueOf(incomeTotal));
+            }
+        }
+
+        return page.setRecords(extensionVos);
+    }
+
 
 }

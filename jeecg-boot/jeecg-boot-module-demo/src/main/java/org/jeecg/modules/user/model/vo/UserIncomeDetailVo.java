@@ -48,17 +48,43 @@ public class UserIncomeDetailVo implements Serializable {
     @ApiModelProperty(value="支付类型")
     private String payType;
 
+    /**
+    * 钱的来源
+    */
+    @ApiModelProperty(value="钱的来源")
+    private String sendId;
+
+    /**
+    * 推荐人
+    */
+    @ApiModelProperty(value="推荐人")
+    private String nickName;
+
+    /**
+    * 推荐类型 1直接推荐 2间接推荐
+    */
+    @ApiModelProperty(value="推荐类型 1直接推荐 2间接推荐")
+    private Integer sondType;
+
+
+    /**
+     * 提现手续费
+     */
+    @ApiModelProperty(value="提现手续费")
+    private String fee;
+
+
 //    /**
 //    * 操作后余额
 //    */
 //    @ApiModelProperty(value="操作后余额")
 //    private Long excess;
 //
-//    /**
-//    * 创建时间
-//    */
-//    @ApiModelProperty(value="创建时间")
-//    private String createTime;
+    /**
+    * 创建时间
+    */
+    @ApiModelProperty(value="创建时间")
+    private String createTime;
 //
 //    /**
 //    * 更新日期

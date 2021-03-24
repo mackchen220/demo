@@ -628,7 +628,7 @@ public class DateHelper {
 
 	public static void main(String[] args) {
 		System.out.println(DateHelper.getFirstDayOfMonth());
-		System.out.println(DateHelper.getLastDayOfMonth());
+		System.out.println();
 
 		System.out.println();
 

@@ -26,6 +26,7 @@
     <result column="content" jdbcType="VARCHAR" property="content" />
     <result column="course_info" jdbcType="VARCHAR" property="courseInfo" />
     <result column="user_id" jdbcType="VARCHAR" property="userId" />
+    <result column="vip_free" jdbcType="INTEGER" property="vipFree" />
   </resultMap>
 
   <resultMap id="voResultMap" type="org.jeecg.modules.course.model.vo.CourseVo">
@@ -47,6 +48,7 @@
     <result column="content" jdbcType="VARCHAR" property="content" />
     <result column="course_info" jdbcType="VARCHAR" property="courseInfo" />
     <result column="user_id" jdbcType="VARCHAR" property="userId" />
+    <result column="vip_free" jdbcType="INTEGER" property="vipFree" />
   </resultMap>
 
   <resultMap id="couserInfoVoResultMap" type="org.jeecg.modules.course.model.vo.CourseInfoVo">
@@ -63,7 +65,7 @@
 
   <sql id="Base_Column_List">
     <!--@mbg.generated-->
-    id, title, url, image, price, `type`, watch_num, good_num, `state`, sort, create_time,user_id,
+    id, title, url, image, price, `type`, watch_num, good_num, `state`, sort, create_time,user_id,vip_free,
     update_time, create_by, update_by, del_flag, course_type, city, star_num, forward_num,course_info,content
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
@@ -334,7 +336,7 @@
   </select>
 
   <select id="loadIndexCourseModelList"  resultMap="BaseResultMap">
-    select title,image,type,state,price , watch_num,course_info,content,user_id from tb_course
+    select id,title,image,type,state,price ,course_type, watch_num,course_info,content,user_id from tb_course
     order by sort desc limit ${limit}
   </select>
 
@@ -375,8 +377,29 @@
   </select>
 
   <select id="getCourseInfoList" parameterType="string" resultMap="couserInfoVoResultMap">
-    select  id, title, image, price, sort, create_time from tb_courese_info
+    select  id, title, image, price, sort, create_time from tb_course_info
     where course_id = #{courseId}
     order by sort asc
   </select>
+
+  <update id="updateCourseNum">
+    update tb_course
+    <set>
+      <if test="starNum != null">
+        star_num =star_num+ #{starNum,jdbcType=BIGINT},
+      </if>
+      <if test="goodNum != null">
+        good_num =good_num+ #{goodNum,jdbcType=BIGINT},
+      </if>
+      <if test="forwardNum != null">
+        forward_num = forward_num+#{forwardNum,jdbcType=BIGINT},
+      </if>
+      <if test="watchNum != null">
+        watch_num = watch_num+#{watchNum},
+      </if>
+    </set>
+    where  id = #{courseId,jdbcType=VARCHAR}
+  </update>
+
+
 </mapper>

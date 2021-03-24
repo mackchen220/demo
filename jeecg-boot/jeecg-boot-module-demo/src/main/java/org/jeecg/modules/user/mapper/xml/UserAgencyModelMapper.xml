@@ -14,6 +14,19 @@
     <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
     <result column="del_flag" jdbcType="INTEGER" property="delFlag" />
   </resultMap>
+
+  <resultMap id="incomeResultMap" type="org.jeecg.modules.user.model.vo.ExtensionVo">
+    <!--@mbg.generated-->
+    <!--@Table tb_talent_customer-->
+    <result column="user_id" jdbcType="VARCHAR" property="userId" />
+    <result column="nick_name" jdbcType="VARCHAR" property="nickName" />
+    <result column="head_image" jdbcType="VARCHAR" property="headImage" />
+    <result column="create_time" jdbcType="VARCHAR" property="createTime" />
+    <result column="user_name" jdbcType="VARCHAR" property="userName" />
+
+  </resultMap>
+
+
   <sql id="Base_Column_List">
     <!--@mbg.generated-->
     id, user_id, p_user_id, num, create_time, update_time, create_by, update_by, del_flag
@@ -172,5 +185,19 @@
 
   <select id="countUserNum" parameterType="string" resultType="string">
     select count(0) from tb_user_agency where p_user_id = #{userId,jdbcType=VARCHAR}
+  </select>
+
+  <select id="loadUserId" parameterType="string" resultType="string">
+    select user_id from tb_user_agency where p_user_id = #{userId,jdbcType=VARCHAR}
+  </select>
+
+
+
+  <select id="loadProxyIncome" parameterType="string" resultMap="incomeResultMap">
+
+    SELECT a.user_id  ,b.head_image,b.nick_name,b.create_time,b.user_name
+    from tb_user_agency as a LEFT JOIN tb_user as b on a.user_id =b.id
+    where a.p_user_id = #{userId,jdbcType=VARCHAR}
+    order by create_time desc
   </select>
 </mapper>

@@ -24,6 +24,7 @@ import org.jeecg.modules.user.service.OrderModelService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import static org.jeecg.modules.pay.config.AlipayConfig.*;
@@ -65,7 +66,8 @@ public class PayController {
 
     @ApiOperation("回调")
     @PostMapping("/wxNotify")
-    public JSONArray notify(String notifyDate){
+    public JSONArray notify(@RequestBody String notifyDate){
+        log.info("开始回调，，，，，，，{}",notifyDate);
         return payService.notify(notifyDate);
     }
 
@@ -122,7 +124,7 @@ public class PayController {
             if (trade_status.equals("TRADE_SUCCESS") || trade_status.equals("TRADE_FINISHED")) {
                 try {
                     // todo 支付成功 处理支付成功逻辑
-                    String s = orderModelService.orderCallBack(body);
+//                    String s = orderModelService.orderCallBack(body);
                 } catch (Exception e) {
                     log.error("支付宝回调业务处理出现异常, params:" + paramsJson, e);
                 }

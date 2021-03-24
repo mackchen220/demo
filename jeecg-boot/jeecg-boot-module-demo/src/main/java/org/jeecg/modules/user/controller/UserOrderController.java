@@ -8,6 +8,7 @@ import lombok.extern.log4j.Log4j2;
 import lombok.extern.slf4j.Slf4j;
 import org.jeecg.common.api.vo.Result;
 import org.jeecg.common.util.RedisUtil;
+import org.jeecg.common.util.TokenUtils;
 import org.jeecg.modules.user.model.UserModel;
 import org.jeecg.modules.user.model.vo.OrderModelVo;
 import org.jeecg.modules.user.model.vo.UserProjectVo;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Log4j2
@@ -54,18 +56,13 @@ public class UserOrderController {
 
     @ApiOperation("我的订单列表")
     @RequestMapping(value = "/loadOrderList", method = RequestMethod.POST)
-    public Result<Page<OrderModelVo>> loadOrderList(String token, String optStatus,@RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo,
+    public Result<Page<OrderModelVo>> loadOrderList(HttpServletRequest request, String optStatus,@RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo,
                                       @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize) {
 
-        String id = userModelService.getUserIdByToken(token);
-
-        Result<Page<OrderModelVo>> result = new Result<Page<OrderModelVo>>();
+        String id = userModelService.getUserIdByToken(TokenUtils.getToken(request));
         Page<OrderModelVo> pageList = new Page<OrderModelVo>(pageNo, pageSize);
-
-
         Page<OrderModelVo> orderModelVoPage = orderModelService.loadOrderList(id, optStatus, pageList);
-        result.setResult(orderModelVoPage);
-        return result;
+        return Result.OK(orderModelVoPage);
     }
 
 
@@ -90,17 +87,25 @@ public class UserOrderController {
         return Result.oKWithToken(token,score);
     }
 
+    @ApiOperation("取消订单")
+    @RequestMapping(value = "/updateOrderStatus", method = RequestMethod.POST)
+    public Result updateOrderStatus(String orderId) {
+        orderModelService.updateOrderStatus(orderId);
+        return Result.OK();
+    }
+
+
+
 
 
 
     @ApiOperation("用户提现")
     @RequestMapping(value = "/addWithdrawalOrder", method = RequestMethod.POST)
-    public Result addWithdrawalOrder(String token, String bankId ,String money) {
+    public Result addWithdrawalOrder(HttpServletRequest request, String bankId , String money) {
 
-        UserModel user = userModelService.getUserModelByToken(token);
-
+        UserModel user = userModelService.getUserModelByToken(TokenUtils.getToken(request));
         orderModelService.addWithdrawalOrder(user, bankId, money);
-        return Result.oKWithToken(token,null);
+        return Result.OK();
     }
 
 

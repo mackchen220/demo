@@ -2,12 +2,16 @@ package org.jeecg.modules.course.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import lombok.extern.log4j.Log4j2;
 import org.jeecg.common.exception.JeecgBootException;
 import org.jeecg.modules.commons.Constant;
 import org.jeecg.modules.commons.ErrorInfoCode;
+import org.jeecg.modules.commons.util.DateHelper;
+import org.jeecg.modules.commons.util.SeqUtils;
 import org.jeecg.modules.commons.util.ValidateTool;
 import org.jeecg.modules.community.mapper.CommunityModelMapper;
 import org.jeecg.modules.community.model.CommunityModel;
+import org.jeecg.modules.community.model.vo.CommunityModelVo;
 import org.jeecg.modules.course.mapper.CourseMapper;
 import org.jeecg.modules.course.model.Activity;
 import org.jeecg.modules.course.model.Course;
@@ -17,14 +21,21 @@ import org.jeecg.modules.course.model.vo.UserCourseDetailVo;
 import org.jeecg.modules.course.model.vo.UserCourseVo;
 import org.jeecg.modules.index.mapper.PartyModelMapper;
 import org.jeecg.modules.index.model.PartyModel;
+import org.jeecg.modules.user.mapper.OrderModelMapper;
 import org.jeecg.modules.user.mapper.UserCourseMapper;
+import org.jeecg.modules.user.mapper.UserFocusModelMapper;
 import org.jeecg.modules.user.mapper.UserStarMapper;
+import org.jeecg.modules.user.model.OrderModel;
+import org.jeecg.modules.user.model.TalentInfoModel;
+import org.jeecg.modules.user.model.UserCourse;
 import org.jeecg.modules.user.model.UserModel;
+import org.jeecg.modules.user.model.vo.UserModelVo;
 import org.jeecg.modules.user.service.UserCourseService;
 import org.jeecg.modules.user.service.UserCourseServiceImpl;
 import org.jeecg.modules.user.service.UserFocusModelService;
 import org.jeecg.modules.user.service.UserModelService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
@@ -39,6 +50,7 @@ import java.util.Map;
  * @data: 2021-02-05 16:51
  * @version: V1.0
  */
+@Log4j2
 @Service("courseService")
 public class CourseServiceImpl implements CourseService {
 
@@ -56,12 +68,15 @@ public class CourseServiceImpl implements CourseService {
     private UserCourseMapper userCourseMapper;
     @Resource
     private UserStarMapper userStarMapper;
-
+    @Resource
+    private OrderModelMapper orderModelMapper;
+    @Resource
+    private UserFocusModelMapper userFocusModelMapper;
 
 
     @Override
-    public IPage<CommunityModel> followList(Page<CommunityModel> page, String userId) {
-        List<CommunityModel> list = communityModelMapper.selectByFocusUserId(page, userId);
+    public IPage<CommunityModelVo> followList(Page<CommunityModelVo> page, String userId) {
+        List<CommunityModelVo> list = communityModelMapper.selectByFocusUserId(page, userId);
         return page.setRecords(list);
     }
 
@@ -84,7 +99,7 @@ public class CourseServiceImpl implements CourseService {
                 list = courseMapper.getListOrderByLikeNum(page, 1, city);
                 break;
             case 5:
-                list = courseMapper.getListOrderByLikeNum(page, 2, city);
+                list =  communityModelMapper.getListOrderByLikeNum(page, 2, city);
                 break;
             case 6:
                 list = partyModelMapper.getListOrderByLikeNum(page, city);
@@ -112,19 +127,19 @@ public class CourseServiceImpl implements CourseService {
                 Course info = (Course) v;
                 UserCourseVo vo = UserCourseVo.valueOf(2, info.getId(), info.getTitle(), info.getImage(), info.getWatchNum(),
                         info.getGoodNum(), info.getStarNum(), info.getForwardNum());
-                this.packUserByCourse(vo, info.getCreateBy());
+                this.packUserByCourse(vo, info.getUserId());
                 result.add(vo);
-            } else if (v instanceof CommunityModel) {
-                CommunityModel info = (CommunityModel) v;
+            } else if (v instanceof CommunityModelVo) {
+                CommunityModelVo info = (CommunityModelVo) v;
                 UserCourseVo vo = UserCourseVo.valueOf(1, info.getId(), info.getTitle(), info.getImageUrl(), info.getWatchNum(),
-                        info.getGoodNum(), info.getStarNum(), info.getForwardNum());
-                this.packUserByCourse(vo, info.getCreateBy());
+                        info.getGoodNum(), info.getStarNum(), info.getForwardNum(), info.getType());
+                this.packUserByCourse(vo, info.getUserId());
                 result.add(vo);
             } else {
-                Activity info = (Activity) v;
+                PartyModel info = (PartyModel) v;
                 UserCourseVo vo = UserCourseVo.valueOf(3, info.getId(), info.getTitle(), info.getImage(), info.getWatchNum(),
                         info.getGoodNum(), info.getStarNum(), info.getForwardNum());
-                this.packUserByCourse(vo, info.getCreateBy());
+                this.packUserByCourse(vo, info.getUserId());
                 result.add(vo);
             }
         });
@@ -149,6 +164,12 @@ public class CourseServiceImpl implements CourseService {
         List<UserCourseVo> result = new LinkedList<>();
         this.packUserCourseVo(list, result);
         return page.setRecords(result);
+    }
+
+    @Override
+    public IPage<UserModelVo> loadMyFocus(Page page, String userId) {
+        List list = userFocusModelMapper.loadMyFocus(page, userId);
+        return page.setRecords(list);
     }
 
     @Override
@@ -216,28 +237,34 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public CourseVo getCourseInfo(String id,String userId) {
+    public CourseVo getCourseInfo(String id, UserModel userModel) {
         CourseVo courseInfo = courseMapper.getCourseInfo(id);
+        if (ValidateTool.isNull(courseInfo)) {
+            throw new JeecgBootException("课程不存在");
+        }
         if (ValidateTool.isNotNull(courseInfo.getUserId())) {
             UserModel user = userModelService.getUserById(courseInfo.getUserId());
             courseInfo.setHeadImage(ValidateTool.isNotNull(user) ? user.getHeadImage() : "");
             courseInfo.setNickName(ValidateTool.isNotNull(user) ? user.getNickName() : "");
             courseInfo.setUserSign(ValidateTool.isNotNull(user) ? user.getSign() : "");
         }
+//        if (Constant.CHECKTYPE1.equals(courseInfo.getVipFree())){
+//
+//        }
         if (Constant.TYPE_INT_1 == courseInfo.getType()) {
             courseInfo.setUrl(null);
         }
-        String course = userCourseMapper.loadUserCourse(userId, id);
+        String course = userCourseMapper.loadUserCourse(userModel.getId(), id);
         courseInfo.setByState(Integer.parseInt(course) > 0 ? 1 : 0);
-        int star = userStarMapper.isStar(id, userId, Constant.CHECKTYPE1, null);
-        int good = userStarMapper.isStar(id, userId, null, Constant.CHECKTYPE1);
+        int star = userStarMapper.isStar(id, userModel.getId(), Constant.CHECKTYPE1, null);
+        int good = userStarMapper.isStar(id, userModel.getId(), null, Constant.CHECKTYPE1);
         courseInfo.setStarStatus(String.valueOf(star));
         courseInfo.setGoodStatus(String.valueOf(good));
         return courseInfo;
     }
 
     @Override
-    public Page<CourseVo> loadCommendCourse(Page<CourseVo> page,String type) {
+    public Page<CourseVo> loadCommendCourse(Page<CourseVo> page, String type) {
         List<CourseVo> courses = courseMapper.loadCourseListPage(page, type);
         return page.setRecords(courses);
     }
@@ -253,5 +280,68 @@ public class CourseServiceImpl implements CourseService {
     public Page<CourseVo> loadCourseModelList(Page<CourseVo> page, String search) {
         List<CourseVo> courses = courseMapper.loadCourseModelList(page, search);
         return page.setRecords(courses);
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public Map addUserCourse(String courseId, UserModel userModel) {
+        Map<String, Object> map = new HashMap<>();
+        Course course = courseMapper.selectByPrimaryKey(courseId);
+        if (ValidateTool.isNull(course)) {
+            throw new JeecgBootException("课程不存在");
+        }
+        String buy = userCourseMapper.loadUserCourse(userModel.getId(), courseId);
+        if (ValidateTool.isNotNull(buy) && Integer.parseInt(buy) > 0) {
+            throw new JeecgBootException("课程已订阅");
+        }
+        OrderModel orderModel = new OrderModel();
+        if (Constant.TYPE_INT_1 == course.getType()) {
+            orderModel.setId(SeqUtils.nextIdStr());
+            orderModel.setUserId(userModel.getId());
+            orderModel.setOperationType(Constant.TYPE_INT_2);
+            orderModel.setContent("课程");
+            orderModel.setNum(Constant.TYPE_INT_1);
+            orderModel.setOptStatus(Constant.TYPE_INT_1);
+            orderModel.setAmount(String.valueOf(course.getPrice()));
+            orderModel.setCourseId(courseId);
+            orderModelMapper.insertSelective(orderModel);
+
+            map.put("orderId", orderModel.getId());
+//            if (ValidateTool.isNotNull(userModel.getVipId()) && Constant.CHECKTYPE1.equals(course.getVipFree())){
+//
+//            }
+        } else {
+            //免费课程，不调用支付接口
+            map.put("orderId", null);
+        }
+        return map;
+    }
+
+
+    @Override
+    public String courseCallBack(String orderId) {
+
+        log.info("购买课程回调{}", orderId);
+        OrderModel orderModel = orderModelMapper.selectByPrimaryKey(orderId);
+        if (ValidateTool.isNull(orderModel)) {
+            log.warn("购买课程回调,查询不到订单{}", orderId);
+            return null;
+        }
+        Course course = courseMapper.selectByPrimaryKey(orderModel.getCourseId());
+        if (ValidateTool.isNull(course)) {
+            throw new JeecgBootException("课程不存在");
+        }
+        UserCourse userCourse = new UserCourse();
+        userCourse.setId(SeqUtils.nextIdStr());
+        userCourse.setUserId(orderModel.getUserId());
+        userCourse.setCourseId(orderModel.getCourseId());
+        userCourse.setPrice(orderModel.getAmount());
+        userCourse.setBeginTime(DateHelper.getTodayTime2());
+        //有效期一年
+        userCourse.setEndTime(DateHelper.plusDate(DateHelper.getTodayTime2(), 1, 1, DateHelper.DATETIME_FORMAT));
+
+        userCourseMapper.insertSelective(userCourse);
+        return "ok";
+
     }
 }

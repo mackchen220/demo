@@ -32,11 +32,7 @@ public class AddressModel implements Serializable {
     @ApiModelProperty(value="创建时间")
     private String createTime;
 
-    /**
-    * 更新日期
-    */
-    @ApiModelProperty(value="更新日期")
-    private String updateTime;
+
 
     /**
     * 创建人

@@ -16,6 +16,10 @@ public interface HospitalModelMapper {
 
     HospitalModel selectByPrimaryKey(String id);
 
+    HospitalModel getModelByUserId(String id);
+
+
+
     int updateByPrimaryKeySelective(HospitalModel record);
 
 

@@ -54,17 +54,25 @@ public class UserIncomeServiceImpl implements UserIncomeService {
     //添加用户消费记录 并发问题后期mq队列解决
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public synchronized void addUserIncome(String userId, Integer type, String contect, Long money) {
+    public synchronized void addUserIncome(String userId, Integer type, String contect, Long money, String other) {
         log.warn("添加收入记录userId{},type{},contect{},money{}", userId, type, contect, money);
         UserIncomeDetail userIncomeDetail = new UserIncomeDetail();
         userIncomeDetail.setPayMoney(money);
         userIncomeDetail.setIncomeContent(contect);
         userIncomeDetail.setUserId(userId);
         userIncomeDetail.setId(SeqUtils.nextIdStr());
-        UserModel userModel = userModelMapper.loadUser(userId, null, null, null,null);
-        userIncomeDetail.setExcess(userModel.getMoney());
+        UserModel userModel = userModelMapper.loadUser(userId, null, null, null, null);
+        userIncomeDetail.setExcess(ValidateTool.isNotNull(userModel) ? userModel.getMoney() : 0);
         //    * 收入支出类型1:提现 2充值 推广奖励  4项目佣金 5购买课程 6购买项目
         userIncomeDetail.setIncomeType(type);
+        if (type == 1) {
+            //手续费
+            userIncomeDetail.setFee(other);
+        }
+        if (type == 3) {
+            //手续费
+            userIncomeDetail.setSendId(other);
+        }
         userIncomeDetailMapper.insertSelective(userIncomeDetail);
 
         String str = userId + DateHelper.getToday();
@@ -74,21 +82,22 @@ public class UserIncomeServiceImpl implements UserIncomeService {
             //添加记录
             UserIncome income = new UserIncome();
             income.setId(SeqUtils.nextIdStr());
-            setMoney(type,income,money);
+            setMoney(type, income, money);
             income.setSeqUnique(str);
+            income.setUserId(userId);
             userIncomeMapper.insertSelective(income);
         } else {
             //修改记录
             UserIncome income = new UserIncome();
             income.setId(userIncome.getId());
-            setMoney(type,income,money);
+            setMoney(type, income, money);
             userIncomeMapper.updateUserMoney(income);
         }
 
     }
 
     //    * 收入支出类型1:提现 2充值 推广奖励  4项目佣金 5购买课程 6购买项目
-    public void setMoney(int type,UserIncome userIncome,Long money){
+    public void setMoney(int type, UserIncome userIncome, Long money) {
         switch (type) {
             case 1:
                 userIncome.setGetOutMoney(money);

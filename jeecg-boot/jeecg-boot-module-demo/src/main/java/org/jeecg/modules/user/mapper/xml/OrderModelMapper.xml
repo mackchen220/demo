@@ -19,13 +19,13 @@
     <result column="sys_ins_name" jdbcType="VARCHAR" property="sysInsName" />
     <result column="content" jdbcType="VARCHAR" property="content" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
-    <result column="update_time" jdbcType="VARCHAR" property="updateTime" />
     <result column="create_by" jdbcType="VARCHAR" property="createBy" />
     <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
     <result column="del_flag" jdbcType="INTEGER" property="delFlag" />
     <result column="num" jdbcType="INTEGER" property="num" />
     <result column="hospital_id" jdbcType="VARCHAR" property="hospitalId" />
     <result column="talent_id" jdbcType="VARCHAR" property="talentId" />
+    <result column="vip_id" jdbcType="VARCHAR" property="vipId" />
     <result column="evaluate_status" jdbcType="VARCHAR" property="evaluateStatus" />
     <result column="effect" jdbcType="VARCHAR" property="effect"/>
     <result column="attitude" jdbcType="VARCHAR" property="attitude"/>
@@ -57,6 +57,8 @@
     <result column="hospital_id" jdbcType="VARCHAR" property="hospitalId" />
     <result column="course_image" jdbcType="VARCHAR" property="courseImage" />
     <result column="project_image" jdbcType="VARCHAR" property="projectImage" />
+    <result column="vip_id" jdbcType="VARCHAR" property="vipId" />
+    <result column="vip_image" jdbcType="VARCHAR" property="vipImage" />
 
   </resultMap>
 
@@ -65,7 +67,7 @@
 
   <sql id="Base_Column_List">
     <!--@mbg.generated-->
-    id, user_id, operation_type, amount, inside_card_num, checker, check_dt, remark,
+    id, user_id, operation_type, amount, inside_card_num, checker, check_dt, remark,vip_id,
     `status`, pay_money, outside_card_num, opt_status, sys_ins_name, content, create_time,
     update_time, create_by, update_by, del_flag, num, hospital_id, talent_id, project_id ,course_id,effect,attitude,price,
     average_score,evaluate_status
@@ -127,9 +129,6 @@
       <if test="createTime != null">
         create_time,
       </if>
-      <if test="updateTime != null">
-        update_time,
-      </if>
       <if test="createBy != null">
         create_by,
       </if>
@@ -153,6 +152,15 @@
       </if>
       <if test="projectId != null">
         project_id,
+      </if>
+      <if test="payType != null">
+        pay_type,
+      </if>
+      <if test="vipId != null">
+        vip_id,
+      </if>
+      <if test="addressId != null">
+        address_id,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -201,9 +209,6 @@
       <if test="createTime != null">
         #{createTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="updateTime != null">
-        #{updateTime,jdbcType=VARCHAR},
-      </if>
       <if test="createBy != null">
         #{createBy,jdbcType=VARCHAR},
       </if>
@@ -222,8 +227,20 @@
       <if test="talentId != null">
         #{talentId,jdbcType=VARCHAR},
       </if>
+      <if test="courseId != null">
+        #{courseId,jdbcType=VARCHAR},
+      </if>
       <if test="projectId != null">
         #{projectId,jdbcType=VARCHAR},
+      </if>
+      <if test="payType != null">
+        #{payType,jdbcType=VARCHAR},
+      </if>
+      <if test="vipId != null">
+        #{vipId,jdbcType=VARCHAR},
+      </if>
+      <if test="addressId != null">
+        #{addressId,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -273,9 +290,7 @@
       <if test="createTime != null">
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="updateTime != null">
-        update_time = #{updateTime,jdbcType=VARCHAR},
-      </if>
+
       <if test="createBy != null">
         create_by = #{createBy,jdbcType=VARCHAR},
       </if>
@@ -321,9 +336,6 @@
       <if test="averageScore != null">
         average_score = #{averageScore,jdbcType=DECIMAL},
       </if>
-      <if test="updateTime != null">
-        update_time = #{updateTime,jdbcType=VARCHAR},
-      </if>
       <if test="updateBy != null">
         update_by = #{updateBy,jdbcType=VARCHAR},
       </if>
@@ -336,14 +348,16 @@
 
 
   <select id="loadOrderList" parameterType="string" resultMap="voResultMap">
-    SELECT  a.id, a.user_id ,a.operation_type, a.amount, a.remark,
+    SELECT  a.id, a.user_id ,a.operation_type, a.amount, a.remark,c.image as vip_image,a.vip_id,
     a.`status`, a.pay_money, a.opt_status, a.content, a.create_time,  a.num, a.hospital_id, a.project_id ,a.course_id,b.image as course_image
     from tb_order as a LEFT JOIN tb_course b on a.course_id = b.id
-    where user_id = #{userId,jdbcType=VARCHAR}
+    LEFT JOIN tb_vip as c on a.vip_id =c.id
+    where a.user_id = #{userId,jdbcType=VARCHAR}
+    and a.operation_type in (1,2,4)
     <if test="type != null and type != ''">
       and opt_status= #{type,jdbcType=VARCHAR}
     </if>
-
+    order by a.create_time desc
   </select>
 
 
@@ -355,6 +369,19 @@
 
   <select id="getOrderNumAndMoney" resultMap="BaseResultMap" parameterType="string">
         select  sum(pay_money) as pay_money,count(0) as num from tb_order where user_id = #{userId,jdbcType=VARCHAR}
+  </select>
+
+
+  <select id="getVipOrder" resultMap="BaseResultMap" parameterType="string">
+    select * from tb_order
+    where user_id = #{userId,jdbcType=VARCHAR}
+    <if test="type != null and type != ''">
+      and operation_type= #{type,jdbcType=VARCHAR}
+    </if>
+    <if test="optStatus != null and optStatus != ''">
+      and opt_status= #{optStatus,jdbcType=VARCHAR}
+    </if>
+    limit 1
   </select>
 
 </mapper>
