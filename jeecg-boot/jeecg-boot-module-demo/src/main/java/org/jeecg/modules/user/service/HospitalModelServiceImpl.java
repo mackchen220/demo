@@ -109,6 +109,9 @@ public class HospitalModelServiceImpl implements HospitalModelService{
     @Override
     public void addHospitalInfo(String userId, HospitalModel hospitalModel) {
 
+        if (ValidateTool.isNull(hospitalModel)){
+            throw new JeecgBootException("请输入内容");
+        }
         HospitalModel hospitalByUserId = hospitalModelMapper.getHospitalByUserId(userId);
         if (ValidateTool.isNull(hospitalByUserId)){
             hospitalModel.setId(SeqUtils.nextIdStr());
@@ -116,7 +119,7 @@ public class HospitalModelServiceImpl implements HospitalModelService{
             hospitalModelMapper.insertSelective(hospitalModel);
         }else {
             if (Constant.CHECKTYPE1.equals(hospitalByUserId.getAuthenticated())){
-                if (ValidateTool.isNull(hospitalModel)){
+                if (ValidateTool.isNotNull(hospitalModel)){
                     throw new JeecgBootException("审核通过，请勿修改信息，请联系客服");
                 }
             }
