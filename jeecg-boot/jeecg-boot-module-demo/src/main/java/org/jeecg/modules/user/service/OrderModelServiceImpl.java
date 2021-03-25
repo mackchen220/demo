@@ -96,8 +96,8 @@ public class OrderModelServiceImpl implements OrderModelService {
     @Override
     public Page<OrderModelVo> loadOrderList(String userId, String optStatus, Page<OrderModelVo> page) {
 
-        if (Constant.CHECKTYPE0.equals(optStatus)){
-            optStatus=null;
+        if (Constant.CHECKTYPE0.equals(optStatus)) {
+            optStatus = null;
         }
         List<OrderModelVo> orderModelVos = orderModelMapper.loadOrderList(userId, optStatus, page);
 
@@ -216,7 +216,7 @@ public class OrderModelServiceImpl implements OrderModelService {
     public void addWithdrawalOrder(UserModel user, String bankId, String money) {
 
 
-        if (Long.valueOf(user.getMoney()) < Long.valueOf(money)) {
+        if (Long.valueOf(user.getMoney()) < 1 || Long.valueOf(user.getMoney()) < Long.valueOf(money)) {
             throw new JeecgBootException("余额不足");
         }
         OrderModel orderModel = new OrderModel();
@@ -245,7 +245,7 @@ public class OrderModelServiceImpl implements OrderModelService {
         if (ValidateTool.isNotNull(config) && ValidateTool.isNotNull(config.getConfigValue())) {
             BigDecimal num1 = new BigDecimal(config.getConfigValue());
             BigDecimal num2 = new BigDecimal(money);
-            BigDecimal multiply = num2.divide(new BigDecimal("100"),2,BigDecimal.ROUND_DOWN).multiply(num1);
+            BigDecimal multiply = num2.divide(new BigDecimal("100"), 2, BigDecimal.ROUND_DOWN).multiply(num1);
             log.info("提现手续费配置{},提现金额{}，提现手续费{}", config.getConfigValue(), money, multiply.longValue());
             orderModel.setPayMoney(String.valueOf(Long.valueOf(money) - multiply.longValue()));
             fee = String.valueOf(multiply.longValue());
@@ -265,12 +265,12 @@ public class OrderModelServiceImpl implements OrderModelService {
     @Override
     public String orderCallBack(PayResponse payResponse) {
         OrderModel orderModel = orderModelMapper.selectByPrimaryKey(payResponse.getOrderId());
-        log.info("orderModel{},orderId{}", JSON.toJSONString(orderModel),payResponse.getOrderId());
+        log.info("orderModel{},orderId{}", JSON.toJSONString(orderModel), payResponse.getOrderId());
         if (ValidateTool.isNull(orderModel)) {
             throw new JeecgBootException("订单不存在" + payResponse.getOrderId());
         }
-        if (orderModel.getOptStatus()==2){
-            log.warn("重复回调,订单id{}",orderModel.getId());
+        if (orderModel.getOptStatus() == 2) {
+            log.warn("重复回调,订单id{}", orderModel.getId());
             return "ok";
         }
         if (Constant.TYPE_INT_1 == orderModel.getOperationType()) {
