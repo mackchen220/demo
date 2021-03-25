@@ -214,8 +214,9 @@ public class OrderModelServiceImpl implements OrderModelService {
     @Transactional(rollbackFor = Exception.class)
     @Override
     public void addWithdrawalOrder(UserModel user, String bankId, String money) {
-
-
+        if (ValidateTool.isNull(money) || Long.valueOf(money) < 1) {
+            throw new JeecgBootException("提现金额不能为0");
+        }
         if (Long.valueOf(user.getMoney()) < 1 || Long.valueOf(user.getMoney()) < Long.valueOf(money)) {
             throw new JeecgBootException("余额不足");
         }
