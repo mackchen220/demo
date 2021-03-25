@@ -49,6 +49,7 @@
     <result column="course_info" jdbcType="VARCHAR" property="courseInfo" />
     <result column="user_id" jdbcType="VARCHAR" property="userId" />
     <result column="vip_free" jdbcType="INTEGER" property="vipFree" />
+    <result column="course_type" jdbcType="TINYINT" property="courseType" />
   </resultMap>
 
   <resultMap id="couserInfoVoResultMap" type="org.jeecg.modules.course.model.vo.CourseInfoVo">

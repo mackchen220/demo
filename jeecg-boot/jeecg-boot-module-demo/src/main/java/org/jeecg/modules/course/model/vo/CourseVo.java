@@ -50,10 +50,10 @@ public class CourseVo implements Serializable {
      * 创建时间
      */
     private String createTime;
-//    /**
-//     * 课程类型 1-文章 2-视频
-//     */
-//    private Integer courseType;
+    /**
+     * 课程类型 1-文章 2-视频
+     */
+    private Integer courseType;
 
     /**
      * 用户是否已购买
