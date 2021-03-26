@@ -31,6 +31,31 @@
     <result column="star_status" jdbcType="VARCHAR" property="starStatus"/>
     <result column="good_status" jdbcType="VARCHAR" property="goodStatus"/>
   </resultMap>
+
+  <resultMap id="UserCourseVoResultMap" type="org.jeecg.modules.course.model.vo.UserCourseVo">
+
+    <id column="id" jdbcType="VARCHAR" property="courseId"/>
+    <result column="user_id" jdbcType="VARCHAR" property="userId"/>
+    <result column="title" jdbcType="VARCHAR" property="title"/>
+    <result column="content" jdbcType="VARCHAR" property="content"/>
+    <result column="image" jdbcType="VARCHAR" property="image"/>
+<!--    <result column="city" jdbcType="VARCHAR" property="city"/>-->
+    <result column="course_type" jdbcType="INTEGER" property="courseType"/>
+    <result column="type" jdbcType="TINYINT" property="type"/>
+    <result column="star_num" jdbcType="BIGINT" property="starNum"/>
+    <result column="good_num" jdbcType="BIGINT" property="goodNum"/>
+    <result column="forward_num" jdbcType="BIGINT" property="forwardNum"/>
+<!--    <result column="create_time" jdbcType="VARCHAR" property="createTime"/>-->
+    <result column="head_image" jdbcType="VARCHAR" property="headImage"/>
+    <result column="nick_name" jdbcType="VARCHAR" property="nickName"/>
+    <result column="watch_num" jdbcType="TINYINT" property="watchNum"/>
+    <result column="star_status" jdbcType="VARCHAR" property="starStatus"/>
+    <result column="good_status" jdbcType="VARCHAR" property="goodStatus"/>
+  </resultMap>
+
+
+
+
   <sql id="Base_Column_List">
     <!--@mbg.generated-->
     id, title, image, profiles, watch_num, star_num, good_num, forward_num, city, price, num, user_id, qr_code,
@@ -339,14 +364,16 @@
   </select>
 
 
-  <select id="getListOrderByLikeNum" resultMap="BaseResultMap">
-    SELECT <include refid="Base_Column_List"/>
-    from tb_party
-    where del_flag = 0
+  <select id="getListOrderByLikeNum" resultMap="UserCourseVoResultMap">
+    SELECT a.*, b.nick_name,b.head_image,IFNULL(d.star,0) as star_status,IFNULL(d.good,0) as good_status ,3 as course_type
+    from tb_party	as a
+    LEFT JOIN tb_user_star d on d.community_id =a.id and d.user_id = #{userId,jdbcType=VARCHAR}
+    LEFT JOIN tb_user as b on a.user_id =b.id
+    where a.del_flag = 0
     <if test="city != null and city != ''">
-      and city = #{city}
+      and a.city = #{city}
     </if>
-    order by good_num desc
+    order by a.good_num desc
   </select>
 
 </mapper>

@@ -22,9 +22,9 @@ public interface CourseService {
 
     IPage<CommunityModelVo> followList(Page<CommunityModelVo> page, String userId);
 
-    IPage<UserCourseVo> findList(int pageNo, int pageSize, int type, String city);
+    IPage<UserCourseVo> findList(int pageNo, int pageSize, int type, String city,String userId);
 
-    IPage<UserCourseVo> searchList(int pageNo, int pageSize, int type, String search);
+    IPage<UserCourseVo> searchList(int pageNo, int pageSize, int type, String search, String userId);
 
     IPage<UserModelVo> loadMyFocus(Page<UserModelVo> page, String userId);
 

@@ -55,10 +55,10 @@ public class CourseController {
     @ApiOperation("社区关注人列表")
     @PostMapping("/loadMyFocus")
     public Result<IPage<UserModelVo>> loadMyFocus(HttpServletRequest request, @RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo,
-                                             @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize) {
+                                                  @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize) {
         String userId = userModelService.getUserIdByToken(TokenUtils.getToken(request));
         Page<UserModelVo> page = new Page<>(pageNo, pageSize);
-        IPage<UserModelVo> pageRsult = courseService.loadMyFocus(page,userId);
+        IPage<UserModelVo> pageRsult = courseService.loadMyFocus(page, userId);
         return Result.OK(pageRsult);
     }
 
@@ -68,9 +68,10 @@ public class CourseController {
     public Result<IPage<UserCourseVo>> findList(@ApiParam(name = "查询类型", value = "1-推荐 2-视频 3-照片 4-知识 5-Vlog 6-活动 7-课程 不传默认1") Integer type,
                                                 @ApiParam(name = "城市", value = "不传默认全国") String city,
                                                 @RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo,
-                                                @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize) {
-
-        IPage<UserCourseVo> page = courseService.findList(pageNo, pageSize, ValidateTool.isNull(type) ? 1 : type, city);
+                                                @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize,
+                                                HttpServletRequest request) {
+        String userId = userModelService.getUserIdByToken(TokenUtils.getToken(request));
+        IPage<UserCourseVo> page = courseService.findList(pageNo, pageSize, ValidateTool.isNull(type) ? 1 : type, city, userId);
         return Result.OK(page);
     }
 
@@ -79,9 +80,10 @@ public class CourseController {
     public Result<IPage<UserCourseVo>> searchList(@ApiParam(name = "查询类型", value = "1-综合 2-最热 3-最新 不传默认1") Integer type,
                                                   @ApiParam(name = "查询关键词", value = "查询关键词") String search,
                                                   @RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo,
-                                                  @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize) {
-
-        IPage<UserCourseVo> page = courseService.searchList(pageNo, pageSize, ValidateTool.isNull(type) ? 1 : type, search);
+                                                  @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize,
+                                                  HttpServletRequest request) {
+        String userId = userModelService.getUserIdByToken(TokenUtils.getToken(request));
+        IPage<UserCourseVo> page = courseService.searchList(pageNo, pageSize, ValidateTool.isNull(type) ? 1 : type, search, userId);
         return Result.OK(page);
     }
 
@@ -139,7 +141,7 @@ public class CourseController {
     public Result getCourseInfoList(String token, String id) {
 
         List<CourseInfoVo> courseInfoList = courseService.getCourseInfoList(id);
-        return Result.oKWithToken(token, courseInfoList);
+        return Result.OK(courseInfoList);
     }
 
 

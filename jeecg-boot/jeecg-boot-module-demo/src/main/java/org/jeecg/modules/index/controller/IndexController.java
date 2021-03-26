@@ -58,9 +58,9 @@ public class IndexController {
 
     @ApiOperation("热搜列表接口")
     @RequestMapping(value = "/loadHotSearchList", method = RequestMethod.POST)
-    public Result<List> loadHotSearchList(String type,String token) {
+    public Result<List> loadHotSearchList(String type, String token) {
         List<HotSearchVo> list = hotSearchModelService.loadHotSearchList(type);
-        return Result.oKWithToken(token,list);
+        return Result.OK(list);
     }
 
 

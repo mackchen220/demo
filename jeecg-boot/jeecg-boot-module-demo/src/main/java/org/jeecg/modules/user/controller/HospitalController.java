@@ -108,9 +108,10 @@ public class HospitalController {
     @RequestMapping(value = "/loadMyHospitList", method = RequestMethod.POST)
     public Result<Page<HospitalModel>> loadMyHospitList(@RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo,
                                                            @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize,
-                                                        String talentId,String token) {
+                                                        HttpServletRequest request) {
+        String id = userModelService.getUserIdByToken(TokenUtils.getToken(request));
         Page<HospitalModel> pageList = new Page<HospitalModel>(pageNo, pageSize);
-        Page<HospitalModel> talentInfoVoPage = hospitalModelService.loadMyHospitList(pageList,talentId);
+        Page<HospitalModel> talentInfoVoPage = hospitalModelService.loadMyHospitList(pageList,id);
         return Result.OK(talentInfoVoPage);
     }
 

@@ -226,6 +226,7 @@ public class TalentInfoModelServiceImpl implements TalentInfoModelService {
 //        ValidateTool.isNotNull(config) ? Long.valueOf(config.getConfigValue()) : 2000000L
         //更新保证金
         talentInfoModel.setDeposit(Long.valueOf(orderModel.getAmount()));
+        talentInfoModel.setAuthenticated(Constant.TYPE_INT_1);
         talentInfoModelMapper.updateByPrimaryKeySelective(talentInfoModel);
         return "ok";
     }
@@ -241,7 +242,8 @@ public class TalentInfoModelServiceImpl implements TalentInfoModelService {
         //总提成收益
         String sumMoney = userIncomeDetailMapper.getSumMoney(userModel.getId(), Constant.CHECKTYPE4, null, null);
         map.put("sumMoney", ValidateTool.isNull(sumMoney) ? 0 : sumMoney);
-
+        TalentInfoModel talentInfoModel = talentInfoModelMapper.selectByUserId(userModel.getId());
+        map.put("talent", ValidateTool.checkIsNull(talentInfoModel) ? talentInfoModel.getAuthenticated() : 0);
         //头像
         map.put("headImage", userModel.getHeadImage());
         //昵称

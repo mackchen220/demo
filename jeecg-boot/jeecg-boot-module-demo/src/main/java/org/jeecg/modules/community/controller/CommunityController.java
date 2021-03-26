@@ -74,20 +74,14 @@ public class CommunityController {
     @RequestMapping(value = "/addMoments", method = RequestMethod.POST)
     public Result addMoments(CommunityModel communityModel, HttpServletRequest request) {
         Result result = new Result<>();
-//        if (!ValidateTool.checkIsNull(communityModel.getTitle())) {
-//            result.error500("请输入标题");
-//            return result;
-//        }
         if (!ValidateTool.checkIsNull(communityModel.getContent())) {
             result.error500("请输入内容");
             return result;
         }
-        String token = request.getHeader("token");
-        UserModel user = userModelService.getUserModelByToken(token);
+        UserModel user = userModelService.getUserModelByToken(TokenUtils.getToken(request));
         communityModel.setUserId(user.getId());
         communityModel.setUserType(user.getUserType());
         communityModelService.insertSelective(communityModel);
-
         return result;
     }
 
@@ -95,10 +89,8 @@ public class CommunityController {
     @ApiOperation("朋友圈详情接口")
     @RequestMapping(value = "/loadMomentsInfo", method = RequestMethod.POST)
     public Result loadMomentsInfo(String id) {
-        Result result = new Result<>();
         Map map = communityModelService.loadMomentsInfo(id);
-        result.setResult(map);
-        return result;
+        return Result.OK(map);
     }
 
 

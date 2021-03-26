@@ -82,68 +82,63 @@ public class CourseServiceImpl implements CourseService {
 
 
     @Override
-    public IPage<UserCourseVo> findList(int pageNo, int pageSize, int type, String city) {
-        List<?> list;
+    public IPage<UserCourseVo> findList(int pageNo, int pageSize, int type, String city, String userId) {
+//        List<?> list;
+        List<UserCourseVo> list;
         Page page = new Page<>(pageNo, pageSize);
         switch (type) {
             case 1:
-                list = communityModelMapper.getListOrderByLikeNum(page, null, city);
+                list = communityModelMapper.getListOrderByLikeNum(page, null, city, userId);
                 break;
             case 2:
-                list = communityModelMapper.getListOrderByLikeNum(page, 2, city);
+                list = communityModelMapper.getListOrderByLikeNum(page, 2, city, userId);
                 break;
             case 3:
-                list = communityModelMapper.getListOrderByLikeNum(page, 1, city);
+                list = communityModelMapper.getListOrderByLikeNum(page, 1, city, userId);
                 break;
             case 4:
-                list = courseMapper.getListOrderByLikeNum(page, 1, city);
+                list = courseMapper.getListOrderByLikeNum(page, 1, city, userId);
                 break;
             case 5:
-                list =  communityModelMapper.getListOrderByLikeNum(page, 2, city);
+                list = communityModelMapper.getListOrderByLikeNum(page, 2, city, userId);
                 break;
             case 6:
-                list = partyModelMapper.getListOrderByLikeNum(page, city);
+                list = partyModelMapper.getListOrderByLikeNum(page, city, userId);
                 break;
             case 7:
-                list = courseMapper.getListOrderByLikeNum(page, null, city);
+                list = courseMapper.getListOrderByLikeNum(page, null, city, userId);
                 break;
             default:
                 throw new JeecgBootException(ErrorInfoCode.SEARCH_TYPE_ERROR.getMsg());
         }
-        List<UserCourseVo> result = new LinkedList<>();
-        this.packUserCourseVo(list, result);
-        return page.setRecords(result);
+//        List<UserCourseVo> result = new LinkedList<>();
+//        this.packUserCourseVo(list, result);
+        return page.setRecords(list);
     }
 
-    /**
-     * 封装社区动态数据
-     *
-     * @param list
-     * @param result
-     */
-    private void packUserCourseVo(List<?> list, List<UserCourseVo> result) {
-        list.forEach(v -> {
-            if (v instanceof Course) {
-                Course info = (Course) v;
-                UserCourseVo vo = UserCourseVo.valueOf(2, info.getId(), info.getTitle(), info.getImage(), info.getWatchNum(),
-                        info.getGoodNum(), info.getStarNum(), info.getForwardNum());
-                this.packUserByCourse(vo, info.getUserId());
-                result.add(vo);
-            } else if (v instanceof CommunityModelVo) {
-                CommunityModelVo info = (CommunityModelVo) v;
-                UserCourseVo vo = UserCourseVo.valueOf(1, info.getId(), info.getTitle(), info.getImageUrl(), info.getWatchNum(),
-                        info.getGoodNum(), info.getStarNum(), info.getForwardNum(), info.getType());
-                this.packUserByCourse(vo, info.getUserId());
-                result.add(vo);
-            } else {
-                PartyModel info = (PartyModel) v;
-                UserCourseVo vo = UserCourseVo.valueOf(3, info.getId(), info.getTitle(), info.getImage(), info.getWatchNum(),
-                        info.getGoodNum(), info.getStarNum(), info.getForwardNum());
-                this.packUserByCourse(vo, info.getUserId());
-                result.add(vo);
-            }
-        });
-    }
+//    private void packUserCourseVo(List<?> list, List<UserCourseVo> result) {
+//        list.forEach(v -> {
+//            if (v instanceof Course) {
+//                Course info = (Course) v;
+//                UserCourseVo vo = UserCourseVo.valueOf(2, info.getId(), info.getTitle(), info.getImage(), info.getWatchNum(),
+//                        info.getGoodNum(), info.getStarNum(), info.getForwardNum());
+//                this.packUserByCourse(vo, info.getUserId());
+//                result.add(vo);
+//            } else if (v instanceof CommunityModelVo) {
+//                CommunityModelVo info = (CommunityModelVo) v;
+//                UserCourseVo vo = UserCourseVo.valueOf(1, info.getId(), info.getTitle(), info.getImageUrl(), info.getWatchNum(),
+//                        info.getGoodNum(), info.getStarNum(), info.getForwardNum(), info.getType(), info.getGoodStatus(), info.getStarStatus());
+//                this.packUserByCourse(vo, info.getUserId());
+//                result.add(vo);
+//            } else {
+//                PartyModel info = (PartyModel) v;
+//                UserCourseVo vo = UserCourseVo.valueOf(3, info.getId(), info.getTitle(), info.getImage(), info.getWatchNum(),
+//                        info.getGoodNum(), info.getStarNum(), info.getForwardNum());
+//                this.packUserByCourse(vo, info.getUserId());
+//                result.add(vo);
+//            }
+//        });
+//    }
 
     private void packUserByCourse(UserCourseVo vo, String userId) {
         if (ValidateTool.isBlank(userId) || ValidateTool.isNull(vo)) {
@@ -158,12 +153,10 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public IPage<UserCourseVo> searchList(int pageNo, int pageSize, int type, String search) {
+    public IPage<UserCourseVo> searchList(int pageNo, int pageSize, int type, String search, String userId) {
         Page page = new Page<>(pageNo, pageSize);
-        List<Course> list = courseMapper.searchListOrderByType(page, type, search);
-        List<UserCourseVo> result = new LinkedList<>();
-        this.packUserCourseVo(list, result);
-        return page.setRecords(result);
+        List<UserCourseVo> list = courseMapper.searchListOrderByType(page, type, search, userId);
+        return page.setRecords(list);
     }
 
     @Override
@@ -248,6 +241,7 @@ public class CourseServiceImpl implements CourseService {
             courseInfo.setNickName(ValidateTool.isNotNull(user) ? user.getNickName() : "");
             courseInfo.setUserSign(ValidateTool.isNotNull(user) ? user.getSign() : "");
         }
+        courseMapper.updateCourseNum(id,Constant.TYPE_INT_1, null,null,null);
 //        if (Constant.CHECKTYPE1.equals(courseInfo.getVipFree())){
 //
 //        }

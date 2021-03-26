@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.ibatis.annotations.Param;
 import org.jeecg.modules.community.model.CommunityModel;
 import org.jeecg.modules.community.model.vo.CommunityModelVo;
+import org.jeecg.modules.course.model.vo.UserCourseVo;
 
 import java.util.List;
 
@@ -30,7 +31,8 @@ public interface CommunityModelMapper{
 
     List<CommunityModelVo> selectByFocusUserId(Page<CommunityModelVo> page, @Param("userId") String userId);
 
-    List<CommunityModelVo> getListOrderByLikeNum(Page<CommunityModelVo> page, @Param("type") Integer type, @Param("city") String city);
+    List<UserCourseVo> getListOrderByLikeNum(Page<UserCourseVo> page, @Param("type") Integer type,
+                                             @Param("city") String city, @Param("userId") String userId);
 
     //更新朋友圈表收藏点赞转发观看数
     int updateCommunityNum(@Param("communityId") String communityId, @Param("watchNum")Integer watchNum ,@Param("starNum")Integer starNum,

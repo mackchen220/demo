@@ -84,7 +84,7 @@ public class UserOrderController {
         String id = userModelService.getUserIdByToken(token);
 
         String score = orderModelService.updateOrderScore(id, orderId, effect, attitude, price);
-        return Result.oKWithToken(token,score);
+        return Result.OK(score);
     }
 
     @ApiOperation("取消订单")

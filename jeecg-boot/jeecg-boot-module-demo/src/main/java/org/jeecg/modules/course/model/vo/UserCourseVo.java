@@ -34,11 +34,32 @@ public class UserCourseVo implements Serializable {
      */
     private String courseId;
     private String title;
+    /**
+     * 内容
+     */
+    @ApiModelProperty(value="内容")
+    private String content;
+
+
     private String image;
     private Long watchNum;
     private Long goodNum;
     private Long starNum;
     private Long forwardNum;
+
+
+    /**
+     * 是否收藏 1是0否
+     */
+    @ApiModelProperty(value="是否收藏 1是0否")
+    private String starStatus ;
+
+    /**
+     * 是否点赞 1是0否
+     */
+    @ApiModelProperty(value="是否点赞 1是0否")
+    private String goodStatus;
+
 
     public static UserCourseVo valueOf(Integer courseType, String courseId, String title, String image, Long watchNum,
                                        Long goodNum, Long starNum, Long forwardNum) {
@@ -55,7 +76,7 @@ public class UserCourseVo implements Serializable {
     }
 
     public static UserCourseVo valueOf(Integer courseType, String courseId, String title, String image, Long watchNum,
-                                       Long goodNum, Long starNum, Long forwardNum,Integer type) {
+                                       Long goodNum, Long starNum, Long forwardNum,Integer type,String goodStatus,String starStatus) {
         UserCourseVo vo = new UserCourseVo();
         vo.setCourseType(courseType);
         vo.setCourseId(courseId);
@@ -66,6 +87,8 @@ public class UserCourseVo implements Serializable {
         vo.setStarNum(starNum);
         vo.setForwardNum(forwardNum);
         vo.setType(type);
+        vo.setGoodStatus(goodStatus);
+        vo.setStarStatus(starStatus);
         return vo;
     }
 

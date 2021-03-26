@@ -12,8 +12,10 @@ import org.jeecg.modules.course.mapper.CourseMapper;
 import org.jeecg.modules.course.model.Course;
 import org.jeecg.modules.index.mapper.PartyModelMapper;
 import org.jeecg.modules.index.model.PartyModel;
+import org.jeecg.modules.user.mapper.TalentInfoModelMapper;
 import org.jeecg.modules.user.mapper.UserModelMapper;
 import org.jeecg.modules.user.mapper.UserStarMapper;
+import org.jeecg.modules.user.model.TalentInfoModel;
 import org.jeecg.modules.user.model.UserModel;
 import org.jeecg.modules.user.model.UserStar;
 import org.jeecg.modules.user.service.UserModelService;
@@ -41,7 +43,7 @@ public class CommunityModelServiceImpl implements CommunityModelService {
     private UserStarMapper userStarMapper;
 
     @Resource
-    private UserModelMapper userModelMapper;
+    private TalentInfoModelMapper talentInfoModelMapper;
     @Resource
     private CourseMapper courseMapper;
     @Resource
@@ -50,6 +52,10 @@ public class CommunityModelServiceImpl implements CommunityModelService {
     @Transactional
     @Override
     public int insertSelective(CommunityModel record) {
+        TalentInfoModel talentInfoModel = talentInfoModelMapper.selectByUserId(record.getUserId());
+        if (ValidateTool.isNull(talentInfoModel) || Constant.TYPE_INT_0==talentInfoModel.getAuthenticated()){
+            throw new JeecgBootException("完成达人认证才能发朋友圈");
+        }
         record.setId(SeqUtils.nextIdStr());
         record.setCheckStatus(Constant.TYPE_INT_2);
         return communityModelMapper.insertSelective(record);
@@ -92,6 +98,10 @@ public class CommunityModelServiceImpl implements CommunityModelService {
 
     @Override
     public Map loadMomentsInfo(String id) {
+        if (ValidateTool.isNull(id)){
+            throw new JeecgBootException("参数为空");
+        }
+        communityModelMapper.updateCommunityNum(id, Constant.TYPE_INT_1, null, null, null);
         CommunityModel model = communityModelMapper.selectByPrimaryKey(id);
         UserModel user = userModelService.getUserById(model.getUserId());
         Map<String, Object> map = BeanUtil.beanToMap(model);
@@ -160,7 +170,10 @@ public class CommunityModelServiceImpl implements CommunityModelService {
 //                communityModelMapper.updateCommunityNum(id, null, null, Constant.TYPE_INT_1, null);
                 updateNum(pageType, id, Constant.TYPE_INT_1, null, null, null);
             }
-        } else {
+        } else if (Constant.CHECKTYPE3.equals(type)){
+            //转发
+            updateNum(pageType, id, null, null, null, Constant.TYPE_INT_1);
+        }else {
             //收藏
             //是否已经点收藏
             if (ValidateTool.isNotNull(userStar) && Constant.CHECKTYPE1.equals(userStar.getStar())) {

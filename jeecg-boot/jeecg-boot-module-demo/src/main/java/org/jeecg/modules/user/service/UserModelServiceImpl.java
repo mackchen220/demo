@@ -206,8 +206,8 @@ public class UserModelServiceImpl implements UserModelService {
 
     public String nextInviteCode() {
         //生成一个不重复的邀请码
-        String code = RandomUtil.nextInviteCode(5, 5);
-        log.info("生成邀请码1{}", code);
+        String code =  String.valueOf(RandomUtil.nextNumber(100000, 999999));
+        log.info("生成邀请码{}", code);
         do {
             UserModel userModel = userModelMapper.loadUser(null, null, null, code, null);
             if (ValidateTool.isNull(userModel)) {
@@ -215,7 +215,7 @@ public class UserModelServiceImpl implements UserModelService {
                 break;
             } else {
                 log.warn("生成邀请码重复{}", code);
-                code = RandomUtil.nextInviteCode(5, 5);
+                code = String.valueOf(RandomUtil.nextNumber(100000, 999999));
                 log.warn("再次生成邀请码{}", code);
             }
         } while (true);
@@ -225,7 +225,7 @@ public class UserModelServiceImpl implements UserModelService {
 
 
     public int nextUserName() {
-        //生成一个不重复的邀请码
+        //生成一个不重复的用户名
         int number = RandomUtil.nextNumber(1000000, 9999999);
         log.info("生成用户名{}", number);
         do {

@@ -48,6 +48,35 @@
         <result column="good_status" jdbcType="VARCHAR" property="goodStatus"/>
     </resultMap>
 
+    <resultMap id="UserCourseVoResultMap" type="org.jeecg.modules.course.model.vo.UserCourseVo">
+
+        <id column="id" jdbcType="VARCHAR" property="courseId"/>
+        <result column="user_id" jdbcType="VARCHAR" property="userId"/>
+        <result column="title" jdbcType="VARCHAR" property="title"/>
+        <result column="content" jdbcType="VARCHAR" property="content"/>
+        <result column="image_url" jdbcType="VARCHAR" property="image"/>
+<!--        <result column="city" jdbcType="VARCHAR" property="city"/>-->
+        <result column="course_type" jdbcType="INTEGER" property="courseType"/>
+        <result column="type" jdbcType="TINYINT" property="type"/>
+        <result column="star_num" jdbcType="BIGINT" property="starNum"/>
+        <result column="good_num" jdbcType="BIGINT" property="goodNum"/>
+        <result column="forward_num" jdbcType="BIGINT" property="forwardNum"/>
+<!--        <result column="create_time" jdbcType="VARCHAR" property="createTime"/>-->
+        <result column="head_image" jdbcType="VARCHAR" property="headImage"/>
+        <result column="nick_name" jdbcType="VARCHAR" property="nickName"/>
+        <result column="watch_num" jdbcType="TINYINT" property="watchNum"/>
+        <result column="star_status" jdbcType="VARCHAR" property="starStatus"/>
+        <result column="good_status" jdbcType="VARCHAR" property="goodStatus"/>
+    </resultMap>
+
+
+
+
+
+
+
+
+
 
     <sql id="Base_Column_List">
         <!--@mbg.generated-->
@@ -352,13 +381,14 @@
         LEFT JOIN tb_user_star d on d.community_id =a.id and d.user_id = #{userId}
         where a.user_id in(SELECT focus_user_id from tb_user_focus where user_id=#{userId} and del_flag =0)
     </select>
-    <select id="getListOrderByLikeNum" resultMap="voResultMap">
+    <select id="getListOrderByLikeNum" resultMap="UserCourseVoResultMap">
         SELECT
         a.*,
-        b.nick_name,b.head_image
+        b.nick_name,b.head_image,IFNULL(d.star,0) as star_status,IFNULL(d.good,0) as good_status,1 as course_type
         FROM
         tb_community AS a
         LEFT JOIN tb_user AS b ON a.user_id = b.id
+        LEFT JOIN tb_user_star d on d.community_id =a.id and d.user_id = #{userId}
         WHERE
         a.check_status =2
         <if test="type != null">
@@ -392,7 +422,7 @@
 
 
     <select id="loadStarAndGoodCommunityList" parameterType="string" resultMap="voResultMap">
-        SELECT a.user_id,b.title, b.content, b.url, b.image_url, b.city, b.`type`, b.user_type, b.star_num, b.good_num,
+        SELECT a.user_id,b.title, b.content, b.url, b.image_url, b.city, b.`type`, b.user_type, b.star_num, b.good_num,b.id,
         b.forward_num, b.create_time, c.head_image,c.nick_name,a.star as star_status,a.good as good_status
         from tb_user_star a LEFT JOIN tb_community as b on a.community_id =b.id
         LEFT JOIN tb_user c on b.user_id =c.id

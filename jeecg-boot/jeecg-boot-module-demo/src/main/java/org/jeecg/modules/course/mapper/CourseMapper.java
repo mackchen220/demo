@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Param;
 import org.jeecg.modules.course.model.Course;
 import org.jeecg.modules.course.model.vo.CourseInfoVo;
 import org.jeecg.modules.course.model.vo.CourseVo;
+import org.jeecg.modules.course.model.vo.UserCourseVo;
 import org.jeecg.modules.index.model.CourseModel;
 
 import java.util.List;
@@ -25,9 +26,11 @@ public interface CourseMapper extends BaseMapper<Course> {
 
     List<Course> findListByUserId(Page page, @Param("userId") String userId);
 
-    List<Course> getListOrderByLikeNum(Page<Course> page, @Param("courseType") Integer courseType, @Param("city") String city);
+    List<UserCourseVo> getListOrderByLikeNum(Page<UserCourseVo> page, @Param("courseType") Integer courseType,
+                                             @Param("city") String city, @Param("userId") String userId);
 
-    List<Course> searchListOrderByType(Page<Course> page, @Param("type") Integer type, @Param("search") String search);
+    List<UserCourseVo> searchListOrderByType(Page<UserCourseVo> page, @Param("type") Integer type,
+                                       @Param("search") String search, @Param("userId") String userId);
 
 
     List<CourseVo> loadCourseModelList(Page<CourseVo> page, @Param("search")String search);

@@ -182,10 +182,10 @@ public class TalentController {
     //达人中心
     @ApiOperation("达人中心")
     @PostMapping("/loadTalentCenter")
-    public Result loadTalentCenter(String token) {
-        UserModel userModelByToken = userModelService.getUserModelByToken(token);
+    public Result loadTalentCenter(HttpServletRequest request) {
+        UserModel userModelByToken = userModelService.getUserModelByToken(TokenUtils.getToken(request));
         Map map = talentInfoModelService.loadTalentCenter(userModelByToken);
-        return Result.oKWithToken(token, map);
+        return Result.OK(map);
     }
 
 
@@ -195,7 +195,7 @@ public class TalentController {
     public Result addCustomer(String token, String userId) {
         String id = userModelService.getUserIdByToken(token);
         talentInfoModelService.addCustomer(id, userId);
-        return Result.oKWithToken(token, null);
+        return Result.OK(null);
     }
 
 
@@ -203,14 +203,12 @@ public class TalentController {
     @RequestMapping(value = "/loadMyCustomer", method = RequestMethod.POST)
     public Result<Page<TalentCustomerVo>> loadMyCustomer(@RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo,
                                                          @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize,
-                                                         String token) {
-        String id = userModelService.getUserIdByToken(token);
+                                                         HttpServletRequest request) {
+        String id = userModelService.getUserIdByToken(TokenUtils.getToken(request));
         Result<Page<TalentCustomerVo>> result = new Result<Page<TalentCustomerVo>>();
         Page<TalentCustomerVo> pageList = new Page<TalentCustomerVo>(pageNo, pageSize);
         Page<TalentCustomerVo> page = talentInfoModelService.loadMyCustomer(pageList, id);
-        result.setResult(page);
-        result.setToken(token);
-        return result;
+        return Result.OK(page);
     }
 
 
@@ -220,7 +218,7 @@ public class TalentController {
     public Result loadCustomrInfo(String token, String userId, String id) {
         String talentId = userModelService.getUserIdByToken(token);
         Map map = talentInfoModelService.loadCustomrInfo(talentId, id, userId);
-        return Result.oKWithToken(token, map);
+        return Result.OK( map);
     }
 
     //达人中心
@@ -232,7 +230,7 @@ public class TalentController {
         Page<UserIncomeDetailVo> page = new Page<>(pageNo, pageSize);
         Map map = talentInfoModelService.loadCustomrIncome(userId, year, month, page);
 
-        return Result.oKWithToken(token, map);
+        return Result.OK(map);
     }
 
 
