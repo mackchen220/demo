@@ -45,7 +45,7 @@ public class UserFocusModelServiceImpl implements UserFocusModelService{
             if (Constant.TYPE_INT_1==userFocusModel.getDelFlag()){
                 userFocusModelMapper.updatedDelFlag(id, userId, Constant.CHECKTYPE0);
             }else {
-                throw new JeecgBootException("已关注");
+                userFocusModelMapper.updatedDelFlag(id, userId, Constant.CHECKTYPE1);
             }
         }
         return result;

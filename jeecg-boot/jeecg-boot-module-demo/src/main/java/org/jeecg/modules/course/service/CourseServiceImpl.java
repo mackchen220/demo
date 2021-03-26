@@ -4,8 +4,10 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.extern.log4j.Log4j2;
 import org.jeecg.common.exception.JeecgBootException;
+import org.jeecg.common.util.RedisUtil;
 import org.jeecg.modules.commons.Constant;
 import org.jeecg.modules.commons.ErrorInfoCode;
+import org.jeecg.modules.commons.RedisKey;
 import org.jeecg.modules.commons.util.DateHelper;
 import org.jeecg.modules.commons.util.SeqUtils;
 import org.jeecg.modules.commons.util.ValidateTool;
@@ -72,6 +74,8 @@ public class CourseServiceImpl implements CourseService {
     private OrderModelMapper orderModelMapper;
     @Resource
     private UserFocusModelMapper userFocusModelMapper;
+    @Resource
+    private RedisUtil redisUtil;
 
 
     @Override
@@ -241,7 +245,12 @@ public class CourseServiceImpl implements CourseService {
             courseInfo.setNickName(ValidateTool.isNotNull(user) ? user.getNickName() : "");
             courseInfo.setUserSign(ValidateTool.isNotNull(user) ? user.getSign() : "");
         }
-        courseMapper.updateCourseNum(id,Constant.TYPE_INT_1, null,null,null);
+        Object o = redisUtil.get(RedisKey.WATCH_NUM + userModel.getId() + id);
+        if (ValidateTool.isNull(o)) {
+            //防止浏览量疯狂加
+            courseMapper.updateCourseNum(id, Constant.TYPE_INT_1, null, null, null);
+            redisUtil.set(RedisKey.WATCH_NUM + userModel.getId() + id, id, 30);
+        }
 //        if (Constant.CHECKTYPE1.equals(courseInfo.getVipFree())){
 //
 //        }

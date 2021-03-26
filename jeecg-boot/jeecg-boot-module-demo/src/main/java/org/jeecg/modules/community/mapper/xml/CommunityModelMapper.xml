@@ -422,7 +422,7 @@
 
 
     <select id="loadStarAndGoodCommunityList" parameterType="string" resultMap="voResultMap">
-        SELECT a.user_id,b.title, b.content, b.url, b.image_url, b.city, b.`type`, b.user_type, b.star_num, b.good_num,b.id,
+        SELECT b.user_id,b.title, b.content, b.url, b.image_url, b.city, b.`type`, b.user_type, b.star_num, b.good_num,b.id,
         b.forward_num, b.create_time, c.head_image,c.nick_name,a.star as star_status,a.good as good_status
         from tb_user_star a LEFT JOIN tb_community as b on a.community_id =b.id
         LEFT JOIN tb_user c on b.user_id =c.id

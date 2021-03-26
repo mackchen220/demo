@@ -117,6 +117,16 @@ public class UserController {
         return result;
     }
 
+    @ApiOperation("修改银行卡接口")
+    @RequestMapping(value = "/updateUserBank", method = RequestMethod.POST)
+    public Result<JSONObject> updateUserBank(UserBankModel userBankModel, HttpServletRequest request) {
+        String id = userModelService.getUserIdByToken(TokenUtils.getToken(request));
+        userBankModel.setUserId(id);
+        userBankModelService.updateByPrimaryKeySelective(userBankModel);
+        return Result.OK();
+    }
+
+
 
     @ApiOperation("用户银行卡列表接口")
     @RequestMapping(value = "/loadUserCardList", method = RequestMethod.POST)

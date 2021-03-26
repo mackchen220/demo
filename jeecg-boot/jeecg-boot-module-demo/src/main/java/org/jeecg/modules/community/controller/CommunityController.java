@@ -88,8 +88,9 @@ public class CommunityController {
 
     @ApiOperation("朋友圈详情接口")
     @RequestMapping(value = "/loadMomentsInfo", method = RequestMethod.POST)
-    public Result loadMomentsInfo(String id) {
-        Map map = communityModelService.loadMomentsInfo(id);
+    public Result loadMomentsInfo(String id,HttpServletRequest request) {
+        String userId = userModelService.getUserIdByToken(TokenUtils.getToken(request));
+        Map map = communityModelService.loadMomentsInfo(id,userId);
         return Result.OK(map);
     }
 

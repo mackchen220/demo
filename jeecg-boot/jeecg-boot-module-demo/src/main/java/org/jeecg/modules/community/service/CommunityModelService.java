@@ -15,7 +15,7 @@ public interface CommunityModelService {
 
     Page<CommunityModelVo> loadCommunityListByType(Page<CommunityModelVo> page, int type, String userId);
 
-    Map loadMomentsInfo(String id);
+    Map loadMomentsInfo(String id,String userId);
 
     IPage<CommunityModel> getListByUserId(Page<CommunityModel> objectPage, String userId);
 

@@ -175,8 +175,9 @@ public class TalentInfoModelServiceImpl implements TalentInfoModelService {
         Map<String, Object> map = new HashMap<>();
         // 保证金配置
         PlatformConfiguration config = platformConfigurationMapper.getConfigByKey(Constant.CONFIG_KEY_BOOD);
-        map.put("bond", ValidateTool.isNotNull(config)  ? config.getConfigValue() : "2000000");
+        map.put("bond", ValidateTool.isNotNull(config) ? config.getConfigValue() : "2000000");
         TalentInfoModel talentInfoModel = talentInfoModelMapper.selectByUserId(userId);
+        map.put("talentId", ValidateTool.isNotNull(talentInfoModel) ? talentInfoModel.getUserId() : "");
         map.put("status", ValidateTool.isNull(talentInfoModel) ? 1 : 0);
         map.put("idStatus", ValidateTool.isNotNull(talentInfoModel) ? talentInfoModel.getIdStatus() : 1);
         map.put("idNum", ValidateTool.isNotNull(talentInfoModel) ? talentInfoModel.getIdCard() : "");
@@ -184,6 +185,7 @@ public class TalentInfoModelServiceImpl implements TalentInfoModelService {
         map.put("city", ValidateTool.isNotNull(talentInfoModel) ? talentInfoModel.getCity() : "");
         map.put("time", ValidateTool.isNotNull(talentInfoModel) ? talentInfoModel.getTime() : "");
         map.put("contractStatus", ValidateTool.isNotNull(talentInfoModel) ? talentInfoModel.getContractStatus() : "1");
+        map.put("authenticated", ValidateTool.isNotNull(talentInfoModel) ? talentInfoModel.getAuthenticated() : "1");
         map.put("deposit", ValidateTool.isNull(talentInfoModel) ? 1 : (talentInfoModel.getDeposit() > 0 ? 0 : 1));
         return map;
     }
@@ -211,6 +213,21 @@ public class TalentInfoModelServiceImpl implements TalentInfoModelService {
 
 
     @Override
+    public void updateTalentInfo(String talentId) {
+        TalentInfoModel talentInfoModel = talentInfoModelMapper.selectByUserId(talentId);
+        if (ValidateTool.isNull(talentInfoModel)) {
+            throw new JeecgBootException("请先完成身份认证");
+        }
+
+        //更新签署协议状态
+        talentInfoModel.setContractStatus(Constant.TYPE_INT_0);
+        if (ValidateTool.isNotNull(talentInfoModel.getDeposit()) && talentInfoModel.getDeposit() > 0) {
+            talentInfoModel.setAuthenticated(Constant.TYPE_INT_1);
+        }
+        talentInfoModelMapper.updateByPrimaryKeySelective(talentInfoModel);
+    }
+
+    @Override
     public String talentCallBack(String orderId) {
         log.info("缴纳保证金回调{}", orderId);
         OrderModel orderModel = orderModelMapper.selectByPrimaryKey(orderId);
@@ -226,7 +243,9 @@ public class TalentInfoModelServiceImpl implements TalentInfoModelService {
 //        ValidateTool.isNotNull(config) ? Long.valueOf(config.getConfigValue()) : 2000000L
         //更新保证金
         talentInfoModel.setDeposit(Long.valueOf(orderModel.getAmount()));
-        talentInfoModel.setAuthenticated(Constant.TYPE_INT_1);
+        if (ValidateTool.isNotNull(talentInfoModel.getContractStatus()) && talentInfoModel.getContractStatus() == 0) {
+            talentInfoModel.setAuthenticated(Constant.TYPE_INT_1);
+        }
         talentInfoModelMapper.updateByPrimaryKeySelective(talentInfoModel);
         return "ok";
     }

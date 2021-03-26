@@ -178,6 +178,14 @@ public class TalentController {
         String orderId = talentInfoModelService.addTalentBond(id);
         return Result.OK(orderId);
     }
+    @ApiOperation("签署协议")
+    @PostMapping("/updateTalentInfo")
+    public Result updateTalentInfo(HttpServletRequest request,String talentId) {
+        String id = userModelService.getUserIdByToken(TokenUtils.getToken(request));
+        talentInfoModelService.updateTalentInfo(talentId);
+        return Result.OK();
+    }
+
 
     //达人中心
     @ApiOperation("达人中心")

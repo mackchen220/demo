@@ -45,6 +45,8 @@ public interface TalentInfoModelService{
 
     Map loadTalentCenter(UserModel user);
 
+    void updateTalentInfo(String talentId);
+
     String talentCallBack(String orderId);
 
     void addCustomer(String talentId, String userId);

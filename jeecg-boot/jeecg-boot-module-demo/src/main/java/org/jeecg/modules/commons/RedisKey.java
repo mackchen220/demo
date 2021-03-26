@@ -29,6 +29,7 @@ public class RedisKey {
 
     public final static String USER_LOGIN_TOKEN = "login_token";
 
+    public final static String WATCH_NUM="watch_num:";
 
     public final static String VIP_NUM = "vip_num";
 

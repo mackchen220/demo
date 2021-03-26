@@ -45,5 +45,7 @@ public class Constant {
 
     public final static String DELIVERY_FEE = "deliveryFee";
 
+    public final static String HEAD_IMAGE = "headImage";
+
 
 }

@@ -66,7 +66,12 @@ public class PartyModelServiceImpl implements PartyModelService {
 //        Object num = redisUtil.get(RedisKey.PARTY_NUM + partyId);
 //        partyModel.setNextNum(Integer.parseInt(String.valueOf(num)));
         Map<String, Object> map = new HashMap<>();
-        partyModelMapper.updatePartyNum(partyId, Constant.TYPE_INT_1, null, null, null);
+        Object o = redisUtil.get(RedisKey.WATCH_NUM + userId + partyId);
+        if (ValidateTool.isNull(o)) {
+            //防止浏览量疯狂加
+            partyModelMapper.updatePartyNum(partyId, Constant.TYPE_INT_1, null, null, null);
+            redisUtil.set(RedisKey.WATCH_NUM + userId + partyId, partyId, 30);
+        }
         int star = userStarMapper.isStar(partyId, userId, Constant.CHECKTYPE1, null);
         int good = userStarMapper.isStar(partyId, userId, null, Constant.CHECKTYPE1);
         partyModel.setStarStatus(String.valueOf(star));

@@ -14,6 +14,8 @@ import org.jeecg.modules.commons.util.DateHelper;
 import org.jeecg.modules.commons.util.RandomUtil;
 import org.jeecg.modules.commons.util.SeqUtils;
 import org.jeecg.modules.commons.util.ValidateTool;
+import org.jeecg.modules.index.mapper.PlatformConfigurationMapper;
+import org.jeecg.modules.index.model.PlatformConfiguration;
 import org.jeecg.modules.user.mapper.*;
 import org.jeecg.modules.user.model.*;
 import org.jeecg.modules.user.model.vo.ExtensionVo;
@@ -55,7 +57,8 @@ public class UserModelServiceImpl implements UserModelService {
     private VerifiedConfigMapper verifiedConfigMapper;
 
     @Resource
-    private UserAgencyModelMapper userAgencyModelMapperl;
+    private PlatformConfigurationMapper platformConfigurationMapper;
+
 
     @Override
     public UserModel getUserById(String id) {
@@ -187,6 +190,9 @@ public class UserModelServiceImpl implements UserModelService {
             userModel.setCity(String.valueOf(city));
             userModel.setProvince(String.valueOf(province));
             userModel.setRegisterIp(ip);
+            PlatformConfiguration configByKey = platformConfigurationMapper.getConfigByKey(Constant.HEAD_IMAGE);
+            userModel.setHeadImage(ValidateTool.isNotNull(configByKey) ? configByKey.getConfigValue()
+                    : "https://hyimage1.oss-cn-beijing.aliyuncs.com/upload/mmexport1616743079322_1616743107890.png");
             userModelMapper.insertSelective(userModel);
         } else {
             return userModel;
@@ -206,7 +212,7 @@ public class UserModelServiceImpl implements UserModelService {
 
     public String nextInviteCode() {
         //生成一个不重复的邀请码
-        String code =  String.valueOf(RandomUtil.nextNumber(100000, 999999));
+        String code = String.valueOf(RandomUtil.nextNumber(100000, 999999));
         log.info("生成邀请码{}", code);
         do {
             UserModel userModel = userModelMapper.loadUser(null, null, null, code, null);
@@ -335,9 +341,13 @@ public class UserModelServiceImpl implements UserModelService {
             userModel1.setHeadImage(headImage);
         }
         if (ValidateTool.isNotNull(nickName)) {
+            if (nickName.length() > 8 || nickName.length() < 3) {
+                throw new JeecgBootException("昵称限制八个字");
+            }
             userModel1.setNickName(nickName);
         }
         if (ValidateTool.isNotNull(wechat)) {
+            ValidateTool.checkIsWX(wechat);
             userModel1.setWechat(wechat);
         }
         if (ValidateTool.isNotNull(content)) {

@@ -368,7 +368,7 @@
 
 
   <select id="getOrderNumAndMoney" resultMap="BaseResultMap" parameterType="string">
-        select  sum(pay_money) as pay_money,count(0) as num from tb_order where user_id = #{userId,jdbcType=VARCHAR} and operationType=1
+        select  sum(pay_money) as pay_money,count(0) as num from tb_order where user_id = #{userId,jdbcType=VARCHAR} and operation_type=1
   </select>
 
 

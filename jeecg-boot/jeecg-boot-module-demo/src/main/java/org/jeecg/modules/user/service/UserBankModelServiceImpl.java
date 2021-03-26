@@ -3,8 +3,10 @@ package org.jeecg.modules.user.service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.jeecg.common.api.vo.Result;
+import org.jeecg.common.exception.JeecgBootException;
 import org.jeecg.common.util.MD5Util;
 import org.jeecg.common.util.RedisUtil;
+import org.jeecg.modules.commons.Constant;
 import org.jeecg.modules.commons.util.SeqUtils;
 import org.jeecg.modules.commons.util.ValidateTool;
 import org.jeecg.modules.index.model.TurnImageModel;
@@ -90,6 +92,17 @@ public class UserBankModelServiceImpl implements UserBankModelService {
 
     @Override
     public int updateByPrimaryKeySelective(UserBankModel record) {
+        if (ValidateTool.isNull(record.getId())){
+            throw new JeecgBootException("参数错误");
+        }
+        UserBankModel userBankModel = selectByPrimaryKey(record.getId());
+        if (ValidateTool.isNull(userBankModel)){
+            throw new JeecgBootException("参数错误");
+        }
+        if (!record.getUserId().equals(userBankModel.getUserId())){
+            throw new JeecgBootException("非法参数");
+        }
+        record.setDelFlag(Constant.TYPE_INT_1);
         return userBankModelMapper.updateByPrimaryKeySelective(record);
     }
 

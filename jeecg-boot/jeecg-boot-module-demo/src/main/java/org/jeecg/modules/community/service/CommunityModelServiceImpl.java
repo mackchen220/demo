@@ -4,7 +4,9 @@ import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.jeecg.common.exception.JeecgBootException;
+import org.jeecg.common.util.RedisUtil;
 import org.jeecg.modules.commons.Constant;
+import org.jeecg.modules.commons.RedisKey;
 import org.jeecg.modules.commons.util.SeqUtils;
 import org.jeecg.modules.commons.util.ValidateTool;
 import org.jeecg.modules.community.model.vo.CommunityModelVo;
@@ -13,6 +15,7 @@ import org.jeecg.modules.course.model.Course;
 import org.jeecg.modules.index.mapper.PartyModelMapper;
 import org.jeecg.modules.index.model.PartyModel;
 import org.jeecg.modules.user.mapper.TalentInfoModelMapper;
+import org.jeecg.modules.user.mapper.UserFocusModelMapper;
 import org.jeecg.modules.user.mapper.UserModelMapper;
 import org.jeecg.modules.user.mapper.UserStarMapper;
 import org.jeecg.modules.user.model.TalentInfoModel;
@@ -48,12 +51,16 @@ public class CommunityModelServiceImpl implements CommunityModelService {
     private CourseMapper courseMapper;
     @Resource
     private PartyModelMapper partyModelMapper;
+    @Resource
+    private RedisUtil redisUtil;
+    @Resource
+    private UserFocusModelMapper userFocusModelMapper;
 
     @Transactional
     @Override
     public int insertSelective(CommunityModel record) {
         TalentInfoModel talentInfoModel = talentInfoModelMapper.selectByUserId(record.getUserId());
-        if (ValidateTool.isNull(talentInfoModel) || Constant.TYPE_INT_0==talentInfoModel.getAuthenticated()){
+        if (ValidateTool.isNull(talentInfoModel) || Constant.TYPE_INT_0 == talentInfoModel.getAuthenticated()) {
             throw new JeecgBootException("完成达人认证才能发朋友圈");
         }
         record.setId(SeqUtils.nextIdStr());
@@ -97,17 +104,31 @@ public class CommunityModelServiceImpl implements CommunityModelService {
     }
 
     @Override
-    public Map loadMomentsInfo(String id) {
-        if (ValidateTool.isNull(id)){
+    public Map loadMomentsInfo(String id, String userId) {
+
+        if (ValidateTool.isNull(id)) {
             throw new JeecgBootException("参数为空");
         }
-        communityModelMapper.updateCommunityNum(id, Constant.TYPE_INT_1, null, null, null);
         CommunityModel model = communityModelMapper.selectByPrimaryKey(id);
+        if (ValidateTool.isNull(model)) {
+            throw new JeecgBootException("朋友圈已删除");
+        }
+        Object o = redisUtil.get(RedisKey.WATCH_NUM + userId + id);
+        if (ValidateTool.isNull(o)) {
+            //防止浏览量疯狂加
+            communityModelMapper.updateCommunityNum(id, Constant.TYPE_INT_1, null, null, null);
+            redisUtil.set(RedisKey.WATCH_NUM + userId + id, id, 30);
+        }
+        //是否关注
+        int isFans = userFocusModelMapper.selectUserFocus(model.getUserId(), userId);
+        UserStar userStar = userStarMapper.loadUserStarByUserId(id, userId);
         UserModel user = userModelService.getUserById(model.getUserId());
         Map<String, Object> map = BeanUtil.beanToMap(model);
         map.put("nikeName", user.getNickName());
         map.put("headImage", user.getHeadImage());
-        map.remove("createTime");
+        map.put("goodStatus", ValidateTool.isNotNull(userStar) ? userStar.getGood() : Constant.CHECKTYPE0);
+        map.put("starStatus", ValidateTool.isNotNull(userStar) ? userStar.getStar() : Constant.CHECKTYPE0);
+        map.put("isFans", isFans);
         map.remove("updateTime");
         map.remove("createBy");
         map.remove("updateBy");
@@ -170,10 +191,10 @@ public class CommunityModelServiceImpl implements CommunityModelService {
 //                communityModelMapper.updateCommunityNum(id, null, null, Constant.TYPE_INT_1, null);
                 updateNum(pageType, id, Constant.TYPE_INT_1, null, null, null);
             }
-        } else if (Constant.CHECKTYPE3.equals(type)){
+        } else if (Constant.CHECKTYPE3.equals(type)) {
             //转发
             updateNum(pageType, id, null, null, null, Constant.TYPE_INT_1);
-        }else {
+        } else {
             //收藏
             //是否已经点收藏
             if (ValidateTool.isNotNull(userStar) && Constant.CHECKTYPE1.equals(userStar.getStar())) {
@@ -213,7 +234,6 @@ public class CommunityModelServiceImpl implements CommunityModelService {
             courseMapper.updateCourseNum(id, watchNum, starNum, goodNum, forwardNum);
         }
     }
-
 
 
 }
