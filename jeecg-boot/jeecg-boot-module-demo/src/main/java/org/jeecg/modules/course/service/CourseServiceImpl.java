@@ -251,13 +251,16 @@ public class CourseServiceImpl implements CourseService {
             courseMapper.updateCourseNum(id, Constant.TYPE_INT_1, null, null, null);
             redisUtil.set(RedisKey.WATCH_NUM + userModel.getId() + id, id, 30);
         }
-//        if (Constant.CHECKTYPE1.equals(courseInfo.getVipFree())){
-//
-//        }
-        if (Constant.TYPE_INT_1 == courseInfo.getType()) {
+        String url = courseInfo.getUrl();
+        String course = userCourseMapper.loadUserCourse(userModel.getId(), id);
+        if (Constant.TYPE_INT_1 == courseInfo.getType() && (ValidateTool.isNull(course) || Integer.parseInt(course) < 1)) {
+            //没购买的用户不能看付费视频
             courseInfo.setUrl(null);
         }
-        String course = userCourseMapper.loadUserCourse(userModel.getId(), id);
+        if (Constant.CHECKTYPE1.equals(courseInfo.getVipFree()) && ValidateTool.isNotNull(userModel.getVipId())) {
+            //会员免费的课程
+            courseInfo.setUrl(url);
+        }
         courseInfo.setByState(Integer.parseInt(course) > 0 ? 1 : 0);
         int star = userStarMapper.isStar(id, userModel.getId(), Constant.CHECKTYPE1, null);
         int good = userStarMapper.isStar(id, userModel.getId(), null, Constant.CHECKTYPE1);
@@ -295,7 +298,7 @@ public class CourseServiceImpl implements CourseService {
         }
         String buy = userCourseMapper.loadUserCourse(userModel.getId(), courseId);
         if (ValidateTool.isNotNull(buy) && Integer.parseInt(buy) > 0) {
-            throw new JeecgBootException("课程已订阅");
+            throw new JeecgBootException("课程已订阅,无须重复订阅");
         }
         OrderModel orderModel = new OrderModel();
         if (Constant.TYPE_INT_1 == course.getType()) {
@@ -308,7 +311,6 @@ public class CourseServiceImpl implements CourseService {
             orderModel.setAmount(String.valueOf(course.getPrice()));
             orderModel.setCourseId(courseId);
             orderModelMapper.insertSelective(orderModel);
-
             map.put("orderId", orderModel.getId());
 //            if (ValidateTool.isNotNull(userModel.getVipId()) && Constant.CHECKTYPE1.equals(course.getVipFree())){
 //

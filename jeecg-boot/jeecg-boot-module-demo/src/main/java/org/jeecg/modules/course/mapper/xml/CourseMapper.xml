@@ -353,7 +353,7 @@
   </select>
 
   <select id="loadCourseModelList" parameterType="string" resultMap="voResultMap">
-    select title,image,type,state,price,course_info,content,user_id from tb_course
+    select  <include refid="Base_Column_List"/> from tb_course
     <where>
       <if test="search != null and search != ''">
         title like '%${search}%'
@@ -363,7 +363,7 @@
   </select>
 
   <select id="loadIndexCourseModelList"  resultMap="BaseResultMap">
-    select id,title,image,type,state,price ,course_type, watch_num,course_info,content,user_id from tb_course
+    select id,title,image,type,state,price ,course_type, watch_num,course_info,content,user_id ,good_num from tb_course
     order by sort desc limit ${limit}
   </select>
 
@@ -393,12 +393,13 @@
   order by good_num desc
 </select>
 
+
   <select id="loadCourseListPage" resultMap="voResultMap" parameterType="string">
     select <include refid="Base_Column_List"/>
     from tb_course
     where del_flag = 0
     <if test="courseType != null and courseType != ''">
-      and course_type = #{courseType}
+      and content_type = #{courseType}
     </if>
     order by good_num desc
   </select>

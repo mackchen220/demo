@@ -547,7 +547,7 @@ public class UserModelServiceImpl implements UserModelService {
     @Override
     public void addUserVerified(UserModel user, String userName, String idNum, String image) {
         if (Constant.CHECKTYPE1.equals(user.getVerified())) {
-            throw new JeecgBootException("已通过实名认证");
+            throw new JeecgBootException("已实名认证，请勿重复提交");
         }
         if (ValidateTool.isNull(userName)) {
             throw new JeecgBootException("请输入姓名");

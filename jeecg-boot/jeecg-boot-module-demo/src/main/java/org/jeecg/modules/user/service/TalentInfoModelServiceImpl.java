@@ -222,7 +222,7 @@ public class TalentInfoModelServiceImpl implements TalentInfoModelService {
         //更新签署协议状态
         talentInfoModel.setContractStatus(Constant.TYPE_INT_0);
         if (ValidateTool.isNotNull(talentInfoModel.getDeposit()) && talentInfoModel.getDeposit() > 0) {
-            talentInfoModel.setAuthenticated(Constant.TYPE_INT_1);
+            talentInfoModel.setAuthenticated(Constant.TYPE_INT_0);
         }
         talentInfoModelMapper.updateByPrimaryKeySelective(talentInfoModel);
     }
@@ -244,7 +244,7 @@ public class TalentInfoModelServiceImpl implements TalentInfoModelService {
         //更新保证金
         talentInfoModel.setDeposit(Long.valueOf(orderModel.getAmount()));
         if (ValidateTool.isNotNull(talentInfoModel.getContractStatus()) && talentInfoModel.getContractStatus() == 0) {
-            talentInfoModel.setAuthenticated(Constant.TYPE_INT_1);
+            talentInfoModel.setAuthenticated(Constant.TYPE_INT_0);
         }
         talentInfoModelMapper.updateByPrimaryKeySelective(talentInfoModel);
         return "ok";
@@ -262,7 +262,7 @@ public class TalentInfoModelServiceImpl implements TalentInfoModelService {
         String sumMoney = userIncomeDetailMapper.getSumMoney(userModel.getId(), Constant.CHECKTYPE4, null, null);
         map.put("sumMoney", ValidateTool.isNull(sumMoney) ? 0 : sumMoney);
         TalentInfoModel talentInfoModel = talentInfoModelMapper.selectByUserId(userModel.getId());
-        map.put("talent", ValidateTool.checkIsNull(talentInfoModel) ? talentInfoModel.getAuthenticated() : 0);
+        map.put("talent", ValidateTool.isNotNull(talentInfoModel) ? talentInfoModel.getAuthenticated() : 1);
         //头像
         map.put("headImage", userModel.getHeadImage());
         //昵称

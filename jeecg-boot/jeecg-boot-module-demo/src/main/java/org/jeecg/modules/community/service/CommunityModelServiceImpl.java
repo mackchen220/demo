@@ -60,7 +60,7 @@ public class CommunityModelServiceImpl implements CommunityModelService {
     @Override
     public int insertSelective(CommunityModel record) {
         TalentInfoModel talentInfoModel = talentInfoModelMapper.selectByUserId(record.getUserId());
-        if (ValidateTool.isNull(talentInfoModel) || Constant.TYPE_INT_0 == talentInfoModel.getAuthenticated()) {
+        if (ValidateTool.isNull(talentInfoModel) || Constant.TYPE_INT_1 == talentInfoModel.getAuthenticated()) {
             throw new JeecgBootException("完成达人认证才能发朋友圈");
         }
         record.setId(SeqUtils.nextIdStr());
