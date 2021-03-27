@@ -86,9 +86,9 @@ public class ReqInterceptor implements HandlerInterceptor {
                 throw new JeecgBootException(ErrorInfoCode.LOGIN__TOKEN_ERROR.getCode(),ErrorInfoCode.LOGIN__TOKEN_ERROR.getMsg());
             }
             if (ValidateTool.isNotNull(Secret)) {
-//                if (!Secret.equals(split[1])) {
-//                    throw new JeecgBootException(ErrorInfoCode.LOGIN_ERROR.getCode(),ErrorInfoCode.LOGIN_ERROR.getMsg());
-//                }
+                if (!Secret.equals(split[1])) {
+                    throw new JeecgBootException(ErrorInfoCode.LOGIN_ERROR.getCode(),ErrorInfoCode.LOGIN_ERROR.getMsg());
+                }
             } else {
                 log.warn("token格式错误");
                 throw new JeecgBootException(ErrorInfoCode.LOGIN__TOKEN_ERROR.getCode(),ErrorInfoCode.LOGIN__TOKEN_ERROR.getMsg());
@@ -122,7 +122,7 @@ public class ReqInterceptor implements HandlerInterceptor {
 
         //取出请求的所有参数（除了sign）并封装成一个map
         String sign = request.getParameter("sign");
-        if(!ValidateTool.checkIsNull(sign)){
+        if(ValidateTool.isNull(sign)){
             throw new JeecgBootException("验签失败");
         }
         Enumeration enu=request.getParameterNames();

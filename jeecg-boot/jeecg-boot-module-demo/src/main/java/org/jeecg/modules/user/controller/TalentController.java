@@ -86,11 +86,9 @@ public class TalentController {
     public Result<Page<UserProjectVo>> loadProjectlist(@RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo,
                                                        @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize,
                                                        String search) {
-        Result<Page<UserProjectVo>> result = new Result<Page<UserProjectVo>>();
         Page<UserProjectVo> pageList = new Page<UserProjectVo>(pageNo, pageSize);
         Page<UserProjectVo> userProjectVoPage = talentInfoModelService.loadProjectlist(search, pageList);
-        result.setResult(userProjectVoPage);
-        return result;
+        return Result.OK(userProjectVoPage);
     }
 
 

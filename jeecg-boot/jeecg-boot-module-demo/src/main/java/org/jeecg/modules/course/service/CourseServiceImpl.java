@@ -261,7 +261,10 @@ public class CourseServiceImpl implements CourseService {
             //会员免费的课程
             courseInfo.setUrl(url);
         }
-        courseInfo.setByState(Integer.parseInt(course) > 0 ? 1 : 0);
+        courseInfo.setByState(1);
+        if (Constant.TYPE_INT_1 == courseInfo.getType()) {
+            courseInfo.setByState(Integer.parseInt(course) > 0 ? 1 : 0);
+        }
         int star = userStarMapper.isStar(id, userModel.getId(), Constant.CHECKTYPE1, null);
         int good = userStarMapper.isStar(id, userModel.getId(), null, Constant.CHECKTYPE1);
         courseInfo.setStarStatus(String.valueOf(star));
