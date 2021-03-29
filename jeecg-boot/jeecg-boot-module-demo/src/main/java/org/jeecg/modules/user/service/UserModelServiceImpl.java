@@ -217,8 +217,8 @@ public class UserModelServiceImpl implements UserModelService {
         userAgencyModelMapper.insertSelective(userAgencyModel);
 
         //异步注册腾讯IM
-        String finalUserId = userModel.getId();
-        executorService.execute(() -> tencentImService.register(finalUserId, 0));
+//        String finalUserId = userModel.getId();
+//        executorService.execute(() -> tencentImService.register(finalUserId, 0));
 
         return userModel;
     }
