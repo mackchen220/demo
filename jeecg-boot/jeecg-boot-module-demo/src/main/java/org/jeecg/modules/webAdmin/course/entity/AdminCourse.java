@@ -119,4 +119,8 @@ public class AdminCourse implements Serializable {
 	@Excel(name = "设为封面课程 0 不推荐 1推荐", width = 15)
     @ApiModelProperty(value = "设为封面课程 0 不推荐 1推荐")
     private java.lang.Integer banner;
+    /**是否对会员免费 1会员免费 0无优惠*/
+    @Excel(name = "是否对会员免费 1会员免费 0无优惠", width = 15)
+    @ApiModelProperty(value = "是否对会员免费 1会员免费 0无优惠")
+    private java.lang.Integer vipFree;
 }

@@ -15,11 +15,11 @@ public interface CommunityModelService {
 
     Page<CommunityModelVo> loadCommunityListByType(Page<CommunityModelVo> page, int type, String userId);
 
-    Map loadMomentsInfo(String id,String userId);
+    Map loadMomentsInfo(String id, String userId);
 
-    IPage<CommunityModel> getListByUserId(Page<CommunityModel> objectPage, String userId);
+    IPage<CommunityModelVo> getListByUserId(Page<CommunityModelVo> objectPage, String userId, String myId);
 
-    void addCommunityStar(String id, String userId, String type,String pageType);
+    void addCommunityStar(String id, String userId, String type, String pageType);
 
     Page<CommunityModelVo> loadGoodCommunityList(Page<CommunityModelVo> page, String userId, int type);
 

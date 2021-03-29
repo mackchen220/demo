@@ -404,6 +404,17 @@
     order by good_num desc
   </select>
 
+  <select id="searchCourse" resultMap="voResultMap" parameterType="string">
+    select <include refid="Base_Column_List"/>
+    from tb_course
+    where del_flag = 0
+    <if test="search != null and search != ''">
+      and (title like '%${search}%' or content like '%${search}%')
+    </if>
+    order by good_num desc
+  </select>
+
+
   <select id="getCourseInfoList" parameterType="string" resultMap="couserInfoVoResultMap">
     select  id, title, image, price, sort, create_time from tb_course_info
     where course_id = #{courseId}

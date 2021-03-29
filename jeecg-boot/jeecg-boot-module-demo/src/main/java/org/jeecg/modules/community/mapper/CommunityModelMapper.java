@@ -27,7 +27,7 @@ public interface CommunityModelMapper{
     List<CommunityModelVo> loadTalentCommunity(Page<CommunityModelVo> page, @Param("userId") String userId);
 
 
-    List<CommunityModel> getListByUserId(Page<CommunityModel> page, @Param("userId") String userId);
+    List<CommunityModelVo> getListByUserId(Page<CommunityModelVo> page, @Param("userId") String userId, @Param("myId") String myId);
 
     List<CommunityModelVo> selectByFocusUserId(Page<CommunityModelVo> page, @Param("userId") String userId);
 

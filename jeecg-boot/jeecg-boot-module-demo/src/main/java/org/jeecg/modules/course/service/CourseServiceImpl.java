@@ -278,6 +278,14 @@ public class CourseServiceImpl implements CourseService {
         return page.setRecords(courses);
     }
 
+
+    @Override
+    public Page<CourseVo> searchCourse(Page<CourseVo> page, String search) {
+        List<CourseVo> courses = courseMapper.searchCourse(page, search);
+        return page.setRecords(courses);
+    }
+
+
     @Override
     public List<CourseInfoVo> getCourseInfoList(String courseId) {
 
@@ -350,6 +358,7 @@ public class CourseServiceImpl implements CourseService {
 
         userCourseMapper.insertSelective(userCourse);
         return "ok";
-
     }
+
+
 }
