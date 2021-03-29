@@ -14,6 +14,7 @@ import org.jeecg.common.exception.JeecgBootException;
 import org.jeecg.common.util.TokenUtils;
 import org.jeecg.modules.commons.ErrorInfoCode;
 import org.jeecg.modules.community.model.CommunityModel;
+import org.jeecg.modules.community.model.vo.CommunityModelVo;
 import org.jeecg.modules.community.service.CommunityModelService;
 import org.jeecg.modules.user.model.*;
 import org.jeecg.modules.user.model.vo.*;
@@ -126,13 +127,14 @@ public class TalentController {
 
     @ApiOperation("达人动态列表")
     @PostMapping("/talentMoments")
-    public Result talentMoments(@ApiParam(name = "达人ID", required = true) String userId,
+    public Result talentMoments(@ApiParam(name = "达人ID", required = true) String userId,HttpServletRequest request,
                                 @RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo,
                                 @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize) {
         if (StringUtils.isBlank(userId)) {
             throw new JeecgBootException(ErrorInfoCode.PARAMS_ERROR.getMsg());
         }
-        IPage<CommunityModel> page = communityModelService.getListByUserId(new Page<>(pageNo, pageSize), userId);
+        String id = userModelService.getUserIdByToken(TokenUtils.getToken(request));
+        IPage<CommunityModelVo> page = communityModelService.getListByUserId(new Page<>(pageNo, pageSize), userId,id);
         return Result.OK(page);
     }
 
