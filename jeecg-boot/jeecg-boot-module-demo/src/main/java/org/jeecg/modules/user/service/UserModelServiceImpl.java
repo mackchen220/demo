@@ -8,6 +8,7 @@ import org.jeecg.common.exception.JeecgBootException;
 import org.jeecg.common.system.util.JwtUtil;
 import org.jeecg.common.util.MD5Util;
 import org.jeecg.common.util.RedisUtil;
+import org.jeecg.modules.chat.api.GenerateUserSig;
 import org.jeecg.modules.chat.service.TencentImService;
 import org.jeecg.modules.commons.Constant;
 import org.jeecg.modules.commons.RedisKey;
@@ -162,6 +163,7 @@ public class UserModelServiceImpl implements UserModelService {
         object.put("token", token);
         object.put("headImage", userModel.getHeadImage());
         object.put("nickname", userModel.getNickName());
+        object.put("userSig", GenerateUserSig.genUserSig(userModel.getId()));
     }
 
 
