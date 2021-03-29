@@ -729,3 +729,10 @@ CREATE TABLE `tb_chat_p2p` (
   KEY `idx_dialog_id` (`dialog_id`) USING BTREE,
   KEY `idx_send_time` (`send_time`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='聊天记录表-单聊';
+
+
+ALTER TABLE `hengyang`.`tb_community`
+    ADD COLUMN `province` varchar(32) NULL COMMENT '省' AFTER `check_status`,
+ADD COLUMN `longitude` varchar(32) NULL COMMENT '经度' AFTER `province`,
+ADD COLUMN `latitude` varchar(32) NULL COMMENT '纬度' AFTER `longitude`,
+ADD COLUMN `address` varchar(64) NULL COMMENT '详细地址' AFTER `latitude`;

@@ -41,11 +41,23 @@ public class CommunityModel {
     private String imageUrl;
 
     /**
-    * 图片地址
+    * 市
     */
-    @ApiModelProperty(value="图片地址")
+    @ApiModelProperty(value="市")
     private String city;
 
+    /**
+     * 省
+     */
+    @ApiModelProperty(value="省")
+    private String province;
+
+
+    /**
+     * '详细地址'
+     */
+    @ApiModelProperty(value="'详细地址'")
+    private String address;
     /**
     * 朋友圈类型:1 照片 2视频 3课程  4其他
     */
@@ -117,5 +129,20 @@ public class CommunityModel {
      */
     @ApiModelProperty(value="审核状态 0待审核 1 审核未通过2审核通过")
     private Integer checkStatus;
+
+    /**
+     * 经度
+     */
+    @ApiModelProperty(value="经度")
+    private String longitude;
+
+    /**
+     * 纬度
+     */
+    @ApiModelProperty(value="纬度")
+    private String latitude;
+
+
+
 
 }

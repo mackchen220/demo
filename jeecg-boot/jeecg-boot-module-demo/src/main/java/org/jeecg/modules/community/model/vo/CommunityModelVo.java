@@ -115,7 +115,27 @@ public class CommunityModelVo {
     @ApiModelProperty(value="是否点赞 1是0否")
     private String goodStatus;
 
+    /**
+     * 省
+     */
+    @ApiModelProperty(value="省")
+    private String province;
 
+    /**
+     * '详细地址'
+     */
+    @ApiModelProperty(value="'详细地址'")
+    private String address;
+    /**
+     * 经度
+     */
+    @ApiModelProperty(value="经度")
+    private String longitude;
 
+    /**
+     * 纬度
+     */
+    @ApiModelProperty(value="纬度")
+    private String latitude;
 
 }
