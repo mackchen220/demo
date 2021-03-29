@@ -137,8 +137,8 @@ public class CommunityModelServiceImpl implements CommunityModelService {
     }
 
     @Override
-    public IPage<CommunityModel> getListByUserId(Page<CommunityModel> page, String userId) {
-        List<CommunityModel> list = communityModelMapper.getListByUserId(page, userId);
+    public IPage<CommunityModelVo> getListByUserId(Page<CommunityModelVo> page, String userId, String myId) {
+        List<CommunityModelVo> list = communityModelMapper.getListByUserId(page, userId, myId);
         return page.setRecords(list);
     }
 

@@ -154,4 +154,15 @@ public class CourseController {
     }
 
 
+    @ApiOperation("首页搜索课程")
+    @PostMapping("/searchCourse")
+    public Result searchCourse(String search, @RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo,
+                                    @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize) {
+        Page<CourseVo> page = new Page<>(pageNo, pageSize);
+        Page<CourseVo> courseVoPage = courseService.searchCourse(page, search);
+        return Result.OK(courseVoPage);
+    }
+
+
+
 }

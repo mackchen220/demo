@@ -36,6 +36,8 @@ public interface CourseService {
 
     Page<CourseVo> loadCommendCourse(Page<CourseVo> page ,String type);
 
+    Page<CourseVo> searchCourse(Page<CourseVo> page ,String search);
+
     CourseVo getCourseInfo(String id, UserModel userModel);
 
     List<CourseInfoVo> getCourseInfoList(String courseId);

@@ -45,6 +45,7 @@ public interface CourseMapper extends BaseMapper<Course> {
 
     List<CourseVo> loadCourseListPage(Page<CourseVo> page, @Param("courseType") String courseType);
 
+    List<CourseVo> searchCourse(Page<CourseVo> page, @Param("search") String search);
 
     List<CourseInfoVo> getCourseInfoList(@Param("courseId") String courseId);
 

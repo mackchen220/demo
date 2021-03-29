@@ -353,19 +353,21 @@
     </select>
 
 
-    <select id="getListByUserId" resultMap="BaseResultMap">
+    <select id="getListByUserId" resultMap="voResultMap">
         select
-        <include refid="Base_Column_List"/>
-        from tb_community
-        <where>
-            check_status=2
-            <trim prefixOverrides="and">
-                <if test="userId != null and userId != ''">
-                    and user_id = #{userId}
-                </if>
-            </trim>
-        </where>
-        order by create_time desc
+        a.id, a.user_id, a.title, a.content, a.url, a.image_url, a.city, a.`type`, a.user_type, a.star_num, a.good_num,
+        a.forward_num, a.create_time, b.head_image,b.nick_name,IFNULL(c.star ,0) as star_status,IFNULL(c.good ,0) as
+        good_status
+        from tb_community as a LEFT JOIN tb_user b on a.user_id =b.id
+        LEFT JOIN tb_user_star c on c.community_id =a.id and c.user_id = #{myId,jdbcType=VARCHAR}
+        where a.check_status=2 and a.user_id = #{userId}
+        order by a.create_time desc
+
+
+        <!--            <trim prefixOverrides="and">-->
+<!--                <if test="userId != null and userId != ''">-->
+<!--                </if>-->
+<!--            </trim>-->
     </select>
     <select id="selectByFocusUserId" resultMap="voResultMap">
         <!--    SELECT c.* from tb_community c-->
