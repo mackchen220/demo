@@ -294,3 +294,10 @@ wechat:
   mchKey:
   keyPath:
   notifyUrl:
+
+im:
+  tencent:
+    host: https://console.tim.qq.com
+    admin: yushao59wOiOzcR8
+    appID: 1400494682
+    secretKey: e790dcaf821764fb65570f65312f7599c9da7ebc1c1189eacc0eada56efa719a

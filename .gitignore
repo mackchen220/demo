@@ -1,0 +1,13 @@
+jeecg-boot/jeecg-boot-base/jeecg-boot-base-core/target/classes/org/jeecg/common/api/vo/Result.class
+jeecg-boot/jeecg-boot-base/jeecg-boot-base-core/target/classes/org/jeecg/common/constant/ProvinceCityArea.class
+jeecg-boot/jeecg-boot-base/jeecg-boot-base-core/target/classes/org/jeecg/common/exception/JeecgBootException.class
+jeecg-boot/jeecg-boot-base/jeecg-boot-base-core/target/classes/org/jeecg/common/exception/JeecgBootExceptionHandler.class
+jeecg-boot/jeecg-boot-base/jeecg-boot-base-core/target/classes/org/jeecg/common/system/base/controller/JeecgController.class
+jeecg-boot/jeecg-boot-base/jeecg-boot-base-core/target/classes/org/jeecg/common/system/query/QueryGenerator.class
+jeecg-boot/jeecg-boot-base/jeecg-boot-base-core/target/classes/org/jeecg/common/util/BrowserUtils.class
+jeecg-boot/jeecg-boot-base/jeecg-boot-base-core/target/classes/org/jeecg/common/util/CommonUtils.class
+jeecg-boot/jeecg-boot-base/jeecg-boot-base-core/target/classes/org/jeecg/common/util/TokenUtils.class
+jeecg-boot/jeecg-boot-base/jeecg-boot-base-core/target/classes/org/jeecg/common/util/UUIDGenerator.class
+jeecg-boot/jeecg-boot-base/jeecg-boot-base-core/target/classes/org/jeecg/common/util/oss/OssBootUtil.class
+jeecg-boot/jeecg-boot-base/jeecg-boot-base-core/target/classes/org/jeecg/config/Swagger2Config.class
+jeecg-boot/jeecg-boot-base/jeecg-boot-base-core/target/classes/org/jeecg/config/shiro/ShiroConfig.class
