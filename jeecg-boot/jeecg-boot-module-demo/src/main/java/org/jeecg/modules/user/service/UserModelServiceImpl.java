@@ -353,8 +353,8 @@ public class UserModelServiceImpl implements UserModelService {
             userModel1.setHeadImage(headImage);
         }
         if (ValidateTool.isNotNull(nickName)) {
-            if (nickName.length() > 8 || nickName.length() < 3) {
-                throw new JeecgBootException("昵称限制八个字");
+            if (nickName.length() > 8 || nickName.length() < 2) {
+                throw new JeecgBootException("昵称限制2到8个字");
             }
             userModel1.setNickName(nickName);
         }
