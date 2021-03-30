@@ -370,7 +370,7 @@
         <!--        order by create_time DESC-->
 
         select a.id, a.user_id, a.title, a.content, a.url, a.image_url, a.city, a.`type`, a.user_type, a.star_num, a.good_num,
-        a.province,a.address,a.longitude,a.latitude,
+        a.province,a.address,a.longitude,a.latitude,a.watch_num,
         a.forward_num, a.create_time, c.head_image,c.nick_name,IFNULL(d.star,0) as star_status,IFNULL(d.good,0) as good_status
         from tb_community as a LEFT JOIN tb_talent_info b on a.user_id =b.user_id
         LEFT JOIN tb_user c on a.user_id =c.id
@@ -380,9 +380,10 @@
     </select>
 
 
+
     <select id="getListByUserId" resultMap="voResultMap">
         select
-        a.id, a.user_id, a.title, a.content, a.url, a.image_url, a.city, a.`type`, a.user_type, a.star_num, a.good_num,
+        a.id, a.user_id, a.title, a.content, a.url, a.image_url, a.city, a.`type`, a.user_type, a.star_num, a.good_num,a.watch_num,
         a.province,a.address,a.longitude,a.latitude,
         a.forward_num, a.create_time, b.head_image,b.nick_name,IFNULL(c.star ,0) as star_status,IFNULL(c.good ,0) as
         good_status
