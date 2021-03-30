@@ -52,10 +52,11 @@ public class ReqInterceptor implements HandlerInterceptor {
         String[] unAuthList = {"/hy/user/userLogin", "hy/index/getCaptchaCode","/sys","/online","/mock","/jmreport"
                 ,"/bigscreen","/test/bigScreen","/swagger","/webjars","/druid","/generic","/doc.html","/favicon.ico",
                 "hy/index/loadAppVersion","/vip/adminVip","getDictItems","/user/userAdmin","/course/adminCourse",
-                "/sys/common/static","/search/adminHotSearch","/turnImage/adminTurnImage","/party/adminParty",
-                "/user/adminUser","/user/weixinLogin","/hy/user/bindUserPhone","/community/adminCommunity",
-                "/index/getPhoneCaptchaCode","/smsConfig/adminSmsConfig","/verified/adminVerifiedConfig",
-                "/bank/adminBank","/platformConfig/platformConfig","/hospital/adminHospital","pay/wxNotify","websocket"};
+                "/sys/common/static","/search/adminHotSearch","/turnImage/adminTurnImage","/party/adminParty","/talentInfo/adminTalentInfo",
+                "/user/adminUser","/user/weixinLogin","/hy/user/bindUserPhone","/community/adminCommunity","/projectInfo/adminProjectInfo",
+                "/index/getPhoneCaptchaCode","/smsConfig/adminSmsConfig","/verified/adminVerifiedConfig","/project/adminProject",
+                "/bank/adminBank","/platformConfig/platformConfig","/hospital/adminHospital","pay/wxNotify","websocket",
+        "/hospitalProject/webHospitalProject","/talentHospital/webTalentHospital"};
         for (String tem : unAuthList) {
             if (request.getRequestURI().contains(tem)) {
                 return true;
