@@ -48,7 +48,6 @@ import java.util.Map;
 /**
  * @className: CourseServiceImpl
  * @description: 社区模块业务代码
- * @author: LongXiang
  * @data: 2021-02-05 16:51
  * @version: V1.0
  */

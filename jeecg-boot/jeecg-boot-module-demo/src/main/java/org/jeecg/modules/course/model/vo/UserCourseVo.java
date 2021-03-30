@@ -8,7 +8,6 @@ import java.io.Serializable;
 /**
  * @className: UserCourseVo
  * @description: 社区搜索实体
- * @author: LongXiang
  * @data: 2021-02-18 14:45
  * @version: V1.0
  */

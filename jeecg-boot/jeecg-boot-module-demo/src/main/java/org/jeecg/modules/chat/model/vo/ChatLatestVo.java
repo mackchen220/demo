@@ -7,7 +7,6 @@ import java.io.Serializable;
 /**
  * @className: ChatLatestVo
  * @description: 最新聊天消息
- * @author: LongXiang
  * @data: 2021-03-15 14:29
  * @version: V1.0
  */

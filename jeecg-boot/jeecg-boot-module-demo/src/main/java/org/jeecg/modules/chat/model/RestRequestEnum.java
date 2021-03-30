@@ -3,7 +3,6 @@ package org.jeecg.modules.chat.model;
 /**
  * @className: RestRequestEnum
  * @description: 腾讯IM请求接口
- * @author: LongXiang
  * @data: 2021-03-22 13:50
  * @version: V1.0
  */

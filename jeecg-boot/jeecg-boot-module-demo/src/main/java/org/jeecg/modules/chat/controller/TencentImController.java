@@ -18,7 +18,6 @@ import javax.annotation.Resource;
 /**
  * @className: TencentImController
  * @description: 腾讯云IM
- * @author: LongXiang
  * @data: 2021-03-15 11:51
  * @version: V1.0
  */

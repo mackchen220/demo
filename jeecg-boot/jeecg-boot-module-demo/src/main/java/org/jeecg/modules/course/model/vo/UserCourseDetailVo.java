@@ -7,7 +7,6 @@ import java.io.Serializable;
 /**
  * @className: UserCourseDetailVo
  * @description: 社区动态详情实体
- * @author: LongXiang
  * @data: 2021-02-18 16:48
  * @version: V1.0
  */

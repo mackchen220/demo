@@ -27,7 +27,6 @@ import java.util.*;
 /**
  * @className: TencentImServiceImpl
  * @description: im聊天业务处理
- * @author: LongXiang
  * @data: 2021-03-15 14:21
  * @version: V1.0
  */

@@ -7,7 +7,6 @@ import org.jeecg.modules.chat.model.vo.ChatLatestVo;
 /**
  * @className: TencentImService
  * @description: im聊天业务处理
- * @author: LongXiang
  * @data: 2021-03-15 14:20
  * @version: V1.0
  */
