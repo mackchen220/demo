@@ -88,6 +88,12 @@ public class GenerateUserSig {
         return GenTLSSignature(SDKAPPID, userId, EXPIRETIME, null, SECRETKEY);
     }
 
+
+    public static String genUserSig(long sdkappId,String userId,String secretKey) {
+        return GenTLSSignature(sdkappId, userId, EXPIRETIME, null, secretKey);
+    }
+
+
     /**
      * 生成 tls 票据
      *

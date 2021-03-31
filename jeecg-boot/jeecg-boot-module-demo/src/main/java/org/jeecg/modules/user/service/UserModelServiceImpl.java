@@ -48,11 +48,11 @@ public class UserModelServiceImpl implements UserModelService {
     @Resource
     private UserIncomeMapper userIncomeMapper;
 
-    @Value("${justauth.type.WECHAT_OPEN.client-id}")
-    private String accessKeyId;
+    @Value("${im.tencent.appID}")
+    private String appID;
 
-    @Value("${justauth.type.WECHAT_OPEN.client-client-secret}")
-    private String secret;
+    @Value("${im.tencent.secretKey}")
+    private String secretKey;
 
     @Resource
     private VerifiedLogMapper verifiedLogMapper;
@@ -163,7 +163,12 @@ public class UserModelServiceImpl implements UserModelService {
         object.put("token", token);
         object.put("headImage", userModel.getHeadImage());
         object.put("nickname", userModel.getNickName());
-        object.put("userSig", GenerateUserSig.genUserSig(userModel.getId()));
+        try {
+            object.put("userSig", GenerateUserSig.genUserSig(Long.valueOf(appID), userModel.getId(), secretKey));
+        } catch (Exception e) {
+            log.warn("生成userSig失败{}===={}", e.getMessage(), e);
+        }
+        object.put("chatId", userModel.getId());
     }
 
 
