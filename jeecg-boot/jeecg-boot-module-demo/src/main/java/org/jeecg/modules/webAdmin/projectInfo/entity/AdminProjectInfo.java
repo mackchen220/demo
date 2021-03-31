@@ -39,6 +39,10 @@ public class AdminProjectInfo implements Serializable {
 	@Excel(name = "项目id", width = 15)
     @ApiModelProperty(value = "项目id")
     private java.lang.String projectId;
+    /**父项目名*/
+    @Excel(name = "父项目名", width = 15)
+    @ApiModelProperty(value = "父项目名")
+    private java.lang.String fatherProject;
 	/**项目名称*/
 	@Excel(name = "项目名称", width = 15)
     @ApiModelProperty(value = "项目名称")

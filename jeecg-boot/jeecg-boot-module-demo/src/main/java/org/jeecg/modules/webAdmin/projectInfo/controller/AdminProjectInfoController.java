@@ -44,18 +44,32 @@ public class AdminProjectInfoController extends JeecgController<AdminProjectInfo
 	 * @param req
 	 * @return
 	 */
-	@AutoLog(value = "tb_project_info-分页列表查询")
-	@ApiOperation(value="tb_project_info-分页列表查询", notes="tb_project_info-分页列表查询")
-	@GetMapping(value = "/list")
-	public Result<?> queryPageList(AdminProjectInfo adminProjectInfo,
-								   @RequestParam(name="pageNo", defaultValue="1") Integer pageNo,
-								   @RequestParam(name="pageSize", defaultValue="10") Integer pageSize,
-								   HttpServletRequest req) {
-		QueryWrapper<AdminProjectInfo> queryWrapper = QueryGenerator.initQueryWrapper(adminProjectInfo, req.getParameterMap());
-		Page<AdminProjectInfo> page = new Page<AdminProjectInfo>(pageNo, pageSize);
-		IPage<AdminProjectInfo> pageList = adminProjectInfoService.page(page, queryWrapper);
-		return Result.OK(pageList);
-	}
+//	@AutoLog(value = "tb_project_info-分页列表查询")
+//	@ApiOperation(value="tb_project_info-分页列表查询", notes="tb_project_info-分页列表查询")
+//	@GetMapping(value = "/list")
+//	public Result<?> queryPageList(AdminProjectInfo adminProjectInfo,
+//								   @RequestParam(name="pageNo", defaultValue="1") Integer pageNo,
+//								   @RequestParam(name="pageSize", defaultValue="10") Integer pageSize,
+//								   HttpServletRequest req) {
+//		QueryWrapper<AdminProjectInfo> queryWrapper = QueryGenerator.initQueryWrapper(adminProjectInfo, req.getParameterMap());
+//		Page<AdminProjectInfo> page = new Page<AdminProjectInfo>(pageNo, pageSize);
+//		IPage<AdminProjectInfo> pageList = adminProjectInfoService.page(page, queryWrapper);
+//		return Result.OK(pageList);
+//	}
+
+	 @AutoLog(value = "tb_project_info-分页列表查询")
+	 @ApiOperation(value="tb_project_info-分页列表查询", notes="tb_project_info-分页列表查询")
+	 @GetMapping(value = "/list")
+	 public Result<?> queryPageList(AdminProjectInfo adminProjectInfo,
+									@RequestParam(name="pageNo", defaultValue="1") Integer pageNo,
+									@RequestParam(name="pageSize", defaultValue="10") Integer pageSize,
+									HttpServletRequest req) {
+		 Page<AdminProjectInfo> page = new Page<AdminProjectInfo>(pageNo, pageSize);
+		 IPage<AdminProjectInfo> pageList = adminProjectInfoService.loadProjectInfoList(page);
+		 return Result.OK(pageList);
+	 }
+
+
 
 	/**
 	 *   添加

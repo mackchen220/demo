@@ -39,6 +39,10 @@ public class AdminCommunity implements Serializable {
 	@Excel(name = "userId", width = 15)
     @ApiModelProperty(value = "userId")
     private java.lang.String userId;
+    /**用户昵称*/
+    @Excel(name = "用户昵称", width = 15)
+    @ApiModelProperty(value = "用户昵称")
+    private java.lang.String nickName;
 	/**标题*/
 	@Excel(name = "标题", width = 15)
     @ApiModelProperty(value = "标题")
@@ -59,6 +63,14 @@ public class AdminCommunity implements Serializable {
 	@Excel(name = "定位城市", width = 15)
     @ApiModelProperty(value = "定位城市")
     private java.lang.String city;
+    /**省*/
+    @Excel(name = "省", width = 15)
+    @ApiModelProperty(value = "省")
+    private java.lang.String province;
+    /**详细地址*/
+    @Excel(name = "详细地址", width = 15)
+    @ApiModelProperty(value = "详细地址")
+    private java.lang.String address;
 	/**朋友圈类型:1 照片 2视频 3课程  4其他  */
 	@Excel(name = "朋友圈类型:1 照片 2视频 3课程  4其他  ", width = 15)
     @ApiModelProperty(value = "朋友圈类型:1 照片 2视频 3课程  4其他  ")
@@ -80,8 +92,8 @@ public class AdminCommunity implements Serializable {
     @ApiModelProperty(value = "转发数量")
     private java.lang.Integer forwardNum;
 	/**创建时间*/
-	@JsonFormat(timezone = "GMT+8",pattern = "yyyy-MM-dd")
-    @DateTimeFormat(pattern="yyyy-MM-dd")
+	@JsonFormat(timezone = "GMT+8",pattern = "yyyy-MM-dd HH:mm:ss")
+    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
     @ApiModelProperty(value = "创建时间")
     private java.util.Date createTime;
 	/**更新日期*/

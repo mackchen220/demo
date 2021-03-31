@@ -71,4 +71,12 @@ public class WebHospitalProject implements Serializable {
 	@Excel(name = "删除标识0-正常,1-已删除", width = 15)
     @ApiModelProperty(value = "删除标识0-正常,1-已删除")
     private java.lang.Integer delFlag;
+    /**机构名*/
+    @Excel(name = "机构名", width = 15)
+    @ApiModelProperty(value = "机构名")
+    private java.lang.String hospitalName;
+    /**项目名*/
+    @Excel(name = "项目名", width = 15)
+    @ApiModelProperty(value = "项目名")
+    private java.lang.String projectName;
 }

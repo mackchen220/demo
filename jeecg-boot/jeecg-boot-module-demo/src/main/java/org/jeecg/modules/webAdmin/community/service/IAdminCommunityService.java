@@ -1,5 +1,6 @@
 package org.jeecg.modules.webAdmin.community.service;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.jeecg.modules.webAdmin.community.entity.AdminCommunity;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -11,4 +12,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface IAdminCommunityService extends IService<AdminCommunity> {
 
+    Page loadCommunityList(Page page);
 }

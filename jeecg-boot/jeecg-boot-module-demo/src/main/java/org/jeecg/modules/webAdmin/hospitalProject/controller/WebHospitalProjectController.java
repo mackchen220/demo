@@ -44,6 +44,19 @@ public class WebHospitalProjectController extends JeecgController<WebHospitalPro
 	 * @param req
 	 * @return
 	 */
+//	@AutoLog(value = "tb_hospital_project-分页列表查询")
+//	@ApiOperation(value="tb_hospital_project-分页列表查询", notes="tb_hospital_project-分页列表查询")
+//	@GetMapping(value = "/list")
+//	public Result<?> queryPageList(WebHospitalProject webHospitalProject,
+//								   @RequestParam(name="pageNo", defaultValue="1") Integer pageNo,
+//								   @RequestParam(name="pageSize", defaultValue="10") Integer pageSize,
+//								   HttpServletRequest req) {
+//		QueryWrapper<WebHospitalProject> queryWrapper = QueryGenerator.initQueryWrapper(webHospitalProject, req.getParameterMap());
+//		Page<WebHospitalProject> page = new Page<WebHospitalProject>(pageNo, pageSize);
+//		IPage<WebHospitalProject> pageList = webHospitalProjectService.page(page, queryWrapper);
+//		return Result.OK(pageList);
+//	}
+
 	@AutoLog(value = "tb_hospital_project-分页列表查询")
 	@ApiOperation(value="tb_hospital_project-分页列表查询", notes="tb_hospital_project-分页列表查询")
 	@GetMapping(value = "/list")
@@ -51,9 +64,8 @@ public class WebHospitalProjectController extends JeecgController<WebHospitalPro
 								   @RequestParam(name="pageNo", defaultValue="1") Integer pageNo,
 								   @RequestParam(name="pageSize", defaultValue="10") Integer pageSize,
 								   HttpServletRequest req) {
-		QueryWrapper<WebHospitalProject> queryWrapper = QueryGenerator.initQueryWrapper(webHospitalProject, req.getParameterMap());
 		Page<WebHospitalProject> page = new Page<WebHospitalProject>(pageNo, pageSize);
-		IPage<WebHospitalProject> pageList = webHospitalProjectService.page(page, queryWrapper);
+		IPage<WebHospitalProject> pageList = webHospitalProjectService.loadHospitalProjectList(page);
 		return Result.OK(pageList);
 	}
 

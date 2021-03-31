@@ -2,4 +2,25 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.jeecg.modules.webAdmin.projectInfo.mapper.AdminProjectInfoMapper">
 
+    <resultMap id="BaseResultMap" type="org.jeecg.modules.webAdmin.projectInfo.entity.AdminProjectInfo">
+        <!--@mbg.generated-->
+        <!--@Table tb_project_info-->
+        <id column="id" jdbcType="VARCHAR" property="id" />
+        <result column="project_id" jdbcType="VARCHAR" property="projectId" />
+        <result column="name" jdbcType="VARCHAR" property="fatherProject" />
+        <result column="project_name" jdbcType="VARCHAR" property="projectName" />
+        <result column="type" jdbcType="INTEGER" property="type" />
+        <result column="price_low" jdbcType="BIGINT" property="priceLow" />
+        <result column="price_high" jdbcType="BIGINT" property="priceHigh" />
+        <result column="create_time" jdbcType="VARCHAR" property="createTime" />
+        <result column="update_time" jdbcType="VARCHAR" property="updateTime" />
+        <result column="create_by" jdbcType="VARCHAR" property="createBy" />
+        <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
+        <result column="del_flag" jdbcType="INTEGER" property="delFlag" />
+    </resultMap>
+
+    <select id="loadProjectInfoList" resultMap="BaseResultMap">
+        select a.*,b.name from tb_project_info as a left join tb_project as b on a.project_id =b.id
+        where a.del_flag=0 and b.del_flag=0
+    </select>
 </mapper>

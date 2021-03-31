@@ -44,6 +44,20 @@ public class AdminCommunityController extends JeecgController<AdminCommunity, IA
 	 * @param req
 	 * @return
 	 */
+//	@AutoLog(value = "朋友圈-分页列表查询")
+//	@ApiOperation(value="朋友圈-分页列表查询", notes="朋友圈-分页列表查询")
+//	@GetMapping(value = "/list")
+//	public Result<?> queryPageList(AdminCommunity adminCommunity,
+//								   @RequestParam(name="pageNo", defaultValue="1") Integer pageNo,
+//								   @RequestParam(name="pageSize", defaultValue="10") Integer pageSize,
+//								   HttpServletRequest req) {
+//		adminCommunity.setDelFlag(0);
+//		QueryWrapper<AdminCommunity> queryWrapper = QueryGenerator.initQueryWrapper(adminCommunity, req.getParameterMap());
+//		Page<AdminCommunity> page = new Page<AdminCommunity>(pageNo, pageSize);
+//		IPage<AdminCommunity> pageList = adminCommunityService.page(page, queryWrapper);
+//		return Result.OK(pageList);
+//	}
+
 	@AutoLog(value = "朋友圈-分页列表查询")
 	@ApiOperation(value="朋友圈-分页列表查询", notes="朋友圈-分页列表查询")
 	@GetMapping(value = "/list")
@@ -51,10 +65,8 @@ public class AdminCommunityController extends JeecgController<AdminCommunity, IA
 								   @RequestParam(name="pageNo", defaultValue="1") Integer pageNo,
 								   @RequestParam(name="pageSize", defaultValue="10") Integer pageSize,
 								   HttpServletRequest req) {
-		adminCommunity.setDelFlag(0);
-		QueryWrapper<AdminCommunity> queryWrapper = QueryGenerator.initQueryWrapper(adminCommunity, req.getParameterMap());
 		Page<AdminCommunity> page = new Page<AdminCommunity>(pageNo, pageSize);
-		IPage<AdminCommunity> pageList = adminCommunityService.page(page, queryWrapper);
+		IPage<AdminCommunity> pageList = adminCommunityService.loadCommunityList(page);
 		return Result.OK(pageList);
 	}
 

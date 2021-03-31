@@ -1,5 +1,6 @@
 package org.jeecg.modules.webAdmin.projectInfo.service;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.jeecg.modules.webAdmin.projectInfo.entity.AdminProjectInfo;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -10,5 +11,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @Version: V1.0
  */
 public interface IAdminProjectInfoService extends IService<AdminProjectInfo> {
+
+    Page loadProjectInfoList(Page page);
 
 }

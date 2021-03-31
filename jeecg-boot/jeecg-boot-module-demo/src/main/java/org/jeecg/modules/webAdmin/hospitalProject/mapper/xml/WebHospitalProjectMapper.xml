@@ -2,4 +2,29 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.jeecg.modules.webAdmin.hospitalProject.mapper.WebHospitalProjectMapper">
 
+
+    <resultMap id="BaseResultMap" type="org.jeecg.modules.webAdmin.hospitalProject.entity.WebHospitalProject">
+        <!--@mbg.generated-->
+        <!--@Table tb_hospital_project-->
+        <id column="id" jdbcType="VARCHAR" property="id" />
+        <result column="project_id" jdbcType="VARCHAR" property="projectId" />
+        <result column="hospital_id" jdbcType="VARCHAR" property="hospitalId"/>
+        <result column="price_low" jdbcType="BIGINT" property="priceLow" />
+        <result column="price_high" jdbcType="BIGINT" property="priceHigh" />
+        <result column="create_time" jdbcType="VARCHAR" property="createTime" />
+        <result column="update_time" jdbcType="VARCHAR" property="updateTime" />
+        <result column="create_by" jdbcType="VARCHAR" property="createBy" />
+        <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
+        <result column="del_flag" jdbcType="INTEGER" property="delFlag" />
+        <result column="name" jdbcType="VARCHAR" property="hospitalName" />
+        <result column="project_name" jdbcType="VARCHAR" property="projectName" />
+
+    </resultMap>
+
+
+    <select id="loadHospitalProjectList" resultMap="BaseResultMap">
+        select a.*,b.project_name,c.name from tb_hospital_project as a
+        left join tb_project_info as b on a.project_id=b.id
+         left join tb_hospital as c  on a.hospital_id=c.id
+    </select>
 </mapper>
