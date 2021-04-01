@@ -39,6 +39,10 @@ public class WebTalentHospital implements Serializable {
 	@Excel(name = "机构医院id", width = 15)
     @ApiModelProperty(value = "机构医院id")
     private java.lang.String hospitalId;
+    /**机构医院名称*/
+    @Excel(name = "机构医院名称", width = 15)
+    @ApiModelProperty(value = "机构医院名称")
+    private java.lang.String hospitalName;
 	/**创建时间*/
 	@JsonFormat(timezone = "GMT+8",pattern = "yyyy-MM-dd")
     @DateTimeFormat(pattern="yyyy-MM-dd")
@@ -63,4 +67,8 @@ public class WebTalentHospital implements Serializable {
 	@Excel(name = "达人id", width = 15)
     @ApiModelProperty(value = "达人id")
     private java.lang.String talentId;
+    /**达人昵称*/
+    @Excel(name = "达人昵称", width = 15)
+    @ApiModelProperty(value = "达人昵称")
+    private java.lang.String nickName;
 }

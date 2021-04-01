@@ -1,5 +1,6 @@
 package org.jeecg.modules.webAdmin.talentHospital.service;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.jeecg.modules.webAdmin.talentHospital.entity.WebTalentHospital;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -11,4 +12,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface IWebTalentHospitalService extends IService<WebTalentHospital> {
 
+    Page queryPageList(Page page);
 }

@@ -1,7 +1,10 @@
 package org.jeecg.modules.webAdmin.talentHospital.mapper;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.jeecg.modules.webAdmin.talentHospital.entity.WebTalentHospital;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+
+import java.util.List;
 
 /**
  * @Description: tb_talent_hospital
@@ -11,4 +14,5 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  */
 public interface WebTalentHospitalMapper extends BaseMapper<WebTalentHospital> {
 
+    List<WebTalentHospital> queryPageList(Page page);
 }

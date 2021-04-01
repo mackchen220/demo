@@ -44,18 +44,31 @@ public class WebTalentHospitalController extends JeecgController<WebTalentHospit
 	 * @param req
 	 * @return
 	 */
-	@AutoLog(value = "tb_talent_hospital-分页列表查询")
-	@ApiOperation(value="tb_talent_hospital-分页列表查询", notes="tb_talent_hospital-分页列表查询")
-	@GetMapping(value = "/list")
-	public Result<?> queryPageList(WebTalentHospital webTalentHospital,
-								   @RequestParam(name="pageNo", defaultValue="1") Integer pageNo,
-								   @RequestParam(name="pageSize", defaultValue="10") Integer pageSize,
-								   HttpServletRequest req) {
-		QueryWrapper<WebTalentHospital> queryWrapper = QueryGenerator.initQueryWrapper(webTalentHospital, req.getParameterMap());
-		Page<WebTalentHospital> page = new Page<WebTalentHospital>(pageNo, pageSize);
-		IPage<WebTalentHospital> pageList = webTalentHospitalService.page(page, queryWrapper);
-		return Result.OK(pageList);
-	}
+//	@AutoLog(value = "tb_talent_hospital-分页列表查询")
+//	@ApiOperation(value="tb_talent_hospital-分页列表查询", notes="tb_talent_hospital-分页列表查询")
+//	@GetMapping(value = "/list")
+//	public Result<?> queryPageList(WebTalentHospital webTalentHospital,
+//								   @RequestParam(name="pageNo", defaultValue="1") Integer pageNo,
+//								   @RequestParam(name="pageSize", defaultValue="10") Integer pageSize,
+//								   HttpServletRequest req) {
+//		QueryWrapper<WebTalentHospital> queryWrapper = QueryGenerator.initQueryWrapper(webTalentHospital, req.getParameterMap());
+//		Page<WebTalentHospital> page = new Page<WebTalentHospital>(pageNo, pageSize);
+//		IPage<WebTalentHospital> pageList = webTalentHospitalService.page(page, queryWrapper);
+//		return Result.OK(pageList);
+//	}
+
+	 @AutoLog(value = "tb_talent_hospital-分页列表查询")
+	 @ApiOperation(value="tb_talent_hospital-分页列表查询", notes="tb_talent_hospital-分页列表查询")
+	 @GetMapping(value = "/list")
+	 public Result<?> queryPageList(WebTalentHospital webTalentHospital,
+									@RequestParam(name="pageNo", defaultValue="1") Integer pageNo,
+									@RequestParam(name="pageSize", defaultValue="10") Integer pageSize,
+									HttpServletRequest req) {
+		 Page<WebTalentHospital> page = new Page<WebTalentHospital>(pageNo, pageSize);
+		 IPage<WebTalentHospital> pageList = webTalentHospitalService.queryPageList(page);
+		 return Result.OK(pageList);
+	 }
+
 
 	/**
 	 *   添加
