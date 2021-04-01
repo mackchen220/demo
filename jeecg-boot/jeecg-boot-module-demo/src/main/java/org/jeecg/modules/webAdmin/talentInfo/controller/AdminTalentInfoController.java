@@ -44,6 +44,18 @@ public class AdminTalentInfoController extends JeecgController<AdminTalentInfo, 
 	 * @param req
 	 * @return
 	 */
+//	@AutoLog(value = "tb_talent_info-分页列表查询")
+//	@ApiOperation(value="tb_talent_info-分页列表查询", notes="tb_talent_info-分页列表查询")
+//	@GetMapping(value = "/list")
+//	public Result<?> queryPageList(AdminTalentInfo adminTalentInfo,
+//								   @RequestParam(name="pageNo", defaultValue="1") Integer pageNo,
+//								   @RequestParam(name="pageSize", defaultValue="10") Integer pageSize,
+//								   HttpServletRequest req) {
+//		QueryWrapper<AdminTalentInfo> queryWrapper = QueryGenerator.initQueryWrapper(adminTalentInfo, req.getParameterMap());
+//		Page<AdminTalentInfo> page = new Page<AdminTalentInfo>(pageNo, pageSize);
+//		IPage<AdminTalentInfo> pageList = adminTalentInfoService.page(page, queryWrapper);
+//		return Result.OK(pageList);
+//	}
 	@AutoLog(value = "tb_talent_info-分页列表查询")
 	@ApiOperation(value="tb_talent_info-分页列表查询", notes="tb_talent_info-分页列表查询")
 	@GetMapping(value = "/list")
@@ -51,9 +63,8 @@ public class AdminTalentInfoController extends JeecgController<AdminTalentInfo, 
 								   @RequestParam(name="pageNo", defaultValue="1") Integer pageNo,
 								   @RequestParam(name="pageSize", defaultValue="10") Integer pageSize,
 								   HttpServletRequest req) {
-		QueryWrapper<AdminTalentInfo> queryWrapper = QueryGenerator.initQueryWrapper(adminTalentInfo, req.getParameterMap());
 		Page<AdminTalentInfo> page = new Page<AdminTalentInfo>(pageNo, pageSize);
-		IPage<AdminTalentInfo> pageList = adminTalentInfoService.page(page, queryWrapper);
+		IPage<AdminTalentInfo> pageList = adminTalentInfoService.queryPageList(page);
 		return Result.OK(pageList);
 	}
 

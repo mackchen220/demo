@@ -1,5 +1,6 @@
 package org.jeecg.modules.webAdmin.talentInfo.service;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.jeecg.modules.webAdmin.talentInfo.entity.AdminTalentInfo;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -11,4 +12,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface IAdminTalentInfoService extends IService<AdminTalentInfo> {
 
+    Page queryPageList(Page page);
 }

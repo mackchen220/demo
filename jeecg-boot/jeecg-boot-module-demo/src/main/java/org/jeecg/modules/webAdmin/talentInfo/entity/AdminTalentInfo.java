@@ -39,6 +39,10 @@ public class AdminTalentInfo implements Serializable {
 	@Excel(name = "userId", width = 15)
     @ApiModelProperty(value = "userId")
     private java.lang.String userId;
+    /**昵称*/
+    @Excel(name = "昵称", width = 15)
+    @ApiModelProperty(value = "昵称")
+    private java.lang.String nickName;
 	/**效果评分*/
 	@Excel(name = "效果评分", width = 15)
     @ApiModelProperty(value = "效果评分")
