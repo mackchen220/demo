@@ -52,6 +52,20 @@ public class AdminUserController extends JeecgController<AdminUser, IAdminUserSe
 	 * @param req
 	 * @return
 	 */
+//	@AutoLog(value = "tb_user-分页列表查询")
+//	@ApiOperation(value="tb_user-分页列表查询", notes="tb_user-分页列表查询")
+//	@GetMapping(value = "/list")
+//	public Result<?> queryPageList(AdminUser adminUser,
+//								   @RequestParam(name="pageNo", defaultValue="1") Integer pageNo,
+//								   @RequestParam(name="pageSize", defaultValue="10") Integer pageSize,
+//								   HttpServletRequest req) {
+//		adminUser.setDelFlag(0);
+//		QueryWrapper<AdminUser> queryWrapper = QueryGenerator.initQueryWrapper(adminUser, req.getParameterMap());
+//		Page<AdminUser> page = new Page<AdminUser>(pageNo, pageSize);
+//		IPage<AdminUser> pageList = adminUserService.page(page, queryWrapper);
+//		return Result.OK(pageList);
+//	}
+
 	@AutoLog(value = "tb_user-分页列表查询")
 	@ApiOperation(value="tb_user-分页列表查询", notes="tb_user-分页列表查询")
 	@GetMapping(value = "/list")
@@ -59,17 +73,11 @@ public class AdminUserController extends JeecgController<AdminUser, IAdminUserSe
 								   @RequestParam(name="pageNo", defaultValue="1") Integer pageNo,
 								   @RequestParam(name="pageSize", defaultValue="10") Integer pageSize,
 								   HttpServletRequest req) {
-//		Map<String, String[]> parameterMap = req.getParameterMap();
-//		String[] strs=new String[1];
-//		strs[0]="0";
-//		parameterMap.put("delFlag",strs);
-//		log.info("参数{},dax{}", JSON.toJSONString(parameterMap),parameterMap.size());
-		adminUser.setDelFlag(0);
-		QueryWrapper<AdminUser> queryWrapper = QueryGenerator.initQueryWrapper(adminUser, req.getParameterMap());
 		Page<AdminUser> page = new Page<AdminUser>(pageNo, pageSize);
-		IPage<AdminUser> pageList = adminUserService.page(page, queryWrapper);
+		IPage<AdminUser> pageList = adminUserService.queryPageList(page);
 		return Result.OK(pageList);
 	}
+
 
 	/**
 	 *   添加

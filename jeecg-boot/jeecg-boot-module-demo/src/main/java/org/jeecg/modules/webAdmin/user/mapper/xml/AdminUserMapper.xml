@@ -2,4 +2,50 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.jeecg.modules.webAdmin.user.mapper.AdminUserMapper">
 
+
+        <resultMap id="BaseResultMap" type="org.jeecg.modules.webAdmin.user.entity.AdminUser">
+            <!--@mbg.generated-->
+            <!--@Table tb_user-->
+            <id column="id" jdbcType="VARCHAR" property="id" />
+            <result column="user_name" jdbcType="VARCHAR" property="userName" />
+            <result column="nick_name" jdbcType="VARCHAR" property="nickName" />
+            <result column="head_image" jdbcType="VARCHAR" property="headImage" />
+            <result column="vip_id" jdbcType="BIGINT" property="vipId" />
+            <result column="vip_name" jdbcType="BIGINT" property="vipName" />
+            <result column="sign" jdbcType="VARCHAR" property="sign" />
+            <result column="money" jdbcType="BIGINT" property="money" />
+            <result column="del_flag" jdbcType="INTEGER" property="delFlag" />
+            <result column="is_disable" jdbcType="INTEGER" property="isDisable" />
+            <result column="password" jdbcType="VARCHAR" property="password" />
+            <result column="last_login_time" jdbcType="TIMESTAMP" property="lastLoginTime" />
+            <result column="login_time" jdbcType="TIMESTAMP" property="loginTime" />
+            <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+            <result column="last_login_ip" jdbcType="VARCHAR" property="lastLoginIp" />
+            <result column="login_ip" jdbcType="VARCHAR" property="loginIp" />
+            <result column="wechat" jdbcType="VARCHAR" property="wechat" />
+            <result column="user_type" jdbcType="TINYINT" property="userType" />
+            <result column="agency_id" jdbcType="BIGINT" property="agencyId" />
+            <result column="login_times" jdbcType="INTEGER" property="loginTimes" />
+            <result column="gender" jdbcType="INTEGER" property="gender" />
+            <result column="birthday" jdbcType="DATE" property="birthday" />
+            <result column="phone" jdbcType="VARCHAR" property="phone" />
+            <result column="upd_pwd_time" jdbcType="TIMESTAMP" property="updPwdTime" />
+            <result column="register_ip" jdbcType="VARCHAR" property="registerIp" />
+            <result column="disable_remark" jdbcType="VARCHAR" property="disableRemark" />
+            <result column="create_by" jdbcType="VARCHAR" property="createBy" />
+            <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
+            <result column="invite_code" jdbcType="VARCHAR" property="inviteCode" />
+            <result column="is_talent" jdbcType="TINYINT" property="isTalent" />
+            <result column="province" jdbcType="VARCHAR" property="province" />
+            <result column="city" jdbcType="VARCHAR" property="city" />
+            <result column="weixin_id" jdbcType="VARCHAR" property="weixinId" />
+            <result column="verified" jdbcType="VARCHAR" property="verified" />
+        </resultMap>
+
+
+    <select id="queryPageList" resultMap="BaseResultMap">
+        select a.*,b.vip_name from tb_user as a left join tb_vip as b on a.vip_id =b.id
+        where a.del_flag=0
+        order by a.create_time desc
+    </select>
 </mapper>

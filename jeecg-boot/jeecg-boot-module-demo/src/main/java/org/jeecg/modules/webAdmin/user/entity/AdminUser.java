@@ -51,6 +51,10 @@ public class AdminUser implements Serializable {
 	@Excel(name = "VIP等级id", width = 15)
     @ApiModelProperty(value = "VIP等级id")
     private java.lang.Integer vipId;
+    /**VIP等级*/
+    @Excel(name = "VIP等级", width = 15)
+    @ApiModelProperty(value = "VIP等级")
+    private java.lang.String vipName;
 	/**个性签名*/
 	@Excel(name = "个性签名", width = 15)
     @ApiModelProperty(value = "个性签名")
@@ -84,7 +88,7 @@ public class AdminUser implements Serializable {
     @ApiModelProperty(value = "此次登录时间")
     private java.util.Date loginTime;
 	/**创建时间*/
-	@JsonFormat(timezone = "GMT+8",pattern = "yyyy-MM-dd")
+	@JsonFormat(timezone = "GMT+8",pattern = "yyyy-MM-dd HH:mm:ss")
     @DateTimeFormat(pattern="yyyy-MM-dd")
     @ApiModelProperty(value = "创建时间")
     private java.util.Date createTime;
@@ -159,6 +163,10 @@ public class AdminUser implements Serializable {
 	@Excel(name = "是否达人，0不是 1是", width = 15)
     @ApiModelProperty(value = "是否达人，0不是 1是")
     private java.lang.Integer isTalent;
+    /**是否已实名，0不是 1是*/
+    @Excel(name = "是否已实名，0不是 1是", width = 15)
+    @ApiModelProperty(value = "是否已实名，0不是 1是")
+    private java.lang.Integer verified;
 	/**省份*/
 	@Excel(name = "省份", width = 15)
     @ApiModelProperty(value = "省份")
